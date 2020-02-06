@@ -1,15 +1,14 @@
 //
-//  CUIView.swift
-//  bagDatCat
+//  UIBoardGameView.swift
+//  suitDatCat
 //
 //  Created by Christopher Francisco on 2/6/20.
 //  Copyright © 2020 Christopher Francisco. All rights reserved.
 //
 
-import Foundation
-import UIKit
+import SwiftUI
 
- class UICView:UIView {
+class UIBoardGameView: UIView {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented");
@@ -39,6 +38,4 @@ import UIKit
             super.backgroundColor = UIColor.black;
         })
     }
-    
 }
-

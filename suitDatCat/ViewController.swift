@@ -19,8 +19,8 @@ class ViewController: UIViewController {
     var introLabel:UICLabel? = nil;
     
     // Game Play View Properties
-    var boardGameView:UICView? = nil;
-    var colorOptionsView:UICView? = nil;
+    var boardGameView:UIBoardGameView? = nil;
+    var colorOptionsView:UIColorOptionsView? = nil;
     
     @IBOutlet var mainViewController: UIView!
     override func viewDidLoad() {
@@ -53,14 +53,14 @@ class ViewController: UIViewController {
         
     func configureBoardGameView(userInterfaceStyle:Int){
         let backgroundColor:UIColor = (userInterfaceStyle == 1 ? UIColor.white : UIColor.black);
-        boardGameView = UICView(parentView: mainViewController, x: 0, y: 0, width: mainViewWidth * 0.90, height:  mainViewWidth * 0.90, backgroundColor: backgroundColor);
+        boardGameView = UIBoardGameView(parentView: mainViewController, x: 0, y: 0, width: mainViewWidth * 0.90, height:  mainViewWidth * 0.90, backgroundColor: backgroundColor);
         UICenterKit.centerWithVerticalDisplacement(childView: boardGameView!, parentRect: mainViewController.frame, childRect: boardGameView!.frame, verticalDisplacement: -unitView * 1.5);
         boardGameView!.alpha = 0.0;
     }
     
     func configureColorOptionsView(userInterfaceStyle:Int){
         let backgroundColor:UIColor = (userInterfaceStyle == 1 ? UIColor.white : UIColor.black);
-        colorOptionsView = UICView(parentView: mainViewController, x: boardGameView!.frame.minX, y: boardGameView!.frame.minY + boardGameView!.frame.height + unitView, width: boardGameView!.frame.width, height: unitView * 1.5, backgroundColor: backgroundColor);
+        colorOptionsView = UIColorOptionsView(parentView: mainViewController, x: boardGameView!.frame.minX, y: boardGameView!.frame.minY + boardGameView!.frame.height + unitView, width: boardGameView!.frame.width, height: unitView * 1.5, backgroundColor: backgroundColor);
         colorOptionsView!.alpha = 0.0;
     }
 

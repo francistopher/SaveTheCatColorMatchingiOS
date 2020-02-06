@@ -17,6 +17,8 @@
 		B8AE017323ECB25C007A6142 /* UICLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8AE017223ECB25C007A6142 /* UICLabel.swift */; };
 		B8AE017523ECB758007A6142 /* UICView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8AE017423ECB758007A6142 /* UICView.swift */; };
 		B8AE017723ECB934007A6142 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8AE017623ECB934007A6142 /* ViewController.swift */; };
+		B8AE017B23ECCE3B007A6142 /* UIBoardGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8AE017A23ECCE3B007A6142 /* UIBoardGameView.swift */; };
+		B8AE017D23ECD078007A6142 /* UIColorOptionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8AE017C23ECD077007A6142 /* UIColorOptionsView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +34,8 @@
 		B8AE017223ECB25C007A6142 /* UICLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UICLabel.swift; sourceTree = "<group>"; };
 		B8AE017423ECB758007A6142 /* UICView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UICView.swift; sourceTree = "<group>"; };
 		B8AE017623ECB934007A6142 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		B8AE017A23ECCE3B007A6142 /* UIBoardGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIBoardGameView.swift; sourceTree = "<group>"; };
+		B8AE017C23ECD077007A6142 /* UIColorOptionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorOptionsView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -75,6 +79,8 @@
 				B833545423EC8F0B00835672 /* suitDatCat.xcdatamodeld */,
 				B8AE017223ECB25C007A6142 /* UICLabel.swift */,
 				B8AE017423ECB758007A6142 /* UICView.swift */,
+				B8AE017A23ECCE3B007A6142 /* UIBoardGameView.swift */,
+				B8AE017C23ECD077007A6142 /* UIColorOptionsView.swift */,
 			);
 			path = suitDatCat;
 			sourceTree = "<group>";
@@ -153,6 +159,8 @@
 				B8AE017323ECB25C007A6142 /* UICLabel.swift in Sources */,
 				B833545623EC8F0B00835672 /* suitDatCat.xcdatamodeld in Sources */,
 				B833544C23EC8F0B00835672 /* AppDelegate.swift in Sources */,
+				B8AE017B23ECCE3B007A6142 /* UIBoardGameView.swift in Sources */,
+				B8AE017D23ECD078007A6142 /* UIColorOptionsView.swift in Sources */,
 				B8AE017523ECB758007A6142 /* UICView.swift in Sources */,
 				B8AE017723ECB934007A6142 /* ViewController.swift in Sources */,
 				B8AE017123ECB180007A6142 /* UICenterKit.swift in Sources */,

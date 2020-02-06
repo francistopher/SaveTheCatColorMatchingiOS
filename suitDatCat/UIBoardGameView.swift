@@ -10,6 +10,13 @@ import SwiftUI
 
 class UIBoardGameView: UIView {
     
+    var colorOptionsView:UIColorOptionsView? = nil;
+    var currentStage:Int = 1;
+    var gridButtons:[[UICButton]] = [[UICButton]]();
+    var gridColors:[[UIColor]] = [[UIColor]]();
+    var availableColors:[UIColor] = [UIColor]();
+    var solved:Bool = true;
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented");
     }
@@ -37,5 +44,9 @@ class UIBoardGameView: UIView {
         UIView.animate(withDuration: 0.0625, delay: 0.0, options: .curveEaseIn, animations: {
             super.backgroundColor = UIColor.black;
         })
+    }
+    
+    func buildBoardGame(){
+        
     }
 }

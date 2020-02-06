@@ -19,6 +19,7 @@
 		B8AE017723ECB934007A6142 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8AE017623ECB934007A6142 /* ViewController.swift */; };
 		B8AE017B23ECCE3B007A6142 /* UIBoardGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8AE017A23ECCE3B007A6142 /* UIBoardGameView.swift */; };
 		B8AE017D23ECD078007A6142 /* UIColorOptionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8AE017C23ECD077007A6142 /* UIColorOptionsView.swift */; };
+		B8AE017F23ECD3B2007A6142 /* UICButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8AE017E23ECD3B2007A6142 /* UICButton.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +37,7 @@
 		B8AE017623ECB934007A6142 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		B8AE017A23ECCE3B007A6142 /* UIBoardGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIBoardGameView.swift; sourceTree = "<group>"; };
 		B8AE017C23ECD077007A6142 /* UIColorOptionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorOptionsView.swift; sourceTree = "<group>"; };
+		B8AE017E23ECD3B2007A6142 /* UICButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UICButton.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,6 +83,7 @@
 				B8AE017423ECB758007A6142 /* UICView.swift */,
 				B8AE017A23ECCE3B007A6142 /* UIBoardGameView.swift */,
 				B8AE017C23ECD077007A6142 /* UIColorOptionsView.swift */,
+				B8AE017E23ECD3B2007A6142 /* UICButton.swift */,
 			);
 			path = suitDatCat;
 			sourceTree = "<group>";
@@ -161,6 +164,7 @@
 				B833544C23EC8F0B00835672 /* AppDelegate.swift in Sources */,
 				B8AE017B23ECCE3B007A6142 /* UIBoardGameView.swift in Sources */,
 				B8AE017D23ECD078007A6142 /* UIColorOptionsView.swift in Sources */,
+				B8AE017F23ECD3B2007A6142 /* UICButton.swift in Sources */,
 				B8AE017523ECB758007A6142 /* UICView.swift in Sources */,
 				B8AE017723ECB934007A6142 /* ViewController.swift in Sources */,
 				B8AE017123ECB180007A6142 /* UICenterKit.swift in Sources */,

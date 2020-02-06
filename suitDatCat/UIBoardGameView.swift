@@ -51,6 +51,8 @@ class UIBoardGameView: UIView {
         selectAnAvailableColor();
         randomlySelectGridColors();
         buildGridButtons();
+        colorOptionsView!.selectColorsForSelection();
+        print(colorOptionsView!.selectionColors.count);
         print(availableColors.count);
         print(gridColors.count);
     }

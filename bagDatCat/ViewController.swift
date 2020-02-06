@@ -19,11 +19,15 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         saveMainViewFoundationalProperties();
-        print(mainViewWidth, mainViewHeight, unitView)
+        // Do any additional setup after loading the view.
+        let view:UIView = UIView(frame: CGRect(x: 0, y: 0, width: 300, height: 100));
+        mainViewController!.addSubview(view);
+        view.backgroundColor = UIColor.white;
+//        CenterKit.center(childView: view, parentRect: view.frame, childRect: mainViewController!.frame);
     }
     
     func saveMainViewFoundationalProperties() {
-        mainViewWidth = mainViewController.frame.height * 9.0 / 16.0;
+        mainViewWidth = mainViewController.frame.width * 9.0 / 16.0;
         mainViewHeight = mainViewController.frame.height;
         unitView = mainViewHeight / 18.0;
     }

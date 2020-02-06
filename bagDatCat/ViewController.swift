@@ -22,7 +22,7 @@ class ViewController: UIViewController {
     }
     
     func saveMainViewFoundationalProperties() {
-        mainViewWidth = mainViewController.frame.width * 9.0 / 16.0;
+        mainViewWidth = mainViewController.frame.height * 9.0 / 16.0;
         mainViewHeight = mainViewController.frame.height;
         unitView = mainViewHeight / 18.0;
     }

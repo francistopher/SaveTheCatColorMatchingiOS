@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-class CUILabel:UILabel {
+class UICLabel:UILabel {
     
     init(parentView:UIView, x:CGFloat, y:CGFloat, width:CGFloat, height:CGFloat, backgroundColor:UIColor, textColor:UIColor, font:UIFont, text:String){
         super.init(frame: CGRect(x: x, y: y, width: width, height: height))

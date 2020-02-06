@@ -50,6 +50,7 @@ class UIBoardGameView: UIView {
     func buildBoardGame(){
         selectAnAvailableColor();
         randomlySelectGridColors();
+        buildGridButtons();
         print(availableColors.count);
         print(gridColors.count);
     }
@@ -96,6 +97,41 @@ class UIBoardGameView: UIView {
             initialStage += 1;
         }
         return [rows, columns];
+    }
+    
+    func buildGridButtons(){
+        let rowsAndColumns:[Int] = currentStageRowsAndColumns(currentStage: currentStage);
+        // Gaps
+        let rowGap:CGFloat = self.frame.height * 0.1 / CGFloat(rowsAndColumns[0] + 1);
+        let columnGap:CGFloat = self.frame.width * 0.1 / CGFloat(rowsAndColumns[1] + 1);
+        // Sizes
+        let buttonWidth:CGFloat = self.frame.width * 0.90 / CGFloat(rowsAndColumns[0]);
+        let buttonHeight:CGFloat = self.frame.height * 0.90 / CGFloat(rowsAndColumns[1]);
+        var currentRowDisplacement:CGFloat = 0.0;
+        var currentColumnDisplacement:CGFloat = 0.0;
+        var currentButton:UICButton? = nil;
+        for rows in 0..<rowsAndColumns[0] {
+            currentRowDisplacement += rowGap;
+            currentColumnDisplacement = 0.0;
+            var gridButtonsRow:[UICButton] = [UICButton]();
+            for columns in 0..<rowsAndColumns[1] {
+                currentColumnDisplacement += columnGap;
+                currentButton = UICButton(parentView: self, x: currentRowDisplacement, y: currentColumnDisplacement, width: buttonWidth, height: buttonHeight, backgroundColor: gridColors[rows][columns]);
+                currentButton!.grownAndShrunk();
+                currentButton!.shrinked();
+                currentButton!.grow();
+                currentColumnDisplacement += buttonHeight;
+                currentButton!.addTarget(self, action: #selector(selectGridButton), for: .touchUpInside);
+                gridButtonsRow.append(currentButton!);
+            }
+            gridButtons.append(gridButtonsRow);
+            currentRowDisplacement += buttonWidth;
+        }
+    }
+    
+    @objc func selectGridButton(sender:UICButton){
+        let receiverButton:UICButton = sender;
+        print("Selecting a button from the grid!")
     }
     
     

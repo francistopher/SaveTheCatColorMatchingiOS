@@ -34,6 +34,8 @@ class ViewController: UIViewController {
     func configureIntroLabel(){
         introLabel = CUILabel(parentView: mainViewController, x: 0, y: 0, width: mainViewWidth * 0.5, height: mainViewHeight * 0.15, backgroundColor: UIColor.black, textColor: UIColor.white, font: UIFont.boldSystemFont(ofSize: 48.0), text: "bagDatCat");
         CenterUIKit.center(childView: introLabel!, parentRect: mainViewController.frame, childRect: introLabel!.frame);
+        introLabel!.alpha = 0.0;
+        introLabel!.fadeInAndOut();
     }
 
 

@@ -49,7 +49,9 @@ class UIBoardGameView: UIView {
     
     func buildBoardGame(){
         selectAnAvailableColor();
+        randomlySelectGridColors();
         print(availableColors.count);
+        print(gridColors.count);
     }
     
     func selectAnAvailableColor(){
@@ -63,5 +65,38 @@ class UIBoardGameView: UIView {
               break;
           }
       } while(true);
-  }
+    }
+    
+    func randomlySelectGridColors(){
+        let rowsAndColumns:[Int] = currentStageRowsAndColumns(currentStage: currentStage);
+        for _ in 0..<rowsAndColumns[0] {
+            var row:[UIColor] = [UIColor]();
+            for _ in 0..<rowsAndColumns[1] {
+                row.append(availableColors.randomElement()!);
+            }
+            gridColors.append(row);
+        }
+    }
+    
+    func currentStageRowsAndColumns(currentStage:Int) -> [Int] {
+        var initialStage:Int = 1;
+        var rows:Int = 0;
+        var columns:Int = 0;
+        while (currentStage >= initialStage) {
+            if (initialStage == 1){
+                rows = 1;
+                columns = 1;
+            }
+            else if (initialStage % 2 == 0){
+                columns += 1;
+            }
+            else {
+                rows += 1;
+            }
+            initialStage += 1;
+        }
+        return [rows, columns];
+    }
+    
+    
 }

@@ -10,6 +10,7 @@ import SwiftUI
 
 class UIBoardGameView: UIView {
     
+    var colors:[UIColor] = [UIColor.systemGreen, UIColor.systemYellow, UIColor.systemOrange, UIColor.systemRed, UIColor.systemPurple, UIColor.systemBlue];
     var colorOptionsView:UIColorOptionsView? = nil;
     var currentStage:Int = 1;
     var gridButtons:[[UICButton]] = [[UICButton]]();
@@ -47,6 +48,20 @@ class UIBoardGameView: UIView {
     }
     
     func buildBoardGame(){
-        
+        selectAnAvailableColor();
+        print(availableColors.count);
     }
+    
+    func selectAnAvailableColor(){
+      repeat {
+          if (availableColors.count == 6){
+              break;
+          }
+          let newAvailableColor:UIColor = colors.randomElement()!;
+          if (!(availableColors.contains(newAvailableColor))){
+              availableColors.append(newAvailableColor);
+              break;
+          }
+      } while(true);
+  }
 }

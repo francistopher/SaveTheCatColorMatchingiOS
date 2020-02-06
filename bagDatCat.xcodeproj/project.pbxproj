@@ -14,7 +14,6 @@
 		B833545623EC8F0B00835672 /* bagDatCat.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = B833545423EC8F0B00835672 /* bagDatCat.xcdatamodeld */; };
 		B833545823EC8F1400835672 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B833545723EC8F1400835672 /* Assets.xcassets */; };
 		B833545B23EC8F1400835672 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B833545923EC8F1400835672 /* LaunchScreen.storyboard */; };
-		B833546523ECA8A500835672 /* CenterKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = B833546423ECA8A500835672 /* CenterKit.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -27,7 +26,6 @@
 		B833545723EC8F1400835672 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B833545A23EC8F1400835672 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B833545C23EC8F1400835672 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		B833546423ECA8A500835672 /* CenterKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CenterKit.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -68,7 +66,6 @@
 				B833545923EC8F1400835672 /* LaunchScreen.storyboard */,
 				B833545C23EC8F1400835672 /* Info.plist */,
 				B833545423EC8F0B00835672 /* bagDatCat.xcdatamodeld */,
-				B833546423ECA8A500835672 /* CenterKit.swift */,
 			);
 			path = bagDatCat;
 			sourceTree = "<group>";
@@ -144,7 +141,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B833546523ECA8A500835672 /* CenterKit.swift in Sources */,
 				B833545023EC8F0B00835672 /* ViewController.swift in Sources */,
 				B833545623EC8F0B00835672 /* bagDatCat.xcdatamodeld in Sources */,
 				B833544C23EC8F0B00835672 /* AppDelegate.swift in Sources */,

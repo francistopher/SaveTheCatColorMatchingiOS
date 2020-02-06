@@ -25,10 +25,11 @@ class ViewController: UIViewController {
     @IBOutlet var mainViewController: UIView!
     override func viewDidLoad() {
         super.viewDidLoad();
+        let userInterfaceStyle:Int = UIScreen.main.traitCollection.userInterfaceStyle.rawValue;
         saveMainViewFoundationalProperties();
-        configureIntroLabel();
-        configureBoardGameView();
-        configureColorOptionsView();
+        configureIntroLabel(userInterfaceStyle:userInterfaceStyle);
+        configureBoardGameView(userInterfaceStyle:userInterfaceStyle);
+        configureColorOptionsView(userInterfaceStyle:userInterfaceStyle);
         DispatchQueue.main.asyncAfter(deadline: .now() + 4.0) {
             self.boardGameView!.fadeIn();
             self.colorOptionsView!.fadeIn();
@@ -41,24 +42,50 @@ class ViewController: UIViewController {
         unitView = mainViewHeight / 18.0;
     }
     
-    func configureIntroLabel(){
-        introLabel = UICLabel(parentView: mainViewController, x: 0, y: 0, width: mainViewWidth * 0.5, height: mainViewHeight * 0.15, backgroundColor: UIColor.black, textColor: UIColor.white, font: UIFont.boldSystemFont(ofSize: 48.0), text: "suitDatCat");
+    func configureIntroLabel(userInterfaceStyle:Int){
+        let backgroundColor:UIColor = (userInterfaceStyle == 1 ? UIColor.white : UIColor.black);
+        let textColor:UIColor = (userInterfaceStyle == 1 ? UIColor.black : UIColor.white);
+        introLabel = UICLabel(parentView: mainViewController, x: 0, y: 0, width: mainViewWidth * 0.5, height: mainViewHeight * 0.15, backgroundColor: backgroundColor, textColor: textColor, font: UIFont.boldSystemFont(ofSize: 48.0), text: "suitDatCat");
         UICenterKit.center(childView: introLabel!, parentRect: mainViewController.frame, childRect: introLabel!.frame);
         introLabel!.alpha = 0.0;
         introLabel!.fadeInAndOut();
     }
         
-    func configureBoardGameView(){
-        boardGameView = UICView(parentView: mainViewController, x: 0, y: 0, width: mainViewWidth * 0.90, height:  mainViewWidth * 0.90, backgroundColor: UIColor.lightGray);
+    func configureBoardGameView(userInterfaceStyle:Int){
+        let backgroundColor:UIColor = (userInterfaceStyle == 1 ? UIColor.white : UIColor.black);
+        boardGameView = UICView(parentView: mainViewController, x: 0, y: 0, width: mainViewWidth * 0.90, height:  mainViewWidth * 0.90, backgroundColor: backgroundColor);
         UICenterKit.centerWithVerticalDisplacement(childView: boardGameView!, parentRect: mainViewController.frame, childRect: boardGameView!.frame, verticalDisplacement: -unitView * 1.5);
         boardGameView!.alpha = 0.0;
     }
     
-    func configureColorOptionsView(){
-        colorOptionsView = UICView(parentView: mainViewController, x: boardGameView!.frame.minX, y: boardGameView!.frame.minY + boardGameView!.frame.height + unitView, width: boardGameView!.frame.width, height: unitView * 1.5, backgroundColor: UIColor.lightGray);
+    func configureColorOptionsView(userInterfaceStyle:Int){
+        let backgroundColor:UIColor = (userInterfaceStyle == 1 ? UIColor.white : UIColor.black);
+        colorOptionsView = UICView(parentView: mainViewController, x: boardGameView!.frame.minX, y: boardGameView!.frame.minY + boardGameView!.frame.height + unitView, width: boardGameView!.frame.width, height: unitView * 1.5, backgroundColor: backgroundColor);
         colorOptionsView!.alpha = 0.0;
     }
 
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        // Detected A Light User Interface Style
+        if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1){
+            introLabel!.fadeOnDark();
+            boardGameView!.fadeOnDark();
+            colorOptionsView!.fadeOnDark();
+        }
+        // Detected A Dark User Interface Style
+        else {
+            introLabel!.fadeOnLight();
+            boardGameView!.fadeOnLight();
+            colorOptionsView!.fadeOnLight();
+        }
+    }
+    
+//    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+//        super.traitCollectionDidChange(previousTraitCollection)
+//
+//        let hasUserInterfaceStyleChanged = previousTraitCollection.hasDifferentColorAppearance(comparedTo: traitCollection)
+//
+//    }
 
 }
 

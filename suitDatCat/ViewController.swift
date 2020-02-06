@@ -33,6 +33,7 @@ class ViewController: UIViewController {
         DispatchQueue.main.asyncAfter(deadline: .now() + 4.0) {
             self.boardGameView!.fadeIn();
             self.colorOptionsView!.fadeIn();
+            self.boardGameView!.buildBoardGame();
         }
     }
     
@@ -62,8 +63,8 @@ class ViewController: UIViewController {
         let backgroundColor:UIColor = (userInterfaceStyle == 1 ? UIColor.white : UIColor.black);
         colorOptionsView = UIColorOptionsView(parentView: mainViewController, x: boardGameView!.frame.minX, y: boardGameView!.frame.minY + boardGameView!.frame.height + unitView, width: boardGameView!.frame.width, height: unitView * 1.5, backgroundColor: backgroundColor);
         colorOptionsView!.alpha = 0.0;
-        boardGameView!.colorOptionsView! = colorOptionsView!;
-        colorOptionsView!.boardGameView! = boardGameView!;
+        boardGameView!.colorOptionsView = colorOptionsView!;
+        colorOptionsView!.boardGameView = boardGameView!;
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {

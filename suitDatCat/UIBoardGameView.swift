@@ -14,6 +14,7 @@ class UIBoardGameView: UIView {
     var colorOptionsView:UIColorOptionsView? = nil;
     var currentStage:Int = 1;
     var gridButtons:[[UICButton]] = [[UICButton]]();
+    var dispersedGridButtons:[[UICButton]] = [[UICButton]]();
     var gridColors:[[UIColor]] = [[UIColor]]();
     var availableColors:[UIColor] = [UIColor]();
     var solved:Bool = true;
@@ -213,10 +214,8 @@ class UIBoardGameView: UIView {
                 
             }
         }
-        gridButtons = [[UICButton]]();
         gridColors = [[UIColor]]();
         for row in 0..<colorOptionsView!.selectionButtons.count {
-            colorOptionsView!.selectionButtons[row].isHidden = true;
             colorOptionsView!.selectionButtons[row].removeFromSuperview();
         }
         colorOptionsView!.selectionButtons = [UICButton]();
@@ -298,13 +297,16 @@ class UIBoardGameView: UIView {
     func disperseRadially(targetPoints:[[[CGFloat]]]){
         for rows in 0..<targetPoints.count {
             for columns in 0..<targetPoints[rows].count {
-                UIView.animate(withDuration: 2.0, delay: 0.25, options: .curveEaseIn, animations: {
+                UIView.animate(withDuration: 2.5, delay: 0.25, options: .curveEaseIn, animations: {
                     // Save current grid button
                     let currentButton:UICButton = self.gridButtons[rows][columns];
+                    // Add rotation
+                    currentButton.transform = currentButton.transform.rotated(by: CGFloat.pi);
                     // Build new frame
                     let newFrame:CGRect = CGRect(x: targetPoints[rows][columns][0], y: targetPoints[rows][columns][1], width: currentButton.frame.width, height: currentButton.frame.height);
                     // Disperse grid button
                     currentButton.frame = newFrame;
+                    
                 });
             }
         }
@@ -313,15 +315,44 @@ class UIBoardGameView: UIView {
     
     func promote(promote:Bool){
         resetGame(promote: promote);
+        gridButtons = [[UICButton]]();
         currentStage += 1;
         buildBoardGame();
     }
     
     func maintain(promote:Bool){
         resetGame(promote: promote);
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+        loadGridButtonsToDispersedGridButtons();
+        // Build board game
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.25) {
             self.buildBoardGame();
         }
+        // Remove dispersed buttons after they've dispersed
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
+            self.removeDispersedButtonsFromSuperView();
+        }
+    }
+    
+    func loadGridButtonsToDispersedGridButtons() {
+        let rowsAndColumns:[Int] = currentStageRowsAndColumns(currentStage: currentStage);
+        for row in 0..<rowsAndColumns[0] {
+            var currentButtonRow:[UICButton] = [UICButton]();
+            for column in 0..<rowsAndColumns[1] {
+                currentButtonRow.append(gridButtons[row][column]);
+            }
+            dispersedGridButtons.append(currentButtonRow);
+        }
+        gridButtons = [[UICButton]]();
+    }
+    
+    func removeDispersedButtonsFromSuperView() {
+        let rowsAndColumns:[Int] = currentStageRowsAndColumns(currentStage: currentStage);
+        for row in 0..<rowsAndColumns[0] {
+            for column in 0..<rowsAndColumns[1] {
+                dispersedGridButtons[row][column].removeFromSuperview();
+            }
+        }
+        dispersedGridButtons = [[UICButton]]();
     }
     
 }

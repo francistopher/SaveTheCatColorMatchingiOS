@@ -199,12 +199,16 @@ class UIBoardGameView: UIView {
     
     func resetGame(promote:Bool){
         let rowsAndColumns:[Int] = currentStageRowsAndColumns(currentStage: currentStage);
+        var targetPoints:[[[CGFloat]]] = generateTargetPoints(rows: rowsAndColumns[0], columns: rowsAndColumns[1]);
+        if (!promote) {
+            targetPoints = generateTargetPoints(rows:rowsAndColumns[0], columns:rowsAndColumns[1]);
+        }
         for row in 0..<rowsAndColumns[0]{
             for column in 0..<rowsAndColumns[1]{
                 if (promote){
                     gridButtons[row][column].removeFromSuperview();
                 } else {
-                    disperseRadially(row: row, column: column);
+                    disperseRadially(targetPoints:targetPoints);
                 }
                 
             }
@@ -219,25 +223,78 @@ class UIBoardGameView: UIView {
         colorOptionsView!.selectionColors = [UIColor]();
     }
     
-    func disperseRadially(row:Int, column:Int){
-        displaceToMainView(row:row, column:column);
-//        let newFrame:CGRect = CGRect(x: x, y: y, width: width, height: height);
-//        gridButtons[row][column].frame = newFrame;
-        let animations = {
-            self.gridButtons[row][column].transform = CGAffineTransform(rotationAngle: CGFloat.pi);
+    func generateTargetPoints(rows:Int, columns:Int) -> [[[CGFloat]]]{
+        // Angle increment
+        let angleIncrement:CGFloat = 360.0 / CGFloat(rows * columns);
+        // Starting angle
+        var currentAngle:CGFloat = CGFloat(Int.random(in: 0...Int(angleIncrement)));
+        // Save radial dispersement target points
+        var radialDispersementTargetPoints:[[[CGFloat]]] = [[[CGFloat]]]();
+        // Traverse through the rows of grid of buttons
+        for row in 0..<rows {
+            // Build row of target points
+            var rowOfRadialDispersemenTargetPoints:[[CGFloat]] = [[CGFloat]]();
+            // Traverse through the columns of grid of buttons
+            for column in 0..<columns {
+                // Save target coordinates in an array
+                var coordinateTargetPoints:[CGFloat] = [CGFloat]();
+                // Save current grid button
+                let gridButton:UICButton = gridButtons[row][column];
+                // Save the new displaced bounds of the grid button
+                let x:CGFloat = gridButton.frame.minX + self.frame.minX / 2.0;
+                let y:CGFloat = gridButton.frame.minY + self.frame.minY / 2.0;
+                let width:CGFloat = gridButton.frame.width;
+                let height:CGFloat = gridButton.frame.height;
+                // Save a frame representing the displacement
+                let displacedFrame:CGRect = CGRect(x: x, y: y, width: width, height: height);
+                // Displace the frame onto the main view controller
+                gridButton.frame = displacedFrame;
+                self.superview!.addSubview(gridButton);
+                // Generate target points
+                let xTargetPoint:CGFloat = generateTargetX(parentFrame:gridButton.superview!.frame, childFrame:gridButton.frame, angle:currentAngle);
+                let yTargetPoint:CGFloat = generateTargetY(parentFrame:gridButton.superview!.frame, childFrame:gridButton.frame, angle:currentAngle);
+                // Build coordinate target points
+                coordinateTargetPoints.append(xTargetPoint);
+                coordinateTargetPoints.append(yTargetPoint);
+                // Increment angle
+                currentAngle += angleIncrement;
+                // Add coordinate target points to row
+                rowOfRadialDispersemenTargetPoints.append(coordinateTargetPoints);
+            }
+            // Add row to radial dispersement target points
+            radialDispersementTargetPoints.append(rowOfRadialDispersemenTargetPoints);
         }
-        UIView.animate(withDuration: 1.5, delay: 0.25, options: .curveEaseIn, animations:animations);
+        return radialDispersementTargetPoints;
     }
     
-    func displaceToMainView(row:Int, column:Int){
-        let gridButton:UICButton = gridButtons[row][column];
-        let x:CGFloat = gridButton.frame.minX + self.frame.minX;
-        let y:CGFloat = gridButton.frame.minY + self.frame.minY;
-        let width:CGFloat = gridButton.frame.width;
-        let height:CGFloat = gridButton.frame.height;
-        let displacedFrame:CGRect = CGRect(x: x, y: y, width: width, height: height);
-        gridButton.frame = displacedFrame;
-        self.superview!.addSubview(gridButton);
+    func generateTargetX(parentFrame:CGRect, childFrame:CGRect, angle:CGFloat) -> CGFloat {
+        var targetX:CGFloat = childFrame.minX;
+        targetX += parentFrame.width;
+        targetX *= cos((CGFloat.pi * angle) / 180.0);
+        return targetX;
+    }
+    
+    func generateTargetY(parentFrame:CGRect, childFrame:CGRect, angle:CGFloat) -> CGFloat {
+        var targetY:CGFloat = childFrame.minY;
+        targetY += parentFrame.height;
+        targetY *= sin((CGFloat.pi * angle) / 180.0);
+        return targetY;
+    }
+    
+    func disperseRadially(targetPoints:[[[CGFloat]]]){
+        for rows in 0..<targetPoints.count {
+            for columns in 0..<targetPoints[rows].count {
+                UIView.animate(withDuration: 1.5, delay: 0.25, options: .curveEaseIn, animations: {
+                    // Save current grid button
+                    let currentButton:UICButton = self.gridButtons[rows][columns];
+                    // Build new frame
+                    let newFrame:CGRect = CGRect(x: targetPoints[rows][columns][0], y: targetPoints[rows][columns][1], width: currentButton.frame.width, height: currentButton.frame.height);
+                    // Disperse grid button
+                    currentButton.frame = newFrame;
+                });
+            }
+        }
+        
     }
     
     func promote(promote:Bool){

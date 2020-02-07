@@ -52,6 +52,7 @@ class UIBoardGameView: UIView {
         randomlySelectGridColors();
         buildGridButtons();
         colorOptionsView!.selectColorsForSelection();
+        colorOptionsView!.buildColorOptionButtons();
         print(colorOptionsView!.selectionColors.count);
         print(availableColors.count);
         print(gridColors.count);
@@ -133,7 +134,35 @@ class UIBoardGameView: UIView {
     
     @objc func selectGridButton(sender:UICButton){
         let receiverButton:UICButton = sender;
+        if (!solved){
+            if (receiverButton.originalBackgroundColor!.cgColor == colorOptionsView!.selectedColor.cgColor){
+                receiverButton.fill();
+                if (isBoardCompleted()){
+                    print("Moving to next round!")
+                    solved = true;
+                    colorOptionsView!.selectedColor = UIColor.lightGray;
+                    // Reset the game player did not fulfill grids
+                }
+            } else{
+                solved = true;
+                colorOptionsView!.selectedColor = UIColor.lightGray;
+                // Promote the player
+                currentStage -= 1;
+            }
+        }
         print("Selecting a button from the grid!")
+    }
+    
+    @objc func isBoardCompleted() -> Bool{
+        let rowsAndColumns:[Int] = currentStageRowsAndColumns(currentStage: currentStage);
+        for rows in 0..<rowsAndColumns[0]{
+            for columns in 0..<rowsAndColumns[1]{
+                if (gridButtons[rows][columns].backgroundColor!.cgColor != gridColors[rows][columns].cgColor){
+                    return false;
+                }
+            }
+        }
+        return true;
     }
     
     

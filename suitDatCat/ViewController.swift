@@ -41,7 +41,7 @@ class ViewController: UIViewController {
     }
     
     @objc func resetGrid(sender:UICButton){
-        boardGameView!.resetGame();
+        boardGameView!.resetGame(promote: false);
         boardGameView!.currentStage = 1;
         boardGameView!.buildBoardGame();
     }
@@ -55,7 +55,7 @@ class ViewController: UIViewController {
     func configureIntroLabel(userInterfaceStyle:Int){
         let backgroundColor:UIColor = (userInterfaceStyle == 1 ? UIColor.white : UIColor.black);
         let textColor:UIColor = (userInterfaceStyle == 1 ? UIColor.black : UIColor.white);
-        introLabel = UICLabel(parentView: mainViewController, x: 0, y: 0, width: mainViewWidth * 0.5, height: mainViewHeight * 0.15, backgroundColor: backgroundColor, textColor: textColor, font: UIFont.boldSystemFont(ofSize: 48.0), text: "suitDatCat");
+        introLabel = UICLabel(parentView: mainViewController, x: 0, y: 0, width: mainViewWidth * 0.5, height: mainViewHeight * 0.15, backgroundColor: backgroundColor, textColor: textColor, font: UIFont.boldSystemFont(ofSize: 48.0), text: "podDatCat");
         UICenterKit.center(childView: introLabel!, parentRect: mainViewController.frame, childRect: introLabel!.frame);
         introLabel!.alpha = 0.0;
         introLabel!.fadeInAndOut();
@@ -76,7 +76,6 @@ class ViewController: UIViewController {
         colorOptionsView!.boardGameView = boardGameView!;
     }
   
-
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         // Detected A Light User Interface Style

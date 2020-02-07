@@ -56,16 +56,19 @@ class UIBoardGameView: UIView {
     }
     
     func selectAnAvailableColor(){
-      repeat {
-          if (availableColors.count == 6){
-              break;
+        // Load number of rows and columns
+        let rowsAndColumns:[Int] = currentStageRowsAndColumns(currentStage: currentStage);
+        repeat {
+            if (availableColors.count == 6 || availableColors.count + 1 > rowsAndColumns[1]) {
+               // --> Reduces complexity
+                break;
           }
           let newAvailableColor:UIColor = colors.randomElement()!;
           if (!(availableColors.contains(newAvailableColor))){
               availableColors.append(newAvailableColor);
               break;
           }
-      } while(true);
+        } while(true);
     }
     
     func randomlySelectGridColors(){
@@ -73,7 +76,6 @@ class UIBoardGameView: UIView {
         let rowsAndColumns:[Int] = currentStageRowsAndColumns(currentStage: currentStage);
         // Save previous row colors
         var previousRowColors = Array(repeating: UIColor.lightGray, count: rowsAndColumns[1]);
-        print(rowsAndColumns[1], "hmm");
         // Traverse through row index
         var rowIndex:Int = 0;
         while(rowIndex < rowsAndColumns[0]) {
@@ -87,14 +89,14 @@ class UIBoardGameView: UIView {
                 // Select random color
                 let randomSelectedColor = availableColors.randomElement()!;
                 // Compare selected random color with saved previous row color
-                if (randomSelectedColor.cgColor == previousRowColors[columnIndex].cgColor){
+                if (randomSelectedColor.cgColor == previousRowColors[columnIndex].cgColor){ // --> Increases complexity
                     if (rowIndex - 1 >= 0){
                         rowIndex -= 1;
                     }
                     continue;
                 }
                 // Compare selected random color with saved previous column colo
-                if (randomSelectedColor.cgColor == previousColumnColor.cgColor){
+                if (randomSelectedColor.cgColor == previousColumnColor.cgColor){ // --> Increases complexity
                     if (columnIndex - 1 >= 0){
                         columnIndex -= 1;
                     }
@@ -106,9 +108,9 @@ class UIBoardGameView: UIView {
                 previousColumnColor = randomSelectedColor;
                 columnIndex += 1;
             }
-            // Save previous row colors as the subsequent built row of grid colors
-            previousRowColors = row;
+            // Save row of colors as the subsequent row of grid colors
             gridColors.append(row);
+            previousRowColors = row; // --> Increases Complexity Heavily
             rowIndex += 1;
         }
     }
@@ -172,15 +174,15 @@ class UIBoardGameView: UIView {
                     print("Moving to next round!")
                     solved = true;
                     colorOptionsView!.selectedColor = UIColor.lightGray;
-                    promote();
+                    promote(promote: true);
                 }
             } else{
+                print("Unable to solve puzzle")
                 solved = true;
                 colorOptionsView!.selectedColor = UIColor.lightGray;
-                maintain();
+                maintain(promote: false);
             }
         }
-        print("Selecting a button from the grid!")
     }
     
     @objc func isBoardCompleted() -> Bool{
@@ -195,12 +197,16 @@ class UIBoardGameView: UIView {
         return true;
     }
     
-    func resetGame(){
+    func resetGame(promote:Bool){
         let rowsAndColumns:[Int] = currentStageRowsAndColumns(currentStage: currentStage);
-        for rows in 0..<rowsAndColumns[0]{
-            for columns in 0..<rowsAndColumns[1]{
-                gridButtons[rows][columns].isHidden = true;
-                gridButtons[rows][columns].removeFromSuperview();
+        for row in 0..<rowsAndColumns[0]{
+            for column in 0..<rowsAndColumns[1]{
+                if (promote){
+                    gridButtons[row][column].removeFromSuperview();
+                } else {
+                    disperseRadially(row: row, column: column);
+                }
+                
             }
         }
         gridButtons = [[UICButton]]();
@@ -213,15 +219,36 @@ class UIBoardGameView: UIView {
         colorOptionsView!.selectionColors = [UIColor]();
     }
     
-    func promote(){
-        resetGame();
+    func disperseRadially(row:Int, column:Int){
+        displaceToMainView(row:row, column:column);
+//        let newFrame:CGRect = CGRect(x: x, y: y, width: width, height: height);
+//        gridButtons[row][column].frame = newFrame;
+        let animations = {
+            self.gridButtons[row][column].transform = CGAffineTransform(rotationAngle: CGFloat.pi);
+        }
+        UIView.animate(withDuration: 1.5, delay: 0.25, options: .curveEaseIn, animations:animations);
+    }
+    
+    func displaceToMainView(row:Int, column:Int){
+        let gridButton:UICButton = gridButtons[row][column];
+        let x:CGFloat = gridButton.frame.minX + self.frame.minX;
+        let y:CGFloat = gridButton.frame.minY + self.frame.minY;
+        let width:CGFloat = gridButton.frame.width;
+        let height:CGFloat = gridButton.frame.height;
+        let displacedFrame:CGRect = CGRect(x: x, y: y, width: width, height: height);
+        gridButton.frame = displacedFrame;
+        self.superview!.addSubview(gridButton);
+    }
+    
+    func promote(promote:Bool){
+        resetGame(promote: promote);
         currentStage += 1;
         buildBoardGame();
     }
     
-    func maintain(){
-        resetGame();
-        buildBoardGame();
+    func maintain(promote:Bool){
+        resetGame(promote: promote);
+//        buildBoardGame();
     }
     
 }

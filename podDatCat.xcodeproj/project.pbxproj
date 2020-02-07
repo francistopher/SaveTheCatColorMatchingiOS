@@ -10,7 +10,7 @@
 		B833544C23EC8F0B00835672 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B833544B23EC8F0B00835672 /* AppDelegate.swift */; };
 		B833544E23EC8F0B00835672 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B833544D23EC8F0B00835672 /* SceneDelegate.swift */; };
 		B833545323EC8F0B00835672 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B833545123EC8F0B00835672 /* Main.storyboard */; };
-		B833545623EC8F0B00835672 /* suitDatCat.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = B833545423EC8F0B00835672 /* suitDatCat.xcdatamodeld */; };
+		B833545623EC8F0B00835672 /* podDatCat.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = B833545423EC8F0B00835672 /* podDatCat.xcdatamodeld */; };
 		B833545823EC8F1400835672 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B833545723EC8F1400835672 /* Assets.xcassets */; };
 		B833545B23EC8F1400835672 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B833545923EC8F1400835672 /* LaunchScreen.storyboard */; };
 		B8AE017123ECB180007A6142 /* UICenterKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8AE017023ECB180007A6142 /* UICenterKit.swift */; };
@@ -23,7 +23,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		B833544823EC8F0B00835672 /* suitDatCat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = suitDatCat.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B833544823EC8F0B00835672 /* podDatCat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = podDatCat.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B833544B23EC8F0B00835672 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B833544D23EC8F0B00835672 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		B833545223EC8F0B00835672 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -62,7 +62,7 @@
 		B833544923EC8F0B00835672 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				B833544823EC8F0B00835672 /* suitDatCat.app */,
+				B833544823EC8F0B00835672 /* podDatCat.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -78,7 +78,7 @@
 				B833545723EC8F1400835672 /* Assets.xcassets */,
 				B833545923EC8F1400835672 /* LaunchScreen.storyboard */,
 				B833545C23EC8F1400835672 /* Info.plist */,
-				B833545423EC8F0B00835672 /* suitDatCat.xcdatamodeld */,
+				B833545423EC8F0B00835672 /* podDatCat.xcdatamodeld */,
 				B8AE017223ECB25C007A6142 /* UICLabel.swift */,
 				B8AE017423ECB758007A6142 /* UICView.swift */,
 				B8AE017A23ECCE3B007A6142 /* UIBoardGameView.swift */,
@@ -91,9 +91,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		B833544723EC8F0B00835672 /* suitDatCat */ = {
+		B833544723EC8F0B00835672 /* podDatCat */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = B833545F23EC8F1400835672 /* Build configuration list for PBXNativeTarget "suitDatCat" */;
+			buildConfigurationList = B833545F23EC8F1400835672 /* Build configuration list for PBXNativeTarget "podDatCat" */;
 			buildPhases = (
 				B833544423EC8F0B00835672 /* Sources */,
 				B833544523EC8F0B00835672 /* Frameworks */,
@@ -103,9 +103,9 @@
 			);
 			dependencies = (
 			);
-			name = suitDatCat;
+			name = podDatCat;
 			productName = bagDatCat;
-			productReference = B833544823EC8F0B00835672 /* suitDatCat.app */;
+			productReference = B833544823EC8F0B00835672 /* podDatCat.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -123,7 +123,7 @@
 					};
 				};
 			};
-			buildConfigurationList = B833544323EC8F0B00835672 /* Build configuration list for PBXProject "suitDatCat" */;
+			buildConfigurationList = B833544323EC8F0B00835672 /* Build configuration list for PBXProject "podDatCat" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -136,7 +136,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				B833544723EC8F0B00835672 /* suitDatCat */,
+				B833544723EC8F0B00835672 /* podDatCat */,
 			);
 		};
 /* End PBXProject section */
@@ -160,7 +160,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B8AE017323ECB25C007A6142 /* UICLabel.swift in Sources */,
-				B833545623EC8F0B00835672 /* suitDatCat.xcdatamodeld in Sources */,
+				B833545623EC8F0B00835672 /* podDatCat.xcdatamodeld in Sources */,
 				B833544C23EC8F0B00835672 /* AppDelegate.swift in Sources */,
 				B8AE017B23ECCE3B007A6142 /* UIBoardGameView.swift in Sources */,
 				B8AE017D23ECD078007A6142 /* UIColorOptionsView.swift in Sources */,
@@ -320,7 +320,7 @@
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "ChristopherFrancisco.-suitDatCat";
-				PRODUCT_NAME = suitDatCat;
+				PRODUCT_NAME = podDatCat;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -338,7 +338,7 @@
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "ChristopherFrancisco.-suitDatCat";
-				PRODUCT_NAME = suitDatCat;
+				PRODUCT_NAME = podDatCat;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -347,7 +347,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		B833544323EC8F0B00835672 /* Build configuration list for PBXProject "suitDatCat" */ = {
+		B833544323EC8F0B00835672 /* Build configuration list for PBXProject "podDatCat" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				B833545D23EC8F1400835672 /* Debug */,
@@ -356,7 +356,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		B833545F23EC8F1400835672 /* Build configuration list for PBXNativeTarget "suitDatCat" */ = {
+		B833545F23EC8F1400835672 /* Build configuration list for PBXNativeTarget "podDatCat" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				B833546023EC8F1400835672 /* Debug */,
@@ -368,13 +368,13 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
-		B833545423EC8F0B00835672 /* suitDatCat.xcdatamodeld */ = {
+		B833545423EC8F0B00835672 /* podDatCat.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
 				B833545523EC8F0B00835672 /* bagDatCat.xcdatamodel */,
 			);
 			currentVersion = B833545523EC8F0B00835672 /* bagDatCat.xcdatamodel */;
-			path = suitDatCat.xcdatamodeld;
+			path = podDatCat.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};

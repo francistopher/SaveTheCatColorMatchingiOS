@@ -56,9 +56,9 @@ class UIColorOptionsView: UIView {
     }
     
     func buildColorOptionButtons(){
-        let rowGap = (self.frame.height * 0.15) / 2.0;
+        let rowGap = (self.frame.height * 0.35) / 2.0;
         let columnGap = rowGap;
-        let buttonHeight = (self.frame.height * 0.85);
+        let buttonHeight = (self.frame.height * 0.65);
         let buttonWidth = (self.frame.width - (rowGap * CGFloat(selectionColors.count + 1))) / CGFloat(selectionColors.count);
         var currentButton:UICButton? = nil;
         var currentColumnDisplacement:CGFloat = 0.0;

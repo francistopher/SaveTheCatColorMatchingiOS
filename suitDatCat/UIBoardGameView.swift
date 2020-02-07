@@ -12,7 +12,7 @@ class UIBoardGameView: UIView {
     
     var colors:[UIColor] = [UIColor.systemGreen, UIColor.systemYellow, UIColor.systemOrange, UIColor.systemRed, UIColor.systemPurple, UIColor.systemBlue];
     var colorOptionsView:UIColorOptionsView? = nil;
-    var currentStage:Int = 1;
+    var currentStage:Int = 2;
     var gridButtons:[[UICButton]] = [[UICButton]]();
     var gridColors:[[UIColor]] = [[UIColor]]();
     var availableColors:[UIColor] = [UIColor]();
@@ -141,13 +141,12 @@ class UIBoardGameView: UIView {
                     print("Moving to next round!")
                     solved = true;
                     colorOptionsView!.selectedColor = UIColor.lightGray;
-                    // Reset the game player did not fulfill grids
+                    promote();
                 }
             } else{
                 solved = true;
                 colorOptionsView!.selectedColor = UIColor.lightGray;
-                // Promote the player
-                currentStage -= 1;
+                maintain();
             }
         }
         print("Selecting a button from the grid!")
@@ -165,5 +164,34 @@ class UIBoardGameView: UIView {
         return true;
     }
     
+    func resetGame(){
+        let rowsAndColumns:[Int] = currentStageRowsAndColumns(currentStage: currentStage);
+        for rows in 0..<rowsAndColumns[0]{
+            for columns in 0..<rowsAndColumns[1]{
+                gridButtons[rows][columns].isHidden = true;
+                gridButtons[rows][columns].removeFromSuperview();
+            }
+        }
+        gridButtons = [[UICButton]]();
+        gridColors = [[UIColor]]();
+        print(colorOptionsView!.selectionButtons.count);
+        for row in 0..<colorOptionsView!.selectionButtons.count {
+            colorOptionsView!.selectionButtons[row].isHidden = true;
+            colorOptionsView!.selectionButtons[row].removeFromSuperview();
+        }
+        colorOptionsView!.selectionButtons = [UICButton]();
+        colorOptionsView!.selectionColors = [UIColor]();
+    }
+    
+    func promote(){
+        resetGame();
+        currentStage += 1;
+        buildBoardGame();
+    }
+    
+    func maintain(){
+        resetGame();
+        buildBoardGame();
+    }
     
 }

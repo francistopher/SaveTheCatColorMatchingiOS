@@ -12,7 +12,7 @@ class UIBoardGameView: UIView {
     
     var colors:[UIColor] = [UIColor.systemGreen, UIColor.systemYellow, UIColor.systemOrange, UIColor.systemRed, UIColor.systemPurple, UIColor.systemBlue];
     var colorOptionsView:UIColorOptionsView? = nil;
-    var currentStage:Int = 2;
+    var currentStage:Int = 1;
     var gridButtons:[[UICButton]] = [[UICButton]]();
     var gridColors:[[UIColor]] = [[UIColor]]();
     var availableColors:[UIColor] = [UIColor]();
@@ -53,9 +53,6 @@ class UIBoardGameView: UIView {
         buildGridButtons();
         colorOptionsView!.selectColorsForSelection();
         colorOptionsView!.buildColorOptionButtons();
-        print(colorOptionsView!.selectionColors.count);
-        print(availableColors.count);
-        print(gridColors.count);
     }
     
     func selectAnAvailableColor(){
@@ -72,13 +69,47 @@ class UIBoardGameView: UIView {
     }
     
     func randomlySelectGridColors(){
+        // Load number of rows and columns
         let rowsAndColumns:[Int] = currentStageRowsAndColumns(currentStage: currentStage);
-        for _ in 0..<rowsAndColumns[0] {
+        // Save previous row colors
+        var previousRowColors = Array(repeating: UIColor.lightGray, count: rowsAndColumns[1]);
+        print(rowsAndColumns[1], "hmm");
+        // Traverse through row index
+        var rowIndex:Int = 0;
+        while(rowIndex < rowsAndColumns[0]) {
+            // Instantiate a row
             var row:[UIColor] = [UIColor]();
-            for _ in 0..<rowsAndColumns[1] {
-                row.append(availableColors.randomElement()!);
+            // Save previous column color
+            var previousColumnColor:UIColor = UIColor.lightGray;
+            // Traverse through the columnIndex
+            var columnIndex:Int = 0;
+            while(columnIndex < rowsAndColumns[1]) {
+                // Select random color
+                let randomSelectedColor = availableColors.randomElement()!;
+                // Compare selected random color with saved previous row color
+                if (randomSelectedColor.cgColor == previousRowColors[columnIndex].cgColor){
+                    if (rowIndex - 1 >= 0){
+                        rowIndex -= 1;
+                    }
+                    continue;
+                }
+                // Compare selected random color with saved previous column colo
+                if (randomSelectedColor.cgColor == previousColumnColor.cgColor){
+                    if (columnIndex - 1 >= 0){
+                        columnIndex -= 1;
+                    }
+                    continue;
+                }
+                // Add randomly selected color
+                row.append(randomSelectedColor);
+                // Save as previous column color and as a row color
+                previousColumnColor = randomSelectedColor;
+                columnIndex += 1;
             }
+            // Save previous row colors as the subsequent built row of grid colors
+            previousRowColors = row;
             gridColors.append(row);
+            rowIndex += 1;
         }
     }
     
@@ -174,7 +205,6 @@ class UIBoardGameView: UIView {
         }
         gridButtons = [[UICButton]]();
         gridColors = [[UIColor]]();
-        print(colorOptionsView!.selectionButtons.count);
         for row in 0..<colorOptionsView!.selectionButtons.count {
             colorOptionsView!.selectionButtons[row].isHidden = true;
             colorOptionsView!.selectionButtons[row].removeFromSuperview();

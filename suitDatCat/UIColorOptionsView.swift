@@ -50,8 +50,6 @@ class UIColorOptionsView: UIView {
             for columns in 0..<rowsAndColumns[1]{
                 if (!selectionColors.contains(boardGameView!.gridColors[rows][columns])){
                     selectionColors.append(boardGameView!.gridColors[rows][columns]);
-                    print(boardGameView!.gridColors[rows][columns]);
-                    print(boardGameView!.availableColors.count);
                 }
             }
         }
@@ -95,7 +93,7 @@ class UIColorOptionsView: UIView {
         if (!boardGameView!.gridButtons[0][0].backgroundColor!.isEqual(UIColor.lightGray) && boardGameView!.solved){
             for rows in 0..<rowsAndColumns[0]{
                 for columns in 0..<rowsAndColumns[1]{
-                    boardGameView!.gridButtons[rows][columns].shrinkGrow();
+                    boardGameView!.gridButtons[rows][columns].empty();
                 }
             }
             boardGameView!.solved = false;

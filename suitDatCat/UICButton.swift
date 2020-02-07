@@ -25,6 +25,8 @@ class UICButton:UIButton {
     var shrunkFrame:CGRect? = nil;
     var originalBackgroundColor:UIColor? = nil;
     
+    var selectColor:UIColor? = nil;
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented");
     }
@@ -40,25 +42,25 @@ class UICButton:UIButton {
     }
     
     func grow(){
-        UIView.animate(withDuration: 1.5, delay: 0.25, options: .curveEaseIn, animations: {
+        UIView.animate(withDuration: 1.0, delay: 0.25, options: .curveEaseIn, animations: {
             self.frame = CGRect(x: self.originalX, y:self.originalY, width: self.originalWidth, height: self.originalHeight);
         });
     }
     
     func shrink(){
-        UIView.animate(withDuration: 1.5, delay: 0.25, options: .curveEaseIn, animations: {
+        UIView.animate(withDuration: 1.0, delay: 0.25, options: .curveEaseIn, animations: {
             self.frame = CGRect(x: self.shrunkX, y: self.shrunkY, width: 0.0, height: 0.0);
         });
     }
     
-    func shrinkGrow(){
-        UIView.animate(withDuration: 1.5, delay: 0.25, options: .curveEaseIn, animations: {
+    func empty(){
+        UIView.animate(withDuration: 0.5, delay: 0.25, options: .curveEaseIn, animations: {
             self.backgroundColor = UIColor.lightGray;
         });
     }
     
     func fill(){
-       UIView.animate(withDuration: 1.5, delay: 0.25, options: .curveEaseIn, animations: {
+        UIView.animate(withDuration: 0.5, delay: 0.25, options: .curveEaseIn, animations: {
         self.backgroundColor = self.originalBackgroundColor!;
         });
     }
@@ -77,7 +79,10 @@ class UICButton:UIButton {
     func select(){
         UIView.animate(withDuration: 1.5, delay: 0.25, options: .curveEaseIn, animations: {
             self.layer.borderWidth = self.frame.height / 9.0;
-            self.layer.borderColor = UIColor.white.cgColor;
+            let userInterfaceStyle:Int = UIScreen.main.traitCollection.userInterfaceStyle.rawValue;
+            let backgroundColor:UIColor = (userInterfaceStyle == 1 ? UIColor.black : UIColor.white);
+            self.layer.borderColor = backgroundColor.cgColor;
+            
         });
     }
     

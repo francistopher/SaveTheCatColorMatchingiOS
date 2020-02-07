@@ -21,6 +21,7 @@ class ViewController: UIViewController {
     // Game Play View Properties
     var boardGameView:UIBoardGameView? = nil;
     var colorOptionsView:UIColorOptionsView? = nil;
+    var resetButton:UICButton? = nil;
     
     @IBOutlet var mainViewController: UIView!
     override func viewDidLoad() {
@@ -30,11 +31,19 @@ class ViewController: UIViewController {
         configureIntroLabel(userInterfaceStyle:userInterfaceStyle);
         configureBoardGameView(userInterfaceStyle:userInterfaceStyle);
         configureColorOptionsView(userInterfaceStyle:userInterfaceStyle);
+        resetButton = UICButton(parentView: mainViewController, x: 0, y: 0, width: unitView, height: unitView, backgroundColor: UIColor.white);
+        resetButton!.addTarget(self, action: #selector(resetGrid), for: .touchUpInside);
         DispatchQueue.main.asyncAfter(deadline: .now() + 4.0) {
             self.boardGameView!.fadeIn();
             self.colorOptionsView!.fadeIn();
             self.boardGameView!.buildBoardGame();
         }
+    }
+    
+    @objc func resetGrid(sender:UICButton){
+        boardGameView!.resetGame();
+        boardGameView!.currentStage = 1;
+        boardGameView!.buildBoardGame();
     }
     
     func saveMainViewFoundationalProperties() {
@@ -66,6 +75,7 @@ class ViewController: UIViewController {
         boardGameView!.colorOptionsView = colorOptionsView!;
         colorOptionsView!.boardGameView = boardGameView!;
     }
+  
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)

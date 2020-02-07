@@ -227,7 +227,7 @@ class UIBoardGameView: UIView {
         // Angle increment
         let angleIncrement:CGFloat = 360.0 / CGFloat(rows * columns);
         // Starting angle
-        var currentAngle:CGFloat = CGFloat(Int.random(in: 0...Int(angleIncrement)));
+        var currentAngle:CGFloat = CGFloat(Int.random(in: 0...360));
         // Save radial dispersement target points
         var radialDispersementTargetPoints:[[[CGFloat]]] = [[[CGFloat]]]();
         // Traverse through the rows of grid of buttons
@@ -251,8 +251,22 @@ class UIBoardGameView: UIView {
                 gridButton.frame = displacedFrame;
                 self.superview!.addSubview(gridButton);
                 // Generate target points
-                let xTargetPoint:CGFloat = generateTargetX(parentFrame:gridButton.superview!.frame, childFrame:gridButton.frame, angle:currentAngle);
-                let yTargetPoint:CGFloat = generateTargetY(parentFrame:gridButton.superview!.frame, childFrame:gridButton.frame, angle:currentAngle);
+                var xTargetPoint:CGFloat = generateTargetX(parentFrame:gridButton.superview!.frame, childFrame:gridButton.frame, angle:currentAngle);
+                var yTargetPoint:CGFloat = generateTargetY(parentFrame:gridButton.superview!.frame, childFrame:gridButton.frame, angle:currentAngle);
+                if (row % 2 == 0 && column % 2 == 1) {
+                    xTargetPoint *= -1;
+                    yTargetPoint *= -1;
+                }
+                if (row % 2 == 1 && column % 2 == 1) {
+                    xTargetPoint *= -1;
+                }
+                if (row % 2 == 1 && column % 2 == 0) {
+                    yTargetPoint *= -1;
+                }
+                if (column % 2 == 1 && Int.random(in: 1...2) % 2 == 1) {
+                    yTargetPoint *= -1;
+                }
+                
                 // Build coordinate target points
                 coordinateTargetPoints.append(xTargetPoint);
                 coordinateTargetPoints.append(yTargetPoint);
@@ -269,14 +283,14 @@ class UIBoardGameView: UIView {
     
     func generateTargetX(parentFrame:CGRect, childFrame:CGRect, angle:CGFloat) -> CGFloat {
         var targetX:CGFloat = childFrame.minX;
-        targetX += parentFrame.width;
+        targetX += parentFrame.width + childFrame.width;
         targetX *= cos((CGFloat.pi * angle) / 180.0);
         return targetX;
     }
     
     func generateTargetY(parentFrame:CGRect, childFrame:CGRect, angle:CGFloat) -> CGFloat {
         var targetY:CGFloat = childFrame.minY;
-        targetY += parentFrame.height;
+        targetY += parentFrame.height + childFrame.height;
         targetY *= sin((CGFloat.pi * angle) / 180.0);
         return targetY;
     }
@@ -284,7 +298,7 @@ class UIBoardGameView: UIView {
     func disperseRadially(targetPoints:[[[CGFloat]]]){
         for rows in 0..<targetPoints.count {
             for columns in 0..<targetPoints[rows].count {
-                UIView.animate(withDuration: 1.5, delay: 0.25, options: .curveEaseIn, animations: {
+                UIView.animate(withDuration: 2.0, delay: 0.25, options: .curveEaseIn, animations: {
                     // Save current grid button
                     let currentButton:UICButton = self.gridButtons[rows][columns];
                     // Build new frame
@@ -305,7 +319,9 @@ class UIBoardGameView: UIView {
     
     func maintain(promote:Bool){
         resetGame(promote: promote);
-//        buildBoardGame();
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            self.buildBoardGame();
+        }
     }
     
 }

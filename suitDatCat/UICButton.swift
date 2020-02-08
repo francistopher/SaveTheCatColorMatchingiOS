@@ -27,8 +27,6 @@ class UICButton:UIButton {
     
     var selectColor:UIColor? = nil;
     
-    
-    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented");
     }
@@ -44,6 +42,7 @@ class UICButton:UIButton {
         self.layer.cornerRadius = height / 5.0;
         self.originalBackgroundColor = backgroundColor;
         parentView.addSubview(self);
+        self.isSelected = false;
     }
     
     func grow(){
@@ -83,21 +82,24 @@ class UICButton:UIButton {
     }
     
     func select(){
-        UIView.animate(withDuration: 1.0, delay: 0.125, options:[.curveEaseInOut, .autoreverse, .repeat], animations: {
-            self.transform = self.transform.scaledBy(x: 0.75, y: 0.75);
-        });
+        
+        if (!self.isSelected) {
+            self.superview!.bringSubviewToFront(self);
+            UIView.animate(withDuration: 1.0, delay: 0.125, options:[.curveEaseInOut], animations: {
+                self.transform = self.transform.scaledBy(x: 1.375, y: 1.375);
+            });
+            self.isSelected = true;
+        }
     }
     
     func unSelect(){
-        var viewPropertyAminator:UIViewPropertyAnimator? = nil;
-        viewPropertyAminator = UIViewPropertyAnimator(duration: 0.25, curve: .easeInOut, animations: {
-           self.frame = CGRect(x: self.originalX, y:self.originalY, width: self.originalWidth, height: self.originalHeight);
-        })
-        viewPropertyAminator!.addCompletion { _ in
-            viewPropertyAminator!.stopAnimation(false);
-            self.layer.presentation()!.removeAllAnimations();
+        
+        if (self.isSelected) {
+            UIView.animate(withDuration: 1.0, delay: 0.125, options:[.curveEaseInOut], animations: {
+                self.transform = self.transform.scaledBy(x: 0.75, y: 0.75);
+            });
+            self.isSelected = false;
         }
-        viewPropertyAminator!.startAnimation();
     }
 }
 

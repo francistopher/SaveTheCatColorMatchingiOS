@@ -18,6 +18,7 @@ class UIBoardGameView: UIView {
     var gridColors:[[UIColor]] = [[UIColor]]();
     var availableColors:[UIColor] = [UIColor]();
     var solved:Bool = true;
+    var heavenGradientLayer:CACGradientLayer? = nil;
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented");
@@ -374,6 +375,7 @@ class UIBoardGameView: UIView {
     
     func promote(promote:Bool){
         resetGame(promote: promote);
+        heavenGradientLayer!.configureForHidden(isHidden: false);
         loadGridButtonsToDispersedGridButtons();
         colorOptionsView!.loadSelectionButtonsToSelectedButtons();
         // Build board game
@@ -387,6 +389,7 @@ class UIBoardGameView: UIView {
             self.removeDispersedButtonsFromSuperView();
             self.colorOptionsView!.removeSelectedButtons();
             self.currentStage += 1;
+            self.heavenGradientLayer!.configureForHidden(isHidden: true);
         }
          
     }

@@ -82,7 +82,6 @@ class UICButton:UIButton {
     }
     
     func select(){
-        
         if (!self.isSelected) {
             self.superview!.bringSubviewToFront(self);
             UIView.animate(withDuration: 1.0, delay: 0.125, options:[.curveEaseInOut], animations: {
@@ -100,5 +99,7 @@ class UICButton:UIButton {
             self.isSelected = false;
         }
     }
+    
+    
 }
 

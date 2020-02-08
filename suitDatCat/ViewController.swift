@@ -56,6 +56,7 @@ class ViewController: UIViewController {
         heavenGradientLayer!.setEndingPoints(lightEndingPoint: CGPoint(x:-0.4, y:0.15), darkEndingPoint: CGPoint(x:-0.1, y:0.15));
         heavenGradientLayer!.setColors(lightColors: [heavenBlueOnWhite.cgColor, UIColor.white.cgColor], darkColors: [heavenBlueOnBlack.cgColor, UIColor.black.cgColor]);
         heavenGradientLayer!.configureForUserInterfaceStyle();
+        heavenGradientLayer!.isHidden = true;
     }
     
     func saveMainViewFoundationalProperties() {
@@ -78,6 +79,7 @@ class ViewController: UIViewController {
         boardGameView = UIBoardGameView(parentView: mainViewController, x: 0, y: 0, width: mainViewWidth * 0.90, height:  mainViewWidth * 0.90, backgroundColor: backgroundColor);
         UICenterKit.centerWithVerticalDisplacement(childView: boardGameView!, parentRect: mainViewController.frame, childRect: boardGameView!.frame, verticalDisplacement: -unitView * 1.5);
         boardGameView!.alpha = 0.0;
+        boardGameView!.heavenGradientLayer = heavenGradientLayer!;
     }
     
     func configureColorOptionsView(userInterfaceStyle:Int){

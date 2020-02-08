@@ -14,7 +14,7 @@ class UIColorOptionsView: UIView {
     var selectedColor:UIColor = UIColor.lightGray;
     var selectionColors:[UIColor] = [UIColor]();
     var selectionButtons:[UICButton] = [UICButton]();
-
+    var selectedButtons:[UICButton] = [UICButton]();
     required init?(coder: NSCoder) {
        fatalError("init(coder:) has not been implemented");
     }
@@ -93,11 +93,25 @@ class UIColorOptionsView: UIView {
         if (!boardGameView!.gridButtons[0][0].backgroundColor!.isEqual(UIColor.lightGray) && boardGameView!.solved){
             for rows in 0..<rowsAndColumns[0]{
                 for columns in 0..<rowsAndColumns[1]{
-                    boardGameView!.gridButtons[rows][columns].empty();
+                    boardGameView!.gridButtons[rows][columns].empty(color:UIColor.lightGray);
                 }
             }
             boardGameView!.solved = false;
         }
     }
     
+    func loadSelectionButtonsToSelectedButtons(){
+        for selectionButtons in selectionButtons{
+            selectedButtons.append(selectionButtons);
+            selectionButtons.shrink();
+        }
+        selectionButtons = [UICButton]();
+    }
+    
+    func removeSelectedButtons(){
+        for selectedButtons in selectedButtons{
+            selectedButtons.removeFromSuperview();
+        }
+        selectedButtons = [UICButton]();
+    }
 }

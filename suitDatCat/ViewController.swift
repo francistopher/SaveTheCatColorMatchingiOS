@@ -41,9 +41,7 @@ class ViewController: UIViewController {
     }
     
     @objc func resetGrid(sender:UICButton){
-        boardGameView!.resetGame(promote: false);
-        boardGameView!.currentStage = 1;
-        boardGameView!.buildBoardGame();
+        boardGameView!.reset(promote: false);
     }
     
     func saveMainViewFoundationalProperties() {

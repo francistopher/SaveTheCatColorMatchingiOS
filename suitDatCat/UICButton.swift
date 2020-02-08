@@ -48,14 +48,15 @@ class UICButton:UIButton {
     }
     
     func shrink(){
+        self.layer.removeAllAnimations();
         UIView.animate(withDuration: 1.0, delay: 0.25, options: .curveEaseIn, animations: {
             self.frame = CGRect(x: self.shrunkX, y: self.shrunkY, width: 0.0, height: 0.0);
         });
     }
     
-    func empty(){
+    func empty(color:UIColor){
         UIView.animate(withDuration: 0.5, delay: 0.25, options: .curveEaseIn, animations: {
-            self.backgroundColor = UIColor.lightGray;
+            self.backgroundColor = color;
         });
     }
     
@@ -77,20 +78,14 @@ class UICButton:UIButton {
     }
     
     func select(){
-        UIView.animate(withDuration: 1.5, delay: 0.25, options: .curveEaseIn, animations: {
-            self.layer.borderWidth = self.frame.height / 9.0;
-            let userInterfaceStyle:Int = UIScreen.main.traitCollection.userInterfaceStyle.rawValue;
-            let backgroundColor:UIColor = (userInterfaceStyle == 1 ? UIColor.black : UIColor.white);
-            self.layer.borderColor = backgroundColor.cgColor;
-            
+        UIView.animate(withDuration: 1.0, delay: 0.125, options:[.curveEaseInOut, .autoreverse, .repeat], animations: {
+            self.frame = CGRect(x: self.frame.minX + (self.originalWidth * 0.125), y:(self.originalHeight * 0.25), width: self.originalWidth * 0.75, height: self.originalHeight * 0.75);
         });
     }
     
     func unSelect(){
-       UIView.animate(withDuration: 1.5, delay: 0.25, options: .curveEaseIn, animations: {
-            self.layer.borderWidth = self.frame.height / 0.0;
-        self.layer.borderColor = self.backgroundColor!.cgColor;
-        });
+        self.layer.removeAllAnimations();
+        grow();
     }
 }
 

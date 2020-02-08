@@ -215,10 +215,6 @@ class UIBoardGameView: UIView {
             }
         }
         gridColors = [[UIColor]]();
-        for row in 0..<colorOptionsView!.selectionButtons.count {
-            colorOptionsView!.selectionButtons[row].removeFromSuperview();
-        }
-        colorOptionsView!.selectionButtons = [UICButton]();
         colorOptionsView!.selectionColors = [UIColor]();
     }
     
@@ -265,7 +261,6 @@ class UIBoardGameView: UIView {
                 if (column % 2 == 1 && Int.random(in: 1...2) % 2 == 1) {
                     yTargetPoint *= -1;
                 }
-                
                 // Build coordinate target points
                 coordinateTargetPoints.append(xTargetPoint);
                 coordinateTargetPoints.append(yTargetPoint);
@@ -313,16 +308,11 @@ class UIBoardGameView: UIView {
         
     }
     
-    func promote(promote:Bool){
+    func reset(promote:Bool){
         resetGame(promote: promote);
-        gridButtons = [[UICButton]]();
-        currentStage += 1;
-        buildBoardGame();
-    }
-    
-    func maintain(promote:Bool){
-        resetGame(promote: promote);
+        currentStage = 1;
         loadGridButtonsToDispersedGridButtons();
+        colorOptionsView!.loadSelectionButtonsToSelectedButtons();
         // Build board game
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.25) {
             self.buildBoardGame();
@@ -330,6 +320,38 @@ class UIBoardGameView: UIView {
         // Remove dispersed buttons after they've dispersed
         DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
             self.removeDispersedButtonsFromSuperView();
+            self.colorOptionsView!.removeSelectedButtons();
+        }
+        
+    }
+    
+    func promote(promote:Bool){
+        resetGame(promote: promote);
+        gridButtons = [[UICButton]]();
+        currentStage += 1;
+        colorOptionsView!.loadSelectionButtonsToSelectedButtons();
+        // Build board game
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.25) {
+            self.buildBoardGame();
+        }
+        // Remove selected buttons after they've shrunk
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
+            self.colorOptionsView!.removeSelectedButtons();
+        }
+    }
+    
+    func maintain(promote:Bool){
+        resetGame(promote: promote);
+        loadGridButtonsToDispersedGridButtons();
+        colorOptionsView!.loadSelectionButtonsToSelectedButtons();
+        // Build board game
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.25) {
+            self.buildBoardGame();
+        }
+        // Remove dispersed buttons after they've dispersed
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
+            self.removeDispersedButtonsFromSuperView();
+            self.colorOptionsView!.removeSelectedButtons();
         }
     }
     

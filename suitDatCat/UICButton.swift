@@ -27,14 +27,19 @@ class UICButton:UIButton {
     
     var selectColor:UIColor? = nil;
     
+    
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented");
     }
     
     init(parentView: UIView, x:CGFloat, y:CGFloat, width:CGFloat, height:CGFloat, backgroundColor:UIColor) {
         super.init(frame:CGRect(x: x, y: y, width: width, height: height));
+        originalX = x;
+        originalY = y;
         originalWidth = width;
         originalHeight = height;
+        originalFrame = CGRect(x: x, y: y, width: width, height: height);
         self.backgroundColor = backgroundColor;
         self.layer.cornerRadius = height / 5.0;
         self.originalBackgroundColor = backgroundColor;
@@ -42,7 +47,7 @@ class UICButton:UIButton {
     }
     
     func grow(){
-        UIView.animate(withDuration: 1.0, delay: 0.25, options: .curveEaseIn, animations: {
+        UIView.animate(withDuration: 1.0, delay: 0.25, options: .curveEaseInOut, animations: {
             self.frame = CGRect(x: self.originalX, y:self.originalY, width: self.originalWidth, height: self.originalHeight);
         });
     }
@@ -79,13 +84,20 @@ class UICButton:UIButton {
     
     func select(){
         UIView.animate(withDuration: 1.0, delay: 0.125, options:[.curveEaseInOut, .autoreverse, .repeat], animations: {
-            self.frame = CGRect(x: self.frame.minX + (self.originalWidth * 0.125), y:(self.originalHeight * 0.25), width: self.originalWidth * 0.75, height: self.originalHeight * 0.75);
+            self.transform = self.transform.scaledBy(x: 0.75, y: 0.75);
         });
     }
     
     func unSelect(){
-        self.layer.removeAllAnimations();
-        grow();
+        var viewPropertyAminator:UIViewPropertyAnimator? = nil;
+        viewPropertyAminator = UIViewPropertyAnimator(duration: 0.25, curve: .easeInOut, animations: {
+           self.frame = CGRect(x: self.originalX, y:self.originalY, width: self.originalWidth, height: self.originalHeight);
+        })
+        viewPropertyAminator!.addCompletion { _ in
+            viewPropertyAminator!.stopAnimation(false);
+            self.layer.presentation()!.removeAllAnimations();
+        }
+        viewPropertyAminator!.startAnimation();
     }
 }
 

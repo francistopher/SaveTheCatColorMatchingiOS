@@ -25,7 +25,7 @@ class ViewController: UIViewController {
     var resetButton:UICButton? = nil;
     
     // Add heaven gradient layer
-    var heavenGradientLayer:CAGradientLayer? = nil;
+    var heavenGradientLayer:CACGradientLayer? = nil;
     let heavenBlueOnBlack:UIColor = UIColor.white;
     let heavenBlueOnWhite:UIColor = UIColor(red: 252.0/255.0, green: 212.0/255.0, blue: 64.0/255.0, alpha: 1.0);
     
@@ -52,17 +52,10 @@ class ViewController: UIViewController {
     }
     
     func configureHeavenGradientLayer() {
-        let userInterfaceStyle:Int = UIScreen.main.traitCollection.userInterfaceStyle.rawValue;
-        let gradientColor:CGColor = (userInterfaceStyle == 1 ? heavenBlueOnWhite.cgColor :  heavenBlueOnBlack.cgColor);
-        let backgroundColor:CGColor = (userInterfaceStyle == 1 ? UIColor.white.cgColor: UIColor.black.cgColor);
-        let endPoint:CGPoint = (userInterfaceStyle == 1 ? CGPoint(x:-0.4, y:0.15) : CGPoint(x:-0.1, y:0.15))
-        heavenGradientLayer = CAGradientLayer();
-        heavenGradientLayer!.type = .radial;
-        heavenGradientLayer!.frame = mainViewController.frame;
-        heavenGradientLayer!.colors = [gradientColor, backgroundColor];
-        heavenGradientLayer!.startPoint = CGPoint(x:0.5, y:0.0);
-        mainViewController.layer.addSublayer(heavenGradientLayer!);
-        heavenGradientLayer!.endPoint = endPoint;
+        heavenGradientLayer = CACGradientLayer(parentView: mainViewController, type:.radial, startPoint: CGPoint(x:0.5, y:0.0));
+        heavenGradientLayer!.setEndingPoints(lightEndingPoint: CGPoint(x:-0.4, y:0.15), darkEndingPoint: CGPoint(x:-0.1, y:0.15));
+        heavenGradientLayer!.setColors(lightColors: [heavenBlueOnWhite.cgColor, UIColor.white.cgColor], darkColors: [heavenBlueOnBlack.cgColor, UIColor.black.cgColor]);
+        heavenGradientLayer!.configureForUserInterfaceStyle();
     }
     
     func saveMainViewFoundationalProperties() {
@@ -99,16 +92,14 @@ class ViewController: UIViewController {
         super.traitCollectionDidChange(previousTraitCollection)
         // Detected A Light User Interface Style
         if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1){
-            heavenGradientLayer!.endPoint = CGPoint(x:-0.4, y:0.15);
-            heavenGradientLayer!.colors = [heavenBlueOnWhite.cgColor, UIColor.white.cgColor];
+            heavenGradientLayer!.configureForUserInterfaceStyle();
             introLabel!.fadeOnDark();
             boardGameView!.fadeOnDark();
             colorOptionsView!.fadeOnDark();
         }
         // Detected A Dark User Interface Style
         else {
-            heavenGradientLayer!.endPoint = CGPoint(x:-0.1, y:0.15);
-            heavenGradientLayer!.colors = [heavenBlueOnBlack.cgColor, UIColor.black.cgColor];
+            heavenGradientLayer!.configureForUserInterfaceStyle();
             introLabel!.fadeOnLight();
             boardGameView!.fadeOnLight();
             colorOptionsView!.fadeOnLight();

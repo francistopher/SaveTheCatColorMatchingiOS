@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B80C6C9023EF469E0056D156 /* CACGradientLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B80C6C8F23EF469E0056D156 /* CACGradientLayer.swift */; };
 		B833544C23EC8F0B00835672 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B833544B23EC8F0B00835672 /* AppDelegate.swift */; };
 		B833544E23EC8F0B00835672 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B833544D23EC8F0B00835672 /* SceneDelegate.swift */; };
 		B833545323EC8F0B00835672 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B833545123EC8F0B00835672 /* Main.storyboard */; };
@@ -23,6 +24,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		B80C6C8F23EF469E0056D156 /* CACGradientLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CACGradientLayer.swift; sourceTree = "<group>"; };
 		B833544823EC8F0B00835672 /* podDatCat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = podDatCat.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B833544B23EC8F0B00835672 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B833544D23EC8F0B00835672 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -84,6 +86,7 @@
 				B8AE017A23ECCE3B007A6142 /* UIBoardGameView.swift */,
 				B8AE017C23ECD077007A6142 /* UIColorOptionsView.swift */,
 				B8AE017E23ECD3B2007A6142 /* UICButton.swift */,
+				B80C6C8F23EF469E0056D156 /* CACGradientLayer.swift */,
 			);
 			path = suitDatCat;
 			sourceTree = "<group>";
@@ -165,6 +168,7 @@
 				B8AE017B23ECCE3B007A6142 /* UIBoardGameView.swift in Sources */,
 				B8AE017D23ECD078007A6142 /* UIColorOptionsView.swift in Sources */,
 				B8AE017F23ECD3B2007A6142 /* UICButton.swift in Sources */,
+				B80C6C9023EF469E0056D156 /* CACGradientLayer.swift in Sources */,
 				B8AE017523ECB758007A6142 /* UICView.swift in Sources */,
 				B8AE017723ECB934007A6142 /* ViewController.swift in Sources */,
 				B8AE017123ECB180007A6142 /* UICenterKit.swift in Sources */,

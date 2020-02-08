@@ -93,7 +93,6 @@ class UICButton:UIButton {
     }
     
     func unSelect(){
-        
         if (self.isSelected) {
             UIView.animate(withDuration: 1.0, delay: 0.125, options:[.curveEaseInOut], animations: {
                 self.transform = self.transform.scaledBy(x: 0.75, y: 0.75);

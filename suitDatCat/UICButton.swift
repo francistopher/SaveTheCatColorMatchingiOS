@@ -100,10 +100,45 @@ class UICButton:UIButton {
         }
     }
     
-    func setCat(named:String){
+    func setCat(named:String, stage:Int){
         let iconImage:UIImage? = UIImage(named: named);
         self.setImage(iconImage, for: .normal);
         self.imageView!.contentMode = UIView.ContentMode.scaleAspectFit;
+        self.imageView!.alpha = 0.0;
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.1) {
+            UIView.animate(withDuration: 1.0, delay: 0.125, options:[.curveEaseInOut], animations: {
+                self.imageView!.alpha = 1.0;
+            });
+            if (stage == 0){
+            self.setRandomCatAnimation();
+            }
+        }
+        
+    }
+    
+    func setRandomCatAnimation() {
+        
+        let randomSelection:Int = Int.random(in: 0...3);
+        
+        if (randomSelection == 0){
+            self.imageView!.transform = self.imageView!.transform.rotated(by:-CGFloat.pi / 2.0);
+            UIView.animate(withDuration: 1.75, delay: 0.125, options:[.curveEaseInOut, .repeat, .autoreverse], animations: {
+                self.imageView!.transform = self.imageView!.transform.rotated(by:-CGFloat.pi);
+            });
+        } else if (randomSelection == 1) {
+            self.imageView!.transform = self.imageView!.transform.rotated(by:CGFloat.pi / 2.0);
+            UIView.animate(withDuration: 1.75, delay: 0.125, options:[.curveEaseInOut, .repeat, .autoreverse], animations: {
+                self.imageView!.transform = self.imageView!.transform.rotated(by:-CGFloat.pi);
+            });
+        } else if (randomSelection == 2) {
+            UIView.animate(withDuration: 1.75, delay: 0.125, options:[.curveEaseInOut, .repeat, .autoreverse], animations: {
+                self.imageView!.transform = self.imageView!.transform.rotated(by:-CGFloat.pi);
+            });
+        } else {
+            UIView.animate(withDuration: 1.75, delay: 0.125, options:[.curveEaseInOut, .repeat, .autoreverse], animations: {
+                self.imageView!.transform = self.imageView!.transform.rotated(by:CGFloat.pi);
+            });
+        }
         
     }
     

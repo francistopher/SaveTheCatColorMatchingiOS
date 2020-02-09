@@ -161,7 +161,7 @@ class UIBoardGameView: UIView {
                 currentColumnDisplacement += buttonHeight;
                 currentButton!.addTarget(self, action: #selector(selectGridButton), for: .touchUpInside);
                 // Add cat image to current button
-                currentButton!.setCat(named: "smilingCat.png");
+                currentButton!.setCat(named: "smilingCat.png", stage:0);
                 gridButtonsRow.append(currentButton!);
             }
             gridButtons.append(gridButtonsRow);
@@ -236,6 +236,8 @@ class UIBoardGameView: UIView {
                 // Displace the frame onto the main view controller
                 gridButton.frame = displacedFrame;
                 self.superview!.addSubview(gridButton);
+                // Add waving cats image to button
+                gridButton.setCat(named: "wavingSmilingCat.png", stage: 1);
                 // Generate target points and angle
                 let angle:CGFloat = CGFloat(Int.random(in: 0..<30));
                 let xTargetPoint:CGFloat = generateElevatedTargetX(parentFrame:self.superview!.frame, childFrame:gridButton.frame, angle:angle);
@@ -296,6 +298,9 @@ class UIBoardGameView: UIView {
                 // Displace the frame onto the main view controller
                 gridButton.frame = displacedFrame;
                 self.superview!.addSubview(gridButton);
+                // Add dead cat image to button
+                gridButton.setCat(named: "deadCat.gif", stage: 2);
+                gridButton.imageView!.layer.removeAllAnimations();
                 // Generate target points
                 var xTargetPoint:CGFloat = generateRadialTargetX(parentFrame:gridButton.superview!.frame, childFrame:gridButton.frame, angle:currentAngle);
                 var yTargetPoint:CGFloat = generateRadialTargetY(parentFrame:gridButton.superview!.frame, childFrame:gridButton.frame, angle:currentAngle);
@@ -393,7 +398,6 @@ class UIBoardGameView: UIView {
             self.currentStage += 1;
             self.heavenGradientLayer!.configureForHidden(isHidden: true);
         }
-         
     }
     
     func maintain(promote:Bool){

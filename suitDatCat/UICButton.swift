@@ -26,6 +26,7 @@ class UICButton:UIButton {
     var originalBackgroundColor:UIColor? = nil;
     
     var selectColor:UIColor? = nil;
+    var randomAnimationSelection:Int = 0;
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented");
@@ -101,10 +102,16 @@ class UICButton:UIButton {
     }
     
     func setCat(named:String, stage:Int){
+        if (stage == 1) {
+            self.imageView!.layer.removeAllAnimations();
+            resetRandomCatAnimation()
+        }
         let iconImage:UIImage? = UIImage(named: named);
         self.setImage(iconImage, for: .normal);
         self.imageView!.contentMode = UIView.ContentMode.scaleAspectFit;
-        self.imageView!.alpha = 0.0;
+        if (stage == 0){
+            self.imageView!.alpha = 0.0;
+        }
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.1) {
             UIView.animate(withDuration: 1.0, delay: 0.125, options:[.curveEaseInOut], animations: {
                 self.imageView!.alpha = 1.0;
@@ -113,24 +120,33 @@ class UICButton:UIButton {
             self.setRandomCatAnimation();
             }
         }
-        
+    }
+    
+    func resetRandomCatAnimation(){
+        if (self.randomAnimationSelection > 2) {
+            self.imageView!.transform = self.imageView!.transform.rotated(by:CGFloat.pi);
+        } else if (self.randomAnimationSelection > 1) {
+            self.imageView!.transform = self.imageView!.transform.rotated(by:CGFloat.pi);
+        } else if (self.randomAnimationSelection > 0) {
+            self.imageView!.transform = self.imageView!.transform.rotated(by:CGFloat.pi / 2.0);
+        } else {
+            self.imageView!.transform = self.imageView!.transform.rotated(by:-CGFloat.pi / 2.0);
+        }
     }
     
     func setRandomCatAnimation() {
-        
-        let randomSelection:Int = Int.random(in: 0...3);
-        
-        if (randomSelection == 0){
+        self.randomAnimationSelection = Int.random(in: 0...3);
+        if (randomAnimationSelection == 0){
             self.imageView!.transform = self.imageView!.transform.rotated(by:-CGFloat.pi / 2.0);
             UIView.animate(withDuration: 1.75, delay: 0.125, options:[.curveEaseInOut, .repeat, .autoreverse], animations: {
                 self.imageView!.transform = self.imageView!.transform.rotated(by:-CGFloat.pi);
             });
-        } else if (randomSelection == 1) {
+        } else if (randomAnimationSelection == 1) {
             self.imageView!.transform = self.imageView!.transform.rotated(by:CGFloat.pi / 2.0);
             UIView.animate(withDuration: 1.75, delay: 0.125, options:[.curveEaseInOut, .repeat, .autoreverse], animations: {
                 self.imageView!.transform = self.imageView!.transform.rotated(by:-CGFloat.pi);
             });
-        } else if (randomSelection == 2) {
+        } else if (randomAnimationSelection == 2) {
             UIView.animate(withDuration: 1.75, delay: 0.125, options:[.curveEaseInOut, .repeat, .autoreverse], animations: {
                 self.imageView!.transform = self.imageView!.transform.rotated(by:-CGFloat.pi);
             });
@@ -139,7 +155,6 @@ class UICButton:UIButton {
                 self.imageView!.transform = self.imageView!.transform.rotated(by:CGFloat.pi);
             });
         }
-        
     }
     
     

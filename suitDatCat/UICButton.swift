@@ -126,8 +126,14 @@ class UICButton:UIButton {
         if (animationStage == 0){
             self.imageView!.alpha = 0.0;
         }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.1) {
-            UIView.animate(withDuration: 1.0, delay: 0.125, options:[.curveEaseInOut], animations: {
+        var dispatchTime:DispatchTime? = nil ;
+        if (stage == 4){
+            dispatchTime = .now();
+        } else {
+            dispatchTime = .now() + 1.0;
+        }
+        DispatchQueue.main.asyncAfter(deadline: dispatchTime!) {
+            UIView.animate(withDuration: 1.0, delay:0.0, options:[.curveEaseInOut], animations: {
                 self.imageView!.alpha = 1.0;
             });
             if (self.animationStage == 0){

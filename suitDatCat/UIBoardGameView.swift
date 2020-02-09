@@ -441,7 +441,7 @@ class UIBoardGameView: UIView {
         let rowsAndColumns:[Int] = currentStageRowsAndColumns(currentStage: currentStage);
         for row in 0..<rowsAndColumns[0] {
             for column in 0..<rowsAndColumns[1] {
-                gridButtons[row][column].imageView!.layer.removeAllAnimations();
+                gridButtons[row][column].imageView!.alpha = 0.0;
             }
         }
         print("REmoved all animations");

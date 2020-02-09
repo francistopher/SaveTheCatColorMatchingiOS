@@ -48,17 +48,15 @@ class ViewController: UIViewController {
             // Resume all animations when app is foregrounded and backgrounded
             let notificationCenter = NotificationCenter.default;
             notificationCenter.addObserver(self, selector: #selector(self.appMovedToForeground), name: UIApplication.willEnterForegroundNotification, object: nil);
-            notificationCenter.addObserver(self, selector: #selector(self.appBecomeActive), name: UIApplication.didBecomeActiveNotification, object: nil);
+            notificationCenter.addObserver(self, selector: #selector(self.appMovedToBackground), name: UIApplication.willResignActiveNotification, object: nil);
         }
+    }
+    @objc func appMovedToBackground(){
+        self.boardGameView!.stopGridButtonImageLayerAnimations();
     }
 
     @objc func appMovedToForeground() {
-        print("App moved to foreground");
         self.boardGameView!.resumeGridButtonImageLayerAnimations();
-    }
-
-    @objc func appBecomeActive() {
-        print("App became active");
     }
     
     @objc func resetGrid(sender:UICButton){

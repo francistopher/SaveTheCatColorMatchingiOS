@@ -132,8 +132,10 @@ class UICButton:UIButton {
             self.imageView!.layer.removeAllAnimations();
             dispatchTime = .now();
             self.animationStage = 0;
-        } else {
+        } else if (stage == 1){
             dispatchTime = .now() + 1.0;
+        } else {
+            dispatchTime = .now();
         }
         DispatchQueue.main.asyncAfter(deadline: dispatchTime!) {
             UIView.animate(withDuration: 1.0, delay:0.0, options:[.curveEaseInOut], animations: {

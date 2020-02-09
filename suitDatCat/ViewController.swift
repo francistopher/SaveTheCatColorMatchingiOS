@@ -59,10 +59,6 @@ class ViewController: UIViewController {
         self.boardGameView!.resumeGridButtonImageLayerAnimations();
         print("App foregrounded");
     }
-    @objc func appActivated() {
-//        self.boardGameView!.resumeGridButtonImageLayerAnimations();
-        print("App activated");
-    }
     @objc func appDeactivated() {
         self.boardGameView!.activateGridButtonsForUserInterfaceStyle();
         print("App deactivated");

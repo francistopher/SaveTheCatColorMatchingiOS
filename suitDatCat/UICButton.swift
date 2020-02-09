@@ -103,6 +103,8 @@ class UICButton:UIButton {
     }
     
     func setCat(named:String, stage:Int){
+        // Eliminate background indicating cat has perished
+        
         if (stage != 4) {
             animationStage = stage;
         }
@@ -152,7 +154,12 @@ class UICButton:UIButton {
             UIView.animate(withDuration: 1.75, delay: 0.125, options:[.curveEaseInOut, .repeat, .autoreverse], animations: {
                 self.imageView!.transform = self.imageView!.transform.rotated(by:-CGFloat.pi);
             });
-        }  else {
+        }  else if (randomAnimationSelection == 2) {
+            self.imageView!.transform = self.imageView!.transform.rotated(by:CGFloat.pi);
+            UIView.animate(withDuration: 1.75, delay: 0.125, options:[.curveEaseInOut, .repeat, .autoreverse], animations: {
+                self.imageView!.transform = self.imageView!.transform.rotated(by:-CGFloat.pi);
+            });
+        } else {
             UIView.animate(withDuration: 1.75, delay: 0.125, options:[.curveEaseInOut, .repeat, .autoreverse], animations: {
                 self.imageView!.transform = self.imageView!.transform.rotated(by:CGFloat.pi);
             });

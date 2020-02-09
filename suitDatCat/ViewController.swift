@@ -32,6 +32,7 @@ class ViewController: UIViewController {
     @IBOutlet var mainViewController: UIView!
     override func viewDidLoad() {
         super.viewDidLoad();
+        // Save the interface style to customize applications
         let userInterfaceStyle:Int = UIScreen.main.traitCollection.userInterfaceStyle.rawValue;
         saveMainViewFoundationalProperties();
         configureHeavenGradientLayer();
@@ -44,7 +45,20 @@ class ViewController: UIViewController {
             self.boardGameView!.fadeIn();
             self.colorOptionsView!.fadeIn();
             self.boardGameView!.buildBoardGame();
+            // Resume all animations when app is foregrounded and backgrounded
+            let notificationCenter = NotificationCenter.default;
+            notificationCenter.addObserver(self, selector: #selector(self.appMovedToForeground), name: UIApplication.willEnterForegroundNotification, object: nil);
+            notificationCenter.addObserver(self, selector: #selector(self.appBecomeActive), name: UIApplication.didBecomeActiveNotification, object: nil);
         }
+    }
+
+    @objc func appMovedToForeground() {
+        print("App moved to foreground");
+        self.boardGameView!.resumeGridButtonImageLayerAnimations();
+    }
+
+    @objc func appBecomeActive() {
+        print("App became active");
     }
     
     @objc func resetGrid(sender:UICButton){

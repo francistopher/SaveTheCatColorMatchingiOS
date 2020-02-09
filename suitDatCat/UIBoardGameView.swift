@@ -437,4 +437,23 @@ class UIBoardGameView: UIView {
         dispersedGridButtons = [[UICButton]]();
     }
     
+    func stopGridButtonImageLayerAnimations(){
+        let rowsAndColumns:[Int] = currentStageRowsAndColumns(currentStage: currentStage);
+        for row in 0..<rowsAndColumns[0] {
+            for column in 0..<rowsAndColumns[1] {
+                gridButtons[row][column].imageView!.layer.removeAllAnimations();
+            }
+        }
+        print("REmoved all animations");
+    }
+    
+    func resumeGridButtonImageLayerAnimations(){
+        let rowsAndColumns:[Int] = currentStageRowsAndColumns(currentStage: currentStage);
+        for row in 0..<rowsAndColumns[0] {
+            for column in 0..<rowsAndColumns[1] {
+                gridButtons[row][column].setCat(named: "", stage: 4);
+            }
+        }
+        print("Resumed all animations");
+    }
 }

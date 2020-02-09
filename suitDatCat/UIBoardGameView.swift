@@ -160,6 +160,8 @@ class UIBoardGameView: UIView {
                 currentButton!.grow();
                 currentColumnDisplacement += buttonHeight;
                 currentButton!.addTarget(self, action: #selector(selectGridButton), for: .touchUpInside);
+                // Add cat image to current button
+                currentButton!.setCat(named: "smilingCat.png");
                 gridButtonsRow.append(currentButton!);
             }
             gridButtons.append(gridButtonsRow);

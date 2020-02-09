@@ -100,6 +100,13 @@ class UICButton:UIButton {
         }
     }
     
+    func setCat(named:String){
+        let iconImage:UIImage? = UIImage(named: named);
+        self.setImage(iconImage, for: .normal);
+        self.imageView!.contentMode = UIView.ContentMode.scaleAspectFit;
+        
+    }
+    
     
 }
 

@@ -116,8 +116,7 @@ class UICButton:UIButton {
             animationStage = stage;
         }
         if (animationStage == 1) {
-            self.imageView!.layer.removeAllAnimations();
-            resetRandomCatAnimation();
+            self.layer.removeAllAnimations();
         }
         if (stage != 4) {
             let iconImage:UIImage? = UIImage(named: named);
@@ -137,35 +136,24 @@ class UICButton:UIButton {
         }
     }
     
-    func resetRandomCatAnimation(){
-        if (self.randomAnimationSelection > 2) {
-            self.imageView!.transform = self.imageView!.transform.rotated(by:CGFloat.pi);
-        } else if (self.randomAnimationSelection > 1) {
-            self.imageView!.transform = self.imageView!.transform.rotated(by:CGFloat.pi);
-        } else if (self.randomAnimationSelection > 0) {
-            self.imageView!.transform = self.imageView!.transform.rotated(by:CGFloat.pi / 2.0);
-        } else {
-            self.imageView!.transform = self.imageView!.transform.rotated(by:-CGFloat.pi / 2.0);
-        }
-    }
-    
     func setRandomCatAnimation() {
         self.randomAnimationSelection = Int.random(in: 0...3);
-        if (randomAnimationSelection == 0){
+        if (randomAnimationSelection > 2){
             self.imageView!.transform = self.imageView!.transform.rotated(by:-CGFloat.pi / 2.0);
             UIView.animate(withDuration: 1.75, delay: 0.125, options:[.curveEaseInOut, .repeat, .autoreverse], animations: {
                 self.imageView!.transform = self.imageView!.transform.rotated(by:-CGFloat.pi);
             });
-        } else if (randomAnimationSelection == 1) {
+        } else if (randomAnimationSelection > 1) {
             self.imageView!.transform = self.imageView!.transform.rotated(by:CGFloat.pi / 2.0);
             UIView.animate(withDuration: 1.75, delay: 0.125, options:[.curveEaseInOut, .repeat, .autoreverse], animations: {
                 self.imageView!.transform = self.imageView!.transform.rotated(by:-CGFloat.pi);
             });
-        }  else if (randomAnimationSelection == 2) {
+        } else if (randomAnimationSelection > 0) {
             UIView.animate(withDuration: 1.75, delay: 0.125, options:[.curveEaseInOut, .repeat, .autoreverse], animations: {
                 self.imageView!.transform = self.imageView!.transform.rotated(by:-CGFloat.pi);
             });
         } else {
+            self.imageView!.transform = self.imageView!.transform.rotated(by:-CGFloat.pi / 2.0);
             UIView.animate(withDuration: 1.75, delay: 0.125, options:[.curveEaseInOut, .repeat, .autoreverse], animations: {
                 self.imageView!.transform = self.imageView!.transform.rotated(by:CGFloat.pi);
             });

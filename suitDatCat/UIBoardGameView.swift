@@ -161,7 +161,7 @@ class UIBoardGameView: UIView {
                 currentColumnDisplacement += buttonHeight;
                 currentButton!.addTarget(self, action: #selector(selectGridButton), for: .touchUpInside);
                 // Add cat image to current button
-                currentButton!.setCat(named: "smilingCat.png", stage:0);
+                currentButton!.setCat(named: "SmilingCat.png", stage:0);
                 gridButtonsRow.append(currentButton!);
             }
             gridButtons.append(gridButtonsRow);
@@ -237,7 +237,7 @@ class UIBoardGameView: UIView {
                 gridButton.frame = displacedFrame;
                 self.superview!.addSubview(gridButton);
                 // Add waving cats image to button
-                gridButton.setCat(named: "wavingSmilingCat.png", stage: 1);
+                gridButton.setCat(named: "WavingSmilingCat.png", stage: 1);
                 // Generate target points and angle
                 let angle:CGFloat = CGFloat(Int.random(in: 0..<30));
                 let xTargetPoint:CGFloat = generateElevatedTargetX(parentFrame:self.superview!.frame, childFrame:gridButton.frame, angle:angle);
@@ -299,7 +299,7 @@ class UIBoardGameView: UIView {
                 gridButton.frame = displacedFrame;
                 self.superview!.addSubview(gridButton);
                 // Add dead cat image to button
-                gridButton.setCat(named: "deadCat.gif", stage: 2);
+                gridButton.setCat(named: "DeadCat.png", stage: 2);
                 gridButton.imageView!.layer.removeAllAnimations();
                 // Generate target points
                 var xTargetPoint:CGFloat = generateRadialTargetX(parentFrame:gridButton.superview!.frame, childFrame:gridButton.frame, angle:currentAngle);
@@ -437,16 +437,6 @@ class UIBoardGameView: UIView {
         dispersedGridButtons = [[UICButton]]();
     }
     
-    func stopGridButtonImageLayerAnimations(){
-        let rowsAndColumns:[Int] = currentStageRowsAndColumns(currentStage: currentStage);
-        for row in 0..<rowsAndColumns[0] {
-            for column in 0..<rowsAndColumns[1] {
-                gridButtons[row][column].imageView!.alpha = 0.0;
-            }
-        }
-        print("REmoved all animations");
-    }
-    
     func resumeGridButtonImageLayerAnimations(){
         let rowsAndColumns:[Int] = currentStageRowsAndColumns(currentStage: currentStage);
         for row in 0..<rowsAndColumns[0] {
@@ -455,5 +445,23 @@ class UIBoardGameView: UIView {
             }
         }
         print("Resumed all animations");
+    }
+    
+    func activateGridButtonsForUserInterfaceStyle() {
+        let rowsAndColumns:[Int] = currentStageRowsAndColumns(currentStage: currentStage);
+        for row in 0..<rowsAndColumns[0] {
+            for column in 0..<rowsAndColumns[1] {
+                gridButtons[row][column].setCat(named: "", stage: 5);
+            }
+        }
+    }
+    
+    func suspendGridButtonImageLayerAnimations() {
+        let rowsAndColumns:[Int] = currentStageRowsAndColumns(currentStage: currentStage);
+        for row in 0..<rowsAndColumns[0] {
+            for column in 0..<rowsAndColumns[1] {
+                gridButtons[row][column].imageView!.alpha = 0.0;
+            }
+        }
     }
 }

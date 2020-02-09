@@ -26,8 +26,8 @@ class UICButton:UIButton {
     var originalBackgroundColor:UIColor? = nil;
     
     var selectColor:UIColor? = nil;
-    var randomAnimationSelection:Int = 0;
     var animationStage:Int = 0;
+    var previousNamed:String = "";
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented");
@@ -103,32 +103,35 @@ class UICButton:UIButton {
     }
     
     func setCat(named:String, stage:Int){
-        if (stage == 2) {
-            print(named, stage);
-            if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1) {
-                self.backgroundColor = UIColor.clear;
-            } else{
-                self.backgroundColor = UIColor.clear;
-            }
+        // Save the new color
+        if (named != "") {
+            previousNamed = named;
         }
-        // Eliminate background indicating cat has perished
-        if (stage != 4) {
+        // Build cat color string
+        var namedCatImage:String = "";
+        if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1){
+            namedCatImage += "dark" + previousNamed;
+        } else{
+            namedCatImage += "light" + previousNamed;
+        }
+        // Clear button background if cat dies
+        if (stage == 2) {
+            self.backgroundColor = UIColor.clear;
+        }
+        if (stage != 4 || stage != 5) {
             animationStage = stage;
         }
-        if (animationStage == 1) {
-            self.layer.removeAllAnimations();
-        }
-        if (stage != 4) {
-            let iconImage:UIImage? = UIImage(named: named);
-            self.setImage(iconImage, for: .normal);
-            self.imageView!.contentMode = UIView.ContentMode.scaleAspectFit;
-        }
+        let iconImage:UIImage? = UIImage(named: namedCatImage);
+        self.setImage(iconImage, for: .normal);
+        self.imageView!.contentMode = UIView.ContentMode.scaleAspectFit;
         if (animationStage == 0){
             self.imageView!.alpha = 0.0;
         }
         var dispatchTime:DispatchTime? = nil ;
         if (stage == 4){
+            self.imageView!.layer.removeAllAnimations();
             dispatchTime = .now();
+            self.animationStage = 0;
         } else {
             dispatchTime = .now() + 1.0;
         }
@@ -137,13 +140,13 @@ class UICButton:UIButton {
                 self.imageView!.alpha = 1.0;
             });
             if (self.animationStage == 0){
-            self.setRandomCatAnimation();
+                self.setRandomCatAnimation();
             }
         }
     }
     
     func setRandomCatAnimation() {
-        self.randomAnimationSelection = Int.random(in: 0...3);
+        let randomAnimationSelection:Int = Int.random(in: 0...3);
         if (randomAnimationSelection > 2){
             self.imageView!.transform = self.imageView!.transform.rotated(by:-CGFloat.pi / 2.0);
             UIView.animate(withDuration: 1.75, delay: 0.125, options:[.curveEaseInOut, .repeat, .autoreverse], animations: {

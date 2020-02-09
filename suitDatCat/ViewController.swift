@@ -48,16 +48,24 @@ class ViewController: UIViewController {
             // Resume all animations when app is foregrounded and backgrounded
             let notificationCenter = NotificationCenter.default;
             notificationCenter.addObserver(self, selector: #selector(self.appMovedToForeground), name: UIApplication.willEnterForegroundNotification, object: nil);
-            notificationCenter.addObserver(self, selector: #selector(self.appMovedToBackground), name: UIApplication.willResignActiveNotification, object: nil);
-            notificationCenter.addObserver(self, selector: #selector(self.appMovedToForeground), name: UIApplication.didBecomeActiveNotification, object: nil);
+            notificationCenter.addObserver(self, selector: #selector(self.appDeactivated), name: UIApplication.willResignActiveNotification, object: nil);
+            notificationCenter.addObserver(self, selector: #selector(self.appMovedToBackground), name: UIApplication.didEnterBackgroundNotification, object: nil);
         }
     }
-    @objc func appMovedToBackground(){
-        self.boardGameView!.stopGridButtonImageLayerAnimations();
+    @objc func appMovedToBackground() {
+        self.boardGameView!.suspendGridButtonImageLayerAnimations();
     }
-
     @objc func appMovedToForeground() {
         self.boardGameView!.resumeGridButtonImageLayerAnimations();
+        print("App foregrounded");
+    }
+    @objc func appActivated() {
+//        self.boardGameView!.resumeGridButtonImageLayerAnimations();
+        print("App activated");
+    }
+    @objc func appDeactivated() {
+        self.boardGameView!.activateGridButtonsForUserInterfaceStyle();
+        print("App deactivated");
     }
     
     @objc func resetGrid(sender:UICButton){
@@ -107,6 +115,7 @@ class ViewController: UIViewController {
         super.traitCollectionDidChange(previousTraitCollection)
         // Detected A Light User Interface Style
         if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1){
+            boardGameView!.activateGridButtonsForUserInterfaceStyle();
             heavenGradientLayer!.configureForUserInterfaceStyle();
             introLabel!.fadeOnDark();
             boardGameView!.fadeOnDark();
@@ -114,6 +123,7 @@ class ViewController: UIViewController {
         }
         // Detected A Dark User Interface Style
         else {
+            boardGameView!.activateGridButtonsForUserInterfaceStyle();
             heavenGradientLayer!.configureForUserInterfaceStyle();
             introLabel!.fadeOnLight();
             boardGameView!.fadeOnLight();

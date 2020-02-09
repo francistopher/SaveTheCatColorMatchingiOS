@@ -49,6 +49,7 @@ class ViewController: UIViewController {
             let notificationCenter = NotificationCenter.default;
             notificationCenter.addObserver(self, selector: #selector(self.appMovedToForeground), name: UIApplication.willEnterForegroundNotification, object: nil);
             notificationCenter.addObserver(self, selector: #selector(self.appMovedToBackground), name: UIApplication.willResignActiveNotification, object: nil);
+            notificationCenter.addObserver(self, selector: #selector(self.appMovedToForeground), name: UIApplication.didBecomeActiveNotification, object: nil);
         }
     }
     @objc func appMovedToBackground(){

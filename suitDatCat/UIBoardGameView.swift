@@ -203,13 +203,13 @@ class UIBoardGameView: UIView {
     
     func resetGame(promote:Bool){
         let rowsAndColumns:[Int] = currentStageRowsAndColumns(currentStage: currentStage);
-        var targetPoints:[[[CGFloat]]] = generateRadialTargetPoints(rows: rowsAndColumns[0], columns: rowsAndColumns[1]);
+        var targetPoints:[[[CGFloat]]]? = nil;
         if (!promote) {
             targetPoints = generateRadialTargetPoints(rows:rowsAndColumns[0], columns:rowsAndColumns[1]);
         } else {
             targetPoints = generateElevatedTargetPoints(rows: rowsAndColumns[0], columns: rowsAndColumns[1]);
         }
-        disperse(targetPoints:targetPoints, promote:promote);
+        disperse(targetPoints:targetPoints!, promote:promote);
         gridColors = [[UIColor]]();
         colorOptionsView!.selectionColors = [UIColor]();
     }
@@ -227,8 +227,8 @@ class UIBoardGameView: UIView {
                 // Save current grid button
                 let gridButton:UICButton = gridButtons[row][column];
                 // Save the new displaced bounds of the grid button
-                let x:CGFloat = gridButton.frame.minX + self.frame.minX / 2.0;
-                let y:CGFloat = gridButton.frame.minY + self.frame.minY / 2.0;
+                let x:CGFloat = gridButton.frame.minX + self.frame.minX;
+                let y:CGFloat = gridButton.frame.minY + self.frame.minY;
                 let width:CGFloat = gridButton.frame.width;
                 let height:CGFloat = gridButton.frame.height;
                 // Save a frame representing the displacement
@@ -289,8 +289,8 @@ class UIBoardGameView: UIView {
                 // Save current grid button
                 let gridButton:UICButton = gridButtons[row][column];
                 // Save the new displaced bounds of the grid button
-                let x:CGFloat = gridButton.frame.minX + self.frame.minX / 2.0;
-                let y:CGFloat = gridButton.frame.minY + self.frame.minY / 2.0;
+                let x:CGFloat = gridButton.frame.minX + self.frame.minX;
+                let y:CGFloat = gridButton.frame.minY + self.frame.minY;
                 let width:CGFloat = gridButton.frame.width;
                 let height:CGFloat = gridButton.frame.height;
                 // Save a frame representing the displacement

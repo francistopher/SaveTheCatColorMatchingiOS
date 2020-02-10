@@ -15,6 +15,7 @@ class UIBoardGameView: UIView {
     var currentStage:Int = 1;
     var gridButtons:[[UICButton]] = [[UICButton]]();
     var dispersedGridButtons:[[UICButton]] = [[UICButton]]();
+    var viruses:UIViruses? = nil;
     var gridColors:[[UIColor]] = [[UIColor]]();
     var availableColors:[UIColor] = [UIColor]();
     var solved:Bool = true;
@@ -402,6 +403,7 @@ class UIBoardGameView: UIView {
     
     func maintain(promote:Bool){
         resetGame(promote: promote);
+        viruses!.centerize();
         loadGridButtonsToDispersedGridButtons();
         colorOptionsView!.loadSelectionButtonsToSelectedButtons();
         // Build board game

@@ -151,7 +151,6 @@ class UICButton:UIButton {
         let iconImage:UIImage? = UIImage(named: "virus.png");
         self.setImage(iconImage, for: .normal);
         self.imageView!.contentMode = UIView.ContentMode.scaleAspectFit;
-        self.backgroundColor = UIColor.clear;
         setCurrentVirusAnimation();
     }
     

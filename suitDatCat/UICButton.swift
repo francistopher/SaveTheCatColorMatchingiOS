@@ -147,6 +147,28 @@ class UICButton:UIButton {
         }
     }
     
+    func setVirus() {
+        let iconImage:UIImage? = UIImage(named: "virus.png");
+        self.setImage(iconImage, for: .normal);
+        self.imageView!.contentMode = UIView.ContentMode.scaleAspectFit;
+        self.backgroundColor = UIColor.clear;
+        setCurrentVirusAnimation();
+    }
+    
+    func setCurrentVirusAnimation(){
+        UIView.animate(withDuration: 1.75, delay: 0.125, options:[.curveEaseInOut, .repeat, .autoreverse], animations: {
+            var xTranslation:CGFloat = self.frame.width / 8.0;
+            var yTranslation:CGFloat = self.frame.height / 8.0;
+            if (Int.random(in: 0...1) == 1) {
+                xTranslation *= -1;
+            }
+            if (Int.random(in: 0...1) == 1) {
+                yTranslation *= -1;
+            }
+            self.imageView!.transform = self.imageView!.transform.translatedBy(x: xTranslation, y: yTranslation);
+        });
+    }
+    
     func setRandomCatAnimation() {
         let randomAnimationSelection:Int = Int.random(in: 0...3);
         if (randomAnimationSelection > 2){

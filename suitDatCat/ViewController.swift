@@ -31,6 +31,9 @@ class ViewController: UIViewController {
     let heavenBlueOnBlack:UIColor = UIColor.white;
     let heavenBlueOnWhite:UIColor = UIColor(red: 252.0/255.0, green: 212.0/255.0, blue: 64.0/255.0, alpha: 1.0);
     
+    // Save viruses
+    var viruses:[UICButton] = [UICButton]();
+    
     @IBOutlet var mainViewController: UIView!
     override func viewDidLoad() {
         super.viewDidLoad();
@@ -41,6 +44,7 @@ class ViewController: UIViewController {
         configureIntroLabel(userInterfaceStyle:userInterfaceStyle);
         configureBoardGameView(userInterfaceStyle:userInterfaceStyle);
         configureColorOptionsView(userInterfaceStyle:userInterfaceStyle);
+        buildViruses(userInterfaceStyle:userInterfaceStyle);
         configureSettingsButton(userInterfaceStyle:userInterfaceStyle);
         DispatchQueue.main.asyncAfter(deadline: .now() + 4.0) {
             self.boardGameView!.fadeIn();
@@ -52,7 +56,6 @@ class ViewController: UIViewController {
             notificationCenter.addObserver(self, selector: #selector(self.appMovedToForeground), name: UIApplication.willEnterForegroundNotification, object: nil);
             notificationCenter.addObserver(self, selector: #selector(self.appDeactivated), name: UIApplication.willResignActiveNotification, object: nil);
             notificationCenter.addObserver(self, selector: #selector(self.appMovedToBackground), name: UIApplication.didEnterBackgroundNotification, object: nil);
-
         }
     }
     @objc func appMovedToBackground() {
@@ -104,7 +107,7 @@ class ViewController: UIViewController {
     
     func configureColorOptionsView(userInterfaceStyle:Int){
         let backgroundColor:UIColor = (userInterfaceStyle == 1 ? UIColor.white : UIColor.black);
-        colorOptionsView = UIColorOptionsView(parentView: mainViewController, x: boardGameView!.frame.minX, y: boardGameView!.frame.minY + boardGameView!.frame.height + unitView, width: boardGameView!.frame.width, height: unitView * 1.25, backgroundColor: backgroundColor);
+        colorOptionsView = UIColorOptionsView(parentView: mainViewController, x: boardGameView!.frame.minX, y: boardGameView!.frame.minY + boardGameView!.frame.height + (unitView * 2), width: boardGameView!.frame.width, height: unitView * 1.25, backgroundColor: backgroundColor);
         colorOptionsView!.alpha = 0.0;
         boardGameView!.colorOptionsView = colorOptionsView!;
         colorOptionsView!.boardGameView = boardGameView!;
@@ -114,6 +117,49 @@ class ViewController: UIViewController {
         settingsButton = UISettingsButton(parentView: mainViewController, x: unitView, y: unitView, width: unitView * 1.25, height: unitView * 1.25);
         settingsButton!.setStyle();
         settingsButton!.alpha = 0.0;
+    }
+    
+    func buildViruses(userInterfaceStyle:Int) {
+        let backgroundColor:UIColor = (userInterfaceStyle == 1 ? UIColor.white : UIColor.black);
+        // Calculate side and spacing lengths of virus
+        let virusesSpacingLength:CGFloat = boardGameView!.frame.width - ((unitView * 2.0) * 3.0);
+        let virusSpacingLength:CGFloat = virusesSpacingLength / 4.0;
+        let virusSideLength:CGFloat = unitView * 2.0;
+        // Create variables to store temporary virus coordinates
+        var x:CGFloat = 0.0;
+        var y:CGFloat = 0.0;
+        // Position viruses
+        for side in 0..<4{
+            if (side == 0) {
+                x = boardGameView!.frame.minX
+                y = boardGameView!.frame.minY - (unitView * 2.0);
+            } else if (side == 1) {
+                x = boardGameView!.frame.minX;
+                y = boardGameView!.frame.minY + boardGameView!.frame.height;
+            } else if (side == 2) {
+                x = boardGameView!.frame.minX - (unitView * 2.0);
+                y = boardGameView!.frame.minY;
+            } else {
+                x = boardGameView!.frame.minX + boardGameView!.frame.width;
+                y = boardGameView!.frame.minY;
+            }
+            for _ in 0..<3{
+                if (side == 0 || side == 1){
+                    x += virusSpacingLength;
+                } else {
+                    y += virusSpacingLength;
+                }
+                let virus:UICButton = UICButton(parentView: mainViewController, x: x, y: y, width: unitView * 2.0, height: unitView * 2.0, backgroundColor: backgroundColor);
+                virus.setCurrentVirusAnimation();
+                virus.setVirus();
+                if (side == 0 || side == 1){
+                    x += virusSideLength;
+                } else {
+                    y += virusSideLength;
+                }
+                viruses.append(virus);
+            }
+        }
     }
   
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {

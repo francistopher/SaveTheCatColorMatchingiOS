@@ -40,9 +40,9 @@ class UICButton:UIButton {
         originalWidth = width;
         originalHeight = height;
         originalFrame = CGRect(x: x, y: y, width: width, height: height);
+        originalBackgroundColor = backgroundColor;
         self.backgroundColor = backgroundColor;
         self.layer.cornerRadius = height / 5.0;
-        self.originalBackgroundColor = backgroundColor;
         parentView.addSubview(self);
         self.isSelected = false;
     }
@@ -60,13 +60,13 @@ class UICButton:UIButton {
         });
     }
     
-    func empty(color:UIColor){
+    func hide(color:UIColor){
         UIView.animate(withDuration: 0.5, delay: 0.25, options: .curveEaseIn, animations: {
             self.backgroundColor = color;
         });
     }
     
-    func fill(){
+    func show(){
         UIView.animate(withDuration: 0.5, delay: 0.25, options: .curveEaseIn, animations: {
         self.backgroundColor = self.originalBackgroundColor!;
         });
@@ -132,7 +132,7 @@ class UICButton:UIButton {
             self.imageView!.layer.removeAllAnimations();
             dispatchTime = .now();
             self.animationStage = 0;
-        } else if (stage == 1){
+        } else if (stage == 1 || stage == 0){
             dispatchTime = .now() + 1.0;
         } else {
             dispatchTime = .now();

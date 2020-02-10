@@ -22,7 +22,9 @@ class ViewController: UIViewController {
     // Game Play View Properties
     var boardGameView:UIBoardGameView? = nil;
     var colorOptionsView:UIColorOptionsView? = nil;
+    var settingsButton:UISettingsButton? = nil;
     var resetButton:UICButton? = nil;
+    
     
     // Add heaven gradient layer
     var heavenGradientLayer:CACGradientLayer? = nil;
@@ -39,17 +41,18 @@ class ViewController: UIViewController {
         configureIntroLabel(userInterfaceStyle:userInterfaceStyle);
         configureBoardGameView(userInterfaceStyle:userInterfaceStyle);
         configureColorOptionsView(userInterfaceStyle:userInterfaceStyle);
-        resetButton = UICButton(parentView: mainViewController, x: 0, y: 0, width: unitView, height: unitView, backgroundColor: UIColor.white);
-        resetButton!.addTarget(self, action: #selector(resetGrid), for: .touchUpInside);
+        configureSettingsButton(userInterfaceStyle:userInterfaceStyle);
         DispatchQueue.main.asyncAfter(deadline: .now() + 4.0) {
             self.boardGameView!.fadeIn();
             self.colorOptionsView!.fadeIn();
             self.boardGameView!.buildBoardGame();
-            // Resume all animations when app is foregrounded and backgrounded
+            self.settingsButton!.show();
+            // Control all animations when app is foregrounded, backgrounded, and deactivated
             let notificationCenter = NotificationCenter.default;
             notificationCenter.addObserver(self, selector: #selector(self.appMovedToForeground), name: UIApplication.willEnterForegroundNotification, object: nil);
             notificationCenter.addObserver(self, selector: #selector(self.appDeactivated), name: UIApplication.willResignActiveNotification, object: nil);
             notificationCenter.addObserver(self, selector: #selector(self.appMovedToBackground), name: UIApplication.didEnterBackgroundNotification, object: nil);
+
         }
     }
     @objc func appMovedToBackground() {
@@ -101,10 +104,16 @@ class ViewController: UIViewController {
     
     func configureColorOptionsView(userInterfaceStyle:Int){
         let backgroundColor:UIColor = (userInterfaceStyle == 1 ? UIColor.white : UIColor.black);
-        colorOptionsView = UIColorOptionsView(parentView: mainViewController, x: boardGameView!.frame.minX, y: boardGameView!.frame.minY + boardGameView!.frame.height + unitView, width: boardGameView!.frame.width, height: unitView * 1.5, backgroundColor: backgroundColor);
+        colorOptionsView = UIColorOptionsView(parentView: mainViewController, x: boardGameView!.frame.minX, y: boardGameView!.frame.minY + boardGameView!.frame.height + unitView, width: boardGameView!.frame.width, height: unitView * 1.25, backgroundColor: backgroundColor);
         colorOptionsView!.alpha = 0.0;
         boardGameView!.colorOptionsView = colorOptionsView!;
         colorOptionsView!.boardGameView = boardGameView!;
+    }
+    
+    func configureSettingsButton(userInterfaceStyle:Int) {
+        settingsButton = UISettingsButton(parentView: mainViewController, x: unitView, y: unitView, width: unitView * 1.25, height: unitView * 1.25);
+        settingsButton!.setStyle();
+        settingsButton!.alpha = 0.0;
     }
   
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -113,6 +122,7 @@ class ViewController: UIViewController {
         if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1){
             boardGameView!.activateGridButtonsForUserInterfaceStyle();
             heavenGradientLayer!.configureForUserInterfaceStyle();
+            settingsButton!.setStyle();
             introLabel!.fadeOnDark();
             boardGameView!.fadeOnDark();
             colorOptionsView!.fadeOnDark();
@@ -121,6 +131,7 @@ class ViewController: UIViewController {
         else {
             boardGameView!.activateGridButtonsForUserInterfaceStyle();
             heavenGradientLayer!.configureForUserInterfaceStyle();
+            settingsButton!.setStyle();
             introLabel!.fadeOnLight();
             boardGameView!.fadeOnLight();
             colorOptionsView!.fadeOnLight();

@@ -93,7 +93,7 @@ class UIColorOptionsView: UIView {
         if (!boardGameView!.gridButtons[0][0].backgroundColor!.isEqual(UIColor.lightGray) && boardGameView!.solved){
             for rows in 0..<rowsAndColumns[0]{
                 for columns in 0..<rowsAndColumns[1]{
-                    boardGameView!.gridButtons[rows][columns].empty(color:UIColor.lightGray);
+                    boardGameView!.gridButtons[rows][columns].hide(color:UIColor.lightGray);
                 }
             }
             boardGameView!.solved = false;

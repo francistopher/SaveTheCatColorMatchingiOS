@@ -21,6 +21,7 @@
 		B88F996723F0674D003ED805 /* darkWavingSmilingCat.png in Resources */ = {isa = PBXBuildFile; fileRef = B88F996123F0674D003ED805 /* darkWavingSmilingCat.png */; };
 		B88F996923F06801003ED805 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B88F996823F06801003ED805 /* ViewController.swift */; };
 		B88F996B23F0685E003ED805 /* lightDeadCat.png in Resources */ = {isa = PBXBuildFile; fileRef = B88F996A23F0685E003ED805 /* lightDeadCat.png */; };
+		B88F996D23F09BB4003ED805 /* UISettingsButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B88F996C23F09BB4003ED805 /* UISettingsButton.swift */; };
 		B8AE017123ECB180007A6142 /* UICenterKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8AE017023ECB180007A6142 /* UICenterKit.swift */; };
 		B8AE017323ECB25C007A6142 /* UICLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8AE017223ECB25C007A6142 /* UICLabel.swift */; };
 		B8AE017523ECB758007A6142 /* UICView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8AE017423ECB758007A6142 /* UICView.swift */; };
@@ -46,6 +47,7 @@
 		B88F996123F0674D003ED805 /* darkWavingSmilingCat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = darkWavingSmilingCat.png; sourceTree = "<group>"; };
 		B88F996823F06801003ED805 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		B88F996A23F0685E003ED805 /* lightDeadCat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lightDeadCat.png; sourceTree = "<group>"; };
+		B88F996C23F09BB4003ED805 /* UISettingsButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UISettingsButton.swift; sourceTree = "<group>"; };
 		B8AE017023ECB180007A6142 /* UICenterKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UICenterKit.swift; sourceTree = "<group>"; };
 		B8AE017223ECB25C007A6142 /* UICLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UICLabel.swift; sourceTree = "<group>"; };
 		B8AE017423ECB758007A6142 /* UICView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UICView.swift; sourceTree = "<group>"; };
@@ -105,6 +107,7 @@
 				B8AE017C23ECD077007A6142 /* UIColorOptionsView.swift */,
 				B8AE017E23ECD3B2007A6142 /* UICButton.swift */,
 				B80C6C8F23EF469E0056D156 /* CACGradientLayer.swift */,
+				B88F996C23F09BB4003ED805 /* UISettingsButton.swift */,
 			);
 			path = suitDatCat;
 			sourceTree = "<group>";
@@ -194,6 +197,7 @@
 				B8AE017D23ECD078007A6142 /* UIColorOptionsView.swift in Sources */,
 				B8AE017F23ECD3B2007A6142 /* UICButton.swift in Sources */,
 				B80C6C9023EF469E0056D156 /* CACGradientLayer.swift in Sources */,
+				B88F996D23F09BB4003ED805 /* UISettingsButton.swift in Sources */,
 				B8AE017523ECB758007A6142 /* UICView.swift in Sources */,
 				B8AE017123ECB180007A6142 /* UICenterKit.swift in Sources */,
 				B833544E23EC8F0B00835672 /* SceneDelegate.swift in Sources */,

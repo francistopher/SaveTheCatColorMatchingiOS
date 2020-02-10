@@ -173,7 +173,7 @@ class UIBoardGameView: UIView {
         let receiverButton:UICButton = sender;
         if (!solved){
             if (receiverButton.originalBackgroundColor!.cgColor == colorOptionsView!.selectedColor.cgColor){
-                receiverButton.fill();
+                receiverButton.show();
                 if (isBoardCompleted()){
                     print("Moving to next round!")
                     solved = true;

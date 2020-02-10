@@ -42,10 +42,10 @@ class ViewController: UIViewController {
         saveMainViewFoundationalProperties();
         configureHeavenGradientLayer();
         configureIntroLabel(userInterfaceStyle:userInterfaceStyle);
+        configureViruses();
         configureBoardGameView(userInterfaceStyle:userInterfaceStyle);
         configureColorOptionsView(userInterfaceStyle:userInterfaceStyle);
         configureSettingsButton(userInterfaceStyle:userInterfaceStyle);
-        configureViruses();
         DispatchQueue.main.asyncAfter(deadline: .now() + 4.0) {
             self.boardGameView!.fadeIn();
             self.colorOptionsView!.fadeIn();
@@ -95,25 +95,24 @@ class ViewController: UIViewController {
     }
     
     func configureIntroLabel(userInterfaceStyle:Int){
-        let backgroundColor:UIColor = (userInterfaceStyle == 1 ? UIColor.white : UIColor.black);
         let textColor:UIColor = (userInterfaceStyle == 1 ? UIColor.black : UIColor.white);
-        introLabel = UICLabel(parentView: mainViewController, x: 0, y: 0, width: mainViewWidth * 0.5, height: mainViewHeight * 0.15, backgroundColor: backgroundColor, textColor: textColor, font: UIFont.boldSystemFont(ofSize: 48.0), text: "podDatCat");
+        introLabel = UICLabel(parentView: mainViewController, x: 0, y: 0, width: mainViewWidth * 0.5, height: mainViewHeight * 0.15, backgroundColor: .clear, textColor: textColor, font: UIFont.boldSystemFont(ofSize: 48.0), text: "podDatCat");
         UICenterKit.center(childView: introLabel!, parentRect: mainViewController.frame, childRect: introLabel!.frame);
         introLabel!.alpha = 0.0;
         introLabel!.fadeInAndOut();
     }
         
     func configureBoardGameView(userInterfaceStyle:Int){
-        let backgroundColor:UIColor = (userInterfaceStyle == 1 ? UIColor.white : UIColor.black);
-        boardGameView = UIBoardGameView(parentView: mainViewController, x: 0, y: 0, width: mainViewWidth * 0.90, height:  mainViewWidth * 0.90, backgroundColor: backgroundColor);
-        UICenterKit.centerWithVerticalDisplacement(childView: boardGameView!, parentRect: mainViewController.frame, childRect: boardGameView!.frame, verticalDisplacement: -unitView * 1.25);
+        boardGameView = UIBoardGameView(parentView: mainViewController, x: 0, y: 0, width: mainViewWidth * 0.80, height:  mainViewWidth * 0.80, backgroundColor: .clear);
+        UICenterKit.centerWithVerticalDisplacement(childView: boardGameView!, parentRect: mainViewController.frame, childRect: boardGameView!.frame, verticalDisplacement: -unitView * 0.5);
         boardGameView!.alpha = 0.0;
         boardGameView!.heavenGradientLayer = heavenGradientLayer!;
+        boardGameView!.layer.borderColor! = UIColor.clear.cgColor;
+        boardGameView!.viruses = viruses!;
     }
     
     func configureColorOptionsView(userInterfaceStyle:Int){
-        let backgroundColor:UIColor = (userInterfaceStyle == 1 ? UIColor.white : UIColor.black);
-        colorOptionsView = UIColorOptionsView(parentView: mainViewController, x: boardGameView!.frame.minX, y: boardGameView!.frame.minY + boardGameView!.frame.height + (unitView * 2.125), width: boardGameView!.frame.width, height: unitView * 1.25, backgroundColor: backgroundColor);
+        colorOptionsView = UIColorOptionsView(parentView: mainViewController, x: boardGameView!.frame.minX, y: boardGameView!.frame.minY + boardGameView!.frame.height, width: boardGameView!.frame.width, height: unitView * 1.25, backgroundColor: .clear);
         colorOptionsView!.alpha = 0.0;
         boardGameView!.colorOptionsView = colorOptionsView!;
         colorOptionsView!.boardGameView = boardGameView!;
@@ -126,9 +125,8 @@ class ViewController: UIViewController {
     }
     
     func configureViruses() {
-        viruses = UIViruses(boardGameView: boardGameView!, mainView: mainViewController);
+        viruses = UIViruses(mainView: mainViewController);
         viruses!.buildViruses(unitView: unitView);
-        boardGameView!.viruses = viruses;
     }
   
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -138,18 +136,12 @@ class ViewController: UIViewController {
             boardGameView!.activateGridButtonsForUserInterfaceStyle();
             heavenGradientLayer!.configureForUserInterfaceStyle();
             settingsButton!.setStyle();
-            introLabel!.fadeOnDark();
-            boardGameView!.fadeOnDark();
-            colorOptionsView!.fadeOnDark();
         }
         // Detected A Dark User Interface Style
         else {
             boardGameView!.activateGridButtonsForUserInterfaceStyle();
             heavenGradientLayer!.configureForUserInterfaceStyle();
             settingsButton!.setStyle();
-            introLabel!.fadeOnLight();
-            boardGameView!.fadeOnLight();
-            colorOptionsView!.fadeOnLight();
         }
     }
     

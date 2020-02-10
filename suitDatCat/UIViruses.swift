@@ -14,52 +14,39 @@ class UIViruses {
     var boardGameView:UIView? = nil;
     var mainView:UIView? = nil;
     
-    init(boardGameView:UIView, mainView:UIView){
-        self.boardGameView = boardGameView;
+    init(mainView:UIView){
         self.mainView = mainView;
     }
     
     func buildViruses( unitView:CGFloat) {
         // Calculate side and spacing lengths of virus
-        let virusesSpacingLength:CGFloat = boardGameView!.frame.width - ((unitView * 2.0) * 3.0);
-        let virusSpacingLength:CGFloat = virusesSpacingLength / 4.0;
         let virusSideLength:CGFloat = unitView * 2.0;
-        // Create variables to store temporary virus coordinates
+        
+        // Total Spacing Available
+        let totalWidthSpacing:CGFloat = mainView!.frame.width - (virusSideLength * 5.0);
+        let totalHeightSpacing:CGFloat = mainView!.frame.height - (virusSideLength * 6.0);
+        
+        // Virus Spacing Length
+        let virusWidthSpacing:CGFloat = totalWidthSpacing / 5.0;
+        let virusHeightSpacing:CGFloat = totalHeightSpacing / 6.7;
+        
         var x:CGFloat = 0.0;
         var y:CGFloat = 0.0;
-        // Position viruses
-        for side in 0..<4{
-            if (side == 0) {
-                x = boardGameView!.frame.minX
-                y = boardGameView!.frame.minY - (unitView * 2.0);
-            } else if (side == 1) {
-                x = boardGameView!.frame.minX;
-                y = boardGameView!.frame.minY + boardGameView!.frame.height;
-            } else if (side == 2) {
-                x = boardGameView!.frame.minX - (unitView * 2.0);
-                y = boardGameView!.frame.minY;
-            } else {
-                x = boardGameView!.frame.minX + boardGameView!.frame.width;
-                y = boardGameView!.frame.minY;
-            }
-            for _ in 0..<3{
-                if (side == 0 || side == 1){
-                    x += virusSpacingLength;
-                } else {
-                    y += virusSpacingLength;
-                }
-                let virus:UICButton = UICButton(parentView: mainView!, x: x, y: y, width: unitView * 2.0, height: unitView * 2.0, backgroundColor: .clear);
-                virus.alpha = 0.0;
+        
+        for _ in 0..<5 {
+            x += virusWidthSpacing;
+            for _ in 0..<6 {
+                y += virusHeightSpacing;
+                let virus = UICButton(parentView: mainView!, x: x, y: y, width: virusSideLength, height: virusSideLength, backgroundColor: .clear);
                 virus.setVirus();
-                if (side == 0 || side == 1){
-                    x += virusSideLength;
-                } else {
-                    y += virusSideLength;
-                }
+                virus.setCurrentVirusAnimation();
                 virusesCollection.append(virus);
+                y += virusSideLength;
             }
+            x += virusSideLength;
+            y = 0;
         }
-        animate();
+        
     }
     
     func show(){
@@ -73,10 +60,9 @@ class UIViruses {
     func centerize(){
         for virus in self.virusesCollection {
             UIView.animate(withDuration: 0.25, delay:0.0, options: [.curveEaseInOut], animations: {
-                let xDistance:CGFloat = self.boardGameView!.frame.minX + (self.boardGameView!.center.x / 2.0) - virus.frame.minX;
-                let yDistance:CGFloat = self.boardGameView!.frame.minY + (self.boardGameView!.center.y / 2.0) - virus.frame.minY;
+                let xDistance:CGFloat = self.mainView!.center.x - virus.frame.midX;
+                let yDistance:CGFloat = self.mainView!.center.y - virus.frame.midY;
                 virus.transform = virus.transform.translatedBy(x: xDistance, y: yDistance);
-                self.mainView!.bringSubviewToFront(virus);
             }, completion: { _ in
                 UIView.animate(withDuration: 1.5, delay:0.125, options: [.curveEaseInOut], animations: {
                     virus.frame = virus.originalFrame!;

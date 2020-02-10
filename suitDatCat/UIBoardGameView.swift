@@ -38,18 +38,6 @@ class UIBoardGameView: UIView {
        })
     }
     
-    func fadeOnDark() {
-        UIView.animate(withDuration: 0.0625, delay: 0.0, options: .curveEaseIn, animations: {
-            super.backgroundColor = UIColor.white;
-        })
-    }
-    
-    func fadeOnLight(){
-        UIView.animate(withDuration: 0.0625, delay: 0.0, options: .curveEaseIn, animations: {
-            super.backgroundColor = UIColor.black;
-        })
-    }
-    
     func buildBoardGame(){
         selectAnAvailableColor();
         randomlySelectGridColors();

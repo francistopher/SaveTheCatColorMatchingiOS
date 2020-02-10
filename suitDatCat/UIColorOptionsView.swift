@@ -31,18 +31,6 @@ class UIColorOptionsView: UIView {
           super.alpha = 1.0;
       })
     }
-
-    func fadeOnDark() {
-       UIView.animate(withDuration: 0.0625, delay: 0.0, options: .curveEaseIn, animations: {
-           super.backgroundColor = UIColor.white;
-       })
-    }
-
-    func fadeOnLight(){
-       UIView.animate(withDuration: 0.0625, delay: 0.0, options: .curveEaseIn, animations: {
-           super.backgroundColor = UIColor.black;
-       })
-    }
     
     func selectColorsForSelection(){
         let rowsAndColumns:[Int] = boardGameView!.currentStageRowsAndColumns(currentStage: boardGameView!.currentStage);

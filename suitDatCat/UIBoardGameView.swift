@@ -451,7 +451,11 @@ class UIBoardGameView: UIView {
         let rowsAndColumns:[Int] = currentStageRowsAndColumns(currentStage: currentStage);
         for row in 0..<rowsAndColumns[0] {
             for column in 0..<rowsAndColumns[1] {
-                gridButtons[row][column].setCat(named: "", stage: 5);
+                if (gridButtons.count == 0) {
+                    dispersedGridButtons[row][column].setCat(named: "", stage: 5);
+                } else {
+                    gridButtons[row][column].setCat(named: "", stage: 5);
+                }
             }
         }
     }

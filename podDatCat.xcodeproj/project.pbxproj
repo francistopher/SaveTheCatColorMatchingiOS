@@ -22,6 +22,7 @@
 		B88F996923F06801003ED805 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B88F996823F06801003ED805 /* ViewController.swift */; };
 		B88F996B23F0685E003ED805 /* lightDeadCat.png in Resources */ = {isa = PBXBuildFile; fileRef = B88F996A23F0685E003ED805 /* lightDeadCat.png */; };
 		B88F996D23F09BB4003ED805 /* UISettingsButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B88F996C23F09BB4003ED805 /* UISettingsButton.swift */; };
+		B88F996F23F100FC003ED805 /* virus.png in Resources */ = {isa = PBXBuildFile; fileRef = B88F996E23F100FB003ED805 /* virus.png */; };
 		B8AE017123ECB180007A6142 /* UICenterKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8AE017023ECB180007A6142 /* UICenterKit.swift */; };
 		B8AE017323ECB25C007A6142 /* UICLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8AE017223ECB25C007A6142 /* UICLabel.swift */; };
 		B8AE017523ECB758007A6142 /* UICView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8AE017423ECB758007A6142 /* UICView.swift */; };
@@ -48,6 +49,7 @@
 		B88F996823F06801003ED805 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		B88F996A23F0685E003ED805 /* lightDeadCat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lightDeadCat.png; sourceTree = "<group>"; };
 		B88F996C23F09BB4003ED805 /* UISettingsButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UISettingsButton.swift; sourceTree = "<group>"; };
+		B88F996E23F100FB003ED805 /* virus.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = virus.png; sourceTree = "<group>"; };
 		B8AE017023ECB180007A6142 /* UICenterKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UICenterKit.swift; sourceTree = "<group>"; };
 		B8AE017223ECB25C007A6142 /* UICLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UICLabel.swift; sourceTree = "<group>"; };
 		B8AE017423ECB758007A6142 /* UICView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UICView.swift; sourceTree = "<group>"; };
@@ -86,6 +88,7 @@
 		B833544A23EC8F0B00835672 /* suitDatCat */ = {
 			isa = PBXGroup;
 			children = (
+				B88F996E23F100FB003ED805 /* virus.png */,
 				B88F996823F06801003ED805 /* ViewController.swift */,
 				B88F995C23F0674D003ED805 /* darkDeadCat.png */,
 				B88F996023F0674D003ED805 /* darkSmilingCat.png */,
@@ -175,6 +178,7 @@
 				B88F996623F0674D003ED805 /* darkSmilingCat.png in Resources */,
 				B88F996B23F0685E003ED805 /* lightDeadCat.png in Resources */,
 				B88F996723F0674D003ED805 /* darkWavingSmilingCat.png in Resources */,
+				B88F996F23F100FC003ED805 /* virus.png in Resources */,
 				B833545823EC8F1400835672 /* Assets.xcassets in Resources */,
 				B88F996223F0674D003ED805 /* darkDeadCat.png in Resources */,
 				B833545323EC8F0B00835672 /* Main.storyboard in Resources */,

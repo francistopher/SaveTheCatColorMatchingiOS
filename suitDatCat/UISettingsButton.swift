@@ -192,20 +192,22 @@ class UISettingsButton:UIButton {
             self.settingsMenu!.backgroundColor = UIColor.white;
             // Settings menu title
             self.settingsTitle!.layer.borderColor = UIColor.black.cgColor;
+            self.settingsTitle!.textColor! = UIColor.white;
             // Restart button in white
-            self.restartButton!.setTitleColor(UIColor.white, for: .normal);
-            self.restartButton!.backgroundColor = UIColor.black;
+            self.restartButton!.setTitleColor(UIColor.black, for: .normal);
+            self.restartButton!.backgroundColor = UIColor.white;
             // bak2sqr1 button in white
-            self.bak2sqr1Label!.textColor = UIColor.black;
+            self.bak2sqr1Label!.textColor = UIColor.white;
+            self.bak2sqr1Label!.backgroundColor = UIColor.black;
             // Pressure button in white
-            self.pressureLabel!.textColor = UIColor.white;
-            self.pressureLabel!.backgroundColor = UIColor.black;
+            self.pressureLabel!.textColor = UIColor.black;
+            self.pressureLabel!.backgroundColor = UIColor.white;
             // Stats button in white
-            self.statsButton!.setTitleColor(UIColor.black, for: .normal);
-            self.statsButton!.backgroundColor = UIColor.white;
+            self.statsButton!.setTitleColor(UIColor.white, for: .normal);
+            self.statsButton!.backgroundColor = UIColor.black;
             // Multiplayer button in white
-            self.multiplayerButton!.setTitleColor(UIColor.white, for: .normal);
-            self.multiplayerButton!.backgroundColor = UIColor.black;
+            self.multiplayerButton!.setTitleColor(UIColor.black, for: .normal);
+            self.multiplayerButton!.backgroundColor = UIColor.white;
         } else {
             // Setting button colors
             self.setTitleColor(UIColor.white, for: .normal);
@@ -215,20 +217,22 @@ class UISettingsButton:UIButton {
             self.settingsMenu!.backgroundColor = UIColor.black;
             // Settings menu title
             self.settingsTitle!.layer.borderColor = UIColor.white.cgColor;
+            self.settingsTitle!.textColor! = UIColor.black;
             // Restart button in black
-            self.restartButton!.setTitleColor(UIColor.black, for: .normal);
-            self.restartButton!.backgroundColor = UIColor.white;
+            self.restartButton!.setTitleColor(UIColor.white, for: .normal);
+            self.restartButton!.backgroundColor = UIColor.black;
             // bak2sqr1 button in black
-            self.bak2sqr1Label!.textColor = UIColor.white;
+            self.bak2sqr1Label!.textColor = UIColor.black;
+            self.bak2sqr1Label!.backgroundColor = UIColor.white;
             // Pressure button in black
-            self.pressureLabel!.textColor = UIColor.black;
-            self.pressureLabel!.backgroundColor = UIColor.white;
+            self.pressureLabel!.textColor = UIColor.white;
+            self.pressureLabel!.backgroundColor = UIColor.black;
             // Stats butting in black
-            self.statsButton!.setTitleColor(UIColor.white, for: .normal);
-            self.statsButton!.backgroundColor = UIColor.black;
+            self.statsButton!.setTitleColor(UIColor.black, for: .normal);
+            self.statsButton!.backgroundColor = UIColor.white;
             // Multiplayer button in black
-            self.multiplayerButton!.setTitleColor(UIColor.black, for: .normal);
-            self.multiplayerButton!.backgroundColor = UIColor.white;
+            self.multiplayerButton!.setTitleColor(UIColor.white, for: .normal);
+            self.multiplayerButton!.backgroundColor = UIColor.black;
         }
         
     }

@@ -353,8 +353,9 @@ class UIBoardGameView: UIView {
         }
     }
     
-    func reset(promote:Bool){
+    func restart(promote:Bool){
         resetGame(promote: promote);
+        viruses!.centerize();
         currentStage = 1;
         loadGridButtonsToDispersedGridButtons();
         colorOptionsView!.loadSelectionButtonsToSelectedButtons();

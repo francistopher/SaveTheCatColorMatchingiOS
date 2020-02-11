@@ -76,7 +76,7 @@ class ViewController: UIViewController {
     
     
     @objc func resetGrid(sender:UICButton){
-        boardGameView!.reset(promote: false);
+        boardGameView!.restart(promote: false);
     }
     
     func configureHeavenGradientLayer() {
@@ -129,7 +129,7 @@ class ViewController: UIViewController {
         viruses = UIViruses(mainView: mainViewController);
         viruses!.buildViruses(unitView: unitView);
     }
-  
+    
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         // Detected A Light User Interface Style

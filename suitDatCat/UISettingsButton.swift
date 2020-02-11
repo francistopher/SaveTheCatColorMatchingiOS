@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import SwiftUI
 import UIKit
 
 class UISettingsButton:UIButton {
@@ -34,8 +35,13 @@ class UISettingsButton:UIButton {
 
     var settingsTitle:UICLabel? = nil;
     var restartButton:UICButton? = nil;
-    var bak2sqr1Label:UICLabel? = nil;
-    var pressureLabel:UICLabel? = nil;
+    
+    var bak2sqr1ButtonAsALabel:UICButton? = nil;
+    var bak2sqr1Switch:UICSwitch? = nil;
+    
+    var pressureButtonAsALabel:UICButton? = nil;
+    var pressureSwitch:UICSwitch? = nil;
+    
     var statsButton:UICButton? = nil;
     var multiplayerButton:UICButton? = nil;
     
@@ -52,7 +58,7 @@ class UISettingsButton:UIButton {
         self.titleLabel!.font = UIFont.boldSystemFont(ofSize: height / 2.0);
         parentView.addSubview(self);
         configureSettingsMenu(parentView:parentView);
-        self.cellFrame = CGRect(x:0, y:self.layer.borderWidth, width:settingsMenu!.frame.width,
+        self.cellFrame = CGRect(x:0.0, y:0.0, width:settingsMenu!.frame.width,
                                 height: settingsMenu!.frame.height / 6.0);
         configureTitleLabel();
         configureRestartButton();
@@ -74,11 +80,10 @@ class UISettingsButton:UIButton {
     }
     
     func configureRestartButton(){
-        restartButton = UICButton(parentView: settingsMenu!, x: 0.0, y: cellFrame!.height + cellFrame!.minY, width: cellFrame!.width, height: cellFrame!.height, backgroundColor: .clear);
+        restartButton = UICButton(parentView: settingsMenu!, x: 0.0, y: cellFrame!.height, width: cellFrame!.width, height: cellFrame!.height, backgroundColor: .clear);
         restartButton!.setTitle("Restart", for: .normal);
         restartButton!.titleLabel!.font = UIFont.boldSystemFont(ofSize: restartButton!.frame.height * 0.375);
         settingsMenu!.addSubview(restartButton!);
-        restartButton!.addTarget(self, action: #selector(restartButtonSelector), for: .touchUpInside);
         restartButton!.layer.cornerRadius = 0.0;
     }
     
@@ -88,37 +93,59 @@ class UISettingsButton:UIButton {
        }
     
     func configureBak2Sqr1Label(){
-        bak2sqr1Label = UICLabel(parentView: settingsMenu!, x: 0.0, y: cellFrame!.height * 2 + cellFrame!.minY, width: cellFrame!.width, height: cellFrame!.height);
-        let spacesCount:Int = Int(cellFrame!.width / 100.0) * 2;
+        bak2sqr1ButtonAsALabel = UICButton(parentView: settingsMenu!, x: 0.0, y: cellFrame!.height * 2, width: cellFrame!.width, height: cellFrame!.height, backgroundColor: .clear);
+        let spacesCount:Int = Int(bak2sqr1ButtonAsALabel!.frame.width / 100.0) * 2;
         var text:String = "";
         for _ in 0..<spacesCount {
             text += " ";
         }
-        bak2sqr1Label!.text = text + "bak2sqr1";
-        bak2sqr1Label!.font = UIFont.boldSystemFont(ofSize: bak2sqr1Label!.frame.height * 0.375);
-        bak2sqr1Label!.layer.cornerRadius = 0.0;
-        bak2sqr1Label!.textAlignment = NSTextAlignment.left;
-        
-//        let bak2sqr1Switch:UICSwitch = UICSwitch(parentView: bak2sqr1Label!, x: 0, y: 0, width: bak2sqr1Label!.frame.width * 0.75, height: bak2sqr1Label!.frame.height * 0.75, backgroundColor: .clear);
-//        UICenterKit.centerWithHorizontalDisplacement(childView: bak2sqr1Switch, parentRect: bak2sqr1Label!.frame, childRect: bak2sqr1Switch.frame, horizontalDisplacement: bak2sqr1Label!.frame.width * 0.25);
-//        bak2sqr1Switch.setOn(true, animated: true);
+        bak2sqr1ButtonAsALabel!.setTitle(text + "Bak2sqr1", for: .normal);
+        bak2sqr1ButtonAsALabel!.titleLabel!.font = UIFont.boldSystemFont(ofSize: bak2sqr1ButtonAsALabel!.frame.height * 0.375);
+        bak2sqr1ButtonAsALabel!.layer.cornerRadius = 0.0;
+        bak2sqr1ButtonAsALabel!.contentHorizontalAlignment = UIControl.ContentHorizontalAlignment.left;
+        configureBak2sqr1Switch();
+    }
+    
+    func configureBak2sqr1Switch(){
+        bak2sqr1Switch = UICSwitch(parentView: bak2sqr1ButtonAsALabel!,x: 0, y: 0, width: bak2sqr1ButtonAsALabel!.frame.height / 2.0, height: bak2sqr1ButtonAsALabel!.frame.height / 2.0, tintColor: UIColor.systemRed, onTintColor: UIColor.systemGreen);
+        UICenterKit.centerWithHorizontalDisplacement(childView: bak2sqr1Switch!, parentRect: bak2sqr1ButtonAsALabel!.frame, childRect: bak2sqr1Switch!.frame, horizontalDisplacement: bak2sqr1ButtonAsALabel!.frame.width * 0.375);
+        bak2sqr1Switch!.addTarget(self, action: #selector(bak2sqr1Selector), for: .valueChanged);
+    }
+    
+    @objc func bak2sqr1Selector(){
+        if (bak2sqr1Switch!.isOn){
+            
+        }
     }
     
     func configureUnderPressureLabel(){
-        pressureLabel = UICLabel(parentView: settingsMenu!, x: 0.0, y: cellFrame!.height * 3 + cellFrame!.minY, width: cellFrame!.width, height: cellFrame!.height);
+        pressureButtonAsALabel = UICButton(parentView: settingsMenu!, x: 0.0, y: cellFrame!.height * 3, width: cellFrame!.width, height: cellFrame!.height, backgroundColor: .clear);
         let spacesCount:Int = Int(cellFrame!.width / 100.0) * 2;
         var text:String = " ";
         for _ in 0..<spacesCount {
             text += " ";
         }
-        pressureLabel!.text = text + "pressure";
-        pressureLabel!.font = UIFont.boldSystemFont(ofSize: bak2sqr1Label!.frame.height * 0.375);
-        pressureLabel!.layer.cornerRadius = 0.0;
-        pressureLabel!.textAlignment = NSTextAlignment.left;
+        pressureButtonAsALabel!.setTitle(text + "Pressure", for: .normal);
+        pressureButtonAsALabel!.titleLabel!.font = UIFont.boldSystemFont(ofSize: bak2sqr1ButtonAsALabel!.frame.height * 0.375);
+        pressureButtonAsALabel!.layer.cornerRadius = 0.0;
+        pressureButtonAsALabel!.contentHorizontalAlignment = UIControl.ContentHorizontalAlignment.left;
+        configurePressureSwitch();
+    }
+    
+    func configurePressureSwitch(){
+        pressureSwitch = UICSwitch(parentView: pressureButtonAsALabel!, x: 0.0, y: 0.0, width: pressureButtonAsALabel!.frame.height / 2.0, height: pressureButtonAsALabel!.frame.height / 2.0, tintColor: UIColor.systemRed, onTintColor: UIColor.systemGreen);
+        UICenterKit.centerWithHorizontalDisplacement(childView: pressureSwitch!, parentRect: pressureButtonAsALabel!.frame, childRect: pressureSwitch!.frame, horizontalDisplacement: pressureButtonAsALabel!.frame.width * 0.375);
+        pressureSwitch!.addTarget(self, action: #selector(pressureSelector), for: .valueChanged);
+    }
+    
+    @objc func pressureSelector() {
+        if (pressureSwitch!.isOn) {
+            
+        }
     }
     
     func configureStatsButton(){
-        statsButton = UICButton(parentView: settingsMenu!, x: 0.0, y: cellFrame!.height * 4 + cellFrame!.minY, width: cellFrame!.width, height: cellFrame!.height, backgroundColor: .clear);
+        statsButton = UICButton(parentView: settingsMenu!, x: 0.0, y: cellFrame!.height * 4, width: cellFrame!.width, height: cellFrame!.height, backgroundColor: .clear);
         statsButton!.setTitle("Stats", for: .normal);
         statsButton!.layer.cornerRadius = 0.0;
         statsButton!.titleLabel!.font = UIFont.boldSystemFont(ofSize: statsButton!.frame.height * 0.375);
@@ -126,7 +153,7 @@ class UISettingsButton:UIButton {
     }
     
     func configureMultiplayerButton(){
-        multiplayerButton = UICButton(parentView: settingsMenu!, x: 0.0, y: cellFrame!.height * 5 + cellFrame!.minY, width: cellFrame!.width, height: cellFrame!.height, backgroundColor: .clear);
+        multiplayerButton = UICButton(parentView: settingsMenu!, x: 0.0, y: cellFrame!.height * 5, width: cellFrame!.width, height: cellFrame!.height, backgroundColor: .clear);
         multiplayerButton!.setTitle("Multiplayer", for: .normal);
         multiplayerButton!.layer.cornerRadius = settingsMenu!.layer.cornerRadius;
         multiplayerButton!.layer.maskedCorners = [.layerMaxXMaxYCorner, .layerMinXMaxYCorner];
@@ -197,11 +224,11 @@ class UISettingsButton:UIButton {
             self.restartButton!.setTitleColor(UIColor.black, for: .normal);
             self.restartButton!.backgroundColor = UIColor.white;
             // bak2sqr1 button in white
-            self.bak2sqr1Label!.textColor = UIColor.white;
-            self.bak2sqr1Label!.backgroundColor = UIColor.black;
+            self.bak2sqr1ButtonAsALabel!.setTitleColor(UIColor.white, for: .normal);
+            self.bak2sqr1ButtonAsALabel!.backgroundColor = UIColor.black;
             // Pressure button in white
-            self.pressureLabel!.textColor = UIColor.black;
-            self.pressureLabel!.backgroundColor = UIColor.white;
+            self.pressureButtonAsALabel!.setTitleColor(UIColor.black, for: .normal);
+            self.pressureButtonAsALabel!.backgroundColor = UIColor.white;
             // Stats button in white
             self.statsButton!.setTitleColor(UIColor.white, for: .normal);
             self.statsButton!.backgroundColor = UIColor.black;
@@ -222,11 +249,11 @@ class UISettingsButton:UIButton {
             self.restartButton!.setTitleColor(UIColor.white, for: .normal);
             self.restartButton!.backgroundColor = UIColor.black;
             // bak2sqr1 button in black
-            self.bak2sqr1Label!.textColor = UIColor.black;
-            self.bak2sqr1Label!.backgroundColor = UIColor.white;
+            self.bak2sqr1ButtonAsALabel!.setTitleColor(UIColor.black, for: .normal);
+            self.bak2sqr1ButtonAsALabel!.backgroundColor = UIColor.white;
             // Pressure button in black
-            self.pressureLabel!.textColor = UIColor.white;
-            self.pressureLabel!.backgroundColor = UIColor.black;
+            self.pressureButtonAsALabel!.setTitleColor(UIColor.white, for: .normal);
+            self.pressureButtonAsALabel!.backgroundColor = UIColor.black;
             // Stats butting in black
             self.statsButton!.setTitleColor(UIColor.black, for: .normal);
             self.statsButton!.backgroundColor = UIColor.white;

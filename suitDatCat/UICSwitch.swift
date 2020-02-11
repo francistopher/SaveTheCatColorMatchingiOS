@@ -16,11 +16,14 @@ class UICSwitch:UISwitch {
         fatalError("init(coder:) has not been implemented")
     }
     
-    init(parentView:UIView, x:CGFloat, y:CGFloat, width:CGFloat, height:CGFloat, backgroundColor:UIColor) {
+    init(parentView:UIView, x:CGFloat, y:CGFloat, width:CGFloat, height:CGFloat, tintColor:UIColor, onTintColor:UIColor) {
         super.init(frame: CGRect(x: x, y: y, width: width, height: height));
         setStyle();
-        self.tintColor = UIColor.systemRed;
-        self.onTintColor = UIColor.systemGreen;
+        self.tintColor = tintColor;
+        self.onTintColor = onTintColor;
+        self.layer.cornerRadius = self.frame.height / 2.0;
+        self.backgroundColor = tintColor;
+        self.addTarget(self, action: #selector(generalSelector), for: .valueChanged);
         parentView.addSubview(self);
     }
     
@@ -30,6 +33,14 @@ class UICSwitch:UISwitch {
         }
         else {
             self.thumbTintColor = UIColor.black;
+        }
+    }
+    
+    @objc func generalSelector(){
+        if (self.isOn) {
+            self.backgroundColor = self.onTintColor;
+        } else {
+            self.backgroundColor = self.tintColor;
         }
     }
     

@@ -38,6 +38,7 @@ class UISettingsButton:UIButton {
     
     var bak2sqr1ButtonAsALabel:UICButton? = nil;
     var bak2sqr1Switch:UICSwitch? = nil;
+    var invokedByPressureSwitch:Bool = false;
     
     var pressureButtonAsALabel:UICButton? = nil;
     var pressureSwitch:UICSwitch? = nil;
@@ -85,6 +86,7 @@ class UISettingsButton:UIButton {
         restartButton!.titleLabel!.font = UIFont.boldSystemFont(ofSize: restartButton!.frame.height * 0.375);
         settingsMenu!.addSubview(restartButton!);
         restartButton!.layer.cornerRadius = 0.0;
+        restartButton!.addTarget(self, action: #selector(restartButtonSelector), for: .touchUpInside);
     }
     
     @objc func restartButtonSelector() {
@@ -115,6 +117,7 @@ class UISettingsButton:UIButton {
     @objc func bak2sqr1Selector(){
         if (bak2sqr1Switch!.isOn){
             self.boardGameView!.bak2sqr1 = true;
+            invokedByPressureSwitch = false;
         } else {
             self.boardGameView!.bak2sqr1 = false;
         }
@@ -142,9 +145,15 @@ class UISettingsButton:UIButton {
     
     @objc func pressureSelector() {
         if (pressureSwitch!.isOn) {
-            
+            if (!bak2sqr1Switch!.isOn) {
+                print("Set bak2sqr1switch on");
+                bak2sqr1Switch!.setOn(true, animated: true);
+                invokedByPressureSwitch = true;
+            }
         } else {
-            
+            if (invokedByPressureSwitch) {
+                bak2sqr1Switch!.setOn(false, animated: true);
+            }
         }
     }
     

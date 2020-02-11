@@ -38,6 +38,7 @@ class UIViruses {
             for _ in 0..<6 {
                 y += virusHeightSpacing;
                 let virus = UICButton(parentView: mainView!, x: x, y: y, width: virusSideLength, height: virusSideLength, backgroundColor: .clear);
+                virus.alpha = 0.0;
                 virus.setVirus();
                 virus.setCurrentVirusAnimation();
                 virusesCollection.append(virus);
@@ -46,7 +47,6 @@ class UIViruses {
             x += virusSideLength;
             y = 0;
         }
-        
     }
     
     func show(){

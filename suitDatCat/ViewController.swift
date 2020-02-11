@@ -25,7 +25,6 @@ class ViewController: UIViewController {
     var settingsButton:UISettingsButton? = nil;
     var resetButton:UICButton? = nil;
     
-    
     // Add heaven gradient layer
     var heavenGradientLayer:CACGradientLayer? = nil;
     let heavenBlueOnBlack:UIColor = UIColor.white;
@@ -46,12 +45,12 @@ class ViewController: UIViewController {
         configureBoardGameView(userInterfaceStyle:userInterfaceStyle);
         configureColorOptionsView(userInterfaceStyle:userInterfaceStyle);
         configureSettingsButton(userInterfaceStyle:userInterfaceStyle);
+        self.viruses!.show();
         DispatchQueue.main.asyncAfter(deadline: .now() + 4.0) {
             self.boardGameView!.fadeIn();
             self.colorOptionsView!.fadeIn();
             self.boardGameView!.buildBoardGame();
             self.settingsButton!.show();
-            self.viruses!.show();
             // Control all animations when app is foregrounded, backgrounded, and deactivated
             let notificationCenter = NotificationCenter.default;
             notificationCenter.addObserver(self, selector: #selector(self.appMovedToForeground), name: UIApplication.willEnterForegroundNotification, object: nil);
@@ -96,7 +95,7 @@ class ViewController: UIViewController {
     
     func configureIntroLabel(userInterfaceStyle:Int){
         let textColor:UIColor = (userInterfaceStyle == 1 ? UIColor.black : UIColor.white);
-        introLabel = UICLabel(parentView: mainViewController, x: 0, y: 0, width: mainViewWidth * 0.5, height: mainViewHeight * 0.15, backgroundColor: .clear, textColor: textColor, font: UIFont.boldSystemFont(ofSize: 48.0), text: "podDatCat");
+        introLabel = UICLabel(parentView: mainViewController, x: 0, y: 0, width: mainViewWidth * 0.5, height: mainViewHeight * 0.15, backgroundColor: .clear, textColor: textColor, font: UIFont.boldSystemFont(ofSize: unitView * 0.75), text: "podDatCat");
         UICenterKit.center(childView: introLabel!, parentRect: mainViewController.frame, childRect: introLabel!.frame);
         introLabel!.alpha = 0.0;
         introLabel!.fadeInAndOut();
@@ -122,6 +121,8 @@ class ViewController: UIViewController {
         settingsButton = UISettingsButton(parentView: mainViewController, x: unitView, y: unitView, width: unitView * 1.25, height: unitView * 1.25);
         settingsButton!.setStyle();
         settingsButton!.alpha = 0.0;
+        settingsButton!.boardGameView = boardGameView!;
+        settingsButton!.colorOptionsView = colorOptionsView!;
     }
     
     func configureViruses() {

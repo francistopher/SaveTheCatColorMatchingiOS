@@ -95,7 +95,11 @@ class ViewController: UIViewController {
     
     func configureIntroLabel(userInterfaceStyle:Int){
         let textColor:UIColor = (userInterfaceStyle == 1 ? UIColor.black : UIColor.white);
-        introLabel = UICLabel(parentView: mainViewController, x: 0, y: 0, width: mainViewWidth * 0.5, height: mainViewHeight * 0.15, backgroundColor: .clear, textColor: textColor, font: UIFont.boldSystemFont(ofSize: unitView * 0.75), text: "podDatCat");
+        introLabel = UICLabel(parentView: mainViewController, x: 0, y: 0, width: mainViewWidth * 0.5, height: mainViewHeight * 0.15);
+        introLabel!.backgroundColor = .clear;
+        introLabel!.textColor = textColor;
+        introLabel!.font = UIFont.boldSystemFont(ofSize: unitView * 0.75);
+        introLabel!.text = "podDatCat";
         UICenterKit.center(childView: introLabel!, parentRect: mainViewController.frame, childRect: introLabel!.frame);
         introLabel!.alpha = 0.0;
         introLabel!.fadeInAndOut();

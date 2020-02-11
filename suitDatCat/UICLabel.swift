@@ -11,12 +11,8 @@ import UIKit
 
 class UICLabel:UILabel {
     
-    init(parentView:UIView, x:CGFloat, y:CGFloat, width:CGFloat, height:CGFloat, backgroundColor:UIColor, textColor:UIColor, font:UIFont, text:String){
+    init(parentView:UIView, x:CGFloat, y:CGFloat, width:CGFloat, height:CGFloat){
         super.init(frame: CGRect(x: x, y: y, width: width, height: height))
-        super.backgroundColor = backgroundColor;
-        super.textColor = textColor;
-        super.font = font;
-        super.text = text;
         super.textAlignment = NSTextAlignment.center;
         parentView.addSubview(self);
     }

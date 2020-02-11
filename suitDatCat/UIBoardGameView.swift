@@ -357,6 +357,7 @@ class UIBoardGameView: UIView {
     
     func restart(promote:Bool){
         settingsButton!.isEnabled = false;
+        settingsButton!.setTitle("", for: .normal);
         resetGame(promote: promote);
         viruses!.centerize();
         currentStage = 1;
@@ -366,6 +367,7 @@ class UIBoardGameView: UIView {
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.25) {
             self.buildBoardGame();
             self.settingsButton!.isEnabled = true;
+            self.settingsButton!.setTitle("···", for: .normal);
         }
         // Remove dispersed buttons after they've dispersed
         DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
@@ -376,6 +378,7 @@ class UIBoardGameView: UIView {
     
     func promote(promote:Bool){
         settingsButton!.isEnabled = false;
+        settingsButton!.setTitle("", for: .normal);
         resetGame(promote: promote);
         heavenGradientLayer!.configureForHidden(isHidden: false);
         loadGridButtonsToDispersedGridButtons();
@@ -386,6 +389,7 @@ class UIBoardGameView: UIView {
             self.buildBoardGame();
             self.currentStage -= 1;
             self.settingsButton!.isEnabled = true;
+            self.settingsButton!.setTitle("···", for: .normal);
         }
         // Remove selected buttons after they've shrunk
         DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
@@ -398,6 +402,7 @@ class UIBoardGameView: UIView {
     
     func maintain(promote:Bool){
         settingsButton!.isEnabled = false;
+        settingsButton!.setTitle("", for: .normal);
         resetGame(promote: promote);
         viruses!.centerize();
         loadGridButtonsToDispersedGridButtons();
@@ -406,6 +411,7 @@ class UIBoardGameView: UIView {
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.25) {
             self.buildBoardGame();
             self.settingsButton!.isEnabled = true;
+            self.settingsButton!.setTitle("···", for: .normal);
         }
         // Remove dispersed buttons after they've dispersed
         DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {

@@ -31,7 +31,6 @@ class UISettingsButton:UIButton {
     var restartButton:UICButton? = nil;
     var colorOptionsView:UIColorOptionsView? = nil;
     
-    
     var boardGameView:UIBoardGameView? = nil;
     var cellFrame:CGRect? = nil;
     
@@ -51,7 +50,7 @@ class UISettingsButton:UIButton {
         self.cellFrame = CGRect(x:0, y:0, width:settingsMenu!.frame.width, height: settingsMenu!.frame.height / 5.0);
         configureRestartButton();
         setStyle();
-        self.addTarget(self, action: #selector(selector), for: .touchUpInside);
+        self.addTarget(self, action: #selector(settingsMenuSelector), for: .touchUpInside);
     }
     
     
@@ -75,6 +74,7 @@ class UISettingsButton:UIButton {
     
     @objc func restartButtonSelector() {
         boardGameView!.restart(promote: false);
+        self.sendActions(for: .touchUpInside);
     }
     
     func setStyle(){
@@ -112,24 +112,32 @@ class UISettingsButton:UIButton {
         });
     }
     
-    @objc func selector(){
+    @objc func settingsMenuSelector(){
         if(!isPressed){
-            print("Selected");
-            isPressed = true;
-            UIView.animate(withDuration: 1.0, delay: 0.125, options: .curveEaseIn, animations: {
-                self.settingsMenu!.alpha = 1.0;
-            });
-            colorOptionsView!.isUserInteractionEnabled = false;
-            boardGameView!.isUserInteractionEnabled = false;
+            settingsMenuShow();
         }else{
-            print("Unselected");
-            isPressed = false;
-            UIView.animate(withDuration: 1.0, delay: 0.125, options: .curveEaseIn, animations: {
-                self.settingsMenu!.alpha = 0.0;
-            });
-            colorOptionsView!.isUserInteractionEnabled = true;
-            boardGameView!.isUserInteractionEnabled = true;
+            settingsMenuHide();
         }
+    }
+    
+    @objc func settingsMenuShow(){
+        print("Selected");
+        isPressed = true;
+        UIView.animate(withDuration: 1.0, delay: 0.125, options: .curveEaseInOut, animations: {
+            self.settingsMenu!.alpha = 1.0;
+        });
+        colorOptionsView!.isUserInteractionEnabled = false;
+        boardGameView!.isUserInteractionEnabled = false;
+    }
+    
+    @objc func settingsMenuHide(){
+        print("Unselected");
+        isPressed = false;
+        UIView.animate(withDuration: 1.0, delay: 0.125, options: .curveEaseInOut, animations: {
+            self.settingsMenu!.alpha = 0.0;
+        });
+        colorOptionsView!.isUserInteractionEnabled = true;
+        boardGameView!.isUserInteractionEnabled = true;
     }
     
 }

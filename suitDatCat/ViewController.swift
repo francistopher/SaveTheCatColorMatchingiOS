@@ -45,8 +45,8 @@ class ViewController: UIViewController {
         configureBoardGameView(userInterfaceStyle:userInterfaceStyle);
         configureColorOptionsView(userInterfaceStyle:userInterfaceStyle);
         configureSettingsButton(userInterfaceStyle:userInterfaceStyle);
-        self.viruses!.show();
         DispatchQueue.main.asyncAfter(deadline: .now() + 4.0) {
+            self.viruses!.show();
             self.boardGameView!.fadeIn();
             self.colorOptionsView!.fadeIn();
             self.boardGameView!.buildBoardGame();
@@ -123,6 +123,7 @@ class ViewController: UIViewController {
         settingsButton!.alpha = 0.0;
         settingsButton!.boardGameView = boardGameView!;
         settingsButton!.colorOptionsView = colorOptionsView!;
+        boardGameView!.settingsButton = settingsButton!;
     }
     
     func configureViruses() {

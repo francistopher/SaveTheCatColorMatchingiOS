@@ -21,6 +21,8 @@ class UIBoardGameView: UIView {
     var solved:Bool = true;
     var heavenGradientLayer:CACGradientLayer? = nil;
     
+    var settingsButton:UISettingsButton? = nil;
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented");
     }
@@ -354,6 +356,7 @@ class UIBoardGameView: UIView {
     }
     
     func restart(promote:Bool){
+        settingsButton!.isEnabled = false;
         resetGame(promote: promote);
         viruses!.centerize();
         currentStage = 1;
@@ -362,6 +365,7 @@ class UIBoardGameView: UIView {
         // Build board game
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.25) {
             self.buildBoardGame();
+            self.settingsButton!.isEnabled = true;
         }
         // Remove dispersed buttons after they've dispersed
         DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
@@ -371,6 +375,7 @@ class UIBoardGameView: UIView {
     }
     
     func promote(promote:Bool){
+        settingsButton!.isEnabled = false;
         resetGame(promote: promote);
         heavenGradientLayer!.configureForHidden(isHidden: false);
         loadGridButtonsToDispersedGridButtons();
@@ -380,6 +385,7 @@ class UIBoardGameView: UIView {
             self.currentStage += 1;
             self.buildBoardGame();
             self.currentStage -= 1;
+            self.settingsButton!.isEnabled = true;
         }
         // Remove selected buttons after they've shrunk
         DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
@@ -391,6 +397,7 @@ class UIBoardGameView: UIView {
     }
     
     func maintain(promote:Bool){
+        settingsButton!.isEnabled = false;
         resetGame(promote: promote);
         viruses!.centerize();
         loadGridButtonsToDispersedGridButtons();
@@ -398,6 +405,7 @@ class UIBoardGameView: UIView {
         // Build board game
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.25) {
             self.buildBoardGame();
+            self.settingsButton!.isEnabled = true;
         }
         // Remove dispersed buttons after they've dispersed
         DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
@@ -422,7 +430,9 @@ class UIBoardGameView: UIView {
         let rowsAndColumns:[Int] = currentStageRowsAndColumns(currentStage: currentStage);
         for row in 0..<rowsAndColumns[0] {
             for column in 0..<rowsAndColumns[1] {
-                dispersedGridButtons[row][column].removeFromSuperview();
+                if (dispersedGridButtons.count != 0){
+                    dispersedGridButtons[row][column].removeFromSuperview();
+                }
             }
         }
         dispersedGridButtons = [[UICButton]]();

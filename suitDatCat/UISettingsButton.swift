@@ -114,7 +114,9 @@ class UISettingsButton:UIButton {
     
     @objc func bak2sqr1Selector(){
         if (bak2sqr1Switch!.isOn){
-            
+            self.boardGameView!.bak2sqr1 = true;
+        } else {
+            self.boardGameView!.bak2sqr1 = false;
         }
     }
     
@@ -140,6 +142,8 @@ class UISettingsButton:UIButton {
     
     @objc func pressureSelector() {
         if (pressureSwitch!.isOn) {
+            
+        } else {
             
         }
     }

@@ -12,16 +12,24 @@ class UIBoardGameView: UIView {
     
     var colors:[UIColor] = [UIColor.systemGreen, UIColor.systemYellow, UIColor.systemOrange, UIColor.systemRed, UIColor.systemPurple, UIColor.systemBlue];
     var colorOptionsView:UIColorOptionsView? = nil;
+    
     var currentStage:Int = 1;
+    
     var gridButtons:[[UICButton]] = [[UICButton]]();
     var dispersedGridButtons:[[UICButton]] = [[UICButton]]();
+    
     var viruses:UIViruses? = nil;
+    
     var gridColors:[[UIColor]] = [[UIColor]]();
     var availableColors:[UIColor] = [UIColor]();
+    
     var solved:Bool = true;
+    
     var heavenGradientLayer:CACGradientLayer? = nil;
     
     var settingsButton:UISettingsButton? = nil;
+    
+    var bak2sqr1:Bool = false;
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented");
@@ -175,7 +183,11 @@ class UIBoardGameView: UIView {
                 print("Unable to solve puzzle")
                 solved = true;
                 colorOptionsView!.selectedColor = UIColor.lightGray;
-                maintain(promote: false);
+                if (bak2sqr1) {
+                    restart(promote: false);
+                } else {
+                    maintain(promote: false);
+                }
             }
         }
     }

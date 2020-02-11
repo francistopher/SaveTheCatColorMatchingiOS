@@ -23,19 +23,19 @@ class UIViruses {
         let virusSideLength:CGFloat = unitView * 2.0;
         
         // Total Spacing Available
-        let totalWidthSpacing:CGFloat = mainView!.frame.width - (virusSideLength * 5.0);
-        let totalHeightSpacing:CGFloat = mainView!.frame.height - (virusSideLength * 6.0);
+        let totalWidthSpacing:CGFloat = mainView!.frame.width - (virusSideLength * 4.0);
+        let totalHeightSpacing:CGFloat = mainView!.frame.height - (virusSideLength * 5.0);
         
         // Virus Spacing Length
-        let virusWidthSpacing:CGFloat = totalWidthSpacing / 5.0;
-        let virusHeightSpacing:CGFloat = totalHeightSpacing / 6.7;
+        let virusWidthSpacing:CGFloat = totalWidthSpacing / 3.75;
+        let virusHeightSpacing:CGFloat = totalHeightSpacing / 5.75;
         
-        var x:CGFloat = 0.0;
-        var y:CGFloat = 0.0;
+        var x:CGFloat = -virusWidthSpacing * 0.75;
+        var y:CGFloat = -virusHeightSpacing * 0.25;
         
-        for _ in 0..<5 {
+        for _ in 0..<4 {
             x += virusWidthSpacing;
-            for _ in 0..<6 {
+            for _ in 0..<5 {
                 y += virusHeightSpacing;
                 let virus = UICButton(parentView: mainView!, x: x, y: y, width: virusSideLength, height: virusSideLength, backgroundColor: .clear);
                 virus.alpha = 0.0;

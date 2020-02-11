@@ -110,7 +110,7 @@ class UISettingsButton:UIButton {
     
     func configureBak2sqr1Switch(){
         bak2sqr1Switch = UICSwitch(parentView: bak2sqr1ButtonAsALabel!,x: 0, y: 0, width: bak2sqr1ButtonAsALabel!.frame.height / 2.0, height: bak2sqr1ButtonAsALabel!.frame.height / 2.0, tintColor: UIColor.systemRed, onTintColor: UIColor.systemGreen);
-        UICenterKit.centerWithHorizontalDisplacement(childView: bak2sqr1Switch!, parentRect: bak2sqr1ButtonAsALabel!.frame, childRect: bak2sqr1Switch!.frame, horizontalDisplacement: bak2sqr1ButtonAsALabel!.frame.width * 0.375);
+        UICenterKit.centerWithHorizontalDisplacement(childView: bak2sqr1Switch!, parentRect: bak2sqr1ButtonAsALabel!.frame, childRect: bak2sqr1Switch!.frame, horizontalDisplacement: bak2sqr1ButtonAsALabel!.frame.width * 0.25);
         bak2sqr1Switch!.addTarget(self, action: #selector(bak2sqr1Selector), for: .valueChanged);
     }
     
@@ -139,7 +139,7 @@ class UISettingsButton:UIButton {
     
     func configurePressureSwitch(){
         pressureSwitch = UICSwitch(parentView: pressureButtonAsALabel!, x: 0.0, y: 0.0, width: pressureButtonAsALabel!.frame.height / 2.0, height: pressureButtonAsALabel!.frame.height / 2.0, tintColor: UIColor.systemRed, onTintColor: UIColor.systemGreen);
-        UICenterKit.centerWithHorizontalDisplacement(childView: pressureSwitch!, parentRect: pressureButtonAsALabel!.frame, childRect: pressureSwitch!.frame, horizontalDisplacement: pressureButtonAsALabel!.frame.width * 0.375);
+        UICenterKit.centerWithHorizontalDisplacement(childView: pressureSwitch!, parentRect: pressureButtonAsALabel!.frame, childRect: pressureSwitch!.frame, horizontalDisplacement: pressureButtonAsALabel!.frame.width * 0.25);
         pressureSwitch!.addTarget(self, action: #selector(pressureSelector), for: .valueChanged);
     }
     

@@ -52,7 +52,7 @@ class UIColorOptionsView: UIView {
         var currentColumnDisplacement:CGFloat = 0.0;
         for index in 0..<selectionColors.count {
             currentColumnDisplacement += columnGap;
-            currentButton = UICButton(parentView: self, x: currentColumnDisplacement, y: rowGap, width: buttonWidth, height: buttonHeight, backgroundColor: selectionColors[index]);
+            currentButton = UICButton(parentView: self,  frame:CGRect(x: currentColumnDisplacement, y: rowGap, width: buttonWidth, height: buttonHeight), backgroundColor: selectionColors[index]);
             currentButton!.grownAndShrunk();
             currentButton!.shrinked();
             currentButton!.grow();
@@ -78,10 +78,10 @@ class UIColorOptionsView: UIView {
     
     @objc func transitionBackgroundColorOfButtonsToLightGray(){
         let rowsAndColumns:[Int] = boardGameView!.currentStageRowsAndColumns(currentStage: boardGameView!.currentStage);
-        if (!boardGameView!.gridButtons[0][0].backgroundColor!.isEqual(UIColor.lightGray) && boardGameView!.solved){
+        if (!boardGameView!.gridCatButtons[0][0].backgroundColor!.isEqual(UIColor.lightGray) && boardGameView!.solved){
             for rows in 0..<rowsAndColumns[0]{
                 for columns in 0..<rowsAndColumns[1]{
-                    boardGameView!.gridButtons[rows][columns].hide(color:UIColor.lightGray);
+                    boardGameView!.gridCatButtons[rows][columns].fadeBackgroundIn(color:UIColor.lightGray);
                 }
             }
             boardGameView!.solved = false;

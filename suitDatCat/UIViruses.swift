@@ -10,15 +10,15 @@ import SwiftUI
 
 class UIViruses {
     
-    var virusesCollection:[UICButton] = [UICButton]();
-    var boardGameView:UIView? = nil;
+    var virusCollection:[UIVirus] = [UIVirus]();
     var mainView:UIView? = nil;
     
-    init(mainView:UIView){
+    init(mainView:UIView, unitView:CGFloat){
         self.mainView = mainView;
+        buildViruses(unitView: unitView);
     }
     
-    func buildViruses( unitView:CGFloat) {
+    func buildViruses(unitView:CGFloat) {
         // Calculate side and spacing lengths of virus
         let virusSideLength:CGFloat = unitView * 2.0;
         // Total Spacing Available
@@ -30,16 +30,13 @@ class UIViruses {
         // Initial starting coordinates
         var x:CGFloat = -virusWidthSpacing * 0.71875;
         var y:CGFloat = -virusHeightSpacing * 0.125;
-        // Plot viruses
+        // Plot and build viruses
         for _ in 0..<4 {
             x += virusWidthSpacing;
             for _ in 0..<5 {
                 y += virusHeightSpacing;
-                let virus = UICButton(parentView: mainView!, x: x, y: y, width: virusSideLength, height: virusSideLength, backgroundColor: .clear);
-                virus.alpha = 0.0;
-                virus.setVirus();
-                virus.setCurrentVirusAnimation();
-                virusesCollection.append(virus);
+                let virus = UIVirus(parentView: mainView!, frame:CGRect(x: x, y: y, width: virusSideLength, height: virusSideLength));
+                virusCollection.append(virus);
                 y += virusSideLength;
             }
             x += virusSideLength;
@@ -47,34 +44,32 @@ class UIViruses {
         }
     }
     
-    func show(){
+    func fadeIn(){
         // Fade each virus in
-        for virus in self.virusesCollection {
-            UIView.animate(withDuration: 2.0, delay:1.125, options: [.curveEaseInOut], animations: {
-                virus.alpha = 1.0;
-            })
+        for virus in self.virusCollection {
+            virus.fadeIn();
         }
     }
     
-    func centerize(){
+    func translateToCatsAndBack(){
         // Translate each virus to the center of the grid of cats
-        for virus in self.virusesCollection {
-            UIView.animate(withDuration: 0.25, delay:0.0, options: [.curveEaseInOut], animations: {
-                let xDistance:CGFloat = self.mainView!.center.x - virus.frame.midX;
-                let yDistance:CGFloat = self.mainView!.center.y - virus.frame.midY;
-                virus.transform = virus.transform.translatedBy(x: xDistance, y: yDistance);
-            }, completion: { _ in
-                UIView.animate(withDuration: 1.5, delay:0.125, options: [.curveEaseInOut], animations: {
-                    virus.frame = virus.originalFrame!;
-                })
-            })
+        for virus in self.virusCollection {
+            virus.translateToCatsAndBack();
         }
     }
     
-    func animate(){
+    func sway(){
         // Animate each virus
-        for virus in self.virusesCollection {
-            virus.setCurrentVirusAnimation();
+        for virus in self.virusCollection {
+            virus.sway();
         }
     }
+    
+    func hide() {
+        // Hide each virus
+        for virus in self.virusCollection {
+            virus.hide();
+        }
+    }
+    
 }

@@ -46,7 +46,7 @@ class ViewController: UIViewController {
         configureColorOptionsView(userInterfaceStyle:userInterfaceStyle);
         configureSettingsButton(userInterfaceStyle:userInterfaceStyle);
         DispatchQueue.main.asyncAfter(deadline: .now() + 4.0) {
-            self.viruses!.show();
+            self.viruses!.fadeIn();
             self.boardGameView!.fadeIn();
             self.colorOptionsView!.fadeIn();
             self.boardGameView!.buildBoardGame();
@@ -65,15 +65,13 @@ class ViewController: UIViewController {
     
     @objc func appMovedToForeground() {
         self.boardGameView!.resumeGridButtonImageLayerAnimations();
-        self.viruses!.animate();
+        self.viruses!.sway();
         print("App foregrounded");
     }
     @objc func appDeactivated() {
         self.boardGameView!.activateGridButtonsForUserInterfaceStyle();
-        self.viruses!.animate();
         print("App deactivated");
     }
-    
     
     @objc func resetGrid(sender:UICButton){
         boardGameView!.restart(promote: false);
@@ -131,8 +129,9 @@ class ViewController: UIViewController {
     }
     
     func configureViruses() {
-        viruses = UIViruses(mainView: mainViewController);
-        viruses!.buildViruses(unitView: unitView);
+        viruses = UIViruses(mainView: mainViewController, unitView:unitView);
+        viruses!.hide();
+        viruses!.sway();
     }
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {

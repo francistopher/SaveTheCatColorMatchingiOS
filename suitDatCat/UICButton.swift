@@ -11,15 +11,8 @@ import UIKit
 
 class UICButton:UIButton {
     
-    var originalX:CGFloat = 0.0;
-    var originalY:CGFloat = 0.0;
-    var originalWidth:CGFloat = 0.0;
-    var originalHeight:CGFloat = 0.0;
-    
     var shrunkX:CGFloat = 0.0;
     var shrunkY:CGFloat = 0.0;
-    var shrunkWidth:CGFloat = 0.0;
-    var shrunkHeight:CGFloat = 0.0;
     
     var originalFrame:CGRect? = nil;
     var shrunkFrame:CGRect? = nil;
@@ -33,23 +26,19 @@ class UICButton:UIButton {
         fatalError("init(coder:) has not been implemented");
     }
     
-    init(parentView: UIView, x:CGFloat, y:CGFloat, width:CGFloat, height:CGFloat, backgroundColor:UIColor) {
-        super.init(frame:CGRect(x: x, y: y, width: width, height: height));
-        originalX = x;
-        originalY = y;
-        originalWidth = width;
-        originalHeight = height;
-        originalFrame = CGRect(x: x, y: y, width: width, height: height);
+    init(parentView: UIView, frame:CGRect, backgroundColor:UIColor) {
+        super.init(frame:frame);
+        originalFrame = frame;
         originalBackgroundColor = backgroundColor;
         self.backgroundColor = backgroundColor;
-        self.layer.cornerRadius = height / 5.0;
+        self.layer.cornerRadius = self.frame.height / 5.0;
         parentView.addSubview(self);
         self.isSelected = false;
     }
     
     func grow(){
         UIView.animate(withDuration: 1.0, delay: 0.25, options: .curveEaseInOut, animations: {
-            self.frame = CGRect(x: self.originalX, y:self.originalY, width: self.originalWidth, height: self.originalHeight);
+            self.frame = CGRect(x: self.originalFrame!.minX, y:self.originalFrame!.minY, width: self.originalFrame!.width, height: self.originalFrame!.height);
         });
     }
     
@@ -66,17 +55,15 @@ class UICButton:UIButton {
         });
     }
     
-    func show(){
+    func fadeBackgroundIn(){
         UIView.animate(withDuration: 0.5, delay: 0.25, options: .curveEaseIn, animations: {
-        self.backgroundColor = self.originalBackgroundColor!;
+            self.backgroundColor = self.originalBackgroundColor!;
         });
     }
     
     func grownAndShrunk(){
-        originalX = self.frame.minX;
-        originalY = self.frame.minY;
-        shrunkX = self.frame.minX + (originalWidth / 2.0);
-        shrunkY = self.frame.minY + (originalHeight / 2.0);
+        shrunkX = self.frame.minX + (originalFrame!.width / 2.0);
+        shrunkY = self.frame.minY + (originalFrame!.height / 2.0);
     }
     
     func shrinked(){
@@ -101,97 +88,6 @@ class UICButton:UIButton {
             self.isSelected = false;
         }
     }
-    
-    func setCat(named:String, stage:Int){
-        // Save the new color
-        if (named != "") {
-            previousNamed = named;
-        }
-        // Build cat color string
-        var namedCatImage:String = "";
-        if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1){
-            namedCatImage += "dark" + previousNamed;
-        } else{
-            namedCatImage += "light" + previousNamed;
-        }
-        // Clear button background if cat dies
-        if (stage == 2) {
-            self.backgroundColor = UIColor.clear;
-        }
-        if (stage != 4 || stage != 5) {
-            animationStage = stage;
-        }
-        let iconImage:UIImage? = UIImage(named: namedCatImage);
-        self.setImage(iconImage, for: .normal);
-        self.imageView!.contentMode = UIView.ContentMode.scaleAspectFit;
-        if (animationStage == 0){
-            self.imageView!.alpha = 0.0;
-        }
-        var dispatchTime:DispatchTime? = nil ;
-        if (stage == 4){
-            self.imageView!.layer.removeAllAnimations();
-            dispatchTime = .now();
-            self.animationStage = 0;
-        } else if (stage == 1 || stage == 0){
-            dispatchTime = .now() + 1.0;
-        } else {
-            dispatchTime = .now();
-        }
-        DispatchQueue.main.asyncAfter(deadline: dispatchTime!) {
-            UIView.animate(withDuration: 1.0, delay:0.0, options:[.curveEaseInOut], animations: {
-                self.imageView!.alpha = 1.0;
-            });
-            if (self.animationStage == 0){
-                self.setRandomCatAnimation();
-            }
-        }
-    }
-    
-    func setVirus() {
-        let iconImage:UIImage? = UIImage(named: "virus.png");
-        self.setImage(iconImage, for: .normal);
-        self.imageView!.contentMode = UIView.ContentMode.scaleAspectFit;
-        setCurrentVirusAnimation();
-    }
-    
-    func setCurrentVirusAnimation(){
-        var xTranslation:CGFloat = self.frame.width / 7.5;
-        var yTranslation:CGFloat = self.frame.height / 7.5;
-        if (Int.random(in: 0...1) == 1) {
-            xTranslation *= -1;
-        }
-        if (Int.random(in: 0...1) == 1) {
-            yTranslation *= -1;
-        }
-        UIView.animate(withDuration: 1.75, delay: 0.125, options:[.curveEaseInOut, .repeat, .autoreverse], animations: {
-            self.imageView!.transform = self.imageView!.transform.translatedBy(x: xTranslation, y: yTranslation);
-        });
-    }
-    
-    func setRandomCatAnimation() {
-        let randomAnimationSelection:Int = Int.random(in: 0...3);
-        if (randomAnimationSelection > 2){
-            self.imageView!.transform = self.imageView!.transform.rotated(by:-CGFloat.pi / 2.0);
-            UIView.animate(withDuration: 1.75, delay: 0.125, options:[.curveEaseInOut, .repeat, .autoreverse], animations: {
-                self.imageView!.transform = self.imageView!.transform.rotated(by:-CGFloat.pi);
-            });
-        } else if (randomAnimationSelection > 1) {
-            self.imageView!.transform = self.imageView!.transform.rotated(by:CGFloat.pi / 2.0);
-            UIView.animate(withDuration: 1.75, delay: 0.125, options:[.curveEaseInOut, .repeat, .autoreverse], animations: {
-                self.imageView!.transform = self.imageView!.transform.rotated(by:-CGFloat.pi);
-            });
-        } else if (randomAnimationSelection > 0) {
-            UIView.animate(withDuration: 1.75, delay: 0.125, options:[.curveEaseInOut, .repeat, .autoreverse], animations: {
-                self.imageView!.transform = self.imageView!.transform.rotated(by:-CGFloat.pi);
-            });
-        } else {
-            self.imageView!.transform = self.imageView!.transform.rotated(by:-CGFloat.pi / 2.0);
-            UIView.animate(withDuration: 1.75, delay: 0.125, options:[.curveEaseInOut, .repeat, .autoreverse], animations: {
-                self.imageView!.transform = self.imageView!.transform.rotated(by:CGFloat.pi);
-            });
-        }
-    }
-    
-    
+ 
 }
 

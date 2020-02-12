@@ -15,8 +15,8 @@ class UIBoardGameView: UIView {
     
     var currentStage:Int = 1;
     
-    var gridButtons:[[UICButton]] = [[UICButton]]();
-    var dispersedGridButtons:[[UICButton]] = [[UICButton]]();
+    var gridCatButtons:[[UICatButton]] = [[UICatButton]]();
+    var dispersedGridCatButtons:[[UICatButton]] = [[UICatButton]]();
     
     var viruses:UIViruses? = nil;
     
@@ -61,7 +61,6 @@ class UIBoardGameView: UIView {
         let rowsAndColumns:[Int] = currentStageRowsAndColumns(currentStage: currentStage);
         repeat {
             if (availableColors.count == 6 || availableColors.count + 1 > rowsAndColumns[1]) {
-               // --> Reduces complexity
                 break;
           }
           let newAvailableColor:UIColor = colors.randomElement()!;
@@ -144,35 +143,34 @@ class UIBoardGameView: UIView {
         // Sizes
         let buttonWidth:CGFloat = self.frame.width * 0.90 / CGFloat(rowsAndColumns[0]);
         let buttonHeight:CGFloat = self.frame.height * 0.90 / CGFloat(rowsAndColumns[1]);
-        var currentRowDisplacement:CGFloat = 0.0;
-        var currentColumnDisplacement:CGFloat = 0.0;
-        var currentButton:UICButton? = nil;
+        var rowDisplacement:CGFloat = 0.0;
+        var columnDisplacement:CGFloat = 0.0;
+        var catButton:UICatButton? = nil;
         for rows in 0..<rowsAndColumns[0] {
-            currentRowDisplacement += rowGap;
-            currentColumnDisplacement = 0.0;
-            var gridButtonsRow:[UICButton] = [UICButton]();
+            rowDisplacement += rowGap;
+            columnDisplacement = 0.0;
+            var gridButtonsRow:[UICatButton] = [UICatButton]();
             for columns in 0..<rowsAndColumns[1] {
-                currentColumnDisplacement += columnGap;
-                currentButton = UICButton(parentView: self, x: currentRowDisplacement, y: currentColumnDisplacement, width: buttonWidth, height: buttonHeight, backgroundColor: gridColors[rows][columns]);
-                currentButton!.grownAndShrunk();
-                currentButton!.shrinked();
-                currentButton!.grow();
-                currentColumnDisplacement += buttonHeight;
-                currentButton!.addTarget(self, action: #selector(selectGridButton), for: .touchUpInside);
+                columnDisplacement += columnGap;
+                catButton = UICatButton(parentView: self, x: rowDisplacement, y: columnDisplacement,
+                                            width: buttonWidth, height: buttonHeight, backgroundColor: gridColors[rows][columns]);
+                catButton!.grow();
+                columnDisplacement += buttonHeight;
+                catButton!.imageContainerButton!.addTarget(self, action: #selector(selectGridButton), for: .touchUpInside);
                 // Add cat image to current button
-                currentButton!.setCat(named: "SmilingCat.png", stage:0);
-                gridButtonsRow.append(currentButton!);
+                catButton!.setCat(named: "SmilingCat", stage:0);
+                gridButtonsRow.append(catButton!);
             }
-            gridButtons.append(gridButtonsRow);
-            currentRowDisplacement += buttonWidth;
+            gridCatButtons.append(gridButtonsRow);
+            rowDisplacement += buttonWidth;
         }
     }
     
-    @objc func selectGridButton(sender:UICButton){
-        let receiverButton:UICButton = sender;
+    @objc func selectGridButton(catButton:UICButton){
         if (!solved){
-            if (receiverButton.originalBackgroundColor!.cgColor == colorOptionsView!.selectedColor.cgColor){
-                receiverButton.show();
+            if (catButton.originalBackgroundColor!.cgColor == colorOptionsView!.selectedColor.cgColor){
+                catButton.superview!.backgroundColor! = catButton.originalBackgroundColor!;
+                catButton.fadeBackgroundIn();
                 if (isBoardCompleted()){
                     print("Moving to next round!")
                     solved = true;
@@ -196,7 +194,7 @@ class UIBoardGameView: UIView {
         let rowsAndColumns:[Int] = currentStageRowsAndColumns(currentStage: currentStage);
         for rows in 0..<rowsAndColumns[0]{
             for columns in 0..<rowsAndColumns[1]{
-                if (gridButtons[rows][columns].backgroundColor!.cgColor != gridColors[rows][columns].cgColor){
+                if (gridCatButtons[rows][columns].backgroundColor!.cgColor != gridColors[rows][columns].cgColor){
                     return false;
                 }
             }
@@ -206,172 +204,24 @@ class UIBoardGameView: UIView {
     
     func resetGame(promote:Bool){
         let rowsAndColumns:[Int] = currentStageRowsAndColumns(currentStage: currentStage);
-        var targetPoints:[[[CGFloat]]]? = nil;
-        if (!promote) {
-            targetPoints = generateRadialTargetPoints(rows:rowsAndColumns[0], columns:rowsAndColumns[1]);
-        } else {
-            targetPoints = generateElevatedTargetPoints(rows: rowsAndColumns[0], columns: rowsAndColumns[1]);
+        for rows in 0..<rowsAndColumns[0] {
+            for columns in 0..<rowsAndColumns[1] {
+                if (promote) {
+                    gridCatButtons[rows][columns].disperseVertically();
+                } else {
+                    gridCatButtons[rows][columns].disperseRadially();
+                }
+            }
         }
-        disperse(targetPoints:targetPoints!, promote:promote);
         gridColors = [[UIColor]]();
         colorOptionsView!.selectionColors = [UIColor]();
-    }
-    
-    func generateElevatedTargetPoints(rows:Int, columns:Int) -> [[[CGFloat]]] {
-        var elevatedTargetPoints:[[[CGFloat]]] = [[[CGFloat]]]();
-        // Traverse through the rows of grid of buttons
-        for row in 0..<rows {
-            // Build row of target points
-            var rowOfElevatedDispersementTargetPoints:[[CGFloat]] = [[CGFloat]]();
-            // Traverse through the columns of grid of buttons
-            for column in 0..<columns {
-                // Save the target coordinates in an array
-                var coordinateTargetPoints:[CGFloat] = [CGFloat]();
-                // Save current grid button
-                let gridButton:UICButton = gridButtons[row][column];
-                // Save the new displaced bounds of the grid button
-                let x:CGFloat = gridButton.frame.minX + self.frame.minX;
-                let y:CGFloat = gridButton.frame.minY + self.frame.minY;
-                let width:CGFloat = gridButton.frame.width;
-                let height:CGFloat = gridButton.frame.height;
-                // Save a frame representing the displacement
-                let displacedFrame:CGRect = CGRect(x: x, y: y, width: width, height: height);
-                // Displace the frame onto the main view controller
-                gridButton.frame = displacedFrame;
-                self.superview!.addSubview(gridButton);
-                // Add waving cats image to button
-                gridButton.setCat(named: "WavingSmilingCat.png", stage: 1);
-                // Generate target points and angle
-                let angle:CGFloat = CGFloat(Int.random(in: 0..<30));
-                let xTargetPoint:CGFloat = generateElevatedTargetX(parentFrame:self.superview!.frame, childFrame:gridButton.frame, angle:angle);
-                let yTargetPoint:CGFloat = generateElevatedTargetY(parentFrame:self.superview!.frame, childFrame:gridButton.frame, angle:angle);
-                // Build coordinate target points
-               coordinateTargetPoints.append(xTargetPoint);
-               coordinateTargetPoints.append(yTargetPoint);
-               // Add coordinate target points to row
-               rowOfElevatedDispersementTargetPoints.append(coordinateTargetPoints);
-            }
-            // Add row to radial dispersement target points
-            elevatedTargetPoints.append(rowOfElevatedDispersementTargetPoints);
-        }
-        return elevatedTargetPoints;
-    }
-    
-    func generateElevatedTargetX(parentFrame:CGRect, childFrame:CGRect, angle:CGFloat) -> CGFloat{
-        var targetX:CGFloat = parentFrame.width / 2.0;
-        if (angle < 15.0) {
-            targetX -= childFrame.width;
-        } else {
-            targetX += childFrame.width;
-        }
-        targetX *= cos((CGFloat.pi * angle) / 180.0);
-        return targetX;
-    }
-    
-    func generateElevatedTargetY(parentFrame:CGRect, childFrame:CGRect, angle:CGFloat) -> CGFloat{
-        var targetY:CGFloat = -parentFrame.height;
-        targetY += CGFloat(Int.random(in: 0..<Int(parentFrame.height/2.0)));
-        return targetY;
-    }
-    
-    func generateRadialTargetPoints(rows:Int, columns:Int) -> [[[CGFloat]]] {
-        // Angle increment
-        let angleIncrement:CGFloat = 360.0 / CGFloat(rows * columns);
-        // Starting angle
-        var currentAngle:CGFloat = CGFloat(Int.random(in: 0...360));
-        // Save radial dispersement target points
-        var radialDispersementTargetPoints:[[[CGFloat]]] = [[[CGFloat]]]();
-        // Traverse through the rows of grid of buttons
-        for row in 0..<rows {
-            // Build row of target points
-            var rowOfRadialDispersemenTargetPoints:[[CGFloat]] = [[CGFloat]]();
-            // Traverse through the columns of grid of buttons
-            for column in 0..<columns {
-                // Save target coordinates in an array
-                var coordinateTargetPoints:[CGFloat] = [CGFloat]();
-                // Save current grid button
-                let gridButton:UICButton = gridButtons[row][column];
-                // Save the new displaced bounds of the grid button
-                let x:CGFloat = gridButton.frame.minX + self.frame.minX;
-                let y:CGFloat = gridButton.frame.minY + self.frame.minY;
-                let width:CGFloat = gridButton.frame.width;
-                let height:CGFloat = gridButton.frame.height;
-                // Save a frame representing the displacement
-                let displacedFrame:CGRect = CGRect(x: x, y: y, width: width, height: height);
-                // Displace the frame onto the main view controller
-                gridButton.frame = displacedFrame;
-                self.superview!.addSubview(gridButton);
-                // Add dead cat image to button
-                gridButton.setCat(named: "DeadCat.png", stage: 2);
-                gridButton.imageView!.layer.removeAllAnimations();
-                // Generate target points
-                var xTargetPoint:CGFloat = generateRadialTargetX(parentFrame:gridButton.superview!.frame, childFrame:gridButton.frame, angle:currentAngle);
-                var yTargetPoint:CGFloat = generateRadialTargetY(parentFrame:gridButton.superview!.frame, childFrame:gridButton.frame, angle:currentAngle);
-                if (row % 2 == 0 && column % 2 == 1) {
-                    xTargetPoint *= -1;
-                    yTargetPoint *= -1;
-                }
-                if (row % 2 == 1 && column % 2 == 1) {
-                    xTargetPoint *= -1;
-                }
-                if (row % 2 == 1 && column % 2 == 0) {
-                    yTargetPoint *= -1;
-                }
-                if (column % 2 == 1 && Int.random(in: 1...2) % 2 == 1) {
-                    yTargetPoint *= -1;
-                }
-                // Build coordinate target points
-                coordinateTargetPoints.append(xTargetPoint);
-                coordinateTargetPoints.append(yTargetPoint);
-                // Increment angle
-                currentAngle += angleIncrement;
-                // Add coordinate target points to row
-                rowOfRadialDispersemenTargetPoints.append(coordinateTargetPoints);
-            }
-            // Add row to radial dispersement target points
-            radialDispersementTargetPoints.append(rowOfRadialDispersemenTargetPoints);
-        }
-        return radialDispersementTargetPoints;
-    }
-    
-    func generateRadialTargetX(parentFrame:CGRect, childFrame:CGRect, angle:CGFloat) -> CGFloat {
-        var targetX:CGFloat = childFrame.minX;
-        targetX += parentFrame.width + childFrame.width;
-        targetX *= cos((CGFloat.pi * angle) / 180.0);
-        return targetX;
-    }
-    
-    func generateRadialTargetY(parentFrame:CGRect, childFrame:CGRect, angle:CGFloat) -> CGFloat {
-        var targetY:CGFloat = childFrame.minY;
-        targetY += parentFrame.height + childFrame.height;
-        targetY *= sin((CGFloat.pi * angle) / 180.0);
-        return targetY;
-    }
-    
-    func disperse(targetPoints:[[[CGFloat]]], promote: Bool){
-        for rows in 0..<targetPoints.count {
-            for columns in 0..<targetPoints[rows].count {
-                UIView.animate(withDuration: 2.5, delay: 0.25, options: .curveEaseIn, animations: {
-                    // Save current grid button
-                    let currentButton:UICButton = self.gridButtons[rows][columns];
-                    if (!promote){
-                        // Add rotation
-                        currentButton.transform = currentButton.transform.rotated(by: CGFloat.pi);
-                    }
-                    // Build new frame
-                    let newFrame:CGRect = CGRect(x: targetPoints[rows][columns][0], y: targetPoints[rows][columns][1], width: currentButton.frame.width, height: currentButton.frame.height);
-                    // Disperse grid button
-                    currentButton.frame = newFrame;
-                });
-            }
-        }
     }
     
     func restart(promote:Bool){
         settingsButton!.isEnabled = false;
         settingsButton!.setTitle("", for: .normal);
         resetGame(promote: promote);
-        viruses!.centerize();
+        viruses!.translateToCatsAndBack();
         currentStage = 1;
         loadGridButtonsToDispersedGridButtons();
         colorOptionsView!.loadSelectionButtonsToSelectedButtons();
@@ -416,7 +266,7 @@ class UIBoardGameView: UIView {
         settingsButton!.isEnabled = false;
         settingsButton!.setTitle("", for: .normal);
         resetGame(promote: promote);
-        viruses!.centerize();
+        viruses!.translateToCatsAndBack();
         loadGridButtonsToDispersedGridButtons();
         colorOptionsView!.loadSelectionButtonsToSelectedButtons();
         // Build board game
@@ -435,45 +285,44 @@ class UIBoardGameView: UIView {
     func loadGridButtonsToDispersedGridButtons() {
         let rowsAndColumns:[Int] = currentStageRowsAndColumns(currentStage: currentStage);
         for row in 0..<rowsAndColumns[0] {
-            var currentButtonRow:[UICButton] = [UICButton]();
+            var currentButtonRow:[UICatButton] = [UICatButton]();
             for column in 0..<rowsAndColumns[1] {
-                currentButtonRow.append(gridButtons[row][column]);
+                currentButtonRow.append(gridCatButtons[row][column]);
             }
-            dispersedGridButtons.append(currentButtonRow);
+            dispersedGridCatButtons.append(currentButtonRow);
         }
-        gridButtons = [[UICButton]]();
+        gridCatButtons = [[UICatButton]]();
     }
     
     func removeDispersedButtonsFromSuperView() {
         let rowsAndColumns:[Int] = currentStageRowsAndColumns(currentStage: currentStage);
         for row in 0..<rowsAndColumns[0] {
             for column in 0..<rowsAndColumns[1] {
-                if (dispersedGridButtons.count != 0){
-                    dispersedGridButtons[row][column].removeFromSuperview();
+                if (dispersedGridCatButtons.count != 0){
+                    dispersedGridCatButtons[row][column].removeFromSuperview();
                 }
             }
         }
-        dispersedGridButtons = [[UICButton]]();
+        dispersedGridCatButtons = [[UICatButton]]();
     }
     
     func resumeGridButtonImageLayerAnimations(){
         let rowsAndColumns:[Int] = currentStageRowsAndColumns(currentStage: currentStage);
         for row in 0..<rowsAndColumns[0] {
             for column in 0..<rowsAndColumns[1] {
-                gridButtons[row][column].setCat(named: "", stage: 4);
+                gridCatButtons[row][column].animate(AgainWithoutDelay: true);
             }
         }
-        print("Resumed all animations");
     }
     
     func activateGridButtonsForUserInterfaceStyle() {
         let rowsAndColumns:[Int] = currentStageRowsAndColumns(currentStage: currentStage);
         for row in 0..<rowsAndColumns[0] {
             for column in 0..<rowsAndColumns[1] {
-                if (gridButtons.count == 0) {
-                    dispersedGridButtons[row][column].setCat(named: "", stage: 5);
+                if (gridCatButtons.count == 0) {
+                    dispersedGridCatButtons[row][column].animate(AgainWithoutDelay: false);
                 } else {
-                    gridButtons[row][column].setCat(named: "", stage: 5);
+                    gridCatButtons[row][column].animate(AgainWithoutDelay: false);
                 }
             }
         }
@@ -483,7 +332,7 @@ class UIBoardGameView: UIView {
         let rowsAndColumns:[Int] = currentStageRowsAndColumns(currentStage: currentStage);
         for row in 0..<rowsAndColumns[0] {
             for column in 0..<rowsAndColumns[1] {
-                gridButtons[row][column].imageView!.alpha = 0.0;
+                gridCatButtons[row][column].hideCat();
             }
         }
     }

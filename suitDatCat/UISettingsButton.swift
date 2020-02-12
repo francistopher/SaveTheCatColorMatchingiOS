@@ -81,7 +81,7 @@ class UISettingsButton:UIButton {
     }
     
     func configureRestartButton(){
-        restartButton = UICButton(parentView: settingsMenu!, x: 0.0, y: cellFrame!.height, width: cellFrame!.width, height: cellFrame!.height, backgroundColor: .clear);
+        restartButton = UICButton(parentView: settingsMenu!, frame:CGRect( x: 0.0, y: cellFrame!.height, width: cellFrame!.width, height: cellFrame!.height), backgroundColor: .clear);
         restartButton!.setTitle("Restart", for: .normal);
         restartButton!.titleLabel!.font = UIFont.boldSystemFont(ofSize: restartButton!.frame.height * 0.375);
         settingsMenu!.addSubview(restartButton!);
@@ -95,7 +95,7 @@ class UISettingsButton:UIButton {
        }
     
     func configureBak2Sqr1Label(){
-        bak2sqr1ButtonAsALabel = UICButton(parentView: settingsMenu!, x: 0.0, y: cellFrame!.height * 2, width: cellFrame!.width, height: cellFrame!.height, backgroundColor: .clear);
+        bak2sqr1ButtonAsALabel = UICButton(parentView: settingsMenu!, frame:CGRect(x: 0.0, y: cellFrame!.height * 2, width: cellFrame!.width, height: cellFrame!.height), backgroundColor: .clear);
         let spacesCount:Int = Int(bak2sqr1ButtonAsALabel!.frame.width / 100.0) * 2;
         var text:String = "";
         for _ in 0..<spacesCount {
@@ -124,7 +124,7 @@ class UISettingsButton:UIButton {
     }
     
     func configureUnderPressureLabel(){
-        pressureButtonAsALabel = UICButton(parentView: settingsMenu!, x: 0.0, y: cellFrame!.height * 3, width: cellFrame!.width, height: cellFrame!.height, backgroundColor: .clear);
+        pressureButtonAsALabel = UICButton(parentView: settingsMenu!, frame:CGRect(x: 0.0, y: cellFrame!.height * 3, width: cellFrame!.width, height: cellFrame!.height), backgroundColor: .clear);
         let spacesCount:Int = Int(cellFrame!.width / 100.0) * 2;
         var text:String = " ";
         for _ in 0..<spacesCount {
@@ -158,7 +158,7 @@ class UISettingsButton:UIButton {
     }
     
     func configureStatsButton(){
-        statsButton = UICButton(parentView: settingsMenu!, x: 0.0, y: cellFrame!.height * 4, width: cellFrame!.width, height: cellFrame!.height, backgroundColor: .clear);
+        statsButton = UICButton(parentView: settingsMenu!, frame: CGRect( x: 0.0, y: cellFrame!.height * 4, width: cellFrame!.width, height: cellFrame!.height), backgroundColor: .clear);
         statsButton!.setTitle("Stats", for: .normal);
         statsButton!.layer.cornerRadius = 0.0;
         statsButton!.titleLabel!.font = UIFont.boldSystemFont(ofSize: statsButton!.frame.height * 0.375);
@@ -166,7 +166,7 @@ class UISettingsButton:UIButton {
     }
     
     func configureMultiplayerButton(){
-        multiplayerButton = UICButton(parentView: settingsMenu!, x: 0.0, y: cellFrame!.height * 5, width: cellFrame!.width, height: cellFrame!.height, backgroundColor: .clear);
+        multiplayerButton = UICButton(parentView: settingsMenu!, frame: CGRect( x: 0.0, y: cellFrame!.height * 5, width: cellFrame!.width, height: cellFrame!.height), backgroundColor: .clear);
         multiplayerButton!.setTitle("Multiplayer", for: .normal);
         multiplayerButton!.layer.cornerRadius = settingsMenu!.layer.cornerRadius;
         multiplayerButton!.layer.maskedCorners = [.layerMaxXMaxYCorner, .layerMinXMaxYCorner];

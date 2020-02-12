@@ -28,7 +28,6 @@ class CACGradientLayer:CAGradientLayer {
     
     init(parentView:UIView, type:CAGradientLayerType, startPoint:CGPoint){
         super.init();
-        
         self.frame = parentView.frame;
         parentView.layer.addSublayer(self);
         self.type = type;

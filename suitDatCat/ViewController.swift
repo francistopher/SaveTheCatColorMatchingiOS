@@ -71,7 +71,7 @@ class ViewController: UIViewController {
     }
     
     @objc func resetGrid(sender:UICButton){
-        boardGameView!.restart(promote: false);
+        boardGameView!.restart();
     }
     
     func configureHeavenGradientLayer() {

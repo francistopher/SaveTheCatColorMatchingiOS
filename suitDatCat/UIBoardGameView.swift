@@ -175,16 +175,16 @@ class UIBoardGameView: UIView {
                     print("Moving to next round!")
                     solved = true;
                     colorOptionsView!.selectedColor = UIColor.lightGray;
-                    promote(promote: true);
+                    promote();
                 }
             } else{
                 print("Unable to solve puzzle")
                 solved = true;
                 colorOptionsView!.selectedColor = UIColor.lightGray;
                 if (bak2sqr1) {
-                    restart(promote: false);
+                    restart();
                 } else {
-                    maintain(promote: false);
+                    maintain();
                 }
             }
         }
@@ -217,69 +217,62 @@ class UIBoardGameView: UIView {
         colorOptionsView!.selectionColors = [UIColor]();
     }
     
-    func restart(promote:Bool){
-        settingsButton!.isEnabled = false;
-        settingsButton!.setTitle("", for: .normal);
-        resetGame(promote: promote);
+    func restart(){
+        settingsButton!.disable();
+        resetGame(promote: false);
         viruses!.translateToCatsAndBack();
         currentStage = 1;
-        loadGridButtonsToDispersedGridButtons();
-        colorOptionsView!.loadSelectionButtonsToSelectedButtons();
-        // Build board game
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.25) {
-            self.buildBoardGame();
-            self.settingsButton!.isEnabled = true;
-            self.settingsButton!.setTitle("···", for: .normal);
-        }
-        // Remove dispersed buttons after they've dispersed
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
-            self.removeDispersedButtonsFromSuperView();
-            self.colorOptionsView!.removeSelectedButtons();
-        }
+        configureComponentsAfterBoardGameReset();
     }
     
-    func promote(promote:Bool){
-        settingsButton!.isEnabled = false;
-        settingsButton!.setTitle("", for: .normal);
-        resetGame(promote: promote);
+    func maintain(){
+        settingsButton!.disable();
+        resetGame(promote: false);
+        viruses!.translateToCatsAndBack();
+        configureComponentsAfterBoardGameReset();
+    }
+    
+    func promote(){
+        settingsButton!.disable();
+        resetGame(promote: true);
         completionGradientLayer!.isHidden = false;
-        loadGridButtonsToDispersedGridButtons();
-        colorOptionsView!.loadSelectionButtonsToSelectedButtons();
+        loadGridCatAndColorOptionButtonsBeforeDelayAccess();
         // Build board game
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.25) {
             self.currentStage += 1;
             self.buildBoardGame();
             self.currentStage -= 1;
-            self.settingsButton!.isEnabled = true;
-            self.settingsButton!.setTitle("···", for: .normal);
+            self.settingsButton!.enable();
         }
         // Remove selected buttons after they've shrunk
         DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
-            self.removeDispersedButtonsFromSuperView();
-            self.colorOptionsView!.removeSelectedButtons();
+            self.removeGridCatAndColorOptionButtonsAfterDelay();
             self.currentStage += 1;
             self.completionGradientLayer!.isHidden = true;
         }
     }
     
-    func maintain(promote:Bool){
-        settingsButton!.isEnabled = false;
-        settingsButton!.setTitle("", for: .normal);
-        resetGame(promote: promote);
-        viruses!.translateToCatsAndBack();
-        loadGridButtonsToDispersedGridButtons();
-        colorOptionsView!.loadSelectionButtonsToSelectedButtons();
+    func configureComponentsAfterBoardGameReset() {
+        loadGridCatAndColorOptionButtonsBeforeDelayAccess();
         // Build board game
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.25) {
             self.buildBoardGame();
-            self.settingsButton!.isEnabled = true;
-            self.settingsButton!.setTitle("···", for: .normal);
+            self.settingsButton!.enable();
         }
         // Remove dispersed buttons after they've dispersed
         DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
-            self.removeDispersedButtonsFromSuperView();
-            self.colorOptionsView!.removeSelectedButtons();
+            self.removeGridCatAndColorOptionButtonsAfterDelay();
         }
+    }
+    
+    func loadGridCatAndColorOptionButtonsBeforeDelayAccess() {
+        loadGridButtonsToDispersedGridButtons();
+        colorOptionsView!.loadSelectionButtonsToSelectedButtons();
+    }
+    
+    func removeGridCatAndColorOptionButtonsAfterDelay() {
+        self.removeDispersedButtonsFromSuperView();
+        self.colorOptionsView!.removeSelectedButtons();
     }
     
     func loadGridButtonsToDispersedGridButtons() {

@@ -71,6 +71,16 @@ class UISettingsButton:UIButton {
         self.addTarget(self, action: #selector(settingsMenuSelector), for: .touchUpInside);
     }
     
+    func enable() {
+        self.isEnabled = true;
+        self.setTitle("···", for: .normal);
+    }
+    
+    func disable() {
+        self.isEnabled = false;
+        self.setTitle("", for: .normal);
+    }
+    
     func configureTitleLabel(){
         settingsTitle = UICLabel(parentView: settingsMenu!, x: 0.0, y: cellFrame!.minY, width: cellFrame!.width, height: cellFrame!.height);
         settingsTitle!.text = "Settings";
@@ -90,7 +100,7 @@ class UISettingsButton:UIButton {
     }
     
     @objc func restartButtonSelector() {
-           boardGameView!.restart(promote: false);
+           boardGameView!.restart();
            self.sendActions(for: .touchUpInside);
        }
     
@@ -274,6 +284,5 @@ class UISettingsButton:UIButton {
             self.multiplayerButton!.setTitleColor(UIColor.white, for: .normal);
             self.multiplayerButton!.backgroundColor = UIColor.black;
         }
-        
     }
 }

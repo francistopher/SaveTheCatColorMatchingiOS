@@ -21,18 +21,16 @@ class UIViruses {
     func buildViruses( unitView:CGFloat) {
         // Calculate side and spacing lengths of virus
         let virusSideLength:CGFloat = unitView * 2.0;
-        
         // Total Spacing Available
         let totalWidthSpacing:CGFloat = mainView!.frame.width - (virusSideLength * 4.0);
         let totalHeightSpacing:CGFloat = mainView!.frame.height - (virusSideLength * 5.0);
-        
         // Virus Spacing Length
         let virusWidthSpacing:CGFloat = totalWidthSpacing / 3.75;
-        let virusHeightSpacing:CGFloat = totalHeightSpacing / 5.75;
-        
-        var x:CGFloat = -virusWidthSpacing * 0.75;
-        var y:CGFloat = -virusHeightSpacing * 0.25;
-        
+        let virusHeightSpacing:CGFloat = totalHeightSpacing / 5.875;
+        // Initial starting coordinates
+        var x:CGFloat = -virusWidthSpacing * 0.71875;
+        var y:CGFloat = -virusHeightSpacing * 0.125;
+        // Plot viruses
         for _ in 0..<4 {
             x += virusWidthSpacing;
             for _ in 0..<5 {
@@ -50,6 +48,7 @@ class UIViruses {
     }
     
     func show(){
+        // Fade each virus in
         for virus in self.virusesCollection {
             UIView.animate(withDuration: 2.0, delay:1.125, options: [.curveEaseInOut], animations: {
                 virus.alpha = 1.0;
@@ -58,6 +57,7 @@ class UIViruses {
     }
     
     func centerize(){
+        // Translate each virus to the center of the grid of cats
         for virus in self.virusesCollection {
             UIView.animate(withDuration: 0.25, delay:0.0, options: [.curveEaseInOut], animations: {
                 let xDistance:CGFloat = self.mainView!.center.x - virus.frame.midX;
@@ -72,6 +72,7 @@ class UIViruses {
     }
     
     func animate(){
+        // Animate each virus
         for virus in self.virusesCollection {
             virus.setCurrentVirusAnimation();
         }

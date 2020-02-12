@@ -107,7 +107,7 @@ class ViewController: UIViewController {
         
     func configureBoardGameView(userInterfaceStyle:Int){
         boardGameView = UIBoardGameView(parentView: mainViewController, x: 0, y: 0, width: mainViewWidth * 0.80, height:  mainViewWidth * 0.80, backgroundColor: .clear);
-        UICenterKit.centerWithVerticalDisplacement(childView: boardGameView!, parentRect: mainViewController.frame, childRect: boardGameView!.frame, verticalDisplacement: -unitView * 0.5);
+        UICenterKit.centerWithVerticalDisplacement(childView: boardGameView!, parentRect: mainViewController.frame, childRect: boardGameView!.frame, verticalDisplacement: -unitView * 0.625);
         boardGameView!.alpha = 0.0;
         boardGameView!.heavenGradientLayer = heavenGradientLayer!;
         boardGameView!.layer.borderColor! = UIColor.clear.cgColor;

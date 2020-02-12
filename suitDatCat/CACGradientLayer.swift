@@ -45,16 +45,8 @@ class CACGradientLayer:CAGradientLayer {
     }
     
     func configureForUserInterfaceStyle(){
-        let userInterfaceStyle:Int = UIScreen.main.traitCollection.userInterfaceStyle.rawValue;
-        UIView.animate(withDuration: 1.0, delay: 0.125, options:[.curveEaseInOut], animations: {
-           if (userInterfaceStyle == 1){
-            self.colors = self.lightColors!;
-            self.endPoint = self.lightEndingPoint!;
-           } else {
-            self.colors = self.darkColors!;
-            self.endPoint = self.darkEndingPoint!;
-           }
-        });
+        self.colors = self.lightColors!;
+        self.endPoint = self.lightEndingPoint!;
     }
     
     func configureForHidden(isHidden:Bool){

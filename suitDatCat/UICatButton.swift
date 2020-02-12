@@ -32,12 +32,11 @@ class UICatButton: UIButton {
     
     init(parentView: UIView, x:CGFloat, y:CGFloat, width:CGFloat, height:CGFloat, backgroundColor:UIColor) {
         super.init(frame:CGRect(x: x, y: y, width: width, height: height));
+        self.originalFrame = CGRect(x: x, y: y, width: width, height: height);
         self.originalBackgroundColor = backgroundColor;
         self.backgroundColor = backgroundColor;
         self.layer.cornerRadius = height / 5.0;
-        self.originalFrame = CGRect(x: x, y: y, width: width, height: height);
         parentView.addSubview(self);
-        self.isSelected = false;
         configureImageContainerButton();
         self.grownAndShrunk();
         self.shrinked();

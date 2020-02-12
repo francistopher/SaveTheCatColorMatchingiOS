@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		B80C6C9023EF469E0056D156 /* CACGradientLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B80C6C8F23EF469E0056D156 /* CACGradientLayer.swift */; };
 		B833544C23EC8F0B00835672 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B833544B23EC8F0B00835672 /* AppDelegate.swift */; };
 		B833544E23EC8F0B00835672 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B833544D23EC8F0B00835672 /* SceneDelegate.swift */; };
 		B833545323EC8F0B00835672 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B833545123EC8F0B00835672 /* Main.storyboard */; };
@@ -27,6 +26,7 @@
 		B88F997923F37FE2003ED805 /* UIVirus.swift in Sources */ = {isa = PBXBuildFile; fileRef = B88F997823F37FE2003ED805 /* UIVirus.swift */; };
 		B88F998523F3950F003ED805 /* virus.png in Resources */ = {isa = PBXBuildFile; fileRef = B88F998423F3950F003ED805 /* virus.png */; };
 		B88F999723F39B49003ED805 /* UICatButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B88F999623F39B49003ED805 /* UICatButton.swift */; };
+		B88F999923F48FA6003ED805 /* CACGradientLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B88F999823F48FA5003ED805 /* CACGradientLayer.swift */; };
 		B8AE017123ECB180007A6142 /* UICenterKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8AE017023ECB180007A6142 /* UICenterKit.swift */; };
 		B8AE017323ECB25C007A6142 /* UICLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8AE017223ECB25C007A6142 /* UICLabel.swift */; };
 		B8AE017523ECB758007A6142 /* UICView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8AE017423ECB758007A6142 /* UICView.swift */; };
@@ -36,7 +36,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		B80C6C8F23EF469E0056D156 /* CACGradientLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CACGradientLayer.swift; sourceTree = "<group>"; };
 		B833544823EC8F0B00835672 /* podDatCat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = podDatCat.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B833544B23EC8F0B00835672 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B833544D23EC8F0B00835672 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -58,6 +57,7 @@
 		B88F997823F37FE2003ED805 /* UIVirus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIVirus.swift; sourceTree = "<group>"; };
 		B88F998423F3950F003ED805 /* virus.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = virus.png; path = suitDatCat/virus.png; sourceTree = SOURCE_ROOT; };
 		B88F999623F39B49003ED805 /* UICatButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UICatButton.swift; sourceTree = "<group>"; };
+		B88F999823F48FA5003ED805 /* CACGradientLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CACGradientLayer.swift; sourceTree = "<group>"; };
 		B8AE017023ECB180007A6142 /* UICenterKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UICenterKit.swift; sourceTree = "<group>"; };
 		B8AE017223ECB25C007A6142 /* UICLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UICLabel.swift; sourceTree = "<group>"; };
 		B8AE017423ECB758007A6142 /* UICView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UICView.swift; sourceTree = "<group>"; };
@@ -135,11 +135,11 @@
 			children = (
 				B88F999023F3994D003ED805 /* Virus */,
 				B8AE017023ECB180007A6142 /* UICenterKit.swift */,
-				B80C6C8F23EF469E0056D156 /* CACGradientLayer.swift */,
 				B8AE017A23ECCE3B007A6142 /* UIBoardGameView.swift */,
 				B8AE017C23ECD077007A6142 /* UIColorOptionsView.swift */,
 				B88F996C23F09BB4003ED805 /* UISettingsButton.swift */,
 				B88F999623F39B49003ED805 /* UICatButton.swift */,
+				B88F999823F48FA5003ED805 /* CACGradientLayer.swift */,
 			);
 			name = "Custom Components";
 			sourceTree = "<group>";
@@ -272,12 +272,12 @@
 				B8AE017323ECB25C007A6142 /* UICLabel.swift in Sources */,
 				B833545623EC8F0B00835672 /* podDatCat.xcdatamodeld in Sources */,
 				B833544C23EC8F0B00835672 /* AppDelegate.swift in Sources */,
+				B88F999923F48FA6003ED805 /* CACGradientLayer.swift in Sources */,
 				B88F997523F25CA1003ED805 /* UICSwitch.swift in Sources */,
 				B8AE017B23ECCE3B007A6142 /* UIBoardGameView.swift in Sources */,
 				B88F996923F06801003ED805 /* ViewController.swift in Sources */,
 				B8AE017D23ECD078007A6142 /* UIColorOptionsView.swift in Sources */,
 				B8AE017F23ECD3B2007A6142 /* UICButton.swift in Sources */,
-				B80C6C9023EF469E0056D156 /* CACGradientLayer.swift in Sources */,
 				B88F996D23F09BB4003ED805 /* UISettingsButton.swift in Sources */,
 				B8AE017523ECB758007A6142 /* UICView.swift in Sources */,
 				B8AE017123ECB180007A6142 /* UICenterKit.swift in Sources */,

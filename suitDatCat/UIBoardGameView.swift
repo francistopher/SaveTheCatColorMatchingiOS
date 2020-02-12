@@ -25,7 +25,7 @@ class UIBoardGameView: UIView {
     
     var solved:Bool = true;
     
-    var heavenGradientLayer:CACGradientLayer? = nil;
+    var completionGradientLayer:CAGradientLayer? = nil;
     
     var settingsButton:UISettingsButton? = nil;
     
@@ -89,14 +89,14 @@ class UIBoardGameView: UIView {
                 // Select random color
                 let randomSelectedColor = availableColors.randomElement()!;
                 // Compare selected random color with saved previous row color
-                if (randomSelectedColor.cgColor == previousRowColors[columnIndex].cgColor){ // --> Increases complexity
+                if (randomSelectedColor.cgColor == previousRowColors[columnIndex].cgColor){
                     if (rowIndex - 1 >= 0){
                         rowIndex -= 1;
                     }
                     continue;
                 }
                 // Compare selected random color with saved previous column colo
-                if (randomSelectedColor.cgColor == previousColumnColor.cgColor){ // --> Increases complexity
+                if (randomSelectedColor.cgColor == previousColumnColor.cgColor){
                     if (columnIndex - 1 >= 0){
                         columnIndex -= 1;
                     }
@@ -110,7 +110,7 @@ class UIBoardGameView: UIView {
             }
             // Save row of colors as the subsequent row of grid colors
             gridColors.append(row);
-            previousRowColors = row; // --> Increases Complexity Heavily
+            previousRowColors = row;
             rowIndex += 1;
         }
     }
@@ -242,7 +242,7 @@ class UIBoardGameView: UIView {
         settingsButton!.isEnabled = false;
         settingsButton!.setTitle("", for: .normal);
         resetGame(promote: promote);
-        heavenGradientLayer!.configureForHidden(isHidden: false);
+        completionGradientLayer!.isHidden = false;
         loadGridButtonsToDispersedGridButtons();
         colorOptionsView!.loadSelectionButtonsToSelectedButtons();
         // Build board game
@@ -258,7 +258,7 @@ class UIBoardGameView: UIView {
             self.removeDispersedButtonsFromSuperView();
             self.colorOptionsView!.removeSelectedButtons();
             self.currentStage += 1;
-            self.heavenGradientLayer!.configureForHidden(isHidden: true);
+            self.completionGradientLayer!.isHidden = true;
         }
     }
     

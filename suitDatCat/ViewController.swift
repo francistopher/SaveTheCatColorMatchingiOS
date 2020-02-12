@@ -26,10 +26,7 @@ class ViewController: UIViewController {
     var resetButton:UICButton? = nil;
     
     // Add heaven gradient layer
-    var heavenGradientLayer:CACGradientLayer? = nil;
-    let heavenBlueOnBlack:UIColor = UIColor.white;
-    let heavenBlueOnWhite:UIColor = UIColor(red: 252.0/255.0, green: 212.0/255.0, blue: 64.0/255.0, alpha: 1.0);
-    
+    var completionGradientLayer:CAGradientLayer? = nil;
     // Viruses
     var viruses:UIViruses? = nil;
     
@@ -78,11 +75,15 @@ class ViewController: UIViewController {
     }
     
     func configureHeavenGradientLayer() {
-        heavenGradientLayer = CACGradientLayer(parentView: mainViewController, type:.radial, startPoint: CGPoint(x:0.5, y:0.0));
-        heavenGradientLayer!.setEndingPoints(lightEndingPoint: CGPoint(x:-0.4, y:0.15), darkEndingPoint: CGPoint(x:-0.1, y:0.15));
-        heavenGradientLayer!.setColors(lightColors: [heavenBlueOnWhite.cgColor, UIColor.white.cgColor], darkColors: [heavenBlueOnBlack.cgColor, UIColor.black.cgColor]);
-        heavenGradientLayer!.configureForUserInterfaceStyle();
-        heavenGradientLayer!.isHidden = true;
+        let mellowYellow:UIColor = UIColor(red: 252.0/255.0, green: 212.0/255.0, blue: 64.0/255.0, alpha: 1.0);
+        completionGradientLayer = CAGradientLayer();
+        completionGradientLayer!.frame = mainViewController.frame;
+        mainViewController.layer.addSublayer(completionGradientLayer!);
+        completionGradientLayer!.type = .radial;
+        completionGradientLayer!.startPoint = CGPoint(x:0.5, y:0.0);
+        completionGradientLayer!.endPoint = CGPoint(x:-0.5, y:0.15);
+        completionGradientLayer!.colors = [mellowYellow.cgColor, UIColor.clear.cgColor];
+        completionGradientLayer!.isHidden = true;
     }
     
     func saveMainViewFoundationalProperties() {
@@ -106,10 +107,10 @@ class ViewController: UIViewController {
     func configureBoardGameView(userInterfaceStyle:Int){
         boardGameView = UIBoardGameView(parentView: mainViewController, x: 0, y: 0, width: mainViewWidth * 0.80, height:  mainViewWidth * 0.80, backgroundColor: .clear);
         UICenterKit.centerWithVerticalDisplacement(childView: boardGameView!, parentRect: mainViewController.frame, childRect: boardGameView!.frame, verticalDisplacement: -unitView * 0.625);
-        boardGameView!.alpha = 0.0;
-        boardGameView!.heavenGradientLayer = heavenGradientLayer!;
+        boardGameView!.completionGradientLayer = completionGradientLayer!;
         boardGameView!.layer.borderColor! = UIColor.clear.cgColor;
         boardGameView!.viruses = viruses!;
+        boardGameView!.alpha = 0.0;
     }
     
     func configureColorOptionsView(userInterfaceStyle:Int){
@@ -139,13 +140,11 @@ class ViewController: UIViewController {
         // Detected A Light User Interface Style
         if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1){
             boardGameView!.activateGridButtonsForUserInterfaceStyle();
-            heavenGradientLayer!.configureForUserInterfaceStyle();
             settingsButton!.setStyle();
         }
         // Detected A Dark User Interface Style
         else {
             boardGameView!.activateGridButtonsForUserInterfaceStyle();
-            heavenGradientLayer!.configureForUserInterfaceStyle();
             settingsButton!.setStyle();
         }
     }

@@ -32,7 +32,8 @@
 		B8FBD67D23F50DB900C8B50D /* lightWavingCat.png in Resources */ = {isa = PBXBuildFile; fileRef = B8FBD67723F50DB900C8B50D /* lightWavingCat.png */; };
 		B8FBD67E23F50DB900C8B50D /* lightDeadCat.png in Resources */ = {isa = PBXBuildFile; fileRef = B8FBD67823F50DB900C8B50D /* lightDeadCat.png */; };
 		B8FBD67F23F50DB900C8B50D /* lightSmilingCat.png in Resources */ = {isa = PBXBuildFile; fileRef = B8FBD67923F50DB900C8B50D /* lightSmilingCat.png */; };
-		B8FBD68123F58F2500C8B50D /* gear.png in Resources */ = {isa = PBXBuildFile; fileRef = B8FBD68023F58F2500C8B50D /* gear.png */; };
+		B8FBD68123F58F2500C8B50D /* darkGear.png in Resources */ = {isa = PBXBuildFile; fileRef = B8FBD68023F58F2500C8B50D /* darkGear.png */; };
+		B8FBD68423F59D2D00C8B50D /* lightGear.png in Resources */ = {isa = PBXBuildFile; fileRef = B8FBD68323F59D2C00C8B50D /* lightGear.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -63,7 +64,8 @@
 		B8FBD67723F50DB900C8B50D /* lightWavingCat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = lightWavingCat.png; path = ../../../Desktop/lightWavingCat.png; sourceTree = "<group>"; };
 		B8FBD67823F50DB900C8B50D /* lightDeadCat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = lightDeadCat.png; path = ../../../Desktop/lightDeadCat.png; sourceTree = "<group>"; };
 		B8FBD67923F50DB900C8B50D /* lightSmilingCat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = lightSmilingCat.png; path = ../../../Desktop/lightSmilingCat.png; sourceTree = "<group>"; };
-		B8FBD68023F58F2500C8B50D /* gear.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = gear.png; sourceTree = "<group>"; };
+		B8FBD68023F58F2500C8B50D /* darkGear.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = darkGear.png; sourceTree = "<group>"; };
+		B8FBD68323F59D2C00C8B50D /* lightGear.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lightGear.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -96,12 +98,11 @@
 		B833544A23EC8F0B00835672 /* suitDatCat */ = {
 			isa = PBXGroup;
 			children = (
-				B8FBD68023F58F2500C8B50D /* gear.png */,
 				B88F996823F06801003ED805 /* ViewController.swift */,
 				B88F998F23F39934003ED805 /* Custom Components */,
 				B88F998E23F398F2003ED805 /* Custom UIKit Components */,
 				B88F998B23F39838003ED805 /* Supporting Files */,
-				B88F999223F39975003ED805 /* Character Images */,
+				B88F999223F39975003ED805 /* Images */,
 			);
 			path = suitDatCat;
 			sourceTree = "<group>";
@@ -153,13 +154,14 @@
 			name = Virus;
 			sourceTree = "<group>";
 		};
-		B88F999223F39975003ED805 /* Character Images */ = {
+		B88F999223F39975003ED805 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				B8FBD68223F59C7100C8B50D /* Gear */,
 				B88F999523F399D7003ED805 /* Virus */,
 				B88F999423F399CF003ED805 /* Cat */,
 			);
-			name = "Character Images";
+			name = Images;
 			sourceTree = "<group>";
 		};
 		B88F999323F399A1003ED805 /* Standard */ = {
@@ -255,6 +257,15 @@
 			name = Super;
 			sourceTree = "<group>";
 		};
+		B8FBD68223F59C7100C8B50D /* Gear */ = {
+			isa = PBXGroup;
+			children = (
+				B8FBD68323F59D2C00C8B50D /* lightGear.png */,
+				B8FBD68023F58F2500C8B50D /* darkGear.png */,
+			);
+			name = Gear;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -316,10 +327,11 @@
 				B833545B23EC8F1400835672 /* LaunchScreen.storyboard in Resources */,
 				B8FBD67F23F50DB900C8B50D /* lightSmilingCat.png in Resources */,
 				B88F998523F3950F003ED805 /* virus.png in Resources */,
+				B8FBD68423F59D2D00C8B50D /* lightGear.png in Resources */,
 				B8FBD67C23F50DB900C8B50D /* darkWavingCat.png in Resources */,
 				B8FBD67B23F50DB900C8B50D /* darkDeadCat.png in Resources */,
 				B8FBD67A23F50DB900C8B50D /* darkSmilingCat.png in Resources */,
-				B8FBD68123F58F2500C8B50D /* gear.png in Resources */,
+				B8FBD68123F58F2500C8B50D /* darkGear.png in Resources */,
 				B8FBD67D23F50DB900C8B50D /* lightWavingCat.png in Resources */,
 				B833545823EC8F1400835672 /* Assets.xcassets in Resources */,
 				B833545323EC8F0B00835672 /* Main.storyboard in Resources */,

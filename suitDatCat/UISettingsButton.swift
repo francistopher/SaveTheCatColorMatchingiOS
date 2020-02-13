@@ -55,7 +55,6 @@ class UISettingsButton:UIButton {
         self.backgroundColor = backgroundColor;
         self.layer.cornerRadius = height / 2.0625;
         self.layer.borderWidth = self.frame.height / 12.0;
-        setIconImage();
         parentView.addSubview(self);
 //        configureSettingsMenu(parentView:parentView);
 //        self.cellFrame = CGRect(x:0.0, y:0.0, width:settingsMenu!.frame.width,
@@ -66,12 +65,12 @@ class UISettingsButton:UIButton {
 //        configureUnderPressureLabel();
 //        configureStatsButton();
 //        configureMultiplayerButton();
-//        setStyle();
+        setStyle();
         self.addTarget(self, action: #selector(settingsMenuSelector), for: .touchUpInside);
     }
     
-    func setIconImage() {
-        let iconImage:UIImage? = UIImage(named:"gear.png");
+    func setIconImage(imageName:String) {
+        let iconImage:UIImage? = UIImage(named:imageName);
         self.setImage(iconImage, for: .normal);
         self.imageView!.contentMode = UIView.ContentMode.scaleAspectFit;
     }
@@ -215,7 +214,6 @@ class UISettingsButton:UIButton {
                  self.imageView!.transform = self.imageView!.transform.rotated(by: -CGFloat.pi / 2.0);
             })
         }
-        
         colorOptionsView!.isUserInteractionEnabled = false;
         boardGameView!.isUserInteractionEnabled = false;
     }
@@ -230,7 +228,6 @@ class UISettingsButton:UIButton {
                  self.imageView!.transform = self.imageView!.transform.rotated(by: CGFloat.pi / 2.0);
             })
         }
-        
         colorOptionsView!.isUserInteractionEnabled = true;
         boardGameView!.isUserInteractionEnabled = true;
     }
@@ -253,6 +250,7 @@ class UISettingsButton:UIButton {
             self.setTitleColor(UIColor.black, for: .normal);
             self.layer.borderColor = UIColor.black.cgColor;
             self.backgroundColor = UIColor.white;
+            setIconImage(imageName: "darkGear.png");
 //            // Settings menu colors
 //            self.settingsMenu!.layer.borderColor = UIColor.black.cgColor;
 //            self.settingsMenu!.backgroundColor = UIColor.white;
@@ -279,6 +277,7 @@ class UISettingsButton:UIButton {
             self.setTitleColor(UIColor.white, for: .normal);
             self.layer.borderColor = UIColor.white.cgColor;
             self.backgroundColor = UIColor.black;
+            setIconImage(imageName: "lightGear.png");
 //            // Setting menu colors
 //            self.settingsMenu!.layer.borderColor = UIColor.white.cgColor;
 //            self.settingsMenu!.backgroundColor = UIColor.black;

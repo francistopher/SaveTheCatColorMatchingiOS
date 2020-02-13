@@ -37,6 +37,8 @@ class UISettingsButton:UIButton {
     var multiplayer:UIMultiplayer? = nil;
     var restart:UIRestart? = nil;
     var restart1:UIRestart1? = nil;
+    var stats:UIStats? = nil;
+    var noAds:UINoAds? = nil;
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented");
@@ -55,7 +57,9 @@ class UISettingsButton:UIButton {
         configureMultiplayerButton(parentView:settingsMenu!);
         configureRestartButton(parentView:settingsMenu!);
         configureRestart1Button(parentView:settingsMenu!);
-        settingsMenu!.frame = CGRect(x: self.frame.midX * 0.75, y: self.frame.minY, width: cellFrame!.width * 1.635, height: settingsMenu!.frame.height);
+        configureStatsButton(parentView:settingsMenu!);
+        configureNoAdsButton(parentView:settingsMenu!);
+        settingsMenu!.frame = CGRect(x: self.frame.midX * 0.80, y: self.frame.minY, width: cellFrame!.width * 1.75, height: settingsMenu!.frame.height);
         settingsMenu!.reducedFrame = settingsMenu!.frame;
         
         // Control
@@ -83,37 +87,55 @@ class UISettingsButton:UIButton {
     }
     
     func configureCellFrame(){
-        cellFrame = CGRect(x: 0.0, y: 0.0, width: settingsMenu!.frame.width / 7.0, height: settingsMenu!.frame.height);
-        cellFrame = CGRect(x: cellFrame!.width / 6.0, y: 0.0, width: settingsMenu!.frame.width / 7.0, height: settingsMenu!.frame.height);
+        cellFrame = CGRect(x: 0.0, y: 0.0, width: settingsMenu!.frame.width / 8.0, height: settingsMenu!.frame.height);
+        cellFrame = CGRect(x: cellFrame!.width / 7.0, y: 0.0, width: settingsMenu!.frame.width / 8.0, height: settingsMenu!.frame.height);
+    }
+//
+//    func configureNoAdsButton(parentView:UICView!) {
+//        noAds = UINoAds(parentView: parentView, x: cellFrame!.minX, y: 0.0, width: cellFrame!.width, height: cellFrame!.height);
+//        noAds!.frame = CGRect(x: -cellFrame!.minX, y: noAds!.frame.minY, width: noAds!.frame.width, height: restart!.frame.height);
+//        noAds!.reducedFrame = noAds!.frame;
+//    }
+    
+    func configureNoAdsButton(parentView:UICView!) {
+        noAds = UINoAds(parentView: parentView, x: cellFrame!.width, y: 0.0, width: cellFrame!.width, height: cellFrame!.height);
+        noAds!.frame = CGRect(x: -cellFrame!.minX, y: noAds!.frame.minY, width: noAds!.frame.width, height: noAds!.frame.height);
+        noAds!.reducedFrame = noAds!.frame;
+    }
+    
+    func configureStatsButton(parentView:UICView!) {
+        stats = UIStats(parentView: parentView, x: cellFrame!.width * 2.0, y: 0.0, width: cellFrame!.width, height: cellFrame!.height);
+        stats!.frame = CGRect(x: -cellFrame!.minX, y: stats!.frame.minY, width: stats!.frame.width, height: stats!.frame.height);
+        stats!.reducedFrame = stats!.frame;
     }
     
     func configureRestart1Button(parentView:UICView) {
-        restart1 = UIRestart1(parentView: parentView, x: cellFrame!.width * 2.0  + cellFrame!.minX, y: 0.0, width: cellFrame!.width, height: cellFrame!.height);
+        restart1 = UIRestart1(parentView: parentView, x: cellFrame!.width * 3.0  + cellFrame!.minX, y: 0.0, width: cellFrame!.width, height: cellFrame!.height);
         restart1!.frame = CGRect(x: -cellFrame!.minX, y: restart1!.frame.minY, width: restart1!.frame.width, height: restart!.frame.height);
         restart1!.reducedFrame = restart1!.frame;
     }
     
     func configureRestartButton(parentView:UICView) {
-        restart = UIRestart(parentView: parentView, x: cellFrame!.width * 3.0  + cellFrame!.minX, y: 0.0, width: cellFrame!.width, height: cellFrame!.height);
+        restart = UIRestart(parentView: parentView, x: cellFrame!.width * 4.0  + cellFrame!.minX, y: 0.0, width: cellFrame!.width, height: cellFrame!.height);
         restart!.frame = CGRect(x: -cellFrame!.minX, y: restart!.frame.minY, width: restart!.frame.width, height: restart!.frame.height);
         restart!.reducedFrame = restart!.frame;
     }
     
     func configureMultiplayerButton(parentView:UICView) {
-        multiplayer = UIMultiplayer(parentView: parentView, x: cellFrame!.width * 4.0 + cellFrame!.minX, y: 0.0, width: cellFrame!.width, height: cellFrame!.height);
+        multiplayer = UIMultiplayer(parentView: parentView, x: cellFrame!.width * 5.0 + cellFrame!.minX, y: 0.0, width: cellFrame!.width, height: cellFrame!.height);
         multiplayer!.frame = CGRect(x: -cellFrame!.minX, y: multiplayer!.frame.minY, width: multiplayer!.frame.width, height: multiplayer!.frame.height);
         multiplayer!.reducedFrame = multiplayer!.frame;
     }
     
     func configureMoreCatsButton(parentView:UICView) {
-        moreCats = UIMoreCats(parentView: parentView, x: cellFrame!.width * 5.0 + cellFrame!.minX * 0.75, y: 0.0, width: cellFrame!.width, height: cellFrame!.height);
+        moreCats = UIMoreCats(parentView: parentView, x: cellFrame!.width * 6.0 + cellFrame!.minX * 0.75, y: 0.0, width: cellFrame!.width, height: cellFrame!.height);
         moreCats!.frame = CGRect(x: -cellFrame!.minX, y: moreCats!.frame.minY, width: moreCats!.frame.width, height: moreCats!.frame.height);
         moreCats!.reducedFrame = moreCats!.frame;
     }
     
     func configureFishCoinButton(parentView:UICView){
-        fishCoin = UIFishCoin(parentView: parentView, x: cellFrame!.width * 6.0 + cellFrame!.minX * 0.1, y: 0.0, width: cellFrame!.width, height: cellFrame!.height);
-        fishCoin!.frame = CGRect(x: fishCoin!.frame.minX / 6.0 - cellFrame!.width * 0.365, y: fishCoin!.frame.minY, width: fishCoin!.frame.width, height:  fishCoin!.frame.height);
+        fishCoin = UIFishCoin(parentView: parentView, x: cellFrame!.width * 7.0 + cellFrame!.minX * 0.1, y: 0.0, width: cellFrame!.width, height: cellFrame!.height);
+        fishCoin!.frame = CGRect(x: fishCoin!.frame.minX / 7.0 - cellFrame!.width * 0.3, y: fishCoin!.frame.minY, width: fishCoin!.frame.width, height:  fishCoin!.frame.height);
         fishCoin!.reducedFrame = fishCoin!.frame;
     }
     
@@ -149,7 +171,8 @@ class UISettingsButton:UIButton {
             self.multiplayer!.frame = self.multiplayer!.originalFrame!;
             self.restart!.frame = self.restart!.originalFrame!;
             self.restart1!.frame = self.restart1!.originalFrame!;
-            
+            self.stats!.frame = self.stats!.originalFrame!;
+            self.noAds!.frame = self.noAds!.originalFrame!;
         })
         colorOptionsView!.isUserInteractionEnabled = false;
         boardGameView!.isUserInteractionEnabled = false;
@@ -172,6 +195,8 @@ class UISettingsButton:UIButton {
             self.multiplayer!.frame = self.multiplayer!.reducedFrame!;
             self.restart!.frame = self.restart!.reducedFrame!;
             self.restart1!.frame = self.restart1!.reducedFrame!;
+            self.stats!.frame = self.stats!.reducedFrame!;
+            self.noAds!.frame = self.noAds!.reducedFrame!;
         })
         colorOptionsView!.isUserInteractionEnabled = true;
         boardGameView!.isUserInteractionEnabled = true;

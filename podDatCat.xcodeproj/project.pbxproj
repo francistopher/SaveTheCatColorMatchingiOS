@@ -34,6 +34,8 @@
 		B8FBD67F23F50DB900C8B50D /* lightSmilingCat.png in Resources */ = {isa = PBXBuildFile; fileRef = B8FBD67923F50DB900C8B50D /* lightSmilingCat.png */; };
 		B8FBD68123F58F2500C8B50D /* darkGear.png in Resources */ = {isa = PBXBuildFile; fileRef = B8FBD68023F58F2500C8B50D /* darkGear.png */; };
 		B8FBD68423F59D2D00C8B50D /* lightGear.png in Resources */ = {isa = PBXBuildFile; fileRef = B8FBD68323F59D2C00C8B50D /* lightGear.png */; };
+		B8FBD68823F5BBC200C8B50D /* fishCoin.png in Resources */ = {isa = PBXBuildFile; fileRef = B8FBD68723F5BBC200C8B50D /* fishCoin.png */; };
+		B8FBD68A23F5C00F00C8B50D /* UIFishCoin.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8FBD68923F5C00F00C8B50D /* UIFishCoin.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -66,6 +68,8 @@
 		B8FBD67923F50DB900C8B50D /* lightSmilingCat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = lightSmilingCat.png; path = ../../../Desktop/lightSmilingCat.png; sourceTree = "<group>"; };
 		B8FBD68023F58F2500C8B50D /* darkGear.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = darkGear.png; sourceTree = "<group>"; };
 		B8FBD68323F59D2C00C8B50D /* lightGear.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lightGear.png; sourceTree = "<group>"; };
+		B8FBD68723F5BBC200C8B50D /* fishCoin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fishCoin.png; sourceTree = "<group>"; };
+		B8FBD68923F5C00F00C8B50D /* UIFishCoin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIFishCoin.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -139,6 +143,7 @@
 				B8AE017023ECB180007A6142 /* UICenterKit.swift */,
 				B8AE017A23ECCE3B007A6142 /* UIBoardGameView.swift */,
 				B8AE017C23ECD077007A6142 /* UIColorOptionsView.swift */,
+				B8FBD68923F5C00F00C8B50D /* UIFishCoin.swift */,
 				B88F996C23F09BB4003ED805 /* UISettingsButton.swift */,
 				B88F999623F39B49003ED805 /* UICatButton.swift */,
 			);
@@ -157,6 +162,7 @@
 		B88F999223F39975003ED805 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				B8FBD68723F5BBC200C8B50D /* fishCoin.png */,
 				B8FBD68223F59C7100C8B50D /* Gear */,
 				B88F999523F399D7003ED805 /* Virus */,
 				B88F999423F399CF003ED805 /* Cat */,
@@ -329,6 +335,7 @@
 				B88F998523F3950F003ED805 /* virus.png in Resources */,
 				B8FBD68423F59D2D00C8B50D /* lightGear.png in Resources */,
 				B8FBD67C23F50DB900C8B50D /* darkWavingCat.png in Resources */,
+				B8FBD68823F5BBC200C8B50D /* fishCoin.png in Resources */,
 				B8FBD67B23F50DB900C8B50D /* darkDeadCat.png in Resources */,
 				B8FBD67A23F50DB900C8B50D /* darkSmilingCat.png in Resources */,
 				B8FBD68123F58F2500C8B50D /* darkGear.png in Resources */,
@@ -358,6 +365,7 @@
 				B8AE017523ECB758007A6142 /* UICView.swift in Sources */,
 				B8AE017123ECB180007A6142 /* UICenterKit.swift in Sources */,
 				B88F999723F39B49003ED805 /* UICatButton.swift in Sources */,
+				B8FBD68A23F5C00F00C8B50D /* UIFishCoin.swift in Sources */,
 				B833544E23EC8F0B00835672 /* SceneDelegate.swift in Sources */,
 				B88F997323F1CDA0003ED805 /* UIViruses.swift in Sources */,
 				B88F997923F37FE2003ED805 /* UIVirus.swift in Sources */,

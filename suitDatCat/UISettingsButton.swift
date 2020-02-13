@@ -48,6 +48,7 @@ class UISettingsButton:UIButton {
         configureSettingsMenu(parentView:parentView);
         configureCellFrame();
         configureFishCoinButton(parentView:settingsMenu!);
+        settingsMenu!.frame = CGRect(x: self.frame.midX * 0.75, y: self.frame.minY, width: cellFrame!.width * 1.635, height: settingsMenu!.frame.height);
         setStyle();
         self.addTarget(self, action: #selector(settingsMenuSelector), for: .touchUpInside);
     }
@@ -69,11 +70,13 @@ class UISettingsButton:UIButton {
     }
     
     func configureCellFrame(){
-        cellFrame = CGRect(x: 0.0, y: 0.0, width: settingsMenu!.frame.width / 6.0, height: settingsMenu!.frame.height);
+        cellFrame = CGRect(x: 0.0, y: 0.0, width: settingsMenu!.frame.width / 7.0, height: settingsMenu!.frame.height);
+        cellFrame = CGRect(x: cellFrame!.width / 6.0, y: 0.0, width: settingsMenu!.frame.width / 7.0, height: settingsMenu!.frame.height);
     }
     
     func configureFishCoinButton(parentView:UICView){
-        fishCoin = UIFishCoin(parentView: parentView, x: cellFrame!.width * 5.0, y: 0.0, width: cellFrame!.width, height: cellFrame!.height);
+        fishCoin = UIFishCoin(parentView: parentView, x: cellFrame!.width * 6.0 + cellFrame!.minX * 0.1, y: 0.0, width: cellFrame!.width, height: cellFrame!.height);
+        fishCoin!.frame = CGRect(x: fishCoin!.frame.minX / 6.0 - cellFrame!.width * 0.365, y: fishCoin!.frame.minY, width: fishCoin!.frame.width, height:  fishCoin!.frame.height);
     }
     
     func configureSettingsMenu(parentView:UIView) {
@@ -81,7 +84,6 @@ class UISettingsButton:UIButton {
         settingsMenu!.layer.cornerRadius = settingsMenu!.frame.height / 2.0;
         settingsMenu!.layer.borderWidth = self.frame.height / 12.0;
         parentView.bringSubviewToFront(self);
-//        settingsMenu!.frame = CGRect(x: self.frame.midX * 0.75, y: self.frame.minY, width: settingsMenu!.frame.width * 0.25, height: settingsMenu!.frame.height);
     }
     
     @objc func settingsMenuSelector(){

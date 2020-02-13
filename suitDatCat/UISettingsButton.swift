@@ -111,7 +111,7 @@ class UISettingsButton:UIButton {
     }
     
     func configureStatsButton(parentView:UICView!) {
-        stats = UIStats(parentView: parentView, x: cellFrame!.width * 3.85, y: 0.0, width: cellFrame!.width, height: cellFrame!.height);
+        stats = UIStats(parentView: parentView, x: cellFrame!.width * 3.95, y: 0.0, width: cellFrame!.width, height: cellFrame!.height);
         stats!.frame = CGRect(x: -cellFrame!.minX, y: stats!.frame.minY, width: stats!.frame.width, height: stats!.frame.height);
         stats!.reducedFrame = stats!.frame;
     }

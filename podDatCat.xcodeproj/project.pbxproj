@@ -126,8 +126,6 @@
 		B833544A23EC8F0B00835672 /* suitDatCat */ = {
 			isa = PBXGroup;
 			children = (
-				B8FBD6AC23F5F1F200C8B50D /* noAds.png */,
-				B8FBD6AA23F5EEA900C8B50D /* stats.png */,
 				B88F996823F06801003ED805 /* ViewController.swift */,
 				B88F998F23F39934003ED805 /* Custom Components */,
 				B88F998E23F398F2003ED805 /* Custom UIKit Components */,
@@ -203,6 +201,7 @@
 				B8FBD67623F50DB900C8B50D /* darkWavingCat.png */,
 				B8FBD67823F50DB900C8B50D /* lightDeadCat.png */,
 				B8FBD67723F50DB900C8B50D /* lightWavingCat.png */,
+				B8FBD6AA23F5EEA900C8B50D /* stats.png */,
 				B8FBD67923F50DB900C8B50D /* lightSmilingCat.png */,
 			);
 			name = Standard;
@@ -321,6 +320,7 @@
 				B8FBD69723F5DC8000C8B50D /* multiplayer.png */,
 				B8FBD69223F5D6C200C8B50D /* moreCats.png */,
 				B8FBD68723F5BBC200C8B50D /* fishCoin.png */,
+				B8FBD6AC23F5F1F200C8B50D /* noAds.png */,
 			);
 			name = "Settings Menu Bar";
 			sourceTree = "<group>";

@@ -30,13 +30,20 @@ class UIMultiplayer: UIButton {
     @objc func testingSelector() {
         print("Testing: Multiplayer!");
     }
-
-
+    
     func setIconImage(imageName:String) {
         let iconImage:UIImage? = UIImage(named:imageName);
         self.setImage(iconImage, for: .normal);
         self.imageView!.contentMode = UIView.ContentMode.scaleAspectFit;
     }
-       
+    
+    func setStyle() {
+        if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1){
+            setIconImage(imageName: "lightMultiplayer.png");
+        } else {
+            setIconImage(imageName: "darkMultiplayer.png");
+        }
+    }
+    
     
 }

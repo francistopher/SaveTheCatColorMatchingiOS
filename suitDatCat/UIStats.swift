@@ -22,7 +22,7 @@ class UIStats: UIButton {
         self.originalFrame = CGRect(x: x, y: y, width: width, height: height);
         self.backgroundColor = .clear;
         self.layer.cornerRadius = height / 2.0;
-        setIconImage(imageName: "stats.png");
+        setStyle();
         self.addTarget(self, action: #selector(testingSelector), for: .touchUpInside);
         parentView.addSubview(self);
     }
@@ -31,11 +31,18 @@ class UIStats: UIButton {
         print("Testing: Stats!");
     }
 
-
     func setIconImage(imageName:String) {
         let iconImage:UIImage? = UIImage(named:imageName);
         self.setImage(iconImage, for: .normal);
         self.imageView!.contentMode = UIView.ContentMode.scaleAspectFit;
+    }
+    
+    func setStyle() {
+        if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1){
+            setIconImage(imageName: "lightStats.png");
+        } else {
+            setIconImage(imageName: "darkStats.png");
+        }
     }
     
 }

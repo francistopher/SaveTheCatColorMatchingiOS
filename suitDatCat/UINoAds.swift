@@ -40,9 +40,9 @@ class UINoAds: UIButton {
     
     func setStyle() {
         if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1){
-         setIconImage(imageName: "noAds.png");
+            setIconImage(imageName: "lightNoAds.png");
         } else {
-            
+            setIconImage(imageName: "darkNoAds.png");
         }
     }
     

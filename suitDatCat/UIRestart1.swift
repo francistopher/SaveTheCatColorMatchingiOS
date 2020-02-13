@@ -22,7 +22,7 @@ class UIRestart1: UIButton {
         self.originalFrame = CGRect(x: x, y: y, width: width, height: height);
         self.backgroundColor = .clear;
         self.layer.cornerRadius = height / 2.0;
-        setIconImage(imageName: "darkRestart1.png");
+        setStyle();
         self.addTarget(self, action: #selector(testingSelector), for: .touchUpInside);
         parentView.addSubview(self);
     }
@@ -36,6 +36,14 @@ class UIRestart1: UIButton {
         let iconImage:UIImage? = UIImage(named:imageName);
         self.setImage(iconImage, for: .normal);
         self.imageView!.contentMode = UIView.ContentMode.scaleAspectFit;
+    }
+    
+    func setStyle() {
+        if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1){
+            setIconImage(imageName: "lightRestart1.png");
+        } else {
+            setIconImage(imageName: "darkRestart1.png");
+        }
     }
     
 }

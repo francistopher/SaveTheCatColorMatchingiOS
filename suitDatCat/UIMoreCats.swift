@@ -22,7 +22,7 @@ class UIMoreCats: UIButton {
         self.originalFrame = CGRect(x: x, y: y, width: width, height: height);
         self.backgroundColor = .clear;
         self.layer.cornerRadius = height / 2.0;
-        setIconImage(imageName: "moreCats.png");
+        self.setStyle();
         self.addTarget(self, action: #selector(testingSelector), for: .touchUpInside);
         parentView.addSubview(self);
     }
@@ -37,6 +37,15 @@ class UIMoreCats: UIButton {
            self.setImage(iconImage, for: .normal);
            self.imageView!.contentMode = UIView.ContentMode.scaleAspectFit;
        }
+       
+       func setStyle() {
+           if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1){
+               setIconImage(imageName: "lightMoreCats.png");
+           } else {
+               setIconImage(imageName: "darkMoreCats.png");
+           }
+       }
+       
        
     
     

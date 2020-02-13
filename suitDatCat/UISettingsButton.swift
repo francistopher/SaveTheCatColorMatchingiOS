@@ -61,11 +61,6 @@ class UISettingsButton:UIButton {
         configureNoAdsButton(parentView:settingsMenu!);
         settingsMenu!.frame = CGRect(x: self.frame.midX * 0.80, y: self.frame.minY, width: cellFrame!.width * 1.75, height: settingsMenu!.frame.height);
         settingsMenu!.reducedFrame = settingsMenu!.frame;
-        
-        // Control
-//        settingsMenu!.frame = settingsMenu!.originalFrame!;
-//        fishCoin!.frame = fishCoin!.originalFrame!;
-        
         setStyle();
         self.addTarget(self, action: #selector(settingsMenuSelector), for: .touchUpInside);
     }
@@ -116,7 +111,7 @@ class UISettingsButton:UIButton {
     }
     
     func configureStatsButton(parentView:UICView!) {
-        stats = UIStats(parentView: parentView, x: cellFrame!.width * 4.0, y: 0.0, width: cellFrame!.width, height: cellFrame!.height);
+        stats = UIStats(parentView: parentView, x: cellFrame!.width * 3.85, y: 0.0, width: cellFrame!.width, height: cellFrame!.height);
         stats!.frame = CGRect(x: -cellFrame!.minX, y: stats!.frame.minY, width: stats!.frame.width, height: stats!.frame.height);
         stats!.reducedFrame = stats!.frame;
     }
@@ -169,9 +164,9 @@ class UISettingsButton:UIButton {
             self.fishCoin!.frame = self.fishCoin!.originalFrame!;
             self.moreCats!.frame = self.moreCats!.originalFrame!;
             self.multiplayer!.frame = self.multiplayer!.originalFrame!;
-            self.restart!.frame = self.restart!.originalFrame!;
-            self.restart1!.frame = self.restart1!.originalFrame!;
             self.stats!.frame = self.stats!.originalFrame!;
+            self.restart1!.frame = self.restart1!.originalFrame!;
+            self.restart!.frame = self.restart!.originalFrame!;
             self.noAds!.frame = self.noAds!.originalFrame!;
         })
         colorOptionsView!.isUserInteractionEnabled = false;
@@ -193,9 +188,9 @@ class UISettingsButton:UIButton {
             self.fishCoin!.frame = self.fishCoin!.reducedFrame!;
             self.moreCats!.frame = self.moreCats!.reducedFrame!;
             self.multiplayer!.frame = self.multiplayer!.reducedFrame!;
-            self.restart!.frame = self.restart!.reducedFrame!;
-            self.restart1!.frame = self.restart1!.reducedFrame!;
             self.stats!.frame = self.stats!.reducedFrame!;
+            self.restart1!.frame = self.restart1!.reducedFrame!;
+            self.restart!.frame = self.restart!.reducedFrame!;
             self.noAds!.frame = self.noAds!.reducedFrame!;
         })
         colorOptionsView!.isUserInteractionEnabled = true;
@@ -222,6 +217,12 @@ class UISettingsButton:UIButton {
             self.settingsMenu!.layer.borderColor = UIColor.white.cgColor;
             self.settingsMenu!.backgroundColor = UIColor.black;
         }
+        moreCats!.setStyle();
+        multiplayer!.setStyle();
+        stats!.setStyle();
+        restart1!.setStyle();
+        restart!.setStyle();
+        noAds!.setStyle();
     }
     
     func show(){

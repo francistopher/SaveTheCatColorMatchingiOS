@@ -49,6 +49,7 @@ class UISettingsButton:UIButton {
         configureCellFrame();
         configureFishCoinButton(parentView:settingsMenu!);
         settingsMenu!.frame = CGRect(x: self.frame.midX * 0.75, y: self.frame.minY, width: cellFrame!.width * 1.635, height: settingsMenu!.frame.height);
+        settingsMenu!.reducedFrame = settingsMenu!.reducedFrame;
         setStyle();
         self.addTarget(self, action: #selector(settingsMenuSelector), for: .touchUpInside);
     }
@@ -77,6 +78,7 @@ class UISettingsButton:UIButton {
     func configureFishCoinButton(parentView:UICView){
         fishCoin = UIFishCoin(parentView: parentView, x: cellFrame!.width * 6.0 + cellFrame!.minX * 0.1, y: 0.0, width: cellFrame!.width, height: cellFrame!.height);
         fishCoin!.frame = CGRect(x: fishCoin!.frame.minX / 6.0 - cellFrame!.width * 0.365, y: fishCoin!.frame.minY, width: fishCoin!.frame.width, height:  fishCoin!.frame.height);
+        fishCoin!.reducedFrame = fishCoin!.frame;
     }
     
     func configureSettingsMenu(parentView:UIView) {
@@ -104,6 +106,10 @@ class UISettingsButton:UIButton {
                  self.imageView!.transform = self.imageView!.transform.rotated(by: CGFloat.pi / 2.0);
             })
         }
+        UIView.animate(withDuration: 1.0, delay: 0.125, options: .curveEaseOut, animations: {
+            self.settingsMenu!.frame = self.settingsMenu!.originalFrame!;
+            self.fishCoin!.frame = self.fishCoin!.originalFrame!;
+        })
         colorOptionsView!.isUserInteractionEnabled = false;
         boardGameView!.isUserInteractionEnabled = false;
     }
@@ -118,6 +124,10 @@ class UISettingsButton:UIButton {
                  self.imageView!.transform = self.imageView!.transform.rotated(by: -CGFloat.pi / 2.0);
             })
         }
+        UIView.animate(withDuration: 1.0, delay: 0.125, options: .curveEaseOut, animations: {
+            self.settingsMenu!.frame = self.settingsMenu!.reducedFrame!;
+            self.fishCoin!.frame = self.fishCoin!.reducedFrame!;
+        })
         colorOptionsView!.isUserInteractionEnabled = true;
         boardGameView!.isUserInteractionEnabled = true;
     }

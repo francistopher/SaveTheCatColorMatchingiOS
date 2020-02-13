@@ -28,7 +28,7 @@ class UIMoreCats: UIButton {
     }
     
     @objc func testingSelector() {
-           print("We are testing!");
+           print("Testing: More Cats!");
        }
        
        

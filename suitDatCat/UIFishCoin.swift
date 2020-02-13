@@ -28,7 +28,7 @@ class UIFishCoin: UIButton {
     }
     
     @objc func testingSelector() {
-        print("We are testing!");
+        print("Testing: Fish Coin!");
     }
     
     

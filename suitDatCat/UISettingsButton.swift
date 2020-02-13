@@ -35,6 +35,8 @@ class UISettingsButton:UIButton {
     var fishCoin:UIFishCoin? = nil;
     var moreCats:UIMoreCats? = nil;
     var multiplayer:UIMultiplayer? = nil;
+    var restart:UIRestart? = nil;
+    var restart1:UIRestart1? = nil;
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented");
@@ -51,6 +53,8 @@ class UISettingsButton:UIButton {
         configureFishCoinButton(parentView:settingsMenu!);
         configureMoreCatsButton(parentView:settingsMenu!);
         configureMultiplayerButton(parentView:settingsMenu!);
+        configureRestartButton(parentView:settingsMenu!);
+        configureRestart1Button(parentView:settingsMenu!);
         settingsMenu!.frame = CGRect(x: self.frame.midX * 0.75, y: self.frame.minY, width: cellFrame!.width * 1.635, height: settingsMenu!.frame.height);
         settingsMenu!.reducedFrame = settingsMenu!.frame;
         
@@ -83,14 +87,26 @@ class UISettingsButton:UIButton {
         cellFrame = CGRect(x: cellFrame!.width / 6.0, y: 0.0, width: settingsMenu!.frame.width / 7.0, height: settingsMenu!.frame.height);
     }
     
+    func configureRestart1Button(parentView:UICView) {
+        restart1 = UIRestart1(parentView: parentView, x: cellFrame!.width * 2.0  + cellFrame!.minX, y: 0.0, width: cellFrame!.width, height: cellFrame!.height);
+        restart1!.frame = CGRect(x: -cellFrame!.minX, y: restart1!.frame.minY, width: restart1!.frame.width, height: restart!.frame.height);
+        restart1!.reducedFrame = restart1!.frame;
+    }
+    
+    func configureRestartButton(parentView:UICView) {
+        restart = UIRestart(parentView: parentView, x: cellFrame!.width * 3.0  + cellFrame!.minX, y: 0.0, width: cellFrame!.width, height: cellFrame!.height);
+        restart!.frame = CGRect(x: -cellFrame!.minX, y: restart!.frame.minY, width: restart!.frame.width, height: restart!.frame.height);
+        restart!.reducedFrame = restart!.frame;
+    }
+    
     func configureMultiplayerButton(parentView:UICView) {
         multiplayer = UIMultiplayer(parentView: parentView, x: cellFrame!.width * 4.0 + cellFrame!.minX, y: 0.0, width: cellFrame!.width, height: cellFrame!.height);
-        multiplayer!.frame = CGRect(x: -cellFrame!.minX, y: moreCats!.frame.minY, width: moreCats!.frame.width, height: moreCats!.frame.height);
+        multiplayer!.frame = CGRect(x: -cellFrame!.minX, y: multiplayer!.frame.minY, width: multiplayer!.frame.width, height: multiplayer!.frame.height);
         multiplayer!.reducedFrame = multiplayer!.frame;
     }
     
     func configureMoreCatsButton(parentView:UICView) {
-        moreCats = UIMoreCats(parentView: parentView, x: cellFrame!.width * 5.0 + cellFrame!.minX, y: 0.0, width: cellFrame!.width, height: cellFrame!.height);
+        moreCats = UIMoreCats(parentView: parentView, x: cellFrame!.width * 5.0 + cellFrame!.minX * 0.75, y: 0.0, width: cellFrame!.width, height: cellFrame!.height);
         moreCats!.frame = CGRect(x: -cellFrame!.minX, y: moreCats!.frame.minY, width: moreCats!.frame.width, height: moreCats!.frame.height);
         moreCats!.reducedFrame = moreCats!.frame;
     }
@@ -102,7 +118,7 @@ class UISettingsButton:UIButton {
     }
     
     func configureSettingsMenu(parentView:UIView) {
-        settingsMenu = UICView(parentView: parentView, x: self.frame.midX * 0.75, y: self.frame.minY, width: self.frame.width * 7.25, height: self.frame.height, backgroundColor: .clear);
+        settingsMenu = UICView(parentView: parentView, x: self.frame.midX * 0.75, y: self.frame.minY, width: self.frame.width * 7.5, height: self.frame.height, backgroundColor: .clear);
         settingsMenu!.layer.cornerRadius = settingsMenu!.frame.height / 2.0;
         settingsMenu!.layer.borderWidth = self.frame.height / 12.0;
         parentView.bringSubviewToFront(self);
@@ -131,6 +147,9 @@ class UISettingsButton:UIButton {
             self.fishCoin!.frame = self.fishCoin!.originalFrame!;
             self.moreCats!.frame = self.moreCats!.originalFrame!;
             self.multiplayer!.frame = self.multiplayer!.originalFrame!;
+            self.restart!.frame = self.restart!.originalFrame!;
+            self.restart1!.frame = self.restart1!.originalFrame!;
+            
         })
         colorOptionsView!.isUserInteractionEnabled = false;
         boardGameView!.isUserInteractionEnabled = false;
@@ -151,6 +170,8 @@ class UISettingsButton:UIButton {
             self.fishCoin!.frame = self.fishCoin!.reducedFrame!;
             self.moreCats!.frame = self.moreCats!.reducedFrame!;
             self.multiplayer!.frame = self.multiplayer!.reducedFrame!;
+            self.restart!.frame = self.restart!.reducedFrame!;
+            self.restart1!.frame = self.restart1!.reducedFrame!;
         })
         colorOptionsView!.isUserInteractionEnabled = true;
         boardGameView!.isUserInteractionEnabled = true;

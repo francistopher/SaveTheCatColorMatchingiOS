@@ -1,5 +1,5 @@
 //
-//  UIMultiPlayer.swift
+//  UIRestart1.swift
 //  podDatCat
 //
 //  Created by Christopher Francisco on 2/13/20.
@@ -8,8 +8,8 @@
 
 import SwiftUI
 
-class UIMultiplayer: UIButton {
-
+class UIRestart1: UIButton {
+    
     var originalFrame:CGRect? = nil;
     var reducedFrame:CGRect? = nil;
 
@@ -22,13 +22,13 @@ class UIMultiplayer: UIButton {
         self.originalFrame = CGRect(x: x, y: y, width: width, height: height);
         self.backgroundColor = .clear;
         self.layer.cornerRadius = height / 2.0;
-        setIconImage(imageName: "multiplayer.png");
+        setIconImage(imageName: "darkRestart1.png");
         self.addTarget(self, action: #selector(testingSelector), for: .touchUpInside);
         parentView.addSubview(self);
     }
 
     @objc func testingSelector() {
-        print("Testing: Multiplayer!");
+        print("Testing: Restart1!");
     }
 
 
@@ -37,6 +37,5 @@ class UIMultiplayer: UIButton {
         self.setImage(iconImage, for: .normal);
         self.imageView!.contentMode = UIView.ContentMode.scaleAspectFit;
     }
-       
     
 }

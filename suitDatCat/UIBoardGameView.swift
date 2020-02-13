@@ -13,12 +13,11 @@ class UIBoardGameView: UIView {
     var colors:[UIColor] = [UIColor.systemGreen, UIColor.systemYellow, UIColor.systemOrange, UIColor.systemRed, UIColor.systemPurple, UIColor.systemBlue];
     var colorOptionsView:UIColorOptionsView? = nil;
     
-    var currentStage:Int = 1;
-    
     var gridCatButtons:[[UICatButton]] = [[UICatButton]]();
     var dispersedGridCatButtons:[[UICatButton]] = [[UICatButton]]();
     
     var viruses:UIViruses? = nil;
+    var currentStage:Int = 1;
     
     var gridColors:[[UIColor]] = [[UIColor]]();
     var availableColors:[UIColor] = [UIColor]();
@@ -169,7 +168,7 @@ class UIBoardGameView: UIView {
     @objc func selectGridButton(catButton:UICButton){
         if (!solved){
             if (catButton.originalBackgroundColor!.cgColor == colorOptionsView!.selectedColor.cgColor){
-                catButton.superview!.backgroundColor! = catButton.originalBackgroundColor!;
+                (catButton.superview! as! UICatButton).fadeBackgroundIn();
                 catButton.fadeBackgroundIn();
                 if (isBoardCompleted()){
                     print("Moving to next round!")

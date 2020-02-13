@@ -11,7 +11,9 @@ import SwiftUI
 class UICatButton: UIButton {
     
     enum Cat {
+        case fat
         case standard
+        
     }
     
     var shrunkX:CGFloat = 0.0;
@@ -66,6 +68,8 @@ class UICatButton: UIButton {
     
     func getCatFileName(named:String) -> String {
         switch (selectedCat) {
+        case Cat.fat:
+            return "fat" + named;
         case Cat.standard:
             return named;
         }
@@ -187,7 +191,7 @@ class UICatButton: UIButton {
 
     func disperseVertically() {
         displaceBoundsOntoMainView();
-        self.setCat(named: "WavingSmilingCat", stage: 1);
+        self.setCat(named: "WavingCat", stage: 1);
         let angle:CGFloat = CGFloat(Int.random(in: 0..<30));
         let xTargetPoint:CGFloat = generateElevatedTargetX(parentFrame:self.superview!.frame, childFrame:self.frame, angle:angle);
         let yTargetPoint:CGFloat = generateElevatedTargetY(parentFrame:self.superview!.frame, childFrame:self.frame, angle:angle);

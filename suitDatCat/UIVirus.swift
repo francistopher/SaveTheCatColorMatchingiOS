@@ -26,7 +26,6 @@ class UIVirus:UIButton {
         self.backgroundColor = .clear;
         self.originalFrame = frame;
         self.setVirusImage();
-//        self.addTarget(self, action: #selector(virusAudio), for: .touchUpInside);
         parentView.addSubview(self);
     }
     

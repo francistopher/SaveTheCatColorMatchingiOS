@@ -105,8 +105,8 @@ class ViewController: UIViewController {
     }
         
     func configureBoardGameView(userInterfaceStyle:Int){
-        boardGameView = UIBoardGameView(parentView: mainViewController, x: 0, y: 0, width: mainViewWidth * 0.80, height:  mainViewWidth * 0.80, backgroundColor: .clear);
-        UICenterKit.centerWithVerticalDisplacement(childView: boardGameView!, parentRect: mainViewController.frame, childRect: boardGameView!.frame, verticalDisplacement: -unitView * 0.625);
+        boardGameView = UIBoardGameView(parentView: mainViewController, x: 0, y: 0, width: mainViewWidth, height:  mainViewWidth, backgroundColor: .clear);
+        UICenterKit.centerWithVerticalDisplacement(childView: boardGameView!, parentRect: mainViewController.frame, childRect: boardGameView!.frame, verticalDisplacement: -unitView * 0.80);
         boardGameView!.completionGradientLayer = completionGradientLayer!;
         boardGameView!.layer.borderColor! = UIColor.clear.cgColor;
         boardGameView!.viruses = viruses!;
@@ -114,14 +114,14 @@ class ViewController: UIViewController {
     }
     
     func configureColorOptionsView(userInterfaceStyle:Int){
-        colorOptionsView = UIColorOptionsView(parentView: mainViewController, x: boardGameView!.frame.minX, y: boardGameView!.frame.minY + boardGameView!.frame.height, width: boardGameView!.frame.width, height: unitView * 1.25, backgroundColor: .clear);
+        colorOptionsView = UIColorOptionsView(parentView: mainViewController, x: boardGameView!.frame.minX, y: boardGameView!.frame.minY + boardGameView!.frame.height, width: boardGameView!.frame.width, height: unitView * 1.5, backgroundColor: .clear);
         colorOptionsView!.alpha = 0.0;
         boardGameView!.colorOptionsView = colorOptionsView!;
         colorOptionsView!.boardGameView = boardGameView!;
     }
     
     func configureSettingsButton(userInterfaceStyle:Int) {
-        settingsButton = UISettingsButton(parentView: mainViewController, x: unitView, y: unitView, width: unitView * 1.25, height: unitView * 1.25);
+        settingsButton = UISettingsButton(parentView: mainViewController, x: unitView, y: unitView, width: unitView * 1.5, height: unitView * 1.5);
         settingsButton!.setStyle();
         settingsButton!.alpha = 0.0;
         settingsButton!.boardGameView = boardGameView!;

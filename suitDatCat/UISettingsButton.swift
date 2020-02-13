@@ -55,25 +55,30 @@ class UISettingsButton:UIButton {
         self.backgroundColor = backgroundColor;
         self.layer.cornerRadius = height / 2.0625;
         self.layer.borderWidth = self.frame.height / 12.0;
-        self.setTitle("···", for: .normal);
-        self.titleLabel!.font = UIFont.boldSystemFont(ofSize: height / 2.0);
+        setIconImage();
         parentView.addSubview(self);
-        configureSettingsMenu(parentView:parentView);
-        self.cellFrame = CGRect(x:0.0, y:0.0, width:settingsMenu!.frame.width,
-                                height: settingsMenu!.frame.height / 6.0);
-        configureTitleLabel();
-        configureRestartButton();
-        configureBak2Sqr1Label();
-        configureUnderPressureLabel();
-        configureStatsButton();
-        configureMultiplayerButton();
-        setStyle();
+//        configureSettingsMenu(parentView:parentView);
+//        self.cellFrame = CGRect(x:0.0, y:0.0, width:settingsMenu!.frame.width,
+//                                height: settingsMenu!.frame.height / 6.0);
+//        configureTitleLabel();
+//        configureRestartButton();
+//        configureBak2Sqr1Label();
+//        configureUnderPressureLabel();
+//        configureStatsButton();
+//        configureMultiplayerButton();
+//        setStyle();
         self.addTarget(self, action: #selector(settingsMenuSelector), for: .touchUpInside);
+    }
+    
+    func setIconImage() {
+        let iconImage:UIImage? = UIImage(named:"gear.png");
+        self.setImage(iconImage, for: .normal);
+        self.imageView!.contentMode = UIView.ContentMode.scaleAspectFit;
     }
     
     func enable() {
         self.isEnabled = true;
-        self.setTitle("···", for: .normal);
+        self.setTitle("· · ·", for: .normal);
     }
     
     func disable() {
@@ -203,9 +208,14 @@ class UISettingsButton:UIButton {
     @objc func settingsMenuShow(){
         print("Selected");
         isPressed = true;
-        UIView.animate(withDuration: 1.0, delay: 0.125, options: .curveEaseInOut, animations: {
-            self.settingsMenu!.alpha = 1.0;
-        });
+        UIView.animate(withDuration: 0.5, delay: 0.0, options: .curveEaseIn, animations: {
+            self.imageView!.transform = self.imageView!.transform.rotated(by: -CGFloat.pi / 2.0);
+        }) { (_) in
+            UIView.animate(withDuration: 0.5, delay: 0.0, options: .curveEaseOut, animations: {
+                 self.imageView!.transform = self.imageView!.transform.rotated(by: -CGFloat.pi / 2.0);
+            })
+        }
+        
         colorOptionsView!.isUserInteractionEnabled = false;
         boardGameView!.isUserInteractionEnabled = false;
     }
@@ -213,9 +223,14 @@ class UISettingsButton:UIButton {
     @objc func settingsMenuHide(){
         print("Unselected");
         isPressed = false;
-        UIView.animate(withDuration: 1.0, delay: 0.125, options: .curveEaseInOut, animations: {
-            self.settingsMenu!.alpha = 0.0;
-        });
+        UIView.animate(withDuration: 0.5, delay: 0.0, options: .curveEaseIn, animations: {
+             self.imageView!.transform = self.imageView!.transform.rotated(by: CGFloat.pi / 2.0);
+        }) { (_) in
+            UIView.animate(withDuration: 0.5, delay: 0.0, options: .curveEaseOut, animations: {
+                 self.imageView!.transform = self.imageView!.transform.rotated(by: CGFloat.pi / 2.0);
+            })
+        }
+        
         colorOptionsView!.isUserInteractionEnabled = true;
         boardGameView!.isUserInteractionEnabled = true;
     }
@@ -237,52 +252,54 @@ class UISettingsButton:UIButton {
             // Settings button colors
             self.setTitleColor(UIColor.black, for: .normal);
             self.layer.borderColor = UIColor.black.cgColor;
-            // Settings menu colors
-            self.settingsMenu!.layer.borderColor = UIColor.black.cgColor;
-            self.settingsMenu!.backgroundColor = UIColor.white;
-            // Settings menu title
-            self.settingsTitle!.layer.borderColor = UIColor.black.cgColor;
-            self.settingsTitle!.textColor! = UIColor.white;
-            // Restart button in white
-            self.restartButton!.setTitleColor(UIColor.black, for: .normal);
-            self.restartButton!.backgroundColor = UIColor.white;
-            // bak2sqr1 button in white
-            self.bak2sqr1ButtonAsALabel!.setTitleColor(UIColor.white, for: .normal);
-            self.bak2sqr1ButtonAsALabel!.backgroundColor = UIColor.black;
-            // Pressure button in white
-            self.pressureButtonAsALabel!.setTitleColor(UIColor.black, for: .normal);
-            self.pressureButtonAsALabel!.backgroundColor = UIColor.white;
-            // Stats button in white
-            self.statsButton!.setTitleColor(UIColor.white, for: .normal);
-            self.statsButton!.backgroundColor = UIColor.black;
-            // Multiplayer button in white
-            self.multiplayerButton!.setTitleColor(UIColor.black, for: .normal);
-            self.multiplayerButton!.backgroundColor = UIColor.white;
+            self.backgroundColor = UIColor.white;
+//            // Settings menu colors
+//            self.settingsMenu!.layer.borderColor = UIColor.black.cgColor;
+//            self.settingsMenu!.backgroundColor = UIColor.white;
+//            // Settings menu title
+//            self.settingsTitle!.layer.borderColor = UIColor.black.cgColor;
+//            self.settingsTitle!.textColor! = UIColor.white;
+//            // Restart button in white
+//            self.restartButton!.setTitleColor(UIColor.black, for: .normal);
+//            self.restartButton!.backgroundColor = UIColor.white;
+//            // bak2sqr1 button in white
+//            self.bak2sqr1ButtonAsALabel!.setTitleColor(UIColor.white, for: .normal);
+//            self.bak2sqr1ButtonAsALabel!.backgroundColor = UIColor.black;
+//            // Pressure button in white
+//            self.pressureButtonAsALabel!.setTitleColor(UIColor.black, for: .normal);
+//            self.pressureButtonAsALabel!.backgroundColor = UIColor.white;
+//            // Stats button in white
+//            self.statsButton!.setTitleColor(UIColor.white, for: .normal);
+//            self.statsButton!.backgroundColor = UIColor.black;
+//            // Multiplayer button in white
+//            self.multiplayerButton!.setTitleColor(UIColor.black, for: .normal);
+//            self.multiplayerButton!.backgroundColor = UIColor.white;
         } else {
             // Setting button colors
             self.setTitleColor(UIColor.white, for: .normal);
             self.layer.borderColor = UIColor.white.cgColor;
-            // Setting menu colors
-            self.settingsMenu!.layer.borderColor = UIColor.white.cgColor;
-            self.settingsMenu!.backgroundColor = UIColor.black;
-            // Settings menu title
-            self.settingsTitle!.layer.borderColor = UIColor.white.cgColor;
-            self.settingsTitle!.textColor! = UIColor.black;
-            // Restart button in black
-            self.restartButton!.setTitleColor(UIColor.white, for: .normal);
-            self.restartButton!.backgroundColor = UIColor.black;
-            // bak2sqr1 button in black
-            self.bak2sqr1ButtonAsALabel!.setTitleColor(UIColor.black, for: .normal);
-            self.bak2sqr1ButtonAsALabel!.backgroundColor = UIColor.white;
-            // Pressure button in black
-            self.pressureButtonAsALabel!.setTitleColor(UIColor.white, for: .normal);
-            self.pressureButtonAsALabel!.backgroundColor = UIColor.black;
-            // Stats butting in black
-            self.statsButton!.setTitleColor(UIColor.black, for: .normal);
-            self.statsButton!.backgroundColor = UIColor.white;
-            // Multiplayer button in black
-            self.multiplayerButton!.setTitleColor(UIColor.white, for: .normal);
-            self.multiplayerButton!.backgroundColor = UIColor.black;
+            self.backgroundColor = UIColor.black;
+//            // Setting menu colors
+//            self.settingsMenu!.layer.borderColor = UIColor.white.cgColor;
+//            self.settingsMenu!.backgroundColor = UIColor.black;
+//            // Settings menu title
+//            self.settingsTitle!.layer.borderColor = UIColor.white.cgColor;
+//            self.settingsTitle!.textColor! = UIColor.black;
+//            // Restart button in black
+//            self.restartButton!.setTitleColor(UIColor.white, for: .normal);
+//            self.restartButton!.backgroundColor = UIColor.black;
+//            // bak2sqr1 button in black
+//            self.bak2sqr1ButtonAsALabel!.setTitleColor(UIColor.black, for: .normal);
+//            self.bak2sqr1ButtonAsALabel!.backgroundColor = UIColor.white;
+//            // Pressure button in black
+//            self.pressureButtonAsALabel!.setTitleColor(UIColor.white, for: .normal);
+//            self.pressureButtonAsALabel!.backgroundColor = UIColor.black;
+//            // Stats butting in black
+//            self.statsButton!.setTitleColor(UIColor.black, for: .normal);
+//            self.statsButton!.backgroundColor = UIColor.white;
+//            // Multiplayer button in black
+//            self.multiplayerButton!.setTitleColor(UIColor.white, for: .normal);
+//            self.multiplayerButton!.backgroundColor = UIColor.black;
         }
     }
 }

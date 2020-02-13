@@ -22,16 +22,16 @@ class UIViruses {
         // Calculate side and spacing lengths of virus
         let virusSideLength:CGFloat = unitView * 2.0;
         // Total Spacing Available
-        let totalWidthSpacing:CGFloat = mainView!.frame.width - (virusSideLength * 4.0);
+        let totalWidthSpacing:CGFloat = mainView!.frame.width - (virusSideLength * 3.6125);
         let totalHeightSpacing:CGFloat = mainView!.frame.height - (virusSideLength * 5.0);
         // Virus Spacing Length
         let virusWidthSpacing:CGFloat = totalWidthSpacing / 3.75;
-        let virusHeightSpacing:CGFloat = totalHeightSpacing / 5.875;
-        // Initial starting coordinates
-        var x:CGFloat = -virusWidthSpacing * 0.71875;
-        var y:CGFloat = -virusHeightSpacing * 0.125;
+        let virusHeightSpacing:CGFloat = totalHeightSpacing / 5.50;
+        var x:CGFloat = -virusWidthSpacing * 0.85;
         // Plot and build viruses
         for _ in 0..<4 {
+            // Initial starting coordinates
+           var y:CGFloat = -virusHeightSpacing * 0.25;
             x += virusWidthSpacing;
             for _ in 0..<5 {
                 y += virusHeightSpacing;

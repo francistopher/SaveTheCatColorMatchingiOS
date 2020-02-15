@@ -9,6 +9,7 @@
 import Foundation
 import SwiftUI
 import UIKit
+import AVFoundation
 
 class UISettingsButton:UIButton {
     
@@ -29,6 +30,10 @@ class UISettingsButton:UIButton {
     var restart1:UIRestart1? = nil;
     var stats:UIStats? = nil;
     var noAds:UINoAds? = nil;
+    
+    var gearSpinningPath:String? = nil;
+    var gearSpinningURL:URL? = nil;
+    var gearSpinningSoundEffect:AVAudioPlayer?
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented");
@@ -52,7 +57,23 @@ class UISettingsButton:UIButton {
         settingsMenu!.frame = CGRect(x: self.frame.midX * 0.7, y: self.frame.minY, width: cellFrame!.width * 1.75, height: settingsMenu!.frame.height);
         settingsMenu!.reducedFrame = settingsMenu!.frame;
         setStyle();
+        configureGearSpinning();
         self.addTarget(self, action: #selector(settingsMenuSelector), for: .touchUpInside);
+    }
+    
+    func configureGearSpinning() {
+           gearSpinningPath = Bundle.main.path(forResource: "gearSpinning.mp3", ofType: nil);
+           gearSpinningURL = URL(fileURLWithPath: gearSpinningPath!);
+           do {
+               gearSpinningSoundEffect = try AVAudioPlayer(contentsOf: gearSpinningURL!);
+           } catch {
+               print("Unable to play gear spinning");
+           }
+       }
+    
+    func gearSpinning() {
+        gearSpinningSoundEffect!.stop();
+        gearSpinningSoundEffect!.play();
     }
     
     func setIconImage(imageName:String) {
@@ -126,6 +147,7 @@ class UISettingsButton:UIButton {
     }
     
     @objc func settingsMenuSelector(){
+        gearSpinning();
         if(!isPressed){
             settingsMenuShow();
         }else{

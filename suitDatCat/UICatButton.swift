@@ -27,6 +27,7 @@ class UICatButton: UIButton {
     var selectedCat:Cat = .standard;
     var originalBackgroundColor:UIColor = .clear;
     var imageContainerButton:UICButton? = nil;
+    var podded:Bool = false;
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented");
@@ -38,31 +39,28 @@ class UICatButton: UIButton {
         self.originalBackgroundColor = backgroundColor;
         self.backgroundColor = backgroundColor;
         self.layer.cornerRadius = height / 5.0;
+        self.layer.borderWidth = frame.width * 0.01;
         parentView.addSubview(self);
         configureImageContainerButton();
-        self.grownAndShrunk();
-        self.shrinked();
+        self.shrink();
+        self.setStyle();
     }
     
     func configureImageContainerButton() {
-        imageContainerButton = UICButton(parentView:self, frame: CGRect(x: 0.0, y: 0.0, width: self.frame.height, height: self.frame.height), backgroundColor:originalBackgroundColor);
-        UICenterKit.center(childView: imageContainerButton!, parentRect: self.frame, childRect: imageContainerButton!.frame);
+        imageContainerButton = UICButton(parentView:self, frame: CGRect(x: ((self.originalFrame!.width - self.originalFrame!.height) / 2.0), y: 0.0, width: self.originalFrame!.height, height: self.originalFrame!.height), backgroundColor:self.originalBackgroundColor);
         self.imageContainerButton!.layer.cornerRadius = self.layer.cornerRadius;
-        imageContainerButton!.backgroundColor = .clear;
+        imageContainerButton!.frame = imageContainerButton!.originalFrame!;
+        imageContainerButton!.layer.borderWidth = 0.0;
+        imageContainerButton!.shrinked();
     }
     
-    func grownAndShrunk(){
-        shrunkX = self.frame.minX + (self.originalFrame!.width / 2.0);
-        shrunkY = self.frame.minY + (self.originalFrame!.height / 2.0);
-    }
-    
-    func shrinked(){
-        self.frame = CGRect(x: self.shrunkX, y: self.shrunkY, width: 0.0, height: 0.0);
+    func shrink(){
+        self.frame = CGRect(x: self.frame.midX, y: self.frame.midY, width: 1.0, height: 1.0);
     }
     
     func grow(){
-        UIView.animate(withDuration: 1.0, delay: 0.25, options: .curveEaseInOut, animations: {
-            self.frame = CGRect(x: self.originalFrame!.minX, y:self.originalFrame!.minY, width: self.originalFrame!.width, height: self.originalFrame!.height);
+        UIView.animate(withDuration: 1.0, delay: 0.125, options: .curveEaseInOut, animations: {
+            self.frame = self.originalFrame!;
         });
     }
     
@@ -94,7 +92,7 @@ class UICatButton: UIButton {
         // Configure the image icon
         let iconImage:UIImage? = UIImage(named: namedCatImage);
         self.imageContainerButton!.setImage(iconImage, for: .normal);
-        self.imageContainerButton!.imageView!.contentMode = UIView.ContentMode.scaleAspectFit;
+        self.imageContainerButton!.imageView!.contentMode = UIView.ContentMode.scaleAspectFill;
         // Set the animation stage
         if (stage != 4 || stage != 5) {
             animationStage = stage;
@@ -124,12 +122,6 @@ class UICatButton: UIButton {
                 self.setRandomCatAnimation();
             }
         }
-    }
-    
-    func fadeBackgroundIn(color:UIColor){
-        UIView.animate(withDuration: 0.5, delay: 0.25, options: .curveEaseIn, animations: {
-            self.backgroundColor = color;
-        });
     }
     
     func fadeBackgroundIn(){
@@ -176,15 +168,18 @@ class UICatButton: UIButton {
     }
     
     func disperseRadially() {
+        self.imageContainerButton!.backgroundColor = .clear;
+        self.imageContainerButton!.layer.borderWidth = 0.0;
+        self.layer.borderWidth = 0.0;
         displaceBoundsOntoMainView();
         self.setCat(named: "DeadCat", stage: 2);
         self.imageView!.layer.removeAllAnimations();
         let angle:CGFloat = CGFloat(Int.random(in: 0...360));
-        let xTargetPoint:CGFloat = getRadialXTargetPoint(parentFrame: self.superview!.frame, childFrame: self.frame, angle: angle);
-        let yTargetPoint:CGFloat = getRadialYTargetPoint(parentFrame: self.superview!.frame, childFrame: self.frame, angle: angle);
+        let targetPointX:CGFloat = getRadialXTargetPoint(parentFrame: self.superview!.frame, childFrame: self.frame, angle: angle);
+        let targetPointY:CGFloat = getRadialYTargetPoint(parentFrame: self.superview!.frame, childFrame: self.frame, angle: angle);
         UIView.animate(withDuration: 2.5, delay: 0.25, options: .curveEaseIn, animations: {
             self.transform = self.transform.rotated(by: CGFloat.pi);
-            let newFrame:CGRect = CGRect(x: xTargetPoint, y:yTargetPoint, width: self.frame.width, height: self.frame.height);
+            let newFrame:CGRect = CGRect(x: targetPointX, y:targetPointY, width: self.frame.width, height: self.frame.height);
             self.frame = newFrame;
        });
     }
@@ -193,12 +188,30 @@ class UICatButton: UIButton {
         displaceBoundsOntoMainView();
         self.setCat(named: "WavingCat", stage: 1);
         let angle:CGFloat = CGFloat(Int.random(in: 0..<30));
-        let xTargetPoint:CGFloat = generateElevatedTargetX(parentFrame:self.superview!.frame, childFrame:self.frame, angle:angle);
-        let yTargetPoint:CGFloat = generateElevatedTargetY(parentFrame:self.superview!.frame, childFrame:self.frame, angle:angle);
-        UIView.animate(withDuration: 2.5, delay: 0.25, options: .curveEaseIn, animations: {
-             let newFrame:CGRect = CGRect(x: xTargetPoint, y:yTargetPoint, width: self.frame.width, height: self.frame.height);
-             self.frame = newFrame;
+        let targetPointX:CGFloat = generateElevatedTargetX(parentFrame:self.superview!.frame, childFrame:self.frame, angle:angle);
+        let targetPointY:CGFloat = generateElevatedTargetY(parentFrame:self.superview!.frame, childFrame:self.frame, angle:angle);
+        UIView.animate(withDuration: 2.5, delay: 0.125, options: .curveEaseIn, animations: {
+            let newFrame:CGRect = CGRect(x: targetPointX, y:targetPointY, width: self.frame.width, height: self.frame.height);
+            self.frame = newFrame;
         });
+    }
+    
+    func pod() {
+        // New radius and frames
+        let newCornerRadius:CGFloat = self.frame.height / 2.0;
+        let newCatButtonFrame:CGRect = CGRect(x: self.frame.minX + self.imageContainerButton!.frame.minX, y: self.frame.minY, width: self.imageContainerButton!.frame.width, height: self.frame.height);
+        let newImageButtonFrame:CGRect = CGRect(x: 0.0, y: 0.0, width: self.frame.height, height: self.frame.height);
+        // Adjust frames if necessary
+        if (self.frame.width > self.frame.height) {
+            self.frame = newCatButtonFrame;
+            self.imageContainerButton!.frame = newImageButtonFrame;
+        }
+        // Apply adjustments
+        self.imageContainerButton!.layer.cornerRadius = newCornerRadius;
+        self.backgroundColor = .clear;
+        self.layer.borderWidth = 0.0;
+        self.imageContainerButton!.layer.borderWidth = self.frame.height / 75.0;
+        self.imageContainerButton!.layer.borderColor = UIColor.black.cgColor;
     }
     
     func generateElevatedTargetX(parentFrame:CGRect, childFrame:CGRect, angle:CGFloat) -> CGFloat{
@@ -245,4 +258,17 @@ class UICatButton: UIButton {
         self.imageView!.alpha = 0.0;
     }
     
+    func setStyle() {
+        if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1){
+            self.layer.borderColor = UIColor.black.cgColor;
+        } else {
+            self.layer.borderColor = UIColor.white.cgColor;
+        }
+    }
+    
+    func fadeBackgroundIn(color:UIColor){
+        UIView.animate(withDuration: 0.5, delay: 0.25, options: .curveEaseIn, animations: {
+            self.backgroundColor = color;
+        });
+    }
 }

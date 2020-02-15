@@ -32,13 +32,20 @@ class UICButton:UIButton {
         originalBackgroundColor = backgroundColor;
         self.backgroundColor = backgroundColor;
         self.layer.cornerRadius = self.frame.height / 5.0;
+        self.layer.borderWidth = frame.width * 0.01;
         parentView.addSubview(self);
         self.isSelected = false;
     }
     
     func grow(){
-        UIView.animate(withDuration: 1.0, delay: 0.25, options: .curveEaseInOut, animations: {
+        UIView.animate(withDuration: 1.0, delay: 0.125, options: .curveEaseInOut, animations: {
             self.frame = CGRect(x: self.originalFrame!.minX, y:self.originalFrame!.minY, width: self.originalFrame!.width, height: self.originalFrame!.height);
+        });
+    }
+    
+    func fadeBackgroundIn(color:UIColor){
+        UIView.animate(withDuration: 0.5, delay: 0.25, options: .curveEaseIn, animations: {
+            self.backgroundColor = color;
         });
     }
     
@@ -49,10 +56,14 @@ class UICButton:UIButton {
         });
     }
     
-    func hide(color:UIColor){
-        UIView.animate(withDuration: 0.5, delay: 0.25, options: .curveEaseIn, animations: {
-            self.backgroundColor = color;
-        });
+    func hide(){
+        self.alpha = 0.0;
+    }
+    
+    func show() {
+        UIView.animate(withDuration: 1.0, delay: 0.125, options: .curveEaseIn, animations: {
+            self.alpha = 1.0;
+       });
     }
     
     func fadeBackgroundIn(){
@@ -61,20 +72,15 @@ class UICButton:UIButton {
         });
     }
     
-    func grownAndShrunk(){
-        shrunkX = self.frame.minX + (originalFrame!.width / 2.0);
-        shrunkY = self.frame.minY + (originalFrame!.height / 2.0);
-    }
-    
     func shrinked(){
-        self.frame = CGRect(x: self.shrunkX, y: self.shrunkY, width: 0.0, height: 0.0);
+        self.frame = CGRect(x: 0.0, y: 0.0, width: 1.0, height: 1.0);
     }
     
     func select(){
         if (!self.isSelected) {
             self.superview!.bringSubviewToFront(self);
             UIView.animate(withDuration: 1.0, delay: 0.125, options:[.curveEaseInOut], animations: {
-                self.transform = self.transform.scaledBy(x: 1.375, y: 1.375);
+                self.transform = self.transform.scaledBy(x: 1.0, y: 1.375);
             });
             self.isSelected = true;
         }
@@ -83,11 +89,18 @@ class UICButton:UIButton {
     func unSelect(){
         if (self.isSelected) {
             UIView.animate(withDuration: 1.0, delay: 0.125, options:[.curveEaseInOut], animations: {
-                self.transform = self.transform.scaledBy(x: 0.75, y: 0.75);
+                self.transform = self.transform.scaledBy(x: 1.0, y: 0.75);
             });
             self.isSelected = false;
         }
     }
- 
+    
+    func setStyle() {
+        if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1){
+            self.layer.borderColor = UIColor.black.cgColor;
+        } else {
+            self.layer.borderColor = UIColor.white.cgColor;
+        }
+    }
 }
 

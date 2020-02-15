@@ -14,7 +14,9 @@ class ViewController: UIViewController {
     // Main View Controller Properties
     var mainViewWidth:CGFloat = 0.0;
     var mainViewHeight:CGFloat = 0.0;
-    var unitView:CGFloat = 0.0;
+    
+    var unitViewHeight:CGFloat = 0.0;
+    var unitViewWidth:CGFloat = 0.0;
     
     // Intro Label Properties
     var introLabel:UICLabel? = nil;
@@ -87,9 +89,21 @@ class ViewController: UIViewController {
     }
     
     func saveMainViewFoundationalProperties() {
-        mainViewWidth = mainViewController.frame.height * 9.0 / 16.0;
-        mainViewHeight = mainViewController.frame.height;
-        unitView = mainViewHeight / 18.0;
+        let decimalRatio:CGFloat = mainViewController.frame.height / mainViewController.frame.width;
+        var mainViewHeight:CGFloat = mainViewController.frame.height;
+        var mainViewWidth:CGFloat =  mainViewController.frame.width;
+        if (decimalRatio > 2.1) {
+            mainViewWidth = mainViewController.frame.width;
+            mainViewHeight = mainViewController.frame.height * 3.0 / 4.0;
+        } else if (decimalRatio > 3.7) {
+            mainViewWidth = mainViewController.frame.width;
+            mainViewHeight = mainViewController.frame.height * 3.0 / 4.0;
+        } else {
+            mainViewWidth = mainViewController.frame.width;
+            mainViewHeight = mainViewController.frame.height * 1.2;
+        }
+        unitViewHeight = mainViewHeight / 18.0;
+        unitViewWidth = mainViewWidth / 18.0;
     }
     
     func configureIntroLabel(userInterfaceStyle:Int){
@@ -97,7 +111,7 @@ class ViewController: UIViewController {
         introLabel = UICLabel(parentView: mainViewController, x: 0, y: 0, width: mainViewWidth * 0.5, height: mainViewHeight * 0.15);
         introLabel!.backgroundColor = .clear;
         introLabel!.textColor = textColor;
-        introLabel!.font = UIFont.boldSystemFont(ofSize: unitView * 0.75);
+        introLabel!.font = UIFont.boldSystemFont(ofSize: unitViewHeight * 0.75);
         introLabel!.text = "podDatCat";
         UICenterKit.center(childView: introLabel!, parentRect: mainViewController.frame, childRect: introLabel!.frame);
         introLabel!.alpha = 0.0;
@@ -105,32 +119,30 @@ class ViewController: UIViewController {
     }
         
     func configureBoardGameView(userInterfaceStyle:Int){
-        boardGameView = UIBoardGameView(parentView: mainViewController, x: 0, y: 0, width: mainViewWidth, height:  mainViewWidth, backgroundColor: .clear);
-        UICenterKit.centerWithVerticalDisplacement(childView: boardGameView!, parentRect: mainViewController.frame, childRect: boardGameView!.frame, verticalDisplacement: -unitView * 0.80);
+        let boardGameWidth:CGFloat = unitViewHeight * 8;
+        boardGameView = UIBoardGameView(parentView: mainViewController, x: 0.0, y: 0.0, width: boardGameWidth, height:boardGameWidth);
+        UICenterKit.center(childView: boardGameView!, parentRect: mainViewController.frame, childRect: boardGameView!.frame);
         boardGameView!.completionGradientLayer = completionGradientLayer!;
-        boardGameView!.layer.borderColor! = UIColor.clear.cgColor;
         boardGameView!.viruses = viruses!;
-        boardGameView!.alpha = 0.0;
     }
-    
+
     func configureColorOptionsView(userInterfaceStyle:Int){
-        colorOptionsView = UIColorOptionsView(parentView: mainViewController, x: boardGameView!.frame.minX, y: boardGameView!.frame.minY + boardGameView!.frame.height, width: boardGameView!.frame.width, height: unitView * 1.5, backgroundColor: .clear);
-        colorOptionsView!.alpha = 0.0;
+        colorOptionsView = UIColorOptionsView(parentView: mainViewController, x: boardGameView!.frame.minX, y: boardGameView!.frame.maxY + unitViewHeight * 0.25, width: boardGameView!.frame.width, height: unitViewWidth * 2);
+        UICenterKit.centerHorizontally(childView: colorOptionsView!, parentRect: mainViewController.frame, childRect: colorOptionsView!.frame);
         boardGameView!.colorOptionsView = colorOptionsView!;
         colorOptionsView!.boardGameView = boardGameView!;
     }
     
     func configureSettingsButton(userInterfaceStyle:Int) {
-        settingsButton = UISettingsButton(parentView: mainViewController, x: unitView, y: unitView, width: unitView * 1.5, height: unitView * 1.5);
+        settingsButton = UISettingsButton(parentView: mainViewController, x: unitViewWidth, y: unitViewHeight * 1.125, width: unitViewWidth * 2, height: unitViewWidth * 2);
+        settingsButton!.setBoardGameAndColorOptionsView(boardGameView:boardGameView!, colorOptionsView: colorOptionsView!);
         settingsButton!.setStyle();
-        settingsButton!.alpha = 0.0;
-        settingsButton!.boardGameView = boardGameView!;
-        settingsButton!.colorOptionsView = colorOptionsView!;
+        settingsButton!.hide();
         boardGameView!.settingsButton = settingsButton!;
     }
     
     func configureViruses() {
-        viruses = UIViruses(mainView: mainViewController, unitView:unitView);
+        viruses = UIViruses(mainView: mainViewController, unitView:unitViewHeight);
         viruses!.hide();
         viruses!.sway();
     }

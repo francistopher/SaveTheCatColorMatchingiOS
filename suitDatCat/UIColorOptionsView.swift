@@ -20,11 +20,11 @@ class UIColorOptionsView: UIView {
        fatalError("init(coder:) has not been implemented");
     }
 
-    init(parentView: UIView, x:CGFloat, y:CGFloat, width:CGFloat, height:CGFloat, backgroundColor:UIColor) {
-       super.init(frame:CGRect(x: x, y: y, width: width, height: height));
-       self.backgroundColor = backgroundColor;
-       self.layer.cornerRadius = height / 5.0;
-       parentView.addSubview(self);
+    init(parentView: UIView, x:CGFloat, y:CGFloat, width:CGFloat, height:CGFloat) {
+        super.init(frame:CGRect(x: x, y: y, width: width, height: height));
+        self.layer.cornerRadius = height / 5.0;
+        self.backgroundColor = UIColor.clear;
+        parentView.addSubview(self);
     }
 
     func fadeIn(){
@@ -54,8 +54,6 @@ class UIColorOptionsView: UIView {
         for index in 0..<selectionColors.count {
             currentColumnDisplacement += columnGap;
             currentButton = UICButton(parentView: self,  frame:CGRect(x: currentColumnDisplacement, y: rowGap, width: buttonWidth, height: buttonHeight), backgroundColor: selectionColors[index]);
-            currentButton!.grownAndShrunk();
-            currentButton!.shrinked();
             currentButton!.grow();
             currentButton!.addTarget(self, action: #selector(selectColorOption), for: .touchUpInside);
             selectionButtons.append(currentButton!);
@@ -82,7 +80,10 @@ class UIColorOptionsView: UIView {
         if (!boardGameView!.gridCatButtons[0][0].backgroundColor!.isEqual(UIColor.lightGray) && boardGameView!.solved){
             for rows in 0..<rowsAndColumns[0]{
                 for columns in 0..<rowsAndColumns[1]{
-                    boardGameView!.gridCatButtons[rows][columns].fadeBackgroundIn(color:UIColor.lightGray);
+                    boardGameView!.gridCatButtons[rows][columns].imageContainerButton!.fadeBackgroundIn(color:UIColor.lightGray);
+                    boardGameView!.gridCatButtons[rows][columns].fadeBackgroundIn(color: UIColor.lightGray);
+                    boardGameView!.gridCatButtons[rows][columns].setNeedsDisplay();
+                    boardGameView!.gridCatButtons[rows][columns].setNeedsDisplay();
                 }
             }
             boardGameView!.solved = false;

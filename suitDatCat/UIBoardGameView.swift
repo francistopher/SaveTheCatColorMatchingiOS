@@ -34,10 +34,10 @@ class UIBoardGameView: UIView {
         fatalError("init(coder:) has not been implemented");
     }
     
-    init(parentView: UIView, x:CGFloat, y:CGFloat, width:CGFloat, height:CGFloat, backgroundColor:UIColor) {
+    init(parentView: UIView, x:CGFloat, y:CGFloat, width:CGFloat, height:CGFloat) {
         super.init(frame:CGRect(x: x, y: y, width: width, height: height));
-        self.backgroundColor = backgroundColor;
-        self.layer.cornerRadius = height / 5.0;
+        self.backgroundColor = UIColor.clear;
+        self.layer.cornerRadius = width / 5.0;
         parentView.addSubview(self);
     }
     
@@ -142,34 +142,38 @@ class UIBoardGameView: UIView {
         // Sizes
         let buttonWidth:CGFloat = self.frame.width * 0.90 / CGFloat(rowsAndColumns[0]);
         let buttonHeight:CGFloat = self.frame.height * 0.90 / CGFloat(rowsAndColumns[1]);
-        var rowDisplacement:CGFloat = 0.0;
-        var columnDisplacement:CGFloat = 0.0;
+        // Points
+        var x:CGFloat = 0.0;
+        var y:CGFloat = 0.0;
         var catButton:UICatButton? = nil;
-        for rows in 0..<rowsAndColumns[0] {
-            rowDisplacement += rowGap;
-            columnDisplacement = 0.0;
+        
+        for columns in 0..<rowsAndColumns[0] {
+            x += columnGap;
+            y = 0.0;
             var gridButtonsRow:[UICatButton] = [UICatButton]();
-            for columns in 0..<rowsAndColumns[1] {
-                columnDisplacement += columnGap;
-                catButton = UICatButton(parentView: self, x: rowDisplacement, y: columnDisplacement,
-                                            width: buttonWidth, height: buttonHeight, backgroundColor: gridColors[rows][columns]);
+            for rows in 0..<rowsAndColumns[1] {
+                y += rowGap;
+                catButton = UICatButton(parentView: self, x: x, y: y, width: buttonWidth, height: buttonHeight, backgroundColor: gridColors[columns][rows]);
                 catButton!.grow();
-                columnDisplacement += buttonHeight;
+                catButton!.imageContainerButton!.grow();
+                y += buttonHeight;
                 catButton!.imageContainerButton!.addTarget(self, action: #selector(selectGridButton), for: .touchUpInside);
                 // Add cat image to current button
                 catButton!.setCat(named: "SmilingCat", stage:0);
                 gridButtonsRow.append(catButton!);
             }
             gridCatButtons.append(gridButtonsRow);
-            rowDisplacement += buttonWidth;
+            x += buttonWidth;
         }
     }
     
-    @objc func selectGridButton(catButton:UICButton){
+    @objc func selectGridButton(catImageButton:UICButton){
+        let catButtonSuperView:UICatButton = catImageButton.superview! as! UICatButton;
+        catButtonSuperView.pod();
+        catButtonSuperView.podded = true;
         if (!solved){
-            if (catButton.originalBackgroundColor!.cgColor == colorOptionsView!.selectedColor.cgColor){
-                (catButton.superview! as! UICatButton).fadeBackgroundIn();
-                catButton.fadeBackgroundIn();
+            if (catButtonSuperView.originalBackgroundColor.cgColor == colorOptionsView!.selectedColor.cgColor){
+                catImageButton.fadeBackgroundIn(color: colorOptionsView!.selectedColor);
                 if (isBoardCompleted()){
                     print("Moving to next round!")
                     solved = true;
@@ -193,7 +197,7 @@ class UIBoardGameView: UIView {
         let rowsAndColumns:[Int] = currentStageRowsAndColumns(currentStage: currentStage);
         for rows in 0..<rowsAndColumns[0]{
             for columns in 0..<rowsAndColumns[1]{
-                if (gridCatButtons[rows][columns].backgroundColor!.cgColor != gridColors[rows][columns].cgColor){
+                if (gridCatButtons[rows][columns].imageContainerButton!.backgroundColor!.cgColor != gridColors[rows][columns].cgColor){
                     return false;
                 }
             }

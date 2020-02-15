@@ -20,7 +20,7 @@ class UIViruses {
     
     func buildViruses(unitView:CGFloat) {
         // Calculate side and spacing lengths of virus
-        let virusSideLength:CGFloat = unitView * 2.0;
+        let virusSideLength:CGFloat = unitView;
         // Total Spacing Available
         let totalWidthSpacing:CGFloat = mainView!.frame.width - (virusSideLength * 3.6125);
         let totalHeightSpacing:CGFloat = mainView!.frame.height - (virusSideLength * 5.0);

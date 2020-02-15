@@ -12,6 +12,8 @@ class UIRestart: UIButton {
     
     var originalFrame:CGRect? = nil;
     var reducedFrame:CGRect? = nil;
+    var boardGameView:UIBoardGameView? = nil;
+    var settingsButton:UISettingsButton? = nil;
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -44,4 +46,15 @@ class UIRestart: UIButton {
              setIconImage(imageName: "darkRestart.png");
          }
      }
+    
+    func setTargetResources(boardGameView:UIBoardGameView, settingsButton:UISettingsButton) {
+        self.boardGameView = boardGameView;
+        self.settingsButton = settingsButton;
+        self.addTarget(self, action: #selector(restartSelector), for: .touchUpInside);
+    }
+    
+    @objc func restartSelector() {
+        self.settingsButton!.sendActions(for: .touchUpInside);
+        boardGameView!.maintain();
+    }
 }

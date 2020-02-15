@@ -12,16 +12,6 @@ import UIKit
 
 class UISettingsButton:UIButton {
     
-    var originalX:CGFloat = 0.0;
-    var originalY:CGFloat = 0.0;
-    var originalWidth:CGFloat = 0.0;
-    var originalHeight:CGFloat = 0.0;
-    
-    var shrunkX:CGFloat = 0.0;
-    var shrunkY:CGFloat = 0.0;
-    var shrunkWidth:CGFloat = 0.0;
-    var shrunkHeight:CGFloat = 0.0;
-    
     var originalFrame:CGRect? = nil;
     var shrunkFrame:CGRect? = nil;
     var originalBackgroundColor:UIColor? = nil;
@@ -59,7 +49,7 @@ class UISettingsButton:UIButton {
         configureRestart1Button(parentView:settingsMenu!);
         configureStatsButton(parentView:settingsMenu!);
         configureNoAdsButton(parentView:settingsMenu!);
-        settingsMenu!.frame = CGRect(x: self.frame.midX * 0.80, y: self.frame.minY, width: cellFrame!.width * 1.75, height: settingsMenu!.frame.height);
+        settingsMenu!.frame = CGRect(x: self.frame.midX * 0.80, y: self.frame.minY, width: cellFrame!.width * 2.0625, height: settingsMenu!.frame.height);
         settingsMenu!.reducedFrame = settingsMenu!.frame;
         setStyle();
         self.addTarget(self, action: #selector(settingsMenuSelector), for: .touchUpInside);
@@ -85,57 +75,51 @@ class UISettingsButton:UIButton {
         cellFrame = CGRect(x: 0.0, y: 0.0, width: settingsMenu!.frame.width / 8.0, height: settingsMenu!.frame.height);
         cellFrame = CGRect(x: cellFrame!.width / 7.0, y: 0.0, width: settingsMenu!.frame.width / 8.0, height: settingsMenu!.frame.height);
     }
-//
-//    func configureNoAdsButton(parentView:UICView!) {
-//        noAds = UINoAds(parentView: parentView, x: cellFrame!.minX, y: 0.0, width: cellFrame!.width, height: cellFrame!.height);
-//        noAds!.frame = CGRect(x: -cellFrame!.minX, y: noAds!.frame.minY, width: noAds!.frame.width, height: restart!.frame.height);
-//        noAds!.reducedFrame = noAds!.frame;
-//    }
     
     func configureNoAdsButton(parentView:UICView!) {
         noAds = UINoAds(parentView: parentView, x: cellFrame!.width * 0.95, y: 0.0, width: cellFrame!.width, height: cellFrame!.height);
-        noAds!.frame = CGRect(x: -cellFrame!.minX, y: noAds!.frame.minY, width: noAds!.frame.width, height: noAds!.frame.height);
+        noAds!.frame = CGRect(x: -cellFrame!.width * 0.35, y: noAds!.frame.minY, width: noAds!.frame.width, height: noAds!.frame.height);
         noAds!.reducedFrame = noAds!.frame;
     }
     
     func configureRestartButton(parentView:UICView) {
         restart = UIRestart(parentView: parentView, x: cellFrame!.width * 1.85  + cellFrame!.minX, y: 0.0, width: cellFrame!.width, height: cellFrame!.height);
-        restart!.frame = CGRect(x: -cellFrame!.minX, y: restart!.frame.minY, width: restart!.frame.width, height: restart!.frame.height);
+        restart!.frame = CGRect(x: -cellFrame!.width * 0.35, y: restart!.frame.minY, width: restart!.frame.width, height: restart!.frame.height);
         restart!.reducedFrame = restart!.frame;
     }
     
     func configureRestart1Button(parentView:UICView) {
         restart1 = UIRestart1(parentView: parentView, x: cellFrame!.width * 2.85  + cellFrame!.minX, y: 0.0, width: cellFrame!.width, height: cellFrame!.height);
-        restart1!.frame = CGRect(x: -cellFrame!.minX, y: restart1!.frame.minY, width: restart1!.frame.width, height: restart!.frame.height);
+        restart1!.frame = CGRect(x: -cellFrame!.width * 0.35, y: restart1!.frame.minY, width: restart1!.frame.width, height: restart!.frame.height);
         restart1!.reducedFrame = restart1!.frame;
     }
     
     func configureStatsButton(parentView:UICView!) {
         stats = UIStats(parentView: parentView, x: cellFrame!.width * 3.95, y: 0.0, width: cellFrame!.width, height: cellFrame!.height);
-        stats!.frame = CGRect(x: -cellFrame!.minX, y: stats!.frame.minY, width: stats!.frame.width, height: stats!.frame.height);
+        stats!.frame = CGRect(x: -cellFrame!.width * 0.35, y: stats!.frame.minY, width: stats!.frame.width, height: stats!.frame.height);
         stats!.reducedFrame = stats!.frame;
     }
     
     func configureMultiplayerButton(parentView:UICView) {
         multiplayer = UIMultiplayer(parentView: parentView, x: cellFrame!.width * 5.0, y: 0.0, width: cellFrame!.width, height: cellFrame!.height);
-        multiplayer!.frame = CGRect(x: -cellFrame!.minX, y: multiplayer!.frame.minY, width: multiplayer!.frame.width, height: multiplayer!.frame.height);
+        multiplayer!.frame = CGRect(x: -cellFrame!.width * 0.35, y: multiplayer!.frame.minY, width: multiplayer!.frame.width, height: multiplayer!.frame.height);
         multiplayer!.reducedFrame = multiplayer!.frame;
     }
     
     func configureMoreCatsButton(parentView:UICView) {
         moreCats = UIMoreCats(parentView: parentView, x: cellFrame!.width * 6.0, y: 0.0, width: cellFrame!.width, height: cellFrame!.height);
-        moreCats!.frame = CGRect(x: -cellFrame!.minX, y: moreCats!.frame.minY, width: moreCats!.frame.width, height: moreCats!.frame.height);
+        moreCats!.frame = CGRect(x: -cellFrame!.width * 0.35, y: moreCats!.frame.minY, width: moreCats!.frame.width, height: moreCats!.frame.height);
         moreCats!.reducedFrame = moreCats!.frame;
     }
     
     func configureFishCoinButton(parentView:UICView){
-        fishCoin = UIFishCoin(parentView: parentView, x: cellFrame!.width * 7.0 + cellFrame!.minX * 0.1, y: 0.0, width: cellFrame!.width, height: cellFrame!.height);
-        fishCoin!.frame = CGRect(x: fishCoin!.frame.minX / 7.0 - cellFrame!.width * 0.3, y: fishCoin!.frame.minY, width: fishCoin!.frame.width, height:  fishCoin!.frame.height);
+        fishCoin = UIFishCoin(parentView: parentView, x: cellFrame!.width * 6.85, y: 0.0, width: cellFrame!.width, height: cellFrame!.height);
+        fishCoin!.frame = CGRect(x: fishCoin!.frame.minX / 7.0, y: fishCoin!.frame.minY, width: fishCoin!.frame.width, height:  fishCoin!.frame.height);
         fishCoin!.reducedFrame = fishCoin!.frame;
     }
     
     func configureSettingsMenu(parentView:UIView) {
-        settingsMenu = UICView(parentView: parentView, x: self.frame.midX * 0.75, y: self.frame.minY, width: self.frame.width * 7.5, height: self.frame.height, backgroundColor: .clear);
+        settingsMenu = UICView(parentView: parentView, x: self.frame.midX * 0.75, y: self.frame.minY, width: parentView.frame.width * 0.875, height: self.frame.height, backgroundColor: .clear);
         settingsMenu!.layer.cornerRadius = settingsMenu!.frame.height / 2.0;
         settingsMenu!.layer.borderWidth = self.frame.height / 12.0;
         parentView.bringSubviewToFront(self);
@@ -169,8 +153,8 @@ class UISettingsButton:UIButton {
             self.restart!.frame = self.restart!.originalFrame!;
             self.noAds!.frame = self.noAds!.originalFrame!;
         })
-        colorOptionsView!.isUserInteractionEnabled = false;
-        boardGameView!.isUserInteractionEnabled = false;
+//        colorOptionsView!.isUserInteractionEnabled = false;
+//        boardGameView!.isUserInteractionEnabled = false;
     }
     
     @objc func settingsMenuHide(){
@@ -193,8 +177,8 @@ class UISettingsButton:UIButton {
             self.restart!.frame = self.restart!.reducedFrame!;
             self.noAds!.frame = self.noAds!.reducedFrame!;
         })
-        colorOptionsView!.isUserInteractionEnabled = true;
-        boardGameView!.isUserInteractionEnabled = true;
+//        colorOptionsView!.isUserInteractionEnabled = true;
+//        boardGameView!.isUserInteractionEnabled = true;
     }
     
     func setStyle(){
@@ -225,9 +209,22 @@ class UISettingsButton:UIButton {
         noAds!.setStyle();
     }
     
+    func setBoardGameAndColorOptionsView(boardGameView:UIBoardGameView, colorOptionsView:UIColorOptionsView) {
+        self.boardGameView = boardGameView;
+        self.colorOptionsView = colorOptionsView;
+        self.restart!.setTargetResources(boardGameView: boardGameView, settingsButton: self);
+        self.restart1!.setTargetResources(boardGameView: boardGameView, settingsButton: self);
+    }
+    
     func show(){
         UIView.animate(withDuration: 1.0, delay: 0.125, options: .curveEaseIn, animations: {
             self.alpha = 1.0;
+            self.settingsMenu!.alpha = 1.0;
         });
+    }
+    
+    func hide() {
+        self.alpha = 0.0;
+        self.settingsMenu!.alpha = 1.0;
     }
 }

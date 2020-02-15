@@ -12,6 +12,8 @@ class UIRestart1: UIButton {
     
     var originalFrame:CGRect? = nil;
     var reducedFrame:CGRect? = nil;
+    var boardGameView:UIBoardGameView? = nil;
+    var settingsButton:UISettingsButton? = nil;
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -46,4 +48,14 @@ class UIRestart1: UIButton {
         }
     }
     
+    func setTargetResources(boardGameView:UIBoardGameView, settingsButton:UISettingsButton) {
+        self.boardGameView = boardGameView;
+        self.settingsButton = settingsButton;
+        self.addTarget(self, action: #selector(restart1Selector), for: .touchUpInside);
+    }
+    
+    @objc func restart1Selector() {
+        self.settingsButton!.sendActions(for: .touchUpInside);
+        self.boardGameView!.restart();
+    }
 }

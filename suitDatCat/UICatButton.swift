@@ -63,9 +63,10 @@ class UICatButton: UIButton {
         configureCoinEarned();
     }
     
-    func giveMouseCoin() {
+    func giveMouseCoin(withNoise:Bool) {
         // Generate mouse coin
         let mouseCoin:UIMouseCoin = UIMouseCoin(parentView: self.imageContainerButton!, x: 0.0, y: 0.0, width: self.imageContainerButton!.frame.width / 4.0, height: self.imageContainerButton!.frame.height / 4.0);
+        mouseCoin.isEnabled = false;
         UICenterKit.center(childView: mouseCoin, parentRect: imageContainerButton!.frame, childRect: mouseCoin.frame);
         self.imageContainerButton!.addSubview(mouseCoin);
         // Create new frame for mouse coin on main view
@@ -78,10 +79,25 @@ class UICatButton: UIButton {
         mouseCoinY += self.superview!.frame.minY;
         // Reposition mouse coin
         mainView.addSubview(mouseCoin);
-        mainView.bringSubviewToFront(mouseCoin);
         mouseCoin.frame = CGRect(x: mouseCoinX, y: mouseCoinY, width: mouseCoin.frame.width, height: mouseCoin.frame.height);
         // Calculate time for translation
-        
+        let boardGameFrame:CGRect = self.superview!.frame;
+        let time:Double = Double(mouseCoin.frame.minY / (boardGameFrame.minY + boardGameFrame.height));
+        DispatchQueue.main.asyncAfter(deadline: .now() + time) {
+            UIView.animate(withDuration: 1.0, delay: 0.125, options: [.curveEaseInOut], animations: {
+                mainView.bringSubviewToFront(mouseCoin);
+                let settingsButton:UISettingsButton = ViewController.settings!
+                let settingsMenuFrame:CGRect = settingsButton.settingsMenu!.frame;
+                let settingsMouseCoinFrame:CGRect = settingsButton.mouseCoin!.frame;
+                let newMouseCoinFrame:CGRect = CGRect(x: settingsMenuFrame.minX + settingsMouseCoinFrame.minX, y: settingsMenuFrame.minY + settingsMouseCoinFrame.minY, width: settingsMouseCoinFrame.width, height: settingsMouseCoinFrame.height);
+                mouseCoin.frame = newMouseCoinFrame;
+            }, completion: { _ in
+                if (withNoise) {
+                    self.coinEarned();
+                }
+                mouseCoin.removeFromSuperview();
+            })
+        }
     }
     
     func kittenMeow() {

@@ -26,6 +26,7 @@ class ViewController: UIViewController {
     var colorOptionsView:UIColorOptionsView? = nil;
     var settingsButton:UISettingsButton? = nil;
     var resetButton:UICButton? = nil;
+    static var settings:UISettingsButton? = nil;
     
     // Add heaven gradient layer
     var completionGradientLayer:CAGradientLayer? = nil;
@@ -145,6 +146,7 @@ class ViewController: UIViewController {
         settingsButton!.setStyle();
         settingsButton!.alpha = 0.0;
         settingsButton!.settingsMenu!.alpha = 0.0;
+        ViewController.settings = settingsButton!;
     }
     
     func configureViruses() {

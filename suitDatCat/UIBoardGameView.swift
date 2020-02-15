@@ -256,9 +256,13 @@ class UIBoardGameView: UIView {
     }
     
     func earnMouseCoins() {
-        for gridCatButtonRow in gridCatButtons {
-            for gridCatButton in gridCatButtonRow {
-                gridCatButton.giveMouseCoin();
+        for row in 0..<gridCatButtons.count {
+            for column in 0..<gridCatButtons[row].count {
+                if (row == 0){
+                    gridCatButtons[row][column].giveMouseCoin(withNoise: true);
+                } else {
+                    gridCatButtons[row][column].giveMouseCoin(withNoise: false);
+                }
             }
         }
     }

@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import AVFoundation
 
 class UICatButton: UIButton {
     
@@ -29,6 +30,9 @@ class UICatButton: UIButton {
     var imageContainerButton:UICButton? = nil;
     var podded:Bool = false;
     
+    var kittenMeowPath:String? = nil;
+    var kittenMeowUrl:URL? = nil;
+    var kittenMeowSoundEffect:AVAudioPlayer?
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented");
     }
@@ -44,6 +48,23 @@ class UICatButton: UIButton {
         configureImageContainerButton();
         self.shrink();
         self.setStyle();
+        configureKittenMeow();
+    }
+    
+    func kittenMeow() {
+        if (!kittenMeowSoundEffect!.isPlaying){
+            kittenMeowSoundEffect!.play();
+        }
+    }
+    
+    func configureKittenMeow() {
+        kittenMeowPath = Bundle.main.path(forResource: "kittenMeow.mp3", ofType: nil);
+        kittenMeowUrl = URL(fileURLWithPath: kittenMeowPath!);
+        do {
+            kittenMeowSoundEffect = try AVAudioPlayer(contentsOf: kittenMeowUrl!);
+        } catch {
+            print("Unable to play kitten meow");
+        }
     }
     
     func configureImageContainerButton() {
@@ -197,21 +218,22 @@ class UICatButton: UIButton {
     }
     
     func pod() {
-        // New radius and frames
-        let newCornerRadius:CGFloat = self.frame.height / 2.0;
-        let newCatButtonFrame:CGRect = CGRect(x: self.frame.minX + self.imageContainerButton!.frame.minX, y: self.frame.minY, width: self.imageContainerButton!.frame.width, height: self.frame.height);
-        let newImageButtonFrame:CGRect = CGRect(x: 0.0, y: 0.0, width: self.frame.height, height: self.frame.height);
-        // Adjust frames if necessary
-        if (self.frame.width > self.frame.height) {
-            self.frame = newCatButtonFrame;
-            self.imageContainerButton!.frame = newImageButtonFrame;
-        }
-        // Apply adjustments
-        self.imageContainerButton!.layer.cornerRadius = newCornerRadius;
-        self.backgroundColor = .clear;
-        self.layer.borderWidth = 0.0;
-        self.imageContainerButton!.layer.borderWidth = self.frame.height / 75.0;
-        self.imageContainerButton!.layer.borderColor = UIColor.black.cgColor;
+            self.kittenMeow();
+            // New radius and frames
+            let newCornerRadius:CGFloat = self.frame.height / 2.0;
+            let newCatButtonFrame:CGRect = CGRect(x: self.frame.minX + self.imageContainerButton!.frame.minX, y: self.frame.minY, width: self.imageContainerButton!.frame.width, height: self.frame.height);
+            let newImageButtonFrame:CGRect = CGRect(x: 0.0, y: 0.0, width: self.frame.height, height: self.frame.height);
+            // Adjust frames if necessary
+            if (self.frame.width > self.frame.height) {
+                self.frame = newCatButtonFrame;
+                self.imageContainerButton!.frame = newImageButtonFrame;
+            }
+            // Apply adjustments
+            self.imageContainerButton!.layer.cornerRadius = newCornerRadius;
+            self.backgroundColor = .clear;
+            self.layer.borderWidth = 0.0;
+            self.imageContainerButton!.layer.borderWidth = self.frame.height / 75.0;
+            self.imageContainerButton!.layer.borderColor = UIColor.black.cgColor;
     }
     
     func generateElevatedTargetX(parentFrame:CGRect, childFrame:CGRect, angle:CGFloat) -> CGFloat{
@@ -227,7 +249,7 @@ class UICatButton: UIButton {
     
     func generateElevatedTargetY(parentFrame:CGRect, childFrame:CGRect, angle:CGFloat) -> CGFloat{
         var targetY:CGFloat = -parentFrame.height;
-        targetY += CGFloat(Int.random(in: 0..<Int(parentFrame.height/2.0)));
+        targetY += CGFloat(Int.random(in: 0..<Int(parentFrame.height / 2.0)));
         return targetY;
     }
     

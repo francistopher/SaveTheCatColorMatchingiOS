@@ -169,11 +169,11 @@ class UIBoardGameView: UIView {
     
     @objc func selectGridButton(catImageButton:UICButton){
         let catButtonSuperView:UICatButton = catImageButton.superview! as! UICatButton;
-        catButtonSuperView.pod();
-        catButtonSuperView.podded = true;
         if (!solved){
             if (catButtonSuperView.originalBackgroundColor.cgColor == colorOptionsView!.selectedColor.cgColor){
                 catImageButton.fadeBackgroundIn(color: colorOptionsView!.selectedColor);
+                catButtonSuperView.pod();
+                catButtonSuperView.podded = true;
                 if (isBoardCompleted()){
                     print("Moving to next round!")
                     solved = true;

@@ -13,6 +13,7 @@
 		B833545623EC8F0B00835672 /* podDatCat.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = B833545423EC8F0B00835672 /* podDatCat.xcdatamodeld */; };
 		B833545823EC8F1400835672 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B833545723EC8F1400835672 /* Assets.xcassets */; };
 		B833545B23EC8F1400835672 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B833545923EC8F1400835672 /* LaunchScreen.storyboard */; };
+		B8366D3723F772270043B45F /* kittenMeow.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = B8366D3623F772270043B45F /* kittenMeow.mp3 */; };
 		B88F996923F06801003ED805 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B88F996823F06801003ED805 /* ViewController.swift */; };
 		B88F996D23F09BB4003ED805 /* UISettingsButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B88F996C23F09BB4003ED805 /* UISettingsButton.swift */; };
 		B88F997323F1CDA0003ED805 /* UIViruses.swift in Sources */ = {isa = PBXBuildFile; fileRef = B88F997223F1CD9F003ED805 /* UIViruses.swift */; };
@@ -65,6 +66,7 @@
 		B833545723EC8F1400835672 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B833545A23EC8F1400835672 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B833545C23EC8F1400835672 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B8366D3623F772270043B45F /* kittenMeow.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = kittenMeow.mp3; sourceTree = "<group>"; };
 		B88F996823F06801003ED805 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		B88F996C23F09BB4003ED805 /* UISettingsButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UISettingsButton.swift; sourceTree = "<group>"; };
 		B88F997223F1CD9F003ED805 /* UIViruses.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViruses.swift; sourceTree = "<group>"; };
@@ -138,6 +140,7 @@
 		B833544A23EC8F0B00835672 /* suitDatCat */ = {
 			isa = PBXGroup;
 			children = (
+				B8366D3523F772180043B45F /* Audio */,
 				B88F996823F06801003ED805 /* ViewController.swift */,
 				B88F998F23F39934003ED805 /* Custom Components */,
 				B88F998E23F398F2003ED805 /* Custom UIKit Components */,
@@ -145,6 +148,14 @@
 				B88F999223F39975003ED805 /* Images */,
 			);
 			path = suitDatCat;
+			sourceTree = "<group>";
+		};
+		B8366D3523F772180043B45F /* Audio */ = {
+			isa = PBXGroup;
+			children = (
+				B8366D3623F772270043B45F /* kittenMeow.mp3 */,
+			);
+			name = Audio;
 			sourceTree = "<group>";
 		};
 		B88F998B23F39838003ED805 /* Supporting Files */ = {
@@ -425,6 +436,7 @@
 				B8FBD6CF23F60D9E00C8B50D /* lightMultiplayer.png in Resources */,
 				B8FBD67E23F50DB900C8B50D /* lightDeadCat.png in Resources */,
 				B8FBD6A423F5E65F00C8B50D /* darkRestart1.png in Resources */,
+				B8366D3723F772270043B45F /* kittenMeow.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

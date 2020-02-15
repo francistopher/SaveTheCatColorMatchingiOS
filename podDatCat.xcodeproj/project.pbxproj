@@ -144,8 +144,8 @@
 		B833544A23EC8F0B00835672 /* suitDatCat */ = {
 			isa = PBXGroup;
 			children = (
-				B8366D3523F772180043B45F /* Audio */,
 				B88F996823F06801003ED805 /* ViewController.swift */,
+				B8366D3523F772180043B45F /* Audio */,
 				B88F998F23F39934003ED805 /* Custom Components */,
 				B88F998E23F398F2003ED805 /* Custom UIKit Components */,
 				B88F998B23F39838003ED805 /* Supporting Files */,

@@ -102,9 +102,9 @@ class UICatButton: UIButton {
         // Build cat directory string
         var namedCatImage:String = "";
         if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1){
-            namedCatImage += "dark" + previousFileName;
-        } else{
             namedCatImage += "light" + previousFileName;
+        } else{
+            namedCatImage += "dark" + previousFileName;
         }
         // Clear background if cat dies
         if (stage == 2) {

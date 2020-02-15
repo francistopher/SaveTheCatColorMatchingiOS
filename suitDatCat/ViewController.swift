@@ -29,6 +29,7 @@ class ViewController: UIViewController {
     
     // Add heaven gradient layer
     var completionGradientLayer:CAGradientLayer? = nil;
+    let mellowYellow:UIColor = UIColor(red: 252.0/255.0, green: 212.0/255.0, blue: 64.0/255.0, alpha: 1.0);
     // Viruses
     var viruses:UIViruses? = nil;
     
@@ -78,7 +79,6 @@ class ViewController: UIViewController {
     }
     
     func configureHeavenGradientLayer() {
-        let mellowYellow:UIColor = UIColor(red: 252.0/255.0, green: 212.0/255.0, blue: 64.0/255.0, alpha: 1.0);
         completionGradientLayer = CAGradientLayer();
         completionGradientLayer!.frame = mainViewController.frame;
         mainViewController.layer.addSublayer(completionGradientLayer!);
@@ -154,9 +154,11 @@ class ViewController: UIViewController {
         introLabel!.setStyle();
         settingsButton!.setStyle();
         boardGameView!.activateGridButtonsForUserInterfaceStyle();
+        if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1){
+            self.completionGradientLayer!.colors = [self.mellowYellow.cgColor, UIColor.white.cgColor];
+        } else {
+            self.completionGradientLayer!.colors =  [self.mellowYellow.cgColor, UIColor.black.cgColor];
+       }
     }
-    
-   
-
 }
 

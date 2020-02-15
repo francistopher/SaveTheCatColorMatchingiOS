@@ -38,8 +38,8 @@ class ViewController: UIViewController {
         // Save the interface style to customize applications
         let userInterfaceStyle:Int = UIScreen.main.traitCollection.userInterfaceStyle.rawValue;
         saveMainViewFoundationalProperties();
-        configureHeavenGradientLayer();
         configureIntroLabel(userInterfaceStyle:userInterfaceStyle);
+        configureHeavenGradientLayer();
         configureViruses();
         configureBoardGameView(userInterfaceStyle:userInterfaceStyle);
         configureColorOptionsView(userInterfaceStyle:userInterfaceStyle);
@@ -50,6 +50,7 @@ class ViewController: UIViewController {
             self.colorOptionsView!.fadeIn();
             self.boardGameView!.buildBoardGame();
             self.settingsButton!.show();
+            self.settingsButton!.settingsMenu!.fadeIn();
             // Control all animations when app is foregrounded, backgrounded, and deactivated
             let notificationCenter = NotificationCenter.default;
             notificationCenter.addObserver(self, selector: #selector(self.appMovedToForeground), name: UIApplication.willEnterForegroundNotification, object: nil);
@@ -107,13 +108,11 @@ class ViewController: UIViewController {
     }
     
     func configureIntroLabel(userInterfaceStyle:Int){
-        let textColor:UIColor = (userInterfaceStyle == 1 ? UIColor.black : UIColor.white);
-        introLabel = UICLabel(parentView: mainViewController, x: 0, y: 0, width: mainViewWidth * 0.5, height: mainViewHeight * 0.15);
-        introLabel!.backgroundColor = .clear;
-        introLabel!.textColor = textColor;
-        introLabel!.font = UIFont.boldSystemFont(ofSize: unitViewHeight * 0.75);
-        introLabel!.text = "podDatCat";
+        introLabel = UICLabel(parentView: mainViewController, x: 0.0, y: 0.0, width: unitViewWidth * 6, height: unitViewHeight * 2);
         UICenterKit.center(childView: introLabel!, parentRect: mainViewController.frame, childRect: introLabel!.frame);
+        introLabel!.font = UIFont.boldSystemFont(ofSize: unitViewHeight * 0.75);
+        introLabel!.backgroundColor = .clear;
+        introLabel!.text = "podDatCat";
         introLabel!.alpha = 0.0;
         introLabel!.fadeInAndOut();
     }
@@ -124,6 +123,7 @@ class ViewController: UIViewController {
         UICenterKit.center(childView: boardGameView!, parentRect: mainViewController.frame, childRect: boardGameView!.frame);
         boardGameView!.completionGradientLayer = completionGradientLayer!;
         boardGameView!.viruses = viruses!;
+        boardGameView!.alpha = 0.0;
     }
 
     func configureColorOptionsView(userInterfaceStyle:Int){
@@ -131,14 +131,16 @@ class ViewController: UIViewController {
         UICenterKit.centerHorizontally(childView: colorOptionsView!, parentRect: mainViewController.frame, childRect: colorOptionsView!.frame);
         boardGameView!.colorOptionsView = colorOptionsView!;
         colorOptionsView!.boardGameView = boardGameView!;
+        colorOptionsView!.alpha = 0.0;
     }
     
     func configureSettingsButton(userInterfaceStyle:Int) {
         settingsButton = UISettingsButton(parentView: mainViewController, x: unitViewWidth, y: unitViewHeight * 1.125, width: unitViewWidth * 2, height: unitViewWidth * 2);
         settingsButton!.setBoardGameAndColorOptionsView(boardGameView:boardGameView!, colorOptionsView: colorOptionsView!);
-        settingsButton!.setStyle();
-        settingsButton!.hide();
         boardGameView!.settingsButton = settingsButton!;
+        settingsButton!.setStyle();
+        settingsButton!.alpha = 0.0;
+        settingsButton!.settingsMenu!.alpha = 0.0;
     }
     
     func configureViruses() {

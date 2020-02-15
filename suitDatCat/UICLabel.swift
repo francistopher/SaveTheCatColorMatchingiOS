@@ -13,7 +13,9 @@ class UICLabel:UILabel {
     
     init(parentView:UIView, x:CGFloat, y:CGFloat, width:CGFloat, height:CGFloat){
         super.init(frame: CGRect(x: x, y: y, width: width, height: height))
-        super.textAlignment = NSTextAlignment.center;
+        self.frame = CGRect(x: x, y: y, width: width, height: height);
+        self.textAlignment = NSTextAlignment.center;
+        self.setStyle()
         parentView.addSubview(self);
     }
     
@@ -44,5 +46,15 @@ class UICLabel:UILabel {
             super.textColor = UIColor.white;
         })
     }
+    
+    func setStyle() {
+        if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1) {
+            self.textColor = UIColor.black;
+        } else {
+            self.textColor = UIColor.white;
+        }
+    }
+    
+   
     
 }

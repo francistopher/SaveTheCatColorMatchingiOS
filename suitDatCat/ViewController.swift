@@ -85,7 +85,11 @@ class ViewController: UIViewController {
         completionGradientLayer!.type = .radial;
         completionGradientLayer!.startPoint = CGPoint(x:0.5, y:0.0);
         completionGradientLayer!.endPoint = CGPoint(x:-0.5, y:0.15);
-        completionGradientLayer!.colors = [mellowYellow.cgColor, UIColor.white.cgColor];
+        if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1){
+             self.completionGradientLayer!.colors = [self.mellowYellow.cgColor, UIColor.white.cgColor];
+         } else {
+             self.completionGradientLayer!.colors =  [self.mellowYellow.cgColor, UIColor.black.cgColor];
+        }
         completionGradientLayer!.isHidden = true;
     }
     

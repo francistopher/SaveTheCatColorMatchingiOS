@@ -16,6 +16,7 @@
 		B8366D3723F772270043B45F /* kittenMeow.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = B8366D3623F772270043B45F /* kittenMeow.mp3 */; };
 		B8366D3A23F795350043B45F /* mozartMolto.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = B8366D3823F795340043B45F /* mozartMolto.mp3 */; };
 		B8366D3B23F795350043B45F /* mozartSonata.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = B8366D3923F795350043B45F /* mozartSonata.mp3 */; };
+		B8366D3D23F842C20043B45F /* mouseCoin.png in Resources */ = {isa = PBXBuildFile; fileRef = B8366D3C23F842C20043B45F /* mouseCoin.png */; };
 		B88F996923F06801003ED805 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B88F996823F06801003ED805 /* ViewController.swift */; };
 		B88F996D23F09BB4003ED805 /* UISettingsButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B88F996C23F09BB4003ED805 /* UISettingsButton.swift */; };
 		B88F997323F1CDA0003ED805 /* UIViruses.swift in Sources */ = {isa = PBXBuildFile; fileRef = B88F997223F1CD9F003ED805 /* UIViruses.swift */; };
@@ -37,8 +38,7 @@
 		B8FBD67F23F50DB900C8B50D /* lightSmilingCat.png in Resources */ = {isa = PBXBuildFile; fileRef = B8FBD67923F50DB900C8B50D /* lightSmilingCat.png */; };
 		B8FBD68123F58F2500C8B50D /* darkGear.png in Resources */ = {isa = PBXBuildFile; fileRef = B8FBD68023F58F2500C8B50D /* darkGear.png */; };
 		B8FBD68423F59D2D00C8B50D /* lightGear.png in Resources */ = {isa = PBXBuildFile; fileRef = B8FBD68323F59D2C00C8B50D /* lightGear.png */; };
-		B8FBD68823F5BBC200C8B50D /* fishCoin.png in Resources */ = {isa = PBXBuildFile; fileRef = B8FBD68723F5BBC200C8B50D /* fishCoin.png */; };
-		B8FBD68F23F5D5BE00C8B50D /* UIFishCoin.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8FBD68E23F5D5BE00C8B50D /* UIFishCoin.swift */; };
+		B8FBD68F23F5D5BE00C8B50D /* UIMouseCoin.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8FBD68E23F5D5BE00C8B50D /* UIMouseCoin.swift */; };
 		B8FBD69123F5D5C600C8B50D /* UIMoreCats.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8FBD69023F5D5C600C8B50D /* UIMoreCats.swift */; };
 		B8FBD69623F5DC0C00C8B50D /* UIMultiplayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8FBD69523F5DC0C00C8B50D /* UIMultiplayer.swift */; };
 		B8FBD69A23F5E1EA00C8B50D /* UIRestart.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8FBD69923F5E1EA00C8B50D /* UIRestart.swift */; };
@@ -71,6 +71,7 @@
 		B8366D3623F772270043B45F /* kittenMeow.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = kittenMeow.mp3; sourceTree = "<group>"; };
 		B8366D3823F795340043B45F /* mozartMolto.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = mozartMolto.mp3; sourceTree = "<group>"; };
 		B8366D3923F795350043B45F /* mozartSonata.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = mozartSonata.mp3; sourceTree = "<group>"; };
+		B8366D3C23F842C20043B45F /* mouseCoin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mouseCoin.png; sourceTree = "<group>"; };
 		B88F996823F06801003ED805 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		B88F996C23F09BB4003ED805 /* UISettingsButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UISettingsButton.swift; sourceTree = "<group>"; };
 		B88F997223F1CD9F003ED805 /* UIViruses.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViruses.swift; sourceTree = "<group>"; };
@@ -92,8 +93,7 @@
 		B8FBD67923F50DB900C8B50D /* lightSmilingCat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = lightSmilingCat.png; path = ../../../Desktop/lightSmilingCat.png; sourceTree = "<group>"; };
 		B8FBD68023F58F2500C8B50D /* darkGear.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = darkGear.png; sourceTree = "<group>"; };
 		B8FBD68323F59D2C00C8B50D /* lightGear.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lightGear.png; sourceTree = "<group>"; };
-		B8FBD68723F5BBC200C8B50D /* fishCoin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fishCoin.png; sourceTree = "<group>"; };
-		B8FBD68E23F5D5BE00C8B50D /* UIFishCoin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIFishCoin.swift; sourceTree = "<group>"; };
+		B8FBD68E23F5D5BE00C8B50D /* UIMouseCoin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIMouseCoin.swift; sourceTree = "<group>"; };
 		B8FBD69023F5D5C600C8B50D /* UIMoreCats.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIMoreCats.swift; sourceTree = "<group>"; };
 		B8FBD69523F5DC0C00C8B50D /* UIMultiplayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIMultiplayer.swift; sourceTree = "<group>"; };
 		B8FBD69923F5E1EA00C8B50D /* UIRestart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIRestart.swift; sourceTree = "<group>"; };
@@ -329,7 +329,7 @@
 			children = (
 				B88F996C23F09BB4003ED805 /* UISettingsButton.swift */,
 				B8FBD69023F5D5C600C8B50D /* UIMoreCats.swift */,
-				B8FBD68E23F5D5BE00C8B50D /* UIFishCoin.swift */,
+				B8FBD68E23F5D5BE00C8B50D /* UIMouseCoin.swift */,
 				B8FBD69523F5DC0C00C8B50D /* UIMultiplayer.swift */,
 				B8FBD69923F5E1EA00C8B50D /* UIRestart.swift */,
 				B8FBD69B23F5E21800C8B50D /* UIRestart1.swift */,
@@ -352,9 +352,9 @@
 				B8FBD6CD23F60D9E00C8B50D /* lightMultiplayer.png */,
 				B8FBD6C223F6098C00C8B50D /* lightMoreCats.png */,
 				B8FBD6A123F5E65E00C8B50D /* darkRestart.png */,
-				B8FBD68723F5BBC200C8B50D /* fishCoin.png */,
 				B8FBD6BE23F605B000C8B50D /* darkStats.png */,
 				B8FBD6AA23F5EEA900C8B50D /* lightStats.png */,
+				B8366D3C23F842C20043B45F /* mouseCoin.png */,
 			);
 			name = "Settings Menu Bar";
 			sourceTree = "<group>";
@@ -430,7 +430,7 @@
 				B8FBD68423F59D2D00C8B50D /* lightGear.png in Resources */,
 				B8FBD67C23F50DB900C8B50D /* darkWavingCat.png in Resources */,
 				B8FBD6BD23F6048600C8B50D /* lightRestart1.png in Resources */,
-				B8FBD68823F5BBC200C8B50D /* fishCoin.png in Resources */,
+				B8366D3D23F842C20043B45F /* mouseCoin.png in Resources */,
 				B8FBD67B23F50DB900C8B50D /* darkDeadCat.png in Resources */,
 				B8FBD67A23F50DB900C8B50D /* darkSmilingCat.png in Resources */,
 				B8366D3B23F795350043B45F /* mozartSonata.mp3 in Resources */,
@@ -473,7 +473,7 @@
 				B8AE017523ECB758007A6142 /* UICView.swift in Sources */,
 				B8AE017123ECB180007A6142 /* UICenterKit.swift in Sources */,
 				B88F999723F39B49003ED805 /* UICatButton.swift in Sources */,
-				B8FBD68F23F5D5BE00C8B50D /* UIFishCoin.swift in Sources */,
+				B8FBD68F23F5D5BE00C8B50D /* UIMouseCoin.swift in Sources */,
 				B833544E23EC8F0B00835672 /* SceneDelegate.swift in Sources */,
 				B88F997323F1CDA0003ED805 /* UIViruses.swift in Sources */,
 				B88F997923F37FE2003ED805 /* UIVirus.swift in Sources */,

@@ -22,7 +22,7 @@ class UISettingsButton:UIButton {
     var boardGameView:UIBoardGameView? = nil;
     var cellFrame:CGRect? = nil;
     
-    var fishCoin:UIFishCoin? = nil;
+    var mouseCoin:UIMouseCoin? = nil;
     var moreCats:UIMoreCats? = nil;
     var multiplayer:UIMultiplayer? = nil;
     var restart:UIRestart? = nil;
@@ -42,14 +42,14 @@ class UISettingsButton:UIButton {
         parentView.addSubview(self);
         configureSettingsMenu(parentView:parentView);
         configureCellFrame();
-        configureFishCoinButton(parentView:settingsMenu!);
+        configureMouseCoinButton(parentView:settingsMenu!);
         configureMoreCatsButton(parentView:settingsMenu!);
         configureMultiplayerButton(parentView:settingsMenu!);
         configureRestartButton(parentView:settingsMenu!);
         configureRestart1Button(parentView:settingsMenu!);
         configureStatsButton(parentView:settingsMenu!);
         configureNoAdsButton(parentView:settingsMenu!);
-        settingsMenu!.frame = CGRect(x: self.frame.midX * 0.80, y: self.frame.minY, width: cellFrame!.width * 2.0625, height: settingsMenu!.frame.height);
+        settingsMenu!.frame = CGRect(x: self.frame.midX * 0.7, y: self.frame.minY, width: cellFrame!.width * 1.75, height: settingsMenu!.frame.height);
         settingsMenu!.reducedFrame = settingsMenu!.frame;
         setStyle();
         self.addTarget(self, action: #selector(settingsMenuSelector), for: .touchUpInside);
@@ -112,10 +112,10 @@ class UISettingsButton:UIButton {
         moreCats!.reducedFrame = moreCats!.frame;
     }
     
-    func configureFishCoinButton(parentView:UICView){
-        fishCoin = UIFishCoin(parentView: parentView, x: cellFrame!.width * 6.85, y: 0.0, width: cellFrame!.width, height: cellFrame!.height);
-        fishCoin!.frame = CGRect(x: fishCoin!.frame.minX / 7.0, y: fishCoin!.frame.minY, width: fishCoin!.frame.width, height:  fishCoin!.frame.height);
-        fishCoin!.reducedFrame = fishCoin!.frame;
+    func configureMouseCoinButton(parentView:UICView){
+        mouseCoin = UIMouseCoin(parentView: parentView, x: cellFrame!.width * 7.0, y: 0.0, width: cellFrame!.width, height: cellFrame!.height);
+        mouseCoin!.frame = CGRect(x: cellFrame!.width * 0.75, y: mouseCoin!.frame.minY, width: mouseCoin!.frame.width, height:  mouseCoin!.frame.height);
+        mouseCoin!.reducedFrame = mouseCoin!.frame;
     }
     
     func configureSettingsMenu(parentView:UIView) {
@@ -145,7 +145,7 @@ class UISettingsButton:UIButton {
         }
         UIView.animate(withDuration: 1.0, delay: 0.125, options: .curveEaseOut, animations: {
             self.settingsMenu!.frame = self.settingsMenu!.originalFrame!;
-            self.fishCoin!.frame = self.fishCoin!.originalFrame!;
+            self.mouseCoin!.frame = self.mouseCoin!.originalFrame!;
             self.moreCats!.frame = self.moreCats!.originalFrame!;
             self.multiplayer!.frame = self.multiplayer!.originalFrame!;
             self.stats!.frame = self.stats!.originalFrame!;
@@ -169,7 +169,7 @@ class UISettingsButton:UIButton {
         }
         UIView.animate(withDuration: 1.0, delay: 0.125, options: .curveEaseOut, animations: {
             self.settingsMenu!.frame = self.settingsMenu!.reducedFrame!;
-            self.fishCoin!.frame = self.fishCoin!.reducedFrame!;
+            self.mouseCoin!.frame = self.mouseCoin!.reducedFrame!;
             self.moreCats!.frame = self.moreCats!.reducedFrame!;
             self.multiplayer!.frame = self.multiplayer!.reducedFrame!;
             self.stats!.frame = self.stats!.reducedFrame!;

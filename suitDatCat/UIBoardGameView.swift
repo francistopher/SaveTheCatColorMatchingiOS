@@ -244,11 +244,11 @@ class UIBoardGameView: UIView {
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.25) {
             self.currentStage += 1;
             self.buildBoardGame();
-            self.currentStage -= 1;
             self.settingsButton!.enable();
         }
         // Remove selected buttons after they've shrunk
         DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
+            self.currentStage -= 1;
             self.removeGridCatAndColorOptionButtonsAfterDelay();
             self.currentStage += 1;
             self.completionGradientLayer!.isHidden = true;

@@ -20,9 +20,9 @@ class UICLabel:UILabel {
     static var mozartSonataUrl:URL? = nil;
     static var mozartSonataSoundEffect:AVAudioPlayer?
     
-    static var mozartMoltoPath:String? = nil;
-    static var mozartMoltoUrl:URL? = nil;
-    static var mozartMoltoSoundEffect:AVAudioPlayer?
+    static var mozartEinePath:String? = nil;
+    static var mozartEineUrl:URL? = nil;
+    static var mozartEineSoundEffect:AVAudioPlayer?
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -40,10 +40,10 @@ class UICLabel:UILabel {
     }
     
     func configureMozartMolto() {
-        UICLabel.mozartMoltoPath = Bundle.main.path(forResource: "mozartMolto.mp3", ofType: nil);
-        UICLabel.mozartMoltoUrl = URL(fileURLWithPath: UICLabel.mozartMoltoPath!);
+        UICLabel.mozartEinePath = Bundle.main.path(forResource: "mozartEine.mp3", ofType: nil);
+        UICLabel.mozartEineUrl = URL(fileURLWithPath: UICLabel.mozartEinePath!);
         do {
-            UICLabel.mozartMoltoSoundEffect = try AVAudioPlayer(contentsOf: UICLabel.mozartMoltoUrl!);
+            UICLabel.mozartEineSoundEffect = try AVAudioPlayer(contentsOf: UICLabel.mozartEineUrl!);
         } catch {
             print("Unable to play mozart molto");
         }
@@ -51,15 +51,15 @@ class UICLabel:UILabel {
     
     static func mozartMolto(play:Bool) {
         if (play) {
-           if (!UICLabel.mozartMoltoSoundEffect!.isPlaying) {
-               UICLabel.mozartMoltoSoundEffect!.numberOfLoops = -1;
-               UICLabel.mozartMoltoSoundEffect!.play();
+           if (!UICLabel.mozartEineSoundEffect!.isPlaying) {
+               UICLabel.mozartEineSoundEffect!.numberOfLoops = -1;
+               UICLabel.mozartEineSoundEffect!.play();
            }
         } else {
             let timeInterval:TimeInterval = TimeInterval(1.0);
-            UICLabel.mozartMoltoSoundEffect!.setVolume(0.0, fadeDuration: timeInterval);
+            UICLabel.mozartEineSoundEffect!.setVolume(0.0, fadeDuration: timeInterval);
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-                UICLabel.mozartMoltoSoundEffect!.stop();
+                UICLabel.mozartEineSoundEffect!.stop();
             }
         }
     }
@@ -109,8 +109,8 @@ class UICLabel:UILabel {
         UIView.animate(withDuration: 2, delay: 0.5, options: .curveEaseIn, animations: {
             super.alpha = 1.0;
         }) { (_) in
-            UICLabel.mozartSonata(play: true);
             self.kittenMeow();
+            UICLabel.mozartSonata(play: true);
             UIView.animate(withDuration: 2, delay: 0.5, options: .curveEaseOut, animations: {
                 super.alpha = 0.0;
             })

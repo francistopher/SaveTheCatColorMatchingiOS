@@ -14,10 +14,10 @@
 		B833545823EC8F1400835672 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B833545723EC8F1400835672 /* Assets.xcassets */; };
 		B833545B23EC8F1400835672 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B833545923EC8F1400835672 /* LaunchScreen.storyboard */; };
 		B8366D3723F772270043B45F /* kittenMeow.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = B8366D3623F772270043B45F /* kittenMeow.mp3 */; };
-		B8366D3A23F795350043B45F /* mozartMolto.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = B8366D3823F795340043B45F /* mozartMolto.mp3 */; };
-		B8366D3B23F795350043B45F /* mozartSonata.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = B8366D3923F795350043B45F /* mozartSonata.mp3 */; };
 		B8366D3D23F842C20043B45F /* mouseCoin.png in Resources */ = {isa = PBXBuildFile; fileRef = B8366D3C23F842C20043B45F /* mouseCoin.png */; };
 		B8366D4123F86BE10043B45F /* gearSpinning.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = B8366D4023F86BE10043B45F /* gearSpinning.mp3 */; };
+		B8366D4423F880490043B45F /* mozartEine.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = B8366D4223F880490043B45F /* mozartEine.mp3 */; };
+		B8366D4523F880490043B45F /* mozartSonata.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = B8366D4323F880490043B45F /* mozartSonata.mp3 */; };
 		B88F996923F06801003ED805 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B88F996823F06801003ED805 /* ViewController.swift */; };
 		B88F996D23F09BB4003ED805 /* UISettingsButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B88F996C23F09BB4003ED805 /* UISettingsButton.swift */; };
 		B88F997323F1CDA0003ED805 /* UIViruses.swift in Sources */ = {isa = PBXBuildFile; fileRef = B88F997223F1CD9F003ED805 /* UIViruses.swift */; };
@@ -70,10 +70,10 @@
 		B833545A23EC8F1400835672 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B833545C23EC8F1400835672 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B8366D3623F772270043B45F /* kittenMeow.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = kittenMeow.mp3; sourceTree = "<group>"; };
-		B8366D3823F795340043B45F /* mozartMolto.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = mozartMolto.mp3; sourceTree = "<group>"; };
-		B8366D3923F795350043B45F /* mozartSonata.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = mozartSonata.mp3; sourceTree = "<group>"; };
 		B8366D3C23F842C20043B45F /* mouseCoin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mouseCoin.png; sourceTree = "<group>"; };
 		B8366D4023F86BE10043B45F /* gearSpinning.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = gearSpinning.mp3; sourceTree = "<group>"; };
+		B8366D4223F880490043B45F /* mozartEine.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = mozartEine.mp3; sourceTree = "<group>"; };
+		B8366D4323F880490043B45F /* mozartSonata.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = mozartSonata.mp3; sourceTree = "<group>"; };
 		B88F996823F06801003ED805 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		B88F996C23F09BB4003ED805 /* UISettingsButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UISettingsButton.swift; sourceTree = "<group>"; };
 		B88F997223F1CD9F003ED805 /* UIViruses.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViruses.swift; sourceTree = "<group>"; };
@@ -161,8 +161,8 @@
 			children = (
 				B8366D4023F86BE10043B45F /* gearSpinning.mp3 */,
 				B8366D3623F772270043B45F /* kittenMeow.mp3 */,
-				B8366D3823F795340043B45F /* mozartMolto.mp3 */,
-				B8366D3923F795350043B45F /* mozartSonata.mp3 */,
+				B8366D4223F880490043B45F /* mozartEine.mp3 */,
+				B8366D4323F880490043B45F /* mozartSonata.mp3 */,
 			);
 			name = Audio;
 			sourceTree = "<group>";
@@ -437,18 +437,18 @@
 				B8366D3D23F842C20043B45F /* mouseCoin.png in Resources */,
 				B8FBD67B23F50DB900C8B50D /* darkDeadCat.png in Resources */,
 				B8FBD67A23F50DB900C8B50D /* darkSmilingCat.png in Resources */,
-				B8366D3B23F795350043B45F /* mozartSonata.mp3 in Resources */,
 				B8FBD68123F58F2500C8B50D /* darkGear.png in Resources */,
+				B8366D4423F880490043B45F /* mozartEine.mp3 in Resources */,
 				B8FBD67D23F50DB900C8B50D /* lightWavingCat.png in Resources */,
 				B8FBD6C523F6098C00C8B50D /* darkMoreCats.png in Resources */,
 				B833545823EC8F1400835672 /* Assets.xcassets in Resources */,
 				B8FBD6C623F6098C00C8B50D /* lightMoreCats.png in Resources */,
 				B833545323EC8F0B00835672 /* Main.storyboard in Resources */,
 				B8FBD6CF23F60D9E00C8B50D /* lightMultiplayer.png in Resources */,
-				B8366D3A23F795350043B45F /* mozartMolto.mp3 in Resources */,
 				B8FBD67E23F50DB900C8B50D /* lightDeadCat.png in Resources */,
 				B8FBD6A423F5E65F00C8B50D /* darkRestart1.png in Resources */,
 				B8366D3723F772270043B45F /* kittenMeow.mp3 in Resources */,
+				B8366D4523F880490043B45F /* mozartSonata.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

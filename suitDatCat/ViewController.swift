@@ -112,7 +112,7 @@ class ViewController: UIViewController {
     }
     
     func configureIntroLabel(userInterfaceStyle:Int){
-        introLabel = UICLabel(parentView: mainViewController, x: 0.0, y: 0.0, width: unitViewWidth * 6, height: unitViewHeight * 2);
+        introLabel = UICLabel(parentView: mainViewController, x: 0.0, y: 0.0, width: unitViewWidth * 5, height: unitViewHeight);
         UICenterKit.center(childView: introLabel!, parentRect: mainViewController.frame, childRect: introLabel!.frame);
         introLabel!.font = UIFont.boldSystemFont(ofSize: unitViewHeight * 0.75);
         introLabel!.backgroundColor = .clear;

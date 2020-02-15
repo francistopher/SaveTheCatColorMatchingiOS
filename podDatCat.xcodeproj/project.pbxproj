@@ -18,6 +18,8 @@
 		B8366D4123F86BE10043B45F /* gearSpinning.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = B8366D4023F86BE10043B45F /* gearSpinning.mp3 */; };
 		B8366D4423F880490043B45F /* mozartEine.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = B8366D4223F880490043B45F /* mozartEine.mp3 */; };
 		B8366D4523F880490043B45F /* mozartSonata.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = B8366D4323F880490043B45F /* mozartSonata.mp3 */; };
+		B8366D4723F8956C0043B45F /* kittenDie.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = B8366D4623F8956C0043B45F /* kittenDie.mp3 */; };
+		B8366D4923F8A1A60043B45F /* coinEarned.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = B8366D4823F8A1A60043B45F /* coinEarned.mp3 */; };
 		B88F996923F06801003ED805 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B88F996823F06801003ED805 /* ViewController.swift */; };
 		B88F996D23F09BB4003ED805 /* UISettingsButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B88F996C23F09BB4003ED805 /* UISettingsButton.swift */; };
 		B88F997323F1CDA0003ED805 /* UIViruses.swift in Sources */ = {isa = PBXBuildFile; fileRef = B88F997223F1CD9F003ED805 /* UIViruses.swift */; };
@@ -74,6 +76,8 @@
 		B8366D4023F86BE10043B45F /* gearSpinning.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = gearSpinning.mp3; sourceTree = "<group>"; };
 		B8366D4223F880490043B45F /* mozartEine.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = mozartEine.mp3; sourceTree = "<group>"; };
 		B8366D4323F880490043B45F /* mozartSonata.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = mozartSonata.mp3; sourceTree = "<group>"; };
+		B8366D4623F8956C0043B45F /* kittenDie.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = kittenDie.mp3; sourceTree = "<group>"; };
+		B8366D4823F8A1A60043B45F /* coinEarned.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = coinEarned.mp3; sourceTree = "<group>"; };
 		B88F996823F06801003ED805 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		B88F996C23F09BB4003ED805 /* UISettingsButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UISettingsButton.swift; sourceTree = "<group>"; };
 		B88F997223F1CD9F003ED805 /* UIViruses.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViruses.swift; sourceTree = "<group>"; };
@@ -159,9 +163,11 @@
 		B8366D3523F772180043B45F /* Audio */ = {
 			isa = PBXGroup;
 			children = (
+				B8366D4623F8956C0043B45F /* kittenDie.mp3 */,
 				B8366D4023F86BE10043B45F /* gearSpinning.mp3 */,
 				B8366D3623F772270043B45F /* kittenMeow.mp3 */,
 				B8366D4223F880490043B45F /* mozartEine.mp3 */,
+				B8366D4823F8A1A60043B45F /* coinEarned.mp3 */,
 				B8366D4323F880490043B45F /* mozartSonata.mp3 */,
 			);
 			name = Audio;
@@ -447,6 +453,8 @@
 				B8FBD6CF23F60D9E00C8B50D /* lightMultiplayer.png in Resources */,
 				B8FBD67E23F50DB900C8B50D /* lightDeadCat.png in Resources */,
 				B8FBD6A423F5E65F00C8B50D /* darkRestart1.png in Resources */,
+				B8366D4723F8956C0043B45F /* kittenDie.mp3 in Resources */,
+				B8366D4923F8A1A60043B45F /* coinEarned.mp3 in Resources */,
 				B8366D3723F772270043B45F /* kittenMeow.mp3 in Resources */,
 				B8366D4523F880490043B45F /* mozartSonata.mp3 in Resources */,
 			);

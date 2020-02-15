@@ -28,11 +28,21 @@ class UICatButton: UIButton {
     var selectedCat:Cat = .standard;
     var originalBackgroundColor:UIColor = .clear;
     var imageContainerButton:UICButton? = nil;
+    var isAlive:Bool = true;
     var podded:Bool = false;
     
     var kittenMeowPath:String? = nil;
     var kittenMeowUrl:URL? = nil;
     var kittenMeowSoundEffect:AVAudioPlayer?
+    
+    var kittenDiePath:String? = nil;
+    var kittenDieUrl:URL? = nil;
+    var kittenDieSoundEffect:AVAudioPlayer?
+    
+    var coinEarnedPath:String? = nil;
+    var coinEarnedUrl:URL? = nil;
+    var coinEarnedSoundEffect:AVAudioPlayer?
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented");
     }
@@ -49,11 +59,32 @@ class UICatButton: UIButton {
         self.shrink();
         self.setStyle();
         configureKittenMeow();
+        configureKittenDie();
+        configureCoinEarned();
+    }
+    
+    func giveMouseCoin() {
+        let mouseCoin:UIMouseCoin = UIMouseCoin(parentView: self.imageContainerButton!, x: 0.0, y: 0.0, width: self.imageContainerButton!.frame.width / 4.0, height: self.imageContainerButton!.frame.height / 4.0);
+        UICenterKit.center(childView: mouseCoin, parentRect: imageContainerButton!.frame, childRect: mouseCoin.frame);
+        self.imageContainerButton!.addSubview(mouseCoin);
+        self.coinEarned();
     }
     
     func kittenMeow() {
         if (!kittenMeowSoundEffect!.isPlaying){
             kittenMeowSoundEffect!.play();
+        }
+    }
+    
+    func kittenDie() {
+        if (!kittenDieSoundEffect!.isPlaying){
+            kittenDieSoundEffect!.play();
+        }
+    }
+    
+    func coinEarned() {
+        if (!coinEarnedSoundEffect!.isPlaying) {
+            coinEarnedSoundEffect!.play();
         }
     }
     
@@ -64,6 +95,26 @@ class UICatButton: UIButton {
             kittenMeowSoundEffect = try AVAudioPlayer(contentsOf: kittenMeowUrl!);
         } catch {
             print("Unable to play kitten meow");
+        }
+    }
+    
+    func configureKittenDie() {
+        kittenDiePath = Bundle.main.path(forResource: "kittenDie.mp3", ofType: nil);
+        kittenDieUrl = URL(fileURLWithPath: kittenDiePath!);
+        do {
+           kittenDieSoundEffect = try AVAudioPlayer(contentsOf: kittenDieUrl!);
+        } catch {
+           print("Unable to play kitten die");
+        }
+    }
+    
+    func configureCoinEarned() {
+        coinEarnedPath = Bundle.main.path(forResource: "coinEarned.mp3", ofType: nil);
+        coinEarnedUrl = URL(fileURLWithPath: coinEarnedPath!);
+        do {
+            coinEarnedSoundEffect = try AVAudioPlayer(contentsOf: coinEarnedUrl!);
+        } catch {
+            print("Unable to play coin earned");
         }
     }
     

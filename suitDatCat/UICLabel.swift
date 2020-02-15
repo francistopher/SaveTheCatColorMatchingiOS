@@ -49,7 +49,7 @@ class UICLabel:UILabel {
             print("Unable to play mozart molto");
         }
     }
-    
+
     static func mozartEine(play:Bool) {
         if (play) {
             if (UICLabel.mozartEineSoundEffect!.volume == 0.0) {

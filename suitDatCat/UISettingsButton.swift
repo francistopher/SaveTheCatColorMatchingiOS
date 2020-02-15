@@ -176,8 +176,8 @@ class UISettingsButton:UIButton {
             self.restart!.frame = self.restart!.originalFrame!;
             self.noAds!.frame = self.noAds!.originalFrame!;
         })
-//        colorOptionsView!.isUserInteractionEnabled = false;
-//        boardGameView!.isUserInteractionEnabled = false;
+        colorOptionsView!.isUserInteractionEnabled = false;
+        boardGameView!.isUserInteractionEnabled = false;
     }
     
     @objc func settingsMenuHide(){
@@ -200,8 +200,8 @@ class UISettingsButton:UIButton {
             self.restart!.frame = self.restart!.reducedFrame!;
             self.noAds!.frame = self.noAds!.reducedFrame!;
         })
-//        colorOptionsView!.isUserInteractionEnabled = true;
-//        boardGameView!.isUserInteractionEnabled = true;
+        colorOptionsView!.isUserInteractionEnabled = true;
+        boardGameView!.isUserInteractionEnabled = true;
     }
     
     func setStyle(){

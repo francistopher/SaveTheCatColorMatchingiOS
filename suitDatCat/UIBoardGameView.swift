@@ -178,12 +178,14 @@ class UIBoardGameView: UIView {
                     print("Moving to next round!")
                     solved = true;
                     colorOptionsView!.selectedColor = UIColor.lightGray;
+                    earnMouseCoins();
                     promote();
                 }
             } else{
                 print("Unable to solve puzzle")
                 solved = true;
                 colorOptionsView!.selectedColor = UIColor.lightGray;
+                catButtonSuperView.kittenDie();
                 UICLabel.mozartSonata(play: true);
                 UICLabel.mozartEine(play: false);
                 maintain();
@@ -253,6 +255,14 @@ class UIBoardGameView: UIView {
         }
     }
     
+    func earnMouseCoins() {
+        for gridCatButtonRow in gridCatButtons {
+            for gridCatButton in gridCatButtonRow {
+                gridCatButton.giveMouseCoin();
+            }
+        }
+    }
+    
     func configureComponentsAfterBoardGameReset() {
         loadGridCatAndColorOptionButtonsBeforeDelayAccess();
         // Build board game
@@ -318,7 +328,7 @@ class UIBoardGameView: UIView {
                     dispersedGridCatButtons[row][column].setStyle();
                 } else {
                     gridCatButtons[row][column].animate(AgainWithoutDelay: false);
-                    dispersedGridCatButtons[row][column].setStyle();
+                    gridCatButtons[row][column].setStyle();
                 }
             }
         }

@@ -184,11 +184,9 @@ class UIBoardGameView: UIView {
                 print("Unable to solve puzzle")
                 solved = true;
                 colorOptionsView!.selectedColor = UIColor.lightGray;
-                if (bak2sqr1) {
-                    restart();
-                } else {
-                    maintain();
-                }
+                UICLabel.mozartSonata(play: true);
+                UICLabel.mozartEine(play: false);
+                maintain();
             }
         }
     }

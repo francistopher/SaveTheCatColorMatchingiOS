@@ -44,6 +44,7 @@ class UICLabel:UILabel {
         UICLabel.mozartEineUrl = URL(fileURLWithPath: UICLabel.mozartEinePath!);
         do {
             UICLabel.mozartEineSoundEffect = try AVAudioPlayer(contentsOf: UICLabel.mozartEineUrl!);
+            UICLabel.mozartEineSoundEffect!.numberOfLoops = -1;
         } catch {
             print("Unable to play mozart molto");
         }
@@ -51,16 +52,15 @@ class UICLabel:UILabel {
     
     static func mozartEine(play:Bool) {
         if (play) {
-           if (!UICLabel.mozartEineSoundEffect!.isPlaying) {
-               UICLabel.mozartEineSoundEffect!.numberOfLoops = -1;
-               UICLabel.mozartEineSoundEffect!.play();
-           }
+            if (UICLabel.mozartEineSoundEffect!.volume == 0.0) {
+                let timeInterval:TimeInterval = TimeInterval(1.0);
+                UICLabel.mozartEineSoundEffect!.setVolume(1.0, fadeDuration: timeInterval);
+            } else {
+                UICLabel.mozartEineSoundEffect!.play();
+            }
         } else {
             let timeInterval:TimeInterval = TimeInterval(1.0);
             UICLabel.mozartEineSoundEffect!.setVolume(0.0, fadeDuration: timeInterval);
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-                UICLabel.mozartEineSoundEffect!.pause();
-            }
         }
     }
     
@@ -85,6 +85,7 @@ class UICLabel:UILabel {
         UICLabel.mozartSonataUrl = URL(fileURLWithPath: UICLabel.mozartSonataPath!);
         do {
             UICLabel.mozartSonataSoundEffect = try AVAudioPlayer(contentsOf: UICLabel.mozartSonataUrl!);
+            UICLabel.mozartSonataSoundEffect!.numberOfLoops = -1;
         } catch {
             print("Unable to play mozart sonata");
         }
@@ -92,16 +93,15 @@ class UICLabel:UILabel {
     
     static func mozartSonata(play:Bool) {
         if (play) {
-            if (!UICLabel.mozartSonataSoundEffect!.isPlaying) {
-                UICLabel.mozartSonataSoundEffect!.numberOfLoops = -1;
+            if (UICLabel.mozartSonataSoundEffect!.volume == 0.0) {
+                let timeInterval:TimeInterval = TimeInterval(1.0);
+                UICLabel.mozartSonataSoundEffect!.setVolume(1.0, fadeDuration: timeInterval);
+            } else {
                 UICLabel.mozartSonataSoundEffect!.play();
             }
         } else {
             let timeInterval:TimeInterval = TimeInterval(1.0);
             UICLabel.mozartSonataSoundEffect!.setVolume(0.0, fadeDuration: timeInterval);
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-                UICLabel.mozartSonataSoundEffect!.pause();
-            }
         }
     }
     

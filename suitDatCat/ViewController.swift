@@ -112,7 +112,7 @@ class ViewController: UIViewController {
     }
     
     func configureIntroLabel(userInterfaceStyle:Int){
-        introLabel = UICLabel(parentView: mainViewController, x: 0.0, y: 0.0, width: unitViewWidth * 5, height: unitViewHeight);
+        introLabel = UICLabel(parentView: mainViewController, x: 0.0, y: 0.0, width: unitViewWidth * 6, height: unitViewHeight);
         UICenterKit.center(childView: introLabel!, parentRect: mainViewController.frame, childRect: introLabel!.frame);
         introLabel!.font = UIFont.boldSystemFont(ofSize: unitViewHeight * 0.75);
         introLabel!.backgroundColor = .clear;
@@ -158,6 +158,7 @@ class ViewController: UIViewController {
         introLabel!.setStyle();
         settingsButton!.setStyle();
         boardGameView!.activateGridButtonsForUserInterfaceStyle();
+        colorOptionsView!.setStyle();
         if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1){
             self.completionGradientLayer!.colors = [self.mellowYellow.cgColor, UIColor.white.cgColor];
         } else {

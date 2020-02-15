@@ -317,8 +317,10 @@ class UIBoardGameView: UIView {
             for column in 0..<rowsAndColumns[1] {
                 if (gridCatButtons.count == 0) {
                     dispersedGridCatButtons[row][column].animate(AgainWithoutDelay: false);
+                    dispersedGridCatButtons[row][column].setStyle();
                 } else {
                     gridCatButtons[row][column].animate(AgainWithoutDelay: false);
+                    dispersedGridCatButtons[row][column].setStyle();
                 }
             }
         }

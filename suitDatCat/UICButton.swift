@@ -35,6 +35,7 @@ class UICButton:UIButton {
         self.layer.borderWidth = frame.width * 0.01;
         parentView.addSubview(self);
         self.isSelected = false;
+        self.setStyle();
     }
     
     func grow(){

@@ -233,7 +233,6 @@ class UICatButton: UIButton {
             self.backgroundColor = .clear;
             self.layer.borderWidth = 0.0;
             self.imageContainerButton!.layer.borderWidth = self.frame.height / 75.0;
-            self.imageContainerButton!.layer.borderColor = UIColor.black.cgColor;
     }
     
     func generateElevatedTargetX(parentFrame:CGRect, childFrame:CGRect, angle:CGFloat) -> CGFloat{
@@ -283,8 +282,10 @@ class UICatButton: UIButton {
     func setStyle() {
         if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1){
             self.layer.borderColor = UIColor.black.cgColor;
+            self.imageContainerButton!.layer.borderColor = UIColor.black.cgColor;
         } else {
             self.layer.borderColor = UIColor.white.cgColor;
+            self.imageContainerButton!.layer.borderColor = UIColor.white.cgColor;
         }
     }
     

@@ -49,7 +49,7 @@ class UICLabel:UILabel {
         }
     }
     
-    static func mozartMolto(play:Bool) {
+    static func mozartEine(play:Bool) {
         if (play) {
            if (!UICLabel.mozartEineSoundEffect!.isPlaying) {
                UICLabel.mozartEineSoundEffect!.numberOfLoops = -1;
@@ -59,7 +59,7 @@ class UICLabel:UILabel {
             let timeInterval:TimeInterval = TimeInterval(1.0);
             UICLabel.mozartEineSoundEffect!.setVolume(0.0, fadeDuration: timeInterval);
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-                UICLabel.mozartEineSoundEffect!.stop();
+                UICLabel.mozartEineSoundEffect!.pause();
             }
         }
     }
@@ -100,7 +100,7 @@ class UICLabel:UILabel {
             let timeInterval:TimeInterval = TimeInterval(1.0);
             UICLabel.mozartSonataSoundEffect!.setVolume(0.0, fadeDuration: timeInterval);
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-                UICLabel.mozartSonataSoundEffect!.stop();
+                UICLabel.mozartSonataSoundEffect!.pause();
             }
         }
     }

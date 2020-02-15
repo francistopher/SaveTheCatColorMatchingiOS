@@ -65,7 +65,8 @@ class UISettingsButton:UIButton {
            gearSpinningPath = Bundle.main.path(forResource: "gearSpinning.mp3", ofType: nil);
            gearSpinningURL = URL(fileURLWithPath: gearSpinningPath!);
            do {
-               gearSpinningSoundEffect = try AVAudioPlayer(contentsOf: gearSpinningURL!);
+                gearSpinningSoundEffect = try AVAudioPlayer(contentsOf: gearSpinningURL!);
+            gearSpinningSoundEffect!.volume = 0.5;
            } catch {
                print("Unable to play gear spinning");
            }

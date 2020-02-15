@@ -77,6 +77,8 @@ class UIColorOptionsView: UIView {
     }
     
     @objc func transitionBackgroundColorOfButtonsToLightGray(){
+        UICLabel.mozartSonata(play: false);
+        UICLabel.mozartMolto(play: true);
         let rowsAndColumns:[Int] = boardGameView!.currentStageRowsAndColumns(currentStage: boardGameView!.currentStage);
         print(boardGameView!.solved);
         if (!boardGameView!.gridCatButtons[0][0].backgroundColor!.isEqual(UIColor.lightGray) && boardGameView!.solved){

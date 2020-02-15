@@ -85,7 +85,7 @@ class ViewController: UIViewController {
         completionGradientLayer!.type = .radial;
         completionGradientLayer!.startPoint = CGPoint(x:0.5, y:0.0);
         completionGradientLayer!.endPoint = CGPoint(x:-0.5, y:0.15);
-        completionGradientLayer!.colors = [mellowYellow.cgColor, UIColor.clear.cgColor];
+        completionGradientLayer!.colors = [mellowYellow.cgColor, UIColor.white.cgColor];
         completionGradientLayer!.isHidden = true;
     }
     
@@ -151,16 +151,9 @@ class ViewController: UIViewController {
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
-        // Detected A Light User Interface Style
-        if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1){
-            boardGameView!.activateGridButtonsForUserInterfaceStyle();
-            settingsButton!.setStyle();
-        }
-        // Detected A Dark User Interface Style
-        else {
-            boardGameView!.activateGridButtonsForUserInterfaceStyle();
-            settingsButton!.setStyle();
-        }
+        introLabel!.setStyle();
+        settingsButton!.setStyle();
+        boardGameView!.activateGridButtonsForUserInterfaceStyle();
     }
     
    

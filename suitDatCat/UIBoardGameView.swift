@@ -4,7 +4,7 @@
 //
 //  Created by Christopher Francisco on 2/6/20.
 //  Copyright © 2020 Christopher Francisco. All rights reserved.
-//
+// (int)
 
 import SwiftUI
 
@@ -53,6 +53,17 @@ class UIBoardGameView: UIView {
         buildGridButtons();
         colorOptionsView!.selectColorsForSelection();
         colorOptionsView!.buildColorOptionButtons();
+        if (currentStage != 1) {
+            
+            // pow(D, (this.currentRows * this.currentColumns) / 10.0D) * ((this.currentRows + 1) * (this.currentColumns + 2)))
+            let dispatchTime:Double = log(Double(gridCatButtons[0].count) + 0.5) * pow(1.1, 5.5 * Double(gridCatButtons.count));
+            DispatchQueue.main.asyncAfter(deadline: .now() + dispatchTime, execute: {
+                print("Ha!", !self.colorOptionsView!.isActive);
+                if (!self.colorOptionsView!.isActive) {
+                    self.colorOptionsView!.selectionButtons[0].sendActions(for: .touchUpInside);
+                }
+            })
+        }
     }
     
     func selectAnAvailableColor(){
@@ -225,6 +236,7 @@ class UIBoardGameView: UIView {
     }
     
     func restart(){
+        colorOptionsView!.isActive = false;
         settingsButton!.disable();
         resetGame(promote: false);
         viruses!.translateToCatsAndBack();
@@ -233,6 +245,7 @@ class UIBoardGameView: UIView {
     }
     
     func maintain(){
+        colorOptionsView!.isActive = false;
         settingsButton!.disable();
         resetGame(promote: false);
         viruses!.translateToCatsAndBack();
@@ -240,6 +253,7 @@ class UIBoardGameView: UIView {
     }
     
     func promote(){
+        colorOptionsView!.isActive = false;
         settingsButton!.disable();
         resetGame(promote: true);
         completionGradientLayer!.isHidden = false;

@@ -64,6 +64,7 @@ class UIColorOptionsView: UIView {
     }
     
     @objc func selectColorOption(sender:UICButton!){
+        isActive = true;
         let receiverButton:UICButton = sender;
         selectedColor = receiverButton.backgroundColor!;
         transitionBackgroundColorOfButtonsToLightGray();

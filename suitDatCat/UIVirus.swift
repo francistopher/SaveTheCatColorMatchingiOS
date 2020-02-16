@@ -11,11 +11,14 @@ import SwiftUI
 class UIVirus:UIButton {
     
     enum Virus{
-        case standard
+        case corona
+        case ebolaSquare
+        case bacteriophage
+        case ebolaRectangle
     }
     
     var originalFrame:CGRect? = nil;
-    var selectedVirus:Virus = .standard;
+    var selectedVirus:Virus = .ebolaSquare;
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -29,7 +32,6 @@ class UIVirus:UIButton {
         parentView.addSubview(self);
     }
     
-    
     func hide() {
         alpha = 0.0;
     }
@@ -42,8 +44,14 @@ class UIVirus:UIButton {
     
     func getVirusFileName() -> String {
         switch (selectedVirus) {
-        case Virus.standard:
-            return "virus.png";
+        case .corona:
+            return "corona.png";
+        case .ebolaSquare:
+            return "ebolaSquare.png";
+        case .bacteriophage:
+            return "bacteriophage.png";
+        case .ebolaRectangle:
+            return "ebolaRectangle.png";
         }
     }
     

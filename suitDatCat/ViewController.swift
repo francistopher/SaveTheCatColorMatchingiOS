@@ -61,16 +61,16 @@ class ViewController: UIViewController {
     }
     
     @objc func appMovedToBackground() {
-        self.boardGameView!.suspendGridButtonImageLayerAnimations();
+        self.boardGameView!.cats.suspendCatAnimations();
     }
     
     @objc func appMovedToForeground() {
-        self.boardGameView!.resumeGridButtonImageLayerAnimations();
+        self.boardGameView!.cats.resumeCatAnimations();
         self.viruses!.sway();
         print("App foregrounded");
     }
     @objc func appDeactivated() {
-        self.boardGameView!.activateGridButtonsForUserInterfaceStyle();
+        self.boardGameView!.cats.activateCatsForUIStyle();
         print("App deactivated");
     }
     
@@ -159,7 +159,7 @@ class ViewController: UIViewController {
         super.traitCollectionDidChange(previousTraitCollection)
         introLabel!.setStyle();
         settingsButton!.setStyle();
-        boardGameView!.activateGridButtonsForUserInterfaceStyle();
+        boardGameView!.cats.activateCatsForUIStyle();
         colorOptionsView!.setStyle();
         if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1){
             self.completionGradientLayer!.colors = [self.mellowYellow.cgColor, UIColor.white.cgColor];

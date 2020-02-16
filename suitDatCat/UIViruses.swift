@@ -12,24 +12,9 @@ class UIViruses {
     
     var backgroundVirusCollection:[UIVirus] = [UIVirus]();
     var gamePlayVirusCollection:[UIVirus] = [UIVirus]();
-    var boardGameView:UIBoardGameView? = nil;
-    var mainView:UIView? = nil;
-    
-    init(mainView:UIView, unitView:CGFloat){
-        self.mainView = mainView;
-    }
     
     func addVirusToGamePlay() {
         
-    }
-    
-    func getNotTargetedIndex() -> [Int] {
-        let randomX:Int = Int.random(in: 0..<boardGameView!.gridCatButtons.count);
-        let randomY:Int = Int.random(in: 0..<boardGameView!.gridCatButtons[0].count);
-        if (!boardGameView!.gridCatButtons[randomX][randomY].isTargeted) {
-            
-        }
-        return [-1, -1];
     }
     
     func fadeIn(){

@@ -201,6 +201,7 @@
 				B8FBD68B23F5D41100C8B50D /* Settings Menu Bar */,
 				B88F999023F3994D003ED805 /* Virus */,
 				B8AE017023ECB180007A6142 /* UICenterKit.swift */,
+				B88F996C23F09BB4003ED805 /* UISettingsButton.swift */,
 				B8AE017A23ECCE3B007A6142 /* UIBoardGameView.swift */,
 				B8AE017C23ECD077007A6142 /* UIColorOptionsView.swift */,
 				B88F999623F39B49003ED805 /* UICatButton.swift */,
@@ -333,7 +334,6 @@
 		B8FBD68B23F5D41100C8B50D /* Settings Menu Bar */ = {
 			isa = PBXGroup;
 			children = (
-				B88F996C23F09BB4003ED805 /* UISettingsButton.swift */,
 				B8FBD69023F5D5C600C8B50D /* UIMoreCats.swift */,
 				B8FBD68E23F5D5BE00C8B50D /* UIMouseCoin.swift */,
 				B8FBD69523F5DC0C00C8B50D /* UIMultiplayer.swift */,

@@ -100,37 +100,37 @@ class UISettingsButton:UIButton {
     
     func configureNoAdsButton(parentView:UICView!) {
         noAds = UINoAds(parentView: parentView, x: cellFrame!.width * 0.95, y: 0.0, width: cellFrame!.width, height: cellFrame!.height);
-        noAds!.frame = CGRect(x: -cellFrame!.width * 0.35, y: noAds!.frame.minY, width: noAds!.frame.width, height: noAds!.frame.height);
+        noAds!.frame = CGRect(x: -cellFrame!.width * 0.25, y: noAds!.frame.minY, width: noAds!.frame.width, height: noAds!.frame.height);
         noAds!.reducedFrame = noAds!.frame;
     }
     
     func configureRestartButton(parentView:UICView) {
         restart = UIRestart(parentView: parentView, x: cellFrame!.width * 1.85  + cellFrame!.minX, y: 0.0, width: cellFrame!.width, height: cellFrame!.height);
-        restart!.frame = CGRect(x: -cellFrame!.width * 0.35, y: restart!.frame.minY, width: restart!.frame.width, height: restart!.frame.height);
+        restart!.frame = CGRect(x: -cellFrame!.width * 0.25, y: restart!.frame.minY, width: restart!.frame.width, height: restart!.frame.height);
         restart!.reducedFrame = restart!.frame;
     }
     
     func configureRestart1Button(parentView:UICView) {
         restart1 = UIRestart1(parentView: parentView, x: cellFrame!.width * 2.85  + cellFrame!.minX, y: 0.0, width: cellFrame!.width, height: cellFrame!.height);
-        restart1!.frame = CGRect(x: -cellFrame!.width * 0.35, y: restart1!.frame.minY, width: restart1!.frame.width, height: restart!.frame.height);
+        restart1!.frame = CGRect(x: -cellFrame!.width * 0.25, y: restart1!.frame.minY, width: restart1!.frame.width, height: restart!.frame.height);
         restart1!.reducedFrame = restart1!.frame;
     }
     
     func configureStatsButton(parentView:UICView!) {
         stats = UIStats(parentView: parentView, x: cellFrame!.width * 3.95, y: 0.0, width: cellFrame!.width, height: cellFrame!.height);
-        stats!.frame = CGRect(x: -cellFrame!.width * 0.35, y: stats!.frame.minY, width: stats!.frame.width, height: stats!.frame.height);
+        stats!.frame = CGRect(x: -cellFrame!.width * 0.25, y: stats!.frame.minY, width: stats!.frame.width, height: stats!.frame.height);
         stats!.reducedFrame = stats!.frame;
     }
     
     func configureMultiplayerButton(parentView:UICView) {
         multiplayer = UIMultiplayer(parentView: parentView, x: cellFrame!.width * 5.0, y: 0.0, width: cellFrame!.width, height: cellFrame!.height);
-        multiplayer!.frame = CGRect(x: -cellFrame!.width * 0.35, y: multiplayer!.frame.minY, width: multiplayer!.frame.width, height: multiplayer!.frame.height);
+        multiplayer!.frame = CGRect(x: -cellFrame!.width * 0.25, y: multiplayer!.frame.minY, width: multiplayer!.frame.width, height: multiplayer!.frame.height);
         multiplayer!.reducedFrame = multiplayer!.frame;
     }
     
     func configureMoreCatsButton(parentView:UICView) {
         moreCats = UIMoreCats(parentView: parentView, x: cellFrame!.width * 6.0, y: 0.0, width: cellFrame!.width, height: cellFrame!.height);
-        moreCats!.frame = CGRect(x: -cellFrame!.width * 0.35, y: moreCats!.frame.minY, width: moreCats!.frame.width, height: moreCats!.frame.height);
+        moreCats!.frame = CGRect(x: -cellFrame!.width * 0.25, y: moreCats!.frame.minY, width: moreCats!.frame.width, height: moreCats!.frame.height);
         moreCats!.reducedFrame = moreCats!.frame;
     }
     

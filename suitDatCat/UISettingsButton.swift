@@ -136,7 +136,7 @@ class UISettingsButton:UIButton {
     
     func configureMouseCoinButton(parentView:UICView){
         mouseCoin = UIMouseCoin(parentView: parentView, x: cellFrame!.width * 7.0, y: 0.0, width: cellFrame!.width, height: cellFrame!.height);
-        mouseCoin!.frame = CGRect(x: cellFrame!.width * 0.75, y: mouseCoin!.frame.minY, width: mouseCoin!.frame.width, height:  mouseCoin!.frame.height);
+        mouseCoin!.frame = CGRect(x: cellFrame!.width * 0.7125, y: mouseCoin!.frame.minY, width: mouseCoin!.frame.width, height:  mouseCoin!.frame.height);
         mouseCoin!.reducedFrame = mouseCoin!.frame;
     }
     

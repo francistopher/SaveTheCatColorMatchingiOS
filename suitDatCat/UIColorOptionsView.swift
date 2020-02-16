@@ -55,6 +55,7 @@ class UIColorOptionsView: UIView {
         for index in 0..<selectionColors.count {
             currentColumnDisplacement += columnGap;
             currentButton = UICButton(parentView: self,  frame:CGRect(x: currentColumnDisplacement, y: rowGap, width: buttonWidth, height: buttonHeight), backgroundColor: selectionColors[index]);
+            currentButton!.frame = currentButton!.shrunkFrame!;
             currentButton!.grow();
             currentButton!.addTarget(self, action: #selector(selectColorOption), for: .touchUpInside);
             selectionButtons.append(currentButton!);

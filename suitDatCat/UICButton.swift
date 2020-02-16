@@ -11,9 +11,6 @@ import UIKit
 
 class UICButton:UIButton {
     
-    var shrunkX:CGFloat = 0.0;
-    var shrunkY:CGFloat = 0.0;
-    
     var originalFrame:CGRect? = nil;
     var shrunkFrame:CGRect? = nil;
     var originalBackgroundColor:UIColor? = nil;
@@ -33,9 +30,14 @@ class UICButton:UIButton {
         self.backgroundColor = backgroundColor;
         self.layer.cornerRadius = self.frame.height / 5.0;
         self.layer.borderWidth = frame.width * 0.01;
+        configureShrunkFrame();
         parentView.addSubview(self);
         self.isSelected = false;
         self.setStyle();
+    }
+    
+    func configureShrunkFrame() {
+        shrunkFrame = CGRect(x: originalFrame!.minX + originalFrame!.width / 2.0, y: originalFrame!.minY + originalFrame!.height / 2.0, width: 0.0, height: 0.0);
     }
     
     func grow(){
@@ -53,7 +55,7 @@ class UICButton:UIButton {
     func shrink(){
         self.layer.removeAllAnimations();
         UIView.animate(withDuration: 1.0, delay: 0.25, options: .curveEaseIn, animations: {
-            self.frame = CGRect(x: self.shrunkX, y: self.shrunkY, width: 0.0, height: 0.0);
+            self.frame = self.shrunkFrame!;
         });
     }
     

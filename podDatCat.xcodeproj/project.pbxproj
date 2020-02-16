@@ -24,7 +24,6 @@
 		B88F997323F1CDA0003ED805 /* UIViruses.swift in Sources */ = {isa = PBXBuildFile; fileRef = B88F997223F1CD9F003ED805 /* UIViruses.swift */; };
 		B88F997523F25CA1003ED805 /* UICSwitch.swift in Sources */ = {isa = PBXBuildFile; fileRef = B88F997423F25CA1003ED805 /* UICSwitch.swift */; };
 		B88F997923F37FE2003ED805 /* UIVirus.swift in Sources */ = {isa = PBXBuildFile; fileRef = B88F997823F37FE2003ED805 /* UIVirus.swift */; };
-		B88F999723F39B49003ED805 /* UICatButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B88F999623F39B49003ED805 /* UICatButton.swift */; };
 		B8AE017123ECB180007A6142 /* UICenterKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8AE017023ECB180007A6142 /* UICenterKit.swift */; };
 		B8AE017323ECB25C007A6142 /* UICLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8AE017223ECB25C007A6142 /* UICLabel.swift */; };
 		B8AE017523ECB758007A6142 /* UICView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8AE017423ECB758007A6142 /* UICView.swift */; };
@@ -35,6 +34,8 @@
 		B8D98B7023F99E4D0051D808 /* bacteriophage.png in Resources */ = {isa = PBXBuildFile; fileRef = B8D98B6C23F99E4C0051D808 /* bacteriophage.png */; };
 		B8D98B7123F99E4D0051D808 /* ebolaRectangle.png in Resources */ = {isa = PBXBuildFile; fileRef = B8D98B6D23F99E4D0051D808 /* ebolaRectangle.png */; };
 		B8D98B7223F99E4D0051D808 /* corona.png in Resources */ = {isa = PBXBuildFile; fileRef = B8D98B6E23F99E4D0051D808 /* corona.png */; };
+		B8D98B7423F9C4570051D808 /* UICats.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8D98B7323F9C4570051D808 /* UICats.swift */; };
+		B8D98B7823F9C6BE0051D808 /* UICatButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8D98B7723F9C6BE0051D808 /* UICatButton.swift */; };
 		B8FBD67A23F50DB900C8B50D /* darkSmilingCat.png in Resources */ = {isa = PBXBuildFile; fileRef = B8FBD67423F50DB900C8B50D /* darkSmilingCat.png */; };
 		B8FBD67B23F50DB900C8B50D /* darkDeadCat.png in Resources */ = {isa = PBXBuildFile; fileRef = B8FBD67523F50DB900C8B50D /* darkDeadCat.png */; };
 		B8FBD67C23F50DB900C8B50D /* darkWavingCat.png in Resources */ = {isa = PBXBuildFile; fileRef = B8FBD67623F50DB900C8B50D /* darkWavingCat.png */; };
@@ -84,7 +85,6 @@
 		B88F997223F1CD9F003ED805 /* UIViruses.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViruses.swift; sourceTree = "<group>"; };
 		B88F997423F25CA1003ED805 /* UICSwitch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UICSwitch.swift; sourceTree = "<group>"; };
 		B88F997823F37FE2003ED805 /* UIVirus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIVirus.swift; sourceTree = "<group>"; };
-		B88F999623F39B49003ED805 /* UICatButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UICatButton.swift; sourceTree = "<group>"; };
 		B8AE017023ECB180007A6142 /* UICenterKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UICenterKit.swift; sourceTree = "<group>"; };
 		B8AE017223ECB25C007A6142 /* UICLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UICLabel.swift; sourceTree = "<group>"; };
 		B8AE017423ECB758007A6142 /* UICView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UICView.swift; sourceTree = "<group>"; };
@@ -95,6 +95,8 @@
 		B8D98B6C23F99E4C0051D808 /* bacteriophage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bacteriophage.png; sourceTree = "<group>"; };
 		B8D98B6D23F99E4D0051D808 /* ebolaRectangle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ebolaRectangle.png; sourceTree = "<group>"; };
 		B8D98B6E23F99E4D0051D808 /* corona.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = corona.png; sourceTree = "<group>"; };
+		B8D98B7323F9C4570051D808 /* UICats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UICats.swift; sourceTree = "<group>"; };
+		B8D98B7723F9C6BE0051D808 /* UICatButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UICatButton.swift; sourceTree = "<group>"; };
 		B8FBD67423F50DB900C8B50D /* darkSmilingCat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = darkSmilingCat.png; path = ../../../Desktop/darkSmilingCat.png; sourceTree = "<group>"; };
 		B8FBD67523F50DB900C8B50D /* darkDeadCat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = darkDeadCat.png; path = ../../../Desktop/darkDeadCat.png; sourceTree = "<group>"; };
 		B8FBD67623F50DB900C8B50D /* darkWavingCat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = darkWavingCat.png; path = ../../../Desktop/darkWavingCat.png; sourceTree = "<group>"; };
@@ -210,7 +212,8 @@
 				B88F996C23F09BB4003ED805 /* UISettingsButton.swift */,
 				B8AE017A23ECCE3B007A6142 /* UIBoardGameView.swift */,
 				B8AE017C23ECD077007A6142 /* UIColorOptionsView.swift */,
-				B88F999623F39B49003ED805 /* UICatButton.swift */,
+				B8D98B7323F9C4570051D808 /* UICats.swift */,
+				B8D98B7723F9C6BE0051D808 /* UICatButton.swift */,
 			);
 			name = "Custom Components";
 			sourceTree = "<group>";
@@ -481,6 +484,7 @@
 				B833544C23EC8F0B00835672 /* AppDelegate.swift in Sources */,
 				B88F997523F25CA1003ED805 /* UICSwitch.swift in Sources */,
 				B8FBD6A723F5EC4700C8B50D /* UIStats.swift in Sources */,
+				B8D98B7423F9C4570051D808 /* UICats.swift in Sources */,
 				B8FBD69623F5DC0C00C8B50D /* UIMultiplayer.swift in Sources */,
 				B8AE017B23ECCE3B007A6142 /* UIBoardGameView.swift in Sources */,
 				B88F996923F06801003ED805 /* ViewController.swift in Sources */,
@@ -492,8 +496,8 @@
 				B88F996D23F09BB4003ED805 /* UISettingsButton.swift in Sources */,
 				B8AE017523ECB758007A6142 /* UICView.swift in Sources */,
 				B8AE017123ECB180007A6142 /* UICenterKit.swift in Sources */,
-				B88F999723F39B49003ED805 /* UICatButton.swift in Sources */,
 				B8FBD68F23F5D5BE00C8B50D /* UIMouseCoin.swift in Sources */,
+				B8D98B7823F9C6BE0051D808 /* UICatButton.swift in Sources */,
 				B833544E23EC8F0B00835672 /* SceneDelegate.swift in Sources */,
 				B88F997323F1CDA0003ED805 /* UIViruses.swift in Sources */,
 				B88F997923F37FE2003ED805 /* UIVirus.swift in Sources */,

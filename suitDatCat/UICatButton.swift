@@ -17,11 +17,7 @@ class UICatButton: UIButton {
         
     }
     
-    var shrunkX:CGFloat = 0.0;
-    var shrunkY:CGFloat = 0.0;
-    
     var originalFrame:CGRect? = nil;
-    
     var previousFileName:String = "";
     var animationStage:Int = 0;
     
@@ -30,6 +26,7 @@ class UICatButton: UIButton {
     var imageContainerButton:UICButton? = nil;
     var isAlive:Bool = true;
     var podded:Bool = false;
+    var isTargeted:Bool = false;
     
     var kittenMeowPath:String? = nil;
     var kittenMeowUrl:URL? = nil;

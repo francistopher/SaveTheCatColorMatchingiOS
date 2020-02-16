@@ -13,6 +13,8 @@ class UIBoardGameView: UIView {
     var colors:[UIColor] = [UIColor.systemGreen, UIColor.systemYellow, UIColor.systemOrange, UIColor.systemRed, UIColor.systemPurple, UIColor.systemBlue];
     var colorOptionsView:UIColorOptionsView? = nil;
     
+    let currentCats:UICats = UICats();
+    
     var gridCatButtons:[[UICatButton]] = [[UICatButton]]();
     var dispersedGridCatButtons:[[UICatButton]] = [[UICatButton]]();
     
@@ -54,11 +56,8 @@ class UIBoardGameView: UIView {
         colorOptionsView!.selectColorsForSelection();
         colorOptionsView!.buildColorOptionButtons();
         if (currentStage != 1) {
-            
-            // pow(D, (this.currentRows * this.currentColumns) / 10.0D) * ((this.currentRows + 1) * (this.currentColumns + 2)))
             let dispatchTime:Double = log(Double(gridCatButtons[0].count) + 0.5) * pow(1.1, 5.5 * Double(gridCatButtons.count));
             DispatchQueue.main.asyncAfter(deadline: .now() + dispatchTime, execute: {
-                print("Ha!", !self.colorOptionsView!.isActive);
                 if (!self.colorOptionsView!.isActive) {
                     self.colorOptionsView!.selectionButtons[0].sendActions(for: .touchUpInside);
                 }
@@ -164,14 +163,11 @@ class UIBoardGameView: UIView {
             var gridButtonsRow:[UICatButton] = [UICatButton]();
             for rows in 0..<rowsAndColumns[1] {
                 y += rowGap;
-                catButton = UICatButton(parentView: self, x: x, y: y, width: buttonWidth, height: buttonHeight, backgroundColor: gridColors[columns][rows]);
-                catButton!.grow();
-                catButton!.imageContainerButton!.grow();
-                y += buttonHeight;
+                let frame:CGRect = CGRect(x: x, y: y, width: buttonWidth, height: buttonHeight);
+                catButton = currentCats.buildCatButton(parent: self, frame: frame, backgroundColor: gridColors[columns][rows]);
                 catButton!.imageContainerButton!.addTarget(self, action: #selector(selectGridButton), for: .touchUpInside);
-                // Add cat image to current button
-                catButton!.setCat(named: "SmilingCat", stage:0);
                 gridButtonsRow.append(catButton!);
+                y += buttonHeight;
             }
             gridCatButtons.append(gridButtonsRow);
             x += buttonWidth;

@@ -126,6 +126,7 @@ class ViewController: UIViewController {
         boardGameView = UIBoardGameView(parentView: mainViewController, x: 0.0, y: 0.0, width: boardGameWidth, height:boardGameWidth);
         UICenterKit.center(childView: boardGameView!, parentRect: mainViewController.frame, childRect: boardGameView!.frame);
         boardGameView!.completionGradientLayer = completionGradientLayer!;
+        viruses!.boardGameView = boardGameView!;
         boardGameView!.viruses = viruses!;
         boardGameView!.alpha = 0.0;
     }

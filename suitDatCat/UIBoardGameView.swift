@@ -13,13 +13,16 @@ class UIBoardGameView: UIView {
     var colors:[UIColor] = [UIColor.systemGreen, UIColor.systemYellow, UIColor.systemOrange, UIColor.systemRed, UIColor.systemPurple, UIColor.systemBlue];
     var colorOptionsView:UIColorOptionsView? = nil;
     
+    var currentStage:Int = 1;
+    var rowsAndColumns:[Int] = [];
     let currentCats:UICats = UICats();
     
+    
     var gridCatButtons:[[UICatButton]] = [[UICatButton]]();
-    var dispersedGridCatButtons:[[UICatButton]] = [[UICatButton]]();
+    var dispersedGridCatButtons:[[UICatButton]]? = nil;
     
     var viruses:UIViruses? = nil;
-    var currentStage:Int = 1;
+  
     
     var gridColors:[[UIColor]] = [[UIColor]]();
     var availableColors:[UIColor] = [UIColor]();
@@ -50,11 +53,17 @@ class UIBoardGameView: UIView {
     }
     
     func buildBoardGame(){
+        rowsAndColumns = currentStageRowsAndColumns(currentStage: currentStage);
         selectAnAvailableColor();
         randomlySelectGridColors();
         buildGridButtons();
         colorOptionsView!.selectColorsForSelection();
         colorOptionsView!.buildColorOptionButtons();
+        selectAColorOptionForTheUser();
+        
+    }
+    
+    func selectAColorOptionForTheUser() {
         if (currentStage != 1) {
             let dispatchTime:Double = log(Double(gridCatButtons[0].count) + 0.5) * pow(1.1, 5.5 * Double(gridCatButtons.count));
             DispatchQueue.main.asyncAfter(deadline: .now() + dispatchTime, execute: {
@@ -66,8 +75,6 @@ class UIBoardGameView: UIView {
     }
     
     func selectAnAvailableColor(){
-        // Load number of rows and columns
-        let rowsAndColumns:[Int] = currentStageRowsAndColumns(currentStage: currentStage);
         repeat {
             if (availableColors.count == 6 || availableColors.count + 1 > rowsAndColumns[1]) {
                 break;
@@ -81,8 +88,6 @@ class UIBoardGameView: UIView {
     }
     
     func randomlySelectGridColors(){
-        // Load number of rows and columns
-        let rowsAndColumns:[Int] = currentStageRowsAndColumns(currentStage: currentStage);
         // Save previous row colors
         var previousRowColors = Array(repeating: UIColor.lightGray, count: rowsAndColumns[1]);
         // Traverse through row index
@@ -145,7 +150,6 @@ class UIBoardGameView: UIView {
     }
     
     func buildGridButtons(){
-        let rowsAndColumns:[Int] = currentStageRowsAndColumns(currentStage: currentStage);
         // Gaps
         let rowGap:CGFloat = self.frame.height * 0.1 / CGFloat(rowsAndColumns[0] + 1);
         let columnGap:CGFloat = self.frame.width * 0.1 / CGFloat(rowsAndColumns[1] + 1);
@@ -205,7 +209,6 @@ class UIBoardGameView: UIView {
     }
     
     @objc func isBoardCompleted() -> Bool{
-        let rowsAndColumns:[Int] = currentStageRowsAndColumns(currentStage: currentStage);
         for rows in 0..<rowsAndColumns[0]{
             for columns in 0..<rowsAndColumns[1]{
                 if (gridCatButtons[rows][columns].imageContainerButton!.backgroundColor!.cgColor != gridColors[rows][columns].cgColor){
@@ -217,7 +220,6 @@ class UIBoardGameView: UIView {
     }
     
     func resetGame(promote:Bool){
-        let rowsAndColumns:[Int] = currentStageRowsAndColumns(currentStage: currentStage);
         for rows in 0..<rowsAndColumns[0] {
             for columns in 0..<rowsAndColumns[1] {
                 if (promote) {
@@ -305,58 +307,62 @@ class UIBoardGameView: UIView {
     }
     
     func loadGridButtonsToDispersedGridButtons() {
-        let rowsAndColumns:[Int] = currentStageRowsAndColumns(currentStage: currentStage);
+        dispersedGridCatButtons = [[UICatButton]]();
         for row in 0..<rowsAndColumns[0] {
             var currentButtonRow:[UICatButton] = [UICatButton]();
             for column in 0..<rowsAndColumns[1] {
                 currentButtonRow.append(gridCatButtons[row][column]);
             }
-            dispersedGridCatButtons.append(currentButtonRow);
+            
+            dispersedGridCatButtons!.append(currentButtonRow);
         }
         gridCatButtons = [[UICatButton]]();
     }
     
     func removeDispersedButtonsFromSuperView() {
-        let rowsAndColumns:[Int] = currentStageRowsAndColumns(currentStage: currentStage);
         for row in 0..<rowsAndColumns[0] {
             for column in 0..<rowsAndColumns[1] {
-                if (dispersedGridCatButtons.count != 0){
-                    dispersedGridCatButtons[row][column].removeFromSuperview();
+                if (row < dispersedGridCatButtons!.count && column < dispersedGridCatButtons![0].count) {
+                    dispersedGridCatButtons?[row][column].removeFromSuperview();
                 }
             }
         }
-        dispersedGridCatButtons = [[UICatButton]]();
     }
     
     func resumeGridButtonImageLayerAnimations(){
-        let rowsAndColumns:[Int] = currentStageRowsAndColumns(currentStage: currentStage);
         for row in 0..<rowsAndColumns[0] {
             for column in 0..<rowsAndColumns[1] {
-                gridCatButtons[row][column].animate(AgainWithoutDelay: true);
+                if (row < gridCatButtons.count && column < gridCatButtons[0].count){
+                    gridCatButtons[row][column].animate(AgainWithoutDelay: true);
+                }
             }
         }
     }
     
     func activateGridButtonsForUserInterfaceStyle() {
-        let rowsAndColumns:[Int] = currentStageRowsAndColumns(currentStage: currentStage);
         for row in 0..<rowsAndColumns[0] {
             for column in 0..<rowsAndColumns[1] {
                 if (gridCatButtons.count == 0) {
-                    dispersedGridCatButtons[row][column].animate(AgainWithoutDelay: false);
-                    dispersedGridCatButtons[row][column].setStyle();
+                    if (row < dispersedGridCatButtons!.count && column < dispersedGridCatButtons![0].count){
+                        dispersedGridCatButtons![row][column].animate(AgainWithoutDelay: false);
+                        dispersedGridCatButtons![row][column].setStyle();
+                    }
                 } else {
-                    gridCatButtons[row][column].animate(AgainWithoutDelay: false);
-                    gridCatButtons[row][column].setStyle();
+                    if (row < gridCatButtons.count && column < gridCatButtons.count){
+                        gridCatButtons[row][column].animate(AgainWithoutDelay: false);
+                        gridCatButtons[row][column].setStyle();
+                    }
                 }
             }
         }
     }
     
     func suspendGridButtonImageLayerAnimations() {
-        let rowsAndColumns:[Int] = currentStageRowsAndColumns(currentStage: currentStage);
         for row in 0..<rowsAndColumns[0] {
             for column in 0..<rowsAndColumns[1] {
-                gridCatButtons[row][column].hideCat();
+                if (row < gridCatButtons.count && column < gridCatButtons[0].count){
+                    gridCatButtons[row][column].hideCat();
+                }
             }
         }
     }

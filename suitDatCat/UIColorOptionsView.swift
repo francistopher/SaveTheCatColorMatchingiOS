@@ -35,7 +35,7 @@ class UIColorOptionsView: UIView {
     }
     
     func selectColorsForSelection(){
-        let rowsAndColumns:[Int] = boardGameView!.currentStageRowsAndColumns(currentStage: boardGameView!.currentStage);
+        let rowsAndColumns:[Int] = boardGameView!.getRowsAndColumns(currentStage: boardGameView!.currentStage);
         for rows in 0..<rowsAndColumns[0]{
             for columns in 0..<rowsAndColumns[1]{
                 if (!selectionColors.contains(boardGameView!.gridColors[rows][columns])){
@@ -79,7 +79,7 @@ class UIColorOptionsView: UIView {
     }
     
     @objc func transitionBackgroundColorOfButtonsToLightGray(){
-        let rowsAndColumns:[Int] = boardGameView!.currentStageRowsAndColumns(currentStage: boardGameView!.currentStage);
+        let rowsAndColumns:[Int] = boardGameView!.getRowsAndColumns(currentStage: boardGameView!.currentStage);
         print(boardGameView!.solved);
         if (!boardGameView!.gridCatButtons[0][0].backgroundColor!.isEqual(UIColor.lightGray) && boardGameView!.solved){
             for rows in 0..<rowsAndColumns[0]{

@@ -25,7 +25,7 @@ class UIBoardGameView: UIView {
   
     
     var gridColors:[[UIColor]] = [[UIColor]]();
-    var availableColors:[UIColor] = [UIColor]();
+    var selectionColors:[UIColor] = [UIColor]();
     
     var solved:Bool = true;
     
@@ -53,8 +53,9 @@ class UIBoardGameView: UIView {
     }
     
     func buildBoardGame(){
-        rowsAndColumns = currentStageRowsAndColumns(currentStage: currentStage);
-        selectAnAvailableColor();
+        rowsAndColumns = getRowsAndColumns(currentStage: currentStage);
+        currentCats.reset();
+        selectSelectionColor();
         randomlySelectGridColors();
         buildGridButtons();
         colorOptionsView!.selectColorsForSelection();
@@ -74,62 +75,57 @@ class UIBoardGameView: UIView {
         }
     }
     
-    func selectAnAvailableColor(){
+    func selectSelectionColor(){
         repeat {
-            if (availableColors.count == 6 || availableColors.count + 1 > rowsAndColumns[1]) {
+            if (selectionColors.count == 6 || selectionColors.count + 1 > rowsAndColumns[1]) {
                 break;
-          }
-          let newAvailableColor:UIColor = colors.randomElement()!;
-          if (!(availableColors.contains(newAvailableColor))){
-              availableColors.append(newAvailableColor);
-              break;
-          }
+            }
+                let newAvailableColor:UIColor = colors.randomElement()!;
+                if (!selectionColors.contains(newAvailableColor)){
+                  selectionColors.append(newAvailableColor);
+                  break;
+            }
         } while(true);
     }
     
     func randomlySelectGridColors(){
-        // Save previous row colors
-        var previousRowColors = Array(repeating: UIColor.lightGray, count: rowsAndColumns[1]);
-        // Traverse through row index
+        // Traverse through row indexes
         var rowIndex:Int = 0;
         while(rowIndex < rowsAndColumns[0]) {
-            // Instantiate a row
-            var row:[UIColor] = [UIColor]();
-            // Save previous column color
-            var previousColumnColor:UIColor = UIColor.lightGray;
-            // Traverse through the columnIndex
+            // Create current row and previous color
+            var currentRow:[UIColor] = [UIColor]();
+            // Traverse through column indexes
             var columnIndex:Int = 0;
             while(columnIndex < rowsAndColumns[1]) {
-                // Select random color
-                let randomSelectedColor = availableColors.randomElement()!;
-                // Compare selected random color with saved previous row color
-                if (randomSelectedColor.cgColor == previousRowColors[columnIndex].cgColor){
-                    if (rowIndex - 1 >= 0){
-                        rowIndex -= 1;
+                // Select random color and compare to diversify
+                let randomSelectedColor = selectionColors.randomElement()!;
+                if (rowIndex > 0) {
+                    if (randomSelectedColor.cgColor == gridColors[rowIndex - 1][columnIndex].cgColor){
+                        if (rowIndex > 0){
+                            rowIndex -= 1;
+                        }
+                        continue;
                     }
-                    continue;
                 }
-                // Compare selected random color with saved previous column colo
-                if (randomSelectedColor.cgColor == previousColumnColor.cgColor){
-                    if (columnIndex - 1 >= 0){
-                        columnIndex -= 1;
+                if (columnIndex > 0) {
+                    if (randomSelectedColor.cgColor == currentRow[columnIndex - 1].cgColor){
+                        if (columnIndex > 0){
+                            columnIndex -= 1;
+                        }
+                        continue;
                     }
-                    continue;
                 }
-                // Add randomly selected color
-                row.append(randomSelectedColor);
-                // Save as previous column color and as a row color
-                previousColumnColor = randomSelectedColor;
+                // Add color and set as previous column color
+                currentRow.append(randomSelectedColor);
                 columnIndex += 1;
             }
             // Save row of colors as the subsequent row of grid colors
-            gridColors.append(row);
-            previousRowColors = row;
+            gridColors.append(currentRow);
             rowIndex += 1;
         }
     }
     
-    func currentStageRowsAndColumns(currentStage:Int) -> [Int] {
+    func getRowsAndColumns(currentStage:Int) -> [Int] {
         var initialStage:Int = 1;
         var rows:Int = 0;
         var columns:Int = 0;
@@ -323,7 +319,7 @@ class UIBoardGameView: UIView {
         for row in 0..<rowsAndColumns[0] {
             for column in 0..<rowsAndColumns[1] {
                 if (row < dispersedGridCatButtons!.count && column < dispersedGridCatButtons![0].count) {
-                    dispersedGridCatButtons?[row][column].removeFromSuperview();
+                    dispersedGridCatButtons![row][column].removeFromSuperview();
                 }
             }
         }

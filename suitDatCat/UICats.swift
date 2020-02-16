@@ -25,4 +25,8 @@ class UICats {
         cats.append(catButton);
         return catButton;
     }
+    
+    func reset() {
+        cats = [UICatButton]();
+    }
 }

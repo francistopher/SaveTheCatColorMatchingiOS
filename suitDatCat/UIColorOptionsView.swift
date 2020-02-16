@@ -77,14 +77,11 @@ class UIColorOptionsView: UIView {
     }
     
     @objc func transitionBackgroundColorOfButtonsToLightGray(){
-        UICLabel.mozartSonata(play: false);
-        UICLabel.mozartEine(play: true);
         let rowsAndColumns:[Int] = boardGameView!.currentStageRowsAndColumns(currentStage: boardGameView!.currentStage);
         print(boardGameView!.solved);
         if (!boardGameView!.gridCatButtons[0][0].backgroundColor!.isEqual(UIColor.lightGray) && boardGameView!.solved){
             for rows in 0..<rowsAndColumns[0]{
                 for columns in 0..<rowsAndColumns[1]{
-                    print("Not working why?", boardGameView!.currentStage);
                     boardGameView!.gridCatButtons[rows][columns].imageContainerButton!.fadeBackgroundIn(color:UIColor.lightGray);
                     boardGameView!.gridCatButtons[rows][columns].fadeBackgroundIn(color: UIColor.lightGray);
                 }

@@ -47,7 +47,7 @@ class ViewController: UIViewController {
         configureColorOptionsView(userInterfaceStyle:userInterfaceStyle);
         configureSettingsButton(userInterfaceStyle:userInterfaceStyle);
         DispatchQueue.main.asyncAfter(deadline: .now() + 4.0) {
-            self.viruses!.fadeIn();
+//            self.viruses!.fadeIn();
             self.boardGameView!.fadeIn();
             self.colorOptionsView!.fadeIn();
             self.boardGameView!.buildBoardGame();

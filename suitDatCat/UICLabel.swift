@@ -20,10 +20,6 @@ class UICLabel:UILabel {
     static var mozartSonataUrl:URL? = nil;
     static var mozartSonataSoundEffect:AVAudioPlayer?
     
-    static var mozartEinePath:String? = nil;
-    static var mozartEineUrl:URL? = nil;
-    static var mozartEineSoundEffect:AVAudioPlayer?
-    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -35,33 +31,7 @@ class UICLabel:UILabel {
         self.setStyle()
         configureKittenMeow();
         configureMozartSonata();
-        configureMozartMolto();
         parentView.addSubview(self);
-    }
-    
-    func configureMozartMolto() {
-        UICLabel.mozartEinePath = Bundle.main.path(forResource: "mozartEine.mp3", ofType: nil);
-        UICLabel.mozartEineUrl = URL(fileURLWithPath: UICLabel.mozartEinePath!);
-        do {
-            UICLabel.mozartEineSoundEffect = try AVAudioPlayer(contentsOf: UICLabel.mozartEineUrl!);
-            UICLabel.mozartEineSoundEffect!.numberOfLoops = -1;
-        } catch {
-            print("Unable to play mozart molto");
-        }
-    }
-
-    static func mozartEine(play:Bool) {
-        if (play) {
-            if (UICLabel.mozartEineSoundEffect!.volume == 0.0) {
-                let timeInterval:TimeInterval = TimeInterval(1.0);
-                UICLabel.mozartEineSoundEffect!.setVolume(1.0, fadeDuration: timeInterval);
-            } else {
-                UICLabel.mozartEineSoundEffect!.play();
-            }
-        } else {
-            let timeInterval:TimeInterval = TimeInterval(1.0);
-            UICLabel.mozartEineSoundEffect!.setVolume(0.0, fadeDuration: timeInterval);
-        }
     }
     
     func kittenMeow() {

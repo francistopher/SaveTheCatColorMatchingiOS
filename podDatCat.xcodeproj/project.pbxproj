@@ -16,7 +16,6 @@
 		B8366D3723F772270043B45F /* kittenMeow.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = B8366D3623F772270043B45F /* kittenMeow.mp3 */; };
 		B8366D3D23F842C20043B45F /* mouseCoin.png in Resources */ = {isa = PBXBuildFile; fileRef = B8366D3C23F842C20043B45F /* mouseCoin.png */; };
 		B8366D4123F86BE10043B45F /* gearSpinning.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = B8366D4023F86BE10043B45F /* gearSpinning.mp3 */; };
-		B8366D4423F880490043B45F /* mozartEine.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = B8366D4223F880490043B45F /* mozartEine.mp3 */; };
 		B8366D4523F880490043B45F /* mozartSonata.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = B8366D4323F880490043B45F /* mozartSonata.mp3 */; };
 		B8366D4723F8956C0043B45F /* kittenDie.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = B8366D4623F8956C0043B45F /* kittenDie.mp3 */; };
 		B8366D4923F8A1A60043B45F /* coinEarned.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = B8366D4823F8A1A60043B45F /* coinEarned.mp3 */; };
@@ -74,7 +73,6 @@
 		B8366D3623F772270043B45F /* kittenMeow.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = kittenMeow.mp3; sourceTree = "<group>"; };
 		B8366D3C23F842C20043B45F /* mouseCoin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mouseCoin.png; sourceTree = "<group>"; };
 		B8366D4023F86BE10043B45F /* gearSpinning.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = gearSpinning.mp3; sourceTree = "<group>"; };
-		B8366D4223F880490043B45F /* mozartEine.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = mozartEine.mp3; sourceTree = "<group>"; };
 		B8366D4323F880490043B45F /* mozartSonata.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = mozartSonata.mp3; sourceTree = "<group>"; };
 		B8366D4623F8956C0043B45F /* kittenDie.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = kittenDie.mp3; sourceTree = "<group>"; };
 		B8366D4823F8A1A60043B45F /* coinEarned.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = coinEarned.mp3; sourceTree = "<group>"; };
@@ -166,7 +164,6 @@
 				B8366D4623F8956C0043B45F /* kittenDie.mp3 */,
 				B8366D4023F86BE10043B45F /* gearSpinning.mp3 */,
 				B8366D3623F772270043B45F /* kittenMeow.mp3 */,
-				B8366D4223F880490043B45F /* mozartEine.mp3 */,
 				B8366D4823F8A1A60043B45F /* coinEarned.mp3 */,
 				B8366D4323F880490043B45F /* mozartSonata.mp3 */,
 			);
@@ -444,7 +441,6 @@
 				B8FBD67B23F50DB900C8B50D /* darkDeadCat.png in Resources */,
 				B8FBD67A23F50DB900C8B50D /* darkSmilingCat.png in Resources */,
 				B8FBD68123F58F2500C8B50D /* darkGear.png in Resources */,
-				B8366D4423F880490043B45F /* mozartEine.mp3 in Resources */,
 				B8FBD67D23F50DB900C8B50D /* lightWavingCat.png in Resources */,
 				B8FBD6C523F6098C00C8B50D /* darkMoreCats.png in Resources */,
 				B833545823EC8F1400835672 /* Assets.xcassets in Resources */,

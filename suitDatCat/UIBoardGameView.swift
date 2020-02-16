@@ -181,15 +181,19 @@ class UIBoardGameView: UIView {
                     earnMouseCoins();
                     promote();
                 }
-            } else{
-                print("Unable to solve puzzle")
-                solved = true;
-                colorOptionsView!.selectedColor = UIColor.lightGray;
-                catButtonSuperView.kittenDie();
-                UICLabel.mozartSonata(play: true);
-                UICLabel.mozartEine(play: false);
-                maintain();
+            } else {
+                catImageButton.layer.borderColor! = UIColor.clear.cgColor;
+                catButtonSuperView.layer.borderColor! = UIColor.clear.cgColor;
             }
+//                else{
+//                print("Unable to solve puzzle")
+//                solved = true;
+//                colorOptionsView!.selectedColor = UIColor.lightGray;
+//                catButtonSuperView.kittenDie();
+//                UICLabel.mozartSonata(play: true);
+//                UICLabel.mozartEine(play: false);
+//                maintain();
+//            }
         }
     }
     

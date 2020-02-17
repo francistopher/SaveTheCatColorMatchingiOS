@@ -54,13 +54,15 @@ class UIBoardGameView: UIView {
         colorOptionsView!.selectColorsForSelection();
         colorOptionsView!.buildColorOptionButtons();
         selectAColorOptionForTheUser();
-        viruses.targetCats(cats:cats);
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0, execute: {
+            self.viruses.targetCats(cats:self.cats);
+        })
     }
     
     func selectAColorOptionForTheUser() {
         if (currentStage != 1) {
             let dispatchTime:Double = log(Double(columnsAndRows[1]) + 0.5) * pow(1.1, 5.5 * Double(columnsAndRows[0]));
-            DispatchQueue.main.asyncAfter(deadline: .now() + dispatchTime, execute: {
+            DispatchQueue.main.asyncAfter(deadline: .now() + dispatchTime + 2.0, execute: {
                 if (!self.colorOptionsView!.isActive) {
                     self.colorOptionsView!.selectionButtons[0].sendActions(for: .touchUpInside);
                 }

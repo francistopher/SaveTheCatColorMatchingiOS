@@ -18,9 +18,8 @@ class UIViruses {
     var borderedCats:[UICatButton] = [];
     var unborderedCats:[UICatButton] = [];
     var coloredCats:[UICatButton] = [];
+    var catButtons:[UICatButton] = [];
     var virusTypes:[Virus] = [];
-    var virusSelected:Virus? = nil;
-    var targetCatButton:UICatButton? = nil;
     
     enum Virus{
         case corona
@@ -39,29 +38,18 @@ class UIViruses {
     
     func selectVirus() {
         saveCatTypes();
-        saveVirusTypes();
-        virusSelected = virusTypes.randomElement()!;
-        selectTargetCatButton();
+        saveVirusTypesAndCatButtons();
+        if (catButtons.count == 0) {
+            return;
+        }
         spawnVirus();
     }
     
     func spawnVirus() {
-        print(targetCatButton!.originalBackgroundColor);
-    }
-    
-    func selectTargetCatButton() {
-        switch (virusSelected) {
-        case .corona:
-            targetCatButton = unborderedCats.randomElement();
-        case .ebolaSquare:
-            targetCatButton = borderedCats.randomElement();
-        case .ebolaRectangle:
-            targetCatButton = borderedCats.randomElement();
-        case .bacteriophage:
-            targetCatButton = coloredCats.randomElement();
-        case .none:
-            print("No none");
-        }
+        let randomIndex:Int = Int.random(in: 0..<catButtons.count);
+        let selectedCatButton:UICatButton = catButtons[randomIndex];
+        print(virusTypes[randomIndex]);
+        selectedCatButton.isTargeted = true;
     }
     
     func saveCatTypes() {
@@ -70,19 +58,32 @@ class UIViruses {
         coloredCats = cats.coloredCats();
     }
     
-    func saveVirusTypes() {
+    func saveVirusTypesAndCatButtons() {
         virusTypes = [];
-        for _ in borderedCats {
+        catButtons = [];
+        for borderedCat in borderedCats {
+            if (borderedCat.isTargeted){
+                continue;
+            }
+            catButtons.append(borderedCat);
             if (cats.isSquared()) {
                 virusTypes.append(.ebolaSquare);
             } else {
                 virusTypes.append(.ebolaRectangle);
             }
         }
-        for _ in unborderedCats {
+        for unborderedCat in unborderedCats {
+            if (unborderedCat.isTargeted) {
+                continue;
+            }
+            catButtons.append(unborderedCat);
             virusTypes.append(.corona);
         }
-        for _ in coloredCats {
+        for coloredCat in coloredCats {
+            if (coloredCat.isTargeted) {
+                continue;
+            }
+            catButtons.append(coloredCat);
             virusTypes.append(.bacteriophage);
         }
     }

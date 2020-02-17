@@ -25,7 +25,7 @@ class UICatButton: UIButton {
     var originalBackgroundColor:UIColor = .clear;
     var imageContainerButton:UICButton? = nil;
     var isAlive:Bool = true;
-    var podded:Bool = false;
+    var isPodded:Bool = false;
     var isTargeted:Bool = false;
     
     var kittenMeowPath:String? = nil;

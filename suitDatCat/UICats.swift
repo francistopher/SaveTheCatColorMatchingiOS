@@ -46,7 +46,7 @@ class UICats {
     func borderedCats() -> [UICatButton] {
         var borderedCats:[UICatButton] = [UICatButton]();
         for catButton in cats {
-            if (catButton.layer.borderColor != UIColor.clear.cgColor) {
+            if (catButton.layer.borderWidth != 0.0) {
                 borderedCats.append(catButton);
             }
         }
@@ -56,11 +56,29 @@ class UICats {
     func unBorderedCats() -> [UICatButton] {
         var unborderedCats:[UICatButton] = [UICatButton]();
         for catButton in cats {
-            if (catButton.layer.borderColor == UIColor.clear.cgColor) {
+            if (catButton.layer.borderWidth == 0.0) {
                 unborderedCats.append(catButton);
             }
         }
         return unborderedCats;
+    }
+    
+    func areDead() -> Bool {
+        for catButton in cats {
+            if (catButton.isAlive) {
+                return false;
+            }
+        }
+        return true;
+    }
+    
+    func areAlive() -> Bool {
+        for catButton in cats {
+            if (!catButton.isAlive) {
+                return false;
+            }
+        }
+        return true;
     }
     
     func count() -> Int {

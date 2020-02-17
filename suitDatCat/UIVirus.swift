@@ -8,42 +8,109 @@
 
 import SwiftUI
 
+enum Virus{
+    case corona
+    case ebolaSquare
+    case bacteriophage
+    case ebolaRectangle
+}
+
+
+
 class UIVirus:UIButton {
     
-    enum Virus{
-        case corona
-        case ebolaSquare
-        case bacteriophage
-        case ebolaRectangle
-    }
-    
     var originalFrame:CGRect? = nil;
+    var targetCat:UICatButton? = nil;
     var selectedVirus:Virus = .ebolaSquare;
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    init(parentView:UIView, frame: CGRect) {
+    init(parentView:UIView, frame: CGRect, virus:Virus, targetCat:UICatButton) {
         super.init(frame: frame);
-        self.backgroundColor = .clear;
-        self.originalFrame = frame;
-        self.setVirusImage();
+        backgroundColor = .clear;
+        originalFrame = frame;
+        setVirusImage(virus:virus);
+        self.targetCat = targetCat;
+        startAction();
         parentView.addSubview(self);
     }
     
-    func hide() {
-        alpha = 0.0;
+    func startAction() {
+        expandAndContract();
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3.0, execute: {
+            switch (self.selectedVirus) {
+                case .bacteriophage:
+                    self.absorbColor();
+                case .ebolaSquare:
+                    self.removeBorder();
+                case .ebolaRectangle:
+                    self.removeBorder();
+                case.corona:
+                    self.targetCat!.isAlive = false;
+                    self.targetCat!.kittenDie();
+                    self.targetCat!.disperseRadially();
+            }
+        });
+        DispatchQueue.main.asyncAfter(deadline: .now() + 4.0, execute: {
+            self.targetCat!.isTargeted = false;
+            self.disperseRadially();
+        });
     }
     
-    func setVirusImage() {
-        let iconImage:UIImage? = UIImage(named: getVirusFileName());
+    func absorbColor() {
+        self.targetCat!.imageContainerButton!.fadeBackgroundIn(color: UIColor.lightGray);
+        self.targetCat!.fadeBackgroundIn(color: UIColor.lightGray);
+    }
+    
+    func removeBorder() {
+        self.targetCat!.layer.borderWidth = 0.0;
+        self.targetCat!.imageContainerButton!.layer.borderWidth = 0.0;
+    }
+    
+    func disperseRadially() {
+        let angle:CGFloat = CGFloat(Int.random(in: 0...360));
+        let targetPointX:CGFloat = getRadialXTargetPoint(parentFrame: self.superview!.frame, childFrame: self.frame, angle: angle);
+        let targetPointY:CGFloat = getRadialYTargetPoint(parentFrame: self.superview!.frame, childFrame: self.frame, angle: angle);
+        UIView.animate(withDuration: 1.5, delay: 0.125, options: .curveEaseIn, animations: {
+            self.transform = self.transform.rotated(by: CGFloat.pi);
+            let newFrame:CGRect = CGRect(x: targetPointX, y:targetPointY, width: self.frame.width, height: self.frame.height);
+            self.frame = newFrame;
+       });
+    }
+    
+    func getRadialXTargetPoint(parentFrame:CGRect, childFrame:CGRect, angle:CGFloat) -> CGFloat {
+        var targetX:CGFloat = childFrame.minX;
+        targetX += parentFrame.width + childFrame.width;
+        targetX *= cos((CGFloat.pi * angle) / 180.0);
+        return targetX;
+    }
+    
+    
+    func getRadialYTargetPoint(parentFrame:CGRect, childFrame:CGRect, angle:CGFloat) -> CGFloat {
+        var targetY:CGFloat = childFrame.minY;
+        targetY += parentFrame.height + childFrame.height;
+        targetY *= sin((CGFloat.pi * angle) / 180.0);
+        return targetY;
+    }
+    
+    func expandAndContract() {
+        UIView.animate(withDuration: 1.0, delay: 0.125, options: [.curveEaseInOut, .autoreverse, .repeat], animations: {
+            self.imageView!.transform = self.imageView!.transform.scaledBy(x: 1.25, y: 1.25);
+        })
+    }
+    
+    func setVirusImage(virus:Virus) {
+        selectedVirus = virus;
+        let virusFileName:String = getVirusFileName(virus:virus);
+        let iconImage:UIImage? = UIImage(named: virusFileName);
         self.setImage(iconImage, for: .normal);
         self.imageView!.contentMode = UIView.ContentMode.scaleAspectFit;
     }
     
-    func getVirusFileName() -> String {
-        switch (selectedVirus) {
+    func getVirusFileName(virus:Virus) -> String {
+        switch (virus) {
         case .corona:
             return "corona.png";
         case .ebolaSquare:

@@ -57,6 +57,13 @@ class UIBoardGameView: UIView {
         DispatchQueue.main.asyncAfter(deadline: .now() + 2.0, execute: {
             self.viruses.targetCats(cats:self.cats);
         })
+        Timer.scheduledTimer(withTimeInterval: 3, repeats: true, block: { _ in
+            if (self.cats.areDead()) {
+                self.solved = true;
+                self.colorOptionsView!.selectedColor = UIColor.lightGray;
+                self.maintain();
+            }
+        })
     }
     
     func selectAColorOptionForTheUser() {
@@ -161,7 +168,7 @@ class UIBoardGameView: UIView {
             if (catButton.originalBackgroundColor.cgColor == colorOptionsView!.selectedColor.cgColor){
                 catImageButton.fadeBackgroundIn(color: colorOptionsView!.selectedColor);
                 catButton.pod();
-                catButton.podded = true;
+                catButton.isPodded = true;
                 if (cats.areAllColored()){
                     print("Moving to next round!")
                     solved = true;
@@ -173,15 +180,6 @@ class UIBoardGameView: UIView {
                 catImageButton.layer.borderColor! = UIColor.clear.cgColor;
                 catButton.layer.borderColor! = UIColor.clear.cgColor;
             }
-//                else{
-//                print("Unable to solve puzzle")
-//                solved = true;
-//                colorOptionsView!.selectedColor = UIColor.lightGray;
-//                catButtonSuperView.kittenDie();
-//                UICLabel.mozartSonata(play: true);
-//                UICLabel.mozartEine(play: false);
-//                maintain();
-//            }
         }
     }
     

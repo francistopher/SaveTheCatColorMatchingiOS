@@ -54,11 +54,26 @@ class UIBoardGameView: UIView {
         colorOptionsView!.selectColorsForSelection();
         colorOptionsView!.buildColorOptionButtons();
         selectAColorOptionForTheUser();
+        var currentTimer:Timer? = nil;
         DispatchQueue.main.asyncAfter(deadline: .now() + 2.0, execute: {
-            self.viruses.targetCats(cats:self.cats);
+            if (currentTimer!.isValid) {
+                self.viruses.targetCats(cats:self.cats);
+            }
         })
-        Timer.scheduledTimer(withTimeInterval: 3, repeats: true, block: { _ in
+        currentTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true, block: { _ in
             if (self.cats.areDead()) {
+                currentTimer?.invalidate();
+                self.solved = true;
+                self.colorOptionsView!.selectedColor = UIColor.lightGray;
+                self.restart();
+            } else if (self.cats.arePodded() && self.cats.areAlive()){
+                currentTimer?.invalidate();
+                self.solved = true;
+                self.colorOptionsView!.selectedColor = UIColor.lightGray;
+                self.cats.giveMouseCoins();
+                self.promote();
+            } else if (!self.cats.areAlive()) {
+                currentTimer?.invalidate();
                 self.solved = true;
                 self.colorOptionsView!.selectedColor = UIColor.lightGray;
                 self.maintain();
@@ -169,13 +184,6 @@ class UIBoardGameView: UIView {
                 catImageButton.fadeBackgroundIn(color: colorOptionsView!.selectedColor);
                 catButton.pod();
                 catButton.isPodded = true;
-                if (cats.areAllColored()){
-                    print("Moving to next round!")
-                    solved = true;
-                    colorOptionsView!.selectedColor = UIColor.lightGray;
-                    cats.giveMouseCoins();
-                    promote();
-                }
             } else {
                 catImageButton.layer.borderColor! = UIColor.clear.cgColor;
                 catButton.layer.borderColor! = UIColor.clear.cgColor;

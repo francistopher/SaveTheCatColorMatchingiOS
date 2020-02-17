@@ -120,15 +120,28 @@ class UICats {
         return true;
     }
     
+    func arePodded() -> Bool{
+        for catButton in cats {
+            if (!catButton.isPodded) {
+                return false;
+            }
+        }
+        return true;
+    }
+    
     func disperseVertically() {
         for catButton in cats {
-            catButton.disperseVertically();
+            if (catButton.isAlive) {
+                 catButton.disperseVertically();
+            }
         }
     }
     
     func disperseRadially() {
         for catButton in cats {
-            catButton.disperseRadially();
+            if (catButton.isAlive) {
+                catButton.disperseRadially();
+            }
         }
     }
     

@@ -9,7 +9,6 @@
 import SwiftUI
 
 class UIViruses {
-    
     var backgroundVirusCollection:[UIVirus] = [UIVirus]();
     var gameSessionViruses:[UIVirus] = [UIVirus]();
     var cats:UICats = UICats();
@@ -92,7 +91,7 @@ class UIViruses {
         virusTypes = [];
         catButtons = [];
         for borderedCat in borderedCats {
-            if (borderedCat.isTargeted || borderedCat.isPodded){
+            if (borderedCat.isTargeted || borderedCat.isPodded || !borderedCat.isAlive){
                 continue;
             }
             catButtons.append(borderedCat);
@@ -103,14 +102,14 @@ class UIViruses {
             }
         }
         for unborderedCat in unborderedCats {
-            if (unborderedCat.isTargeted || unborderedCat.isPodded) {
+            if (unborderedCat.isTargeted || unborderedCat.isPodded || !unborderedCat.isAlive) {
                 continue;
             }
             catButtons.append(unborderedCat);
             virusTypes.append(.corona);
         }
         for coloredCat in coloredCats {
-            if (coloredCat.isTargeted || coloredCat.isPodded) {
+            if (coloredCat.isTargeted || coloredCat.isPodded || !coloredCat.isAlive) {
                 continue;
             }
             catButtons.append(coloredCat);

@@ -39,6 +39,7 @@ class UICatButton: UIButton {
     var coinEarnedPath:String? = nil;
     var coinEarnedUrl:URL? = nil;
     var coinEarnedSoundEffect:AVAudioPlayer?
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented");
     }
@@ -279,7 +280,9 @@ class UICatButton: UIButton {
             self.transform = self.transform.rotated(by: CGFloat.pi);
             let newFrame:CGRect = CGRect(x: targetPointX, y:targetPointY, width: self.frame.width, height: self.frame.height);
             self.frame = newFrame;
-       });
+        }, completion: { _ in
+            self.removeFromSuperview();
+        });
     }
 
     func disperseVertically() {

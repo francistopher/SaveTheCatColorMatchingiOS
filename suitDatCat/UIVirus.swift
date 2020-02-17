@@ -15,8 +15,6 @@ enum Virus{
     case ebolaRectangle
 }
 
-
-
 class UIVirus:UIButton {
     
     var originalFrame:CGRect? = nil;
@@ -77,7 +75,9 @@ class UIVirus:UIButton {
             self.transform = self.transform.rotated(by: CGFloat.pi);
             let newFrame:CGRect = CGRect(x: targetPointX, y:targetPointY, width: self.frame.width, height: self.frame.height);
             self.frame = newFrame;
-       });
+        }, completion: { _ in
+            self.removeFromSuperview();
+        });
     }
     
     func getRadialXTargetPoint(parentFrame:CGRect, childFrame:CGRect, angle:CGFloat) -> CGFloat {

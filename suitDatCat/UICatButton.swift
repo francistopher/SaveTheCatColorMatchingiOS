@@ -78,7 +78,7 @@ class UICatButton: UIButton {
         mouseCoin.frame = CGRect(x: mouseCoinX, y: mouseCoinY, width: mouseCoin.frame.width, height: mouseCoin.frame.height);
         // Calculate time for translation
         let boardGameFrame:CGRect = self.superview!.frame;
-        let time:Double = Double(mouseCoin.frame.minY / (boardGameFrame.minY + boardGameFrame.height));
+        let time:Double = Double(mouseCoin.frame.minX / (boardGameFrame.minX + boardGameFrame.width));
         DispatchQueue.main.asyncAfter(deadline: .now() + time) {
             UIView.animate(withDuration: 1.0, delay: 0.125, options: [.curveEaseInOut], animations: {
                 mainView.bringSubviewToFront(mouseCoin);

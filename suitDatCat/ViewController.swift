@@ -42,7 +42,6 @@ class ViewController: UIViewController {
         saveMainViewFoundationalProperties();
         configureIntroLabel(userInterfaceStyle:userInterfaceStyle);
         configureHeavenGradientLayer();
-        configureViruses();
         configureBoardGameView(userInterfaceStyle:userInterfaceStyle);
         configureColorOptionsView(userInterfaceStyle:userInterfaceStyle);
         configureSettingsButton(userInterfaceStyle:userInterfaceStyle);
@@ -126,8 +125,6 @@ class ViewController: UIViewController {
         boardGameView = UIBoardGameView(parentView: mainViewController, x: 0.0, y: 0.0, width: boardGameWidth, height:boardGameWidth);
         UICenterKit.center(childView: boardGameView!, parentRect: mainViewController.frame, childRect: boardGameView!.frame);
         boardGameView!.completionGradientLayer = completionGradientLayer!;
-        viruses!.boardGameView = boardGameView!;
-        boardGameView!.viruses = viruses!;
         boardGameView!.alpha = 0.0;
     }
 
@@ -147,12 +144,6 @@ class ViewController: UIViewController {
         settingsButton!.alpha = 0.0;
         settingsButton!.settingsMenu!.alpha = 0.0;
         ViewController.settings = settingsButton!;
-    }
-    
-    func configureViruses() {
-        viruses = UIViruses(mainView: mainViewController, unitView:unitViewHeight);
-        viruses!.hide();
-        viruses!.sway();
     }
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {

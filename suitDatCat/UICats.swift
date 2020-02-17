@@ -39,14 +39,16 @@ class UICats {
     }
     
     func giveMouseCoins() {
-        var count:Int = 0;
+        var mutatingCount:Double = 0.0;
+        let squareRoot:Double = Double(cats.count).squareRoot();
+        mutatingCount += squareRoot;
         for catButtonIndex in 0..<cats.count {
-            if (catButtonIndex == count) {
+            if (Double(catButtonIndex + 1) < mutatingCount) {
+                cats[catButtonIndex].giveMouseCoin(withNoise: false);
+            } else {
                 cats[catButtonIndex].giveMouseCoin(withNoise: true);
-                count += 1;
+                mutatingCount += squareRoot;
             }
-            cats[catButtonIndex].giveMouseCoin(withNoise: false);
-            count += count;
         }
     }
     

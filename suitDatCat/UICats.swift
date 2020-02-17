@@ -26,6 +26,47 @@ class UICats {
         return catButton;
     }
     
+    func isSquared() -> Bool {
+        if (cats[0].frame.width == cats[0].frame.height) {
+            return true;
+        }
+        return false;
+    }
+    
+    func coloredCats() -> [UICatButton] {
+        var coloredCats:[UICatButton] = [UICatButton]();
+        for catButton in cats {
+            if (catButton.backgroundColor!.cgColor != UIColor.lightGray.cgColor) {
+                coloredCats.append(catButton);
+            }
+        }
+        return coloredCats;
+    }
+    
+    func borderedCats() -> [UICatButton] {
+        var borderedCats:[UICatButton] = [UICatButton]();
+        for catButton in cats {
+            if (catButton.layer.borderColor != UIColor.clear.cgColor) {
+                borderedCats.append(catButton);
+            }
+        }
+        return borderedCats;
+    }
+    
+    func unBorderedCats() -> [UICatButton] {
+        var unborderedCats:[UICatButton] = [UICatButton]();
+        for catButton in cats {
+            if (catButton.layer.borderColor == UIColor.clear.cgColor) {
+                unborderedCats.append(catButton);
+            }
+        }
+        return unborderedCats;
+    }
+    
+    func count() -> Int {
+        return cats.count;
+    }
+    
     func reset() {
         loadPreviousCats();
         cats = [UICatButton]();

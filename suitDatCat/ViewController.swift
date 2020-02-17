@@ -65,7 +65,6 @@ class ViewController: UIViewController {
     
     @objc func appMovedToForeground() {
         self.boardGameView!.cats.resumeCatAnimations();
-        self.viruses!.sway();
         print("App foregrounded");
     }
     @objc func appDeactivated() {

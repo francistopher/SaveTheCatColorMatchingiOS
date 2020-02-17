@@ -43,6 +43,9 @@ class UIBoardGameView: UIView {
     }
     
     func buildBoardGame(){
+        if (viruses.spawnVirusTimer?.isValid != nil) {
+            viruses.spawnVirusTimer!.invalidate();
+        }
         columnsAndRows = getRowsAndColumns(currentStage: currentStage);
         cats.reset();
         selectSelectionColor();
@@ -51,6 +54,7 @@ class UIBoardGameView: UIView {
         colorOptionsView!.selectColorsForSelection();
         colorOptionsView!.buildColorOptionButtons();
         selectAColorOptionForTheUser();
+        viruses.targetCats(cats:cats);
     }
     
     func selectAColorOptionForTheUser() {
@@ -117,7 +121,7 @@ class UIBoardGameView: UIView {
         return [rows, columns];
     }
     
-    func buildGridButtons(){ 
+    func buildGridButtons(){
         let rowGap:CGFloat = self.frame.height * 0.1 / CGFloat(columnsAndRows[0] + 1);
         let columnGap:CGFloat = self.frame.width * 0.1 / CGFloat(columnsAndRows[1] + 1);
         // Sizes

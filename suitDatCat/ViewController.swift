@@ -114,7 +114,7 @@ class ViewController: UIViewController {
         UICenterKit.center(childView: introLabel!, parentRect: mainViewController.frame, childRect: introLabel!.frame);
         introLabel!.font = UIFont.boldSystemFont(ofSize: unitViewHeight * 0.75);
         introLabel!.backgroundColor = .clear;
-        introLabel!.text = "podDatCat";
+        introLabel!.text = "PoD DaT CaT";
         introLabel!.alpha = 0.0;
         introLabel!.fadeInAndOut();
     }

@@ -43,6 +43,7 @@ class UIBoardGameView: UIView {
     }
     
     func buildBoardGame(){
+        colorOptionsView!.isTransitioned = false;
         if (viruses.spawnVirusTimer?.isValid != nil) {
             viruses.spawnVirusTimer!.invalidate();
         }
@@ -53,7 +54,7 @@ class UIBoardGameView: UIView {
         buildGridButtons();
         colorOptionsView!.selectColorsForSelection();
         colorOptionsView!.buildColorOptionButtons();
-        selectAColorOptionForTheUser();
+        solved = false;
         var currentTimer:Timer? = nil;
         DispatchQueue.main.asyncAfter(deadline: .now() + 2.0, execute: {
             if (currentTimer!.isValid) {
@@ -72,24 +73,13 @@ class UIBoardGameView: UIView {
                 self.colorOptionsView!.selectedColor = UIColor.lightGray;
                 self.cats.giveMouseCoins();
                 self.promote();
-            } else if (!self.cats.areAlive()) {
+            } else if (self.cats.aliveCatIsPodded()) {
                 currentTimer?.invalidate();
                 self.solved = true;
                 self.colorOptionsView!.selectedColor = UIColor.lightGray;
                 self.maintain();
             }
         })
-    }
-    
-    func selectAColorOptionForTheUser() {
-        if (currentStage != 1) {
-            let dispatchTime:Double = log(Double(columnsAndRows[1]) + 0.5) * pow(1.1, 5.5 * Double(columnsAndRows[0]));
-            DispatchQueue.main.asyncAfter(deadline: .now() + dispatchTime + 2.0, execute: {
-                if (!self.colorOptionsView!.isActive) {
-                    self.colorOptionsView!.selectionButtons[0].sendActions(for: .touchUpInside);
-                }
-            })
-        }
     }
     
     func selectSelectionColor(){
@@ -191,8 +181,8 @@ class UIBoardGameView: UIView {
         }
     }
     
-    func resetGame(promote:Bool){
-        if (promote) {
+    func resetGame(catsSurvived:Bool){
+        if (catsSurvived) {
             cats.disperseVertically()
         } else {
             cats.disperseRadially();
@@ -204,7 +194,7 @@ class UIBoardGameView: UIView {
     func restart(){
         colorOptionsView!.isActive = false;
         settingsButton!.disable();
-        resetGame(promote: false);
+        resetGame(catsSurvived: false);
         currentStage = 1;
         configureComponentsAfterBoardGameReset();
     }
@@ -212,14 +202,14 @@ class UIBoardGameView: UIView {
     func maintain(){
         colorOptionsView!.isActive = false;
         settingsButton!.disable();
-        resetGame(promote: false);
+        resetGame(catsSurvived: true);
         configureComponentsAfterBoardGameReset();
     }
     
     func promote(){
         colorOptionsView!.isActive = false;
         settingsButton!.disable();
-        resetGame(promote: true);
+        resetGame(catsSurvived: true);
         completionGradientLayer!.isHidden = false;
         colorOptionsView!.loadSelectionButtonsToSelectedButtons();
         // Build board game

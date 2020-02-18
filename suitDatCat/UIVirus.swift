@@ -20,35 +20,68 @@ class UIVirus:UIButton {
     var originalFrame:CGRect? = nil;
     var targetCat:UICatButton? = nil;
     var selectedVirus:Virus = .ebolaSquare;
+    var playerHits:Int = 0;
+    var hasBeenDispersed:Bool = false;
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    init(parentView:UIView, frame: CGRect, virus:Virus, targetCat:UICatButton) {
-        super.init(frame: frame);
+    init(parentView:UIView, spawnFrame: CGRect, targetFrame:CGRect, virus:Virus, targetCat:UICatButton) {
+        super.init(frame: spawnFrame);
         backgroundColor = .clear;
-        originalFrame = frame;
+        self.frame = spawnFrame;
         setVirusImage(virus:virus);
         self.targetCat = targetCat;
-        startAction();
+        transitionToTargetFrame(targetFrame: targetFrame);
+        self.addTarget(self, action: #selector(playerTap), for: .touchUpInside);
         parentView.addSubview(self);
+    }
+    
+    @objc func playerTap() {
+        playerHits += 1;
+        switch(self.selectedVirus, playerHits) {
+        case (.corona, 10):
+            disperseRadially();
+        case (.ebolaSquare, 7):
+            disperseRadially();
+        case (.ebolaRectangle, 7):
+            disperseRadially();
+        case (.bacteriophage, 5):
+            disperseRadially();
+        case (_, _):
+            print("Do Something");
+        }
+    }
+    
+    func transitionToTargetFrame(targetFrame:CGRect) {
+        UIView.animate(withDuration: 1.0, delay: 0.125, options: [.curveEaseInOut], animations: {
+            self.frame = targetFrame;
+        }, completion: { _ in
+            self.startAction();
+        });
     }
     
     func startAction() {
         expandAndContract();
         DispatchQueue.main.asyncAfter(deadline: .now() + 3.0, execute: {
-            switch (self.selectedVirus) {
-                case .bacteriophage:
-                    self.absorbColor();
-                case .ebolaSquare:
-                    self.removeBorder();
-                case .ebolaRectangle:
-                    self.removeBorder();
-                case.corona:
-                    self.targetCat!.isAlive = false;
-                    self.targetCat!.kittenDie();
-                    self.targetCat!.disperseRadially();
+            if (!self.hasBeenDispersed) {
+                switch (self.selectedVirus) {
+                    case .bacteriophage:
+                        self.absorbColor();
+                    case .ebolaSquare:
+                        self.removeBorder();
+                    case .ebolaRectangle:
+                        self.removeBorder();
+                    case.corona:
+                        if (!self.targetCat!.isPodded) {
+                            self.targetCat!.isAlive = false;
+                            self.targetCat!.kittenDie();
+                            if (self.targetCat != nil) {
+                                self.targetCat!.disperseRadially();
+                            }
+                        }
+                }
             }
         });
         DispatchQueue.main.asyncAfter(deadline: .now() + 4.0, execute: {
@@ -68,6 +101,9 @@ class UIVirus:UIButton {
     }
     
     func disperseRadially() {
+        if (hasBeenDispersed) {
+            return;
+        }
         let angle:CGFloat = CGFloat(Int.random(in: 0...360));
         let targetPointX:CGFloat = getRadialXTargetPoint(parentFrame: self.superview!.frame, childFrame: self.frame, angle: angle);
         let targetPointY:CGFloat = getRadialYTargetPoint(parentFrame: self.superview!.frame, childFrame: self.frame, angle: angle);
@@ -78,6 +114,7 @@ class UIVirus:UIButton {
         }, completion: { _ in
             self.removeFromSuperview();
         });
+        hasBeenDispersed = true;
     }
     
     func getRadialXTargetPoint(parentFrame:CGRect, childFrame:CGRect, angle:CGFloat) -> CGFloat {

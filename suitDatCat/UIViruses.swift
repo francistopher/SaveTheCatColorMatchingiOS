@@ -26,11 +26,14 @@ class UIViruses {
     // Views
     var boardGameView:UIBoardGameView? = nil;
     var mainView:UIView? = nil;
-    // Save target coordinates and width and height
+    // Target frame
     var xTarget:CGFloat = 0.0;
     var yTarget:CGFloat = 0.0;
-    var virusWidth:CGFloat = 0.0;
-    var virusHeight:CGFloat = 0.0;
+    var widthTarget:CGFloat = 0.0;
+    var heightTarget:CGFloat = 0.0;
+    // Spawn frame
+    var xSpawn:CGFloat = 0.0;
+    var ySpawn:CGFloat = 0.0;
     
     func targetCats(cats:UICats) {
         self.cats = cats;
@@ -38,7 +41,6 @@ class UIViruses {
         mainView = boardGameView!.superview!;
         spawnVirusTimer = Timer.scheduledTimer(withTimeInterval: 3, repeats: true, block: { _ in
             self.selectVirus();
-            print("Firing");
         })
         self.selectVirus();
     }
@@ -46,8 +48,8 @@ class UIViruses {
     func selectVirus() {
         xTarget = 0.0;
         yTarget = 0.0;
-        virusWidth = 0.0;
-        virusHeight = 0.0;
+        widthTarget = 0.0;
+        heightTarget = 0.0;
         saveCatTypes();
         saveVirusTypesAndCatButtons();
         if (catButtons.count == 0) {
@@ -55,6 +57,7 @@ class UIViruses {
         }
         selectVirusAndCat();
         buildTargetCoordinates();
+        buildSpawnCoordinates();
         buildVirus();
     }
     
@@ -72,13 +75,32 @@ class UIViruses {
         yTarget += targetCatButton!.frame.minY;
     }
     
-    func buildVirus() {
-        let virusFrame:CGRect = CGRect(x: xTarget, y: yTarget, width: targetCatButton!.frame.width, height: targetCatButton!.frame.height);
-        let createdVirus:UIVirus = UIVirus(parentView: mainView!, frame: virusFrame, virus: virus!, targetCat: targetCatButton!);
-        if (virus == Virus.ebolaRectangle || virus == Virus.ebolaSquare) {
-            createdVirus.transform = createdVirus.transform.scaledBy(x: 1.35, y: 1.35);
+    func buildSpawnCoordinates() {
+        let spawnSide:Int = Int.random(in: 0...3);
+        if (spawnSide == 0) {
+            xSpawn = CGFloat.random(in: 0..<mainView!.frame.width);
+            ySpawn = -targetCatButton!.frame.height;
+        } else if (spawnSide == 1) {
+            xSpawn = CGFloat.random(in: 0..<mainView!.frame.width);
+            ySpawn = mainView!.frame.height;
+        } else if (spawnSide == 2) {
+            xSpawn = -targetCatButton!.frame.width;
+            ySpawn = CGFloat.random(in: 0..<mainView!.frame.height);
+        } else if (spawnSide == 3) {
+            xSpawn = mainView!.frame.width;
+            ySpawn = CGFloat.random(in: 0..<mainView!.frame.height);
         }
-        mainView!.bringSubviewToFront(createdVirus);
+    }
+    
+    func buildVirus() {
+        let spawnFrame:CGRect = CGRect(x: xSpawn, y: ySpawn, width: targetCatButton!.frame.width, height: targetCatButton!.frame.height);
+        let targetFrame:CGRect = CGRect(x: xTarget, y: yTarget, width: targetCatButton!.frame.width, height: targetCatButton!.frame.height);
+        let builtVirus:UIVirus = UIVirus(parentView: mainView!, spawnFrame: spawnFrame, targetFrame:targetFrame, virus: virus!, targetCat: targetCatButton!);
+        if (virus == Virus.ebolaRectangle || virus == Virus.ebolaSquare) {
+            builtVirus.transform = builtVirus.transform.scaledBy(x: 1.35, y: 1.35);
+        }
+        targetCatButton!.virus = builtVirus;
+        mainView!.bringSubviewToFront(builtVirus);
     }
     
     func saveCatTypes() {

@@ -15,6 +15,7 @@ class UIColorOptionsView: UIView {
     var selectionColors:[UIColor] = [UIColor]();
     var selectionButtons:[UICButton] = [UICButton]();
     var selectedButtons:[UICButton] = [UICButton]();
+    var isTransitioned:Bool = false;
     var isActive:Bool = false;
     
     required init?(coder: NSCoder) {
@@ -79,9 +80,10 @@ class UIColorOptionsView: UIView {
     }
     
     @objc func transitionBackgroundColorOfButtonsToLightGray(){
-        if (!boardGameView!.cats.cats[0].backgroundColor!.isEqual(UIColor.lightGray) && boardGameView!.solved){
+        if (!isTransitioned){
+            print("Transitioning!");
             boardGameView!.cats.transitionCatButtonBackgroundToLightgrey();
-            boardGameView!.solved = false;
+            isTransitioned = true;
         }
     }
     

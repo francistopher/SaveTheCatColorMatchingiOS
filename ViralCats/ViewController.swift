@@ -122,13 +122,13 @@ class ViewController: UIViewController {
     func configureBoardGameView(userInterfaceStyle:Int){
         let boardGameWidth:CGFloat = unitViewHeight * 8;
         boardGameView = UIBoardGameView(parentView: mainViewController, x: 0.0, y: 0.0, width: boardGameWidth, height:boardGameWidth);
-        UICenterKit.center(childView: boardGameView!, parentRect: mainViewController.frame, childRect: boardGameView!.frame);
+        UICenterKit.centerWithVerticalDisplacement(childView: boardGameView!, parentRect: mainViewController.frame, childRect: boardGameView!.frame, verticalDisplacement: -unitViewWidth * 0.75);
         boardGameView!.completionGradientLayer = completionGradientLayer!;
         boardGameView!.alpha = 0.0;
     }
 
     func configureColorOptionsView(userInterfaceStyle:Int){
-        colorOptionsView = UIColorOptionsView(parentView: mainViewController, x: boardGameView!.frame.minX, y: boardGameView!.frame.maxY + unitViewHeight * 0.25, width: boardGameView!.frame.width, height: unitViewWidth * 2.5);
+        colorOptionsView = UIColorOptionsView(parentView: mainViewController, x: boardGameView!.frame.minX, y: boardGameView!.frame.maxY + unitViewWidth, width: boardGameView!.frame.width, height: unitViewWidth * 2.5);
         UICenterKit.centerHorizontally(childView: colorOptionsView!, parentRect: mainViewController.frame, childRect: colorOptionsView!.frame);
         boardGameView!.colorOptionsView = colorOptionsView!;
         colorOptionsView!.boardGameView = boardGameView!;

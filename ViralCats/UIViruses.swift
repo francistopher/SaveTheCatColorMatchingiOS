@@ -96,8 +96,11 @@ class UIViruses {
         let spawnFrame:CGRect = CGRect(x: xSpawn, y: ySpawn, width: targetCatButton!.frame.width, height: targetCatButton!.frame.height);
         let targetFrame:CGRect = CGRect(x: xTarget, y: yTarget, width: targetCatButton!.frame.width, height: targetCatButton!.frame.height);
         let builtVirus:UIVirus = UIVirus(parentView: mainView!, spawnFrame: spawnFrame, targetFrame:targetFrame, virus: virus!, targetCat: targetCatButton!);
-        if (virus == Virus.ebolaRectangle || virus == Virus.ebolaSquare) {
+        if (virus == Virus.ebolaSquare) {
             builtVirus.transform = builtVirus.transform.scaledBy(x: 1.35, y: 1.35);
+        }
+        if (virus == Virus.ebolaRectangle) {
+            builtVirus.transform = builtVirus.transform.scaledBy(x: 1.35, y: 1.45);
         }
         targetCatButton!.virus = builtVirus;
         mainView!.bringSubviewToFront(builtVirus);

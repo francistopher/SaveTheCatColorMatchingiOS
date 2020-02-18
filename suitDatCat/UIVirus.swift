@@ -41,13 +41,13 @@ class UIVirus:UIButton {
     @objc func playerTap() {
         playerHits += 1;
         switch(self.selectedVirus, playerHits) {
-        case (.corona, 10):
+        case (.corona, 5):
             disperseRadially();
-        case (.ebolaSquare, 7):
+        case (.ebolaSquare, 4):
             disperseRadially();
-        case (.ebolaRectangle, 7):
+        case (.ebolaRectangle, 4):
             disperseRadially();
-        case (.bacteriophage, 5):
+        case (.bacteriophage, 3):
             disperseRadially();
         case (_, _):
             print("Do Something");
@@ -151,7 +151,11 @@ class UIVirus:UIButton {
         case .corona:
             return "corona.png";
         case .ebolaSquare:
-            return "ebolaSquare.png";
+            if (self.frame.width > self.frame.height) {
+                return "ebolaRectangle.png";
+            } else {
+                return "ebolaSquare.png";
+            }
         case .bacteriophage:
             return "bacteriophage.png";
         case .ebolaRectangle:

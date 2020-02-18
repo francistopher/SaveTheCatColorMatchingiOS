@@ -52,7 +52,7 @@ class UICatButton: UIButton {
         self.originalBackgroundColor = backgroundColor;
         self.backgroundColor = backgroundColor;
         self.layer.cornerRadius = height / 5.0;
-        self.layer.borderWidth = frame.width * 0.01;
+        self.layer.borderWidth = parentView.frame.width * 0.01;
         parentView.addSubview(self);
         configureImageContainerButton();
         self.shrink();

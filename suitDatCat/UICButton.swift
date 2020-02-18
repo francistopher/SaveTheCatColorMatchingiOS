@@ -82,7 +82,7 @@ class UICButton:UIButton {
     func select(){
         if (!self.isSelected) {
             self.superview!.bringSubviewToFront(self);
-            UIView.animate(withDuration: 1.0, delay: 0.125, options:[.curveEaseInOut], animations: {
+            UIView.animate(withDuration: 0.5, delay: 0.125, options:[.curveEaseInOut], animations: {
                 self.transform = self.transform.scaledBy(x: 1.0, y: 1.375);
             });
             self.isSelected = true;
@@ -91,7 +91,7 @@ class UICButton:UIButton {
     
     func unSelect(){
         if (self.isSelected) {
-            UIView.animate(withDuration: 1.0, delay: 0.125, options:[.curveEaseInOut], animations: {
+            UIView.animate(withDuration: 0.5, delay: 0.125, options:[.curveEaseInOut], animations: {
                 self.transform = self.transform.scaledBy(x: 1.0, y: 0.75);
             });
             self.isSelected = false;

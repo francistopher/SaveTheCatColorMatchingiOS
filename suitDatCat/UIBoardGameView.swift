@@ -175,7 +175,6 @@ class UIBoardGameView: UIView {
                 catButton.pod();
                 catButton.isPodded = true;
             } else {
-                catImageButton.layer.borderColor! = UIColor.clear.cgColor;
                 catButton.layer.borderColor! = UIColor.clear.cgColor;
             }
         }

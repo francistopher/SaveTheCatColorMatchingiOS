@@ -19,6 +19,7 @@
 		B8366D4523F880490043B45F /* mozartSonata.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = B8366D4323F880490043B45F /* mozartSonata.mp3 */; };
 		B8366D4723F8956C0043B45F /* kittenDie.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = B8366D4623F8956C0043B45F /* kittenDie.mp3 */; };
 		B8366D4923F8A1A60043B45F /* coinEarned.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = B8366D4823F8A1A60043B45F /* coinEarned.mp3 */; };
+		B86A7E9023FC3C7700E4C4C4 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B86A7E8F23FC3C7600E4C4C4 /* Default-568h@2x.png */; };
 		B88F996923F06801003ED805 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B88F996823F06801003ED805 /* ViewController.swift */; };
 		B88F996D23F09BB4003ED805 /* UISettingsButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B88F996C23F09BB4003ED805 /* UISettingsButton.swift */; };
 		B88F997323F1CDA0003ED805 /* UIViruses.swift in Sources */ = {isa = PBXBuildFile; fileRef = B88F997223F1CD9F003ED805 /* UIViruses.swift */; };
@@ -66,7 +67,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		B833544823EC8F0B00835672 /* podDatCat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = podDatCat.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B833544823EC8F0B00835672 /* ViralCats.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ViralCats.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B833544B23EC8F0B00835672 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B833544D23EC8F0B00835672 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		B833545223EC8F0B00835672 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -80,6 +81,7 @@
 		B8366D4323F880490043B45F /* mozartSonata.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = mozartSonata.mp3; sourceTree = "<group>"; };
 		B8366D4623F8956C0043B45F /* kittenDie.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = kittenDie.mp3; sourceTree = "<group>"; };
 		B8366D4823F8A1A60043B45F /* coinEarned.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = coinEarned.mp3; sourceTree = "<group>"; };
+		B86A7E8F23FC3C7600E4C4C4 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		B88F996823F06801003ED805 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		B88F996C23F09BB4003ED805 /* UISettingsButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UISettingsButton.swift; sourceTree = "<group>"; };
 		B88F997223F1CD9F003ED805 /* UIViruses.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViruses.swift; sourceTree = "<group>"; };
@@ -140,7 +142,7 @@
 		B833543F23EC8F0B00835672 = {
 			isa = PBXGroup;
 			children = (
-				B833544A23EC8F0B00835672 /* suitDatCat */,
+				B833544A23EC8F0B00835672 /* ViralCats */,
 				B833544923EC8F0B00835672 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -148,12 +150,12 @@
 		B833544923EC8F0B00835672 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				B833544823EC8F0B00835672 /* podDatCat.app */,
+				B833544823EC8F0B00835672 /* ViralCats.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		B833544A23EC8F0B00835672 /* suitDatCat */ = {
+		B833544A23EC8F0B00835672 /* ViralCats */ = {
 			isa = PBXGroup;
 			children = (
 				B88F996823F06801003ED805 /* ViewController.swift */,
@@ -163,7 +165,7 @@
 				B88F998B23F39838003ED805 /* Supporting Files */,
 				B88F999223F39975003ED805 /* Images */,
 			);
-			path = suitDatCat;
+			path = ViralCats;
 			sourceTree = "<group>";
 		};
 		B8366D3523F772180043B45F /* Audio */ = {
@@ -185,6 +187,7 @@
 				B833544B23EC8F0B00835672 /* AppDelegate.swift */,
 				B833545923EC8F1400835672 /* LaunchScreen.storyboard */,
 				B833545123EC8F0B00835672 /* Main.storyboard */,
+				B86A7E8F23FC3C7600E4C4C4 /* Default-568h@2x.png */,
 				B833545723EC8F1400835672 /* Assets.xcassets */,
 				B833545423EC8F0B00835672 /* podDatCat.xcdatamodeld */,
 				B833545C23EC8F1400835672 /* Info.plist */,
@@ -380,9 +383,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		B833544723EC8F0B00835672 /* podDatCat */ = {
+		B833544723EC8F0B00835672 /* ViralCats */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = B833545F23EC8F1400835672 /* Build configuration list for PBXNativeTarget "podDatCat" */;
+			buildConfigurationList = B833545F23EC8F1400835672 /* Build configuration list for PBXNativeTarget "ViralCats" */;
 			buildPhases = (
 				B833544423EC8F0B00835672 /* Sources */,
 				B833544523EC8F0B00835672 /* Frameworks */,
@@ -392,9 +395,9 @@
 			);
 			dependencies = (
 			);
-			name = podDatCat;
+			name = ViralCats;
 			productName = bagDatCat;
-			productReference = B833544823EC8F0B00835672 /* podDatCat.app */;
+			productReference = B833544823EC8F0B00835672 /* ViralCats.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -412,7 +415,7 @@
 					};
 				};
 			};
-			buildConfigurationList = B833544323EC8F0B00835672 /* Build configuration list for PBXProject "podDatCat" */;
+			buildConfigurationList = B833544323EC8F0B00835672 /* Build configuration list for PBXProject "ViralCats" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -425,7 +428,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				B833544723EC8F0B00835672 /* podDatCat */,
+				B833544723EC8F0B00835672 /* ViralCats */,
 			);
 		};
 /* End PBXProject section */
@@ -460,6 +463,7 @@
 				B833545323EC8F0B00835672 /* Main.storyboard in Resources */,
 				B8FBD6CF23F60D9E00C8B50D /* lightMultiplayer.png in Resources */,
 				B8FBD67E23F50DB900C8B50D /* lightDeadCat.png in Resources */,
+				B86A7E9023FC3C7700E4C4C4 /* Default-568h@2x.png in Resources */,
 				B8FBD6A423F5E65F00C8B50D /* darkRestart1.png in Resources */,
 				B8366D4723F8956C0043B45F /* kittenDie.mp3 in Resources */,
 				B8366D4923F8A1A60043B45F /* coinEarned.mp3 in Resources */,
@@ -646,13 +650,13 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = UM29RU6L4B;
-				INFOPLIST_FILE = "$(SRCROOT)/suitDatCat/Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/ViralCats/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "ChristopherFrancisco.-suitDatCat";
-				PRODUCT_NAME = podDatCat;
+				PRODUCT_BUNDLE_IDENTIFIER = "ChristopherFrancisco.-ViralCats";
+				PRODUCT_NAME = ViralCats;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -664,13 +668,13 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = UM29RU6L4B;
-				INFOPLIST_FILE = "$(SRCROOT)/suitDatCat/Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/ViralCats/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "ChristopherFrancisco.-suitDatCat";
-				PRODUCT_NAME = podDatCat;
+				PRODUCT_BUNDLE_IDENTIFIER = "ChristopherFrancisco.-ViralCats";
+				PRODUCT_NAME = ViralCats;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -679,7 +683,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		B833544323EC8F0B00835672 /* Build configuration list for PBXProject "podDatCat" */ = {
+		B833544323EC8F0B00835672 /* Build configuration list for PBXProject "ViralCats" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				B833545D23EC8F1400835672 /* Debug */,
@@ -688,7 +692,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		B833545F23EC8F1400835672 /* Build configuration list for PBXNativeTarget "podDatCat" */ = {
+		B833545F23EC8F1400835672 /* Build configuration list for PBXNativeTarget "ViralCats" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				B833546023EC8F1400835672 /* Debug */,

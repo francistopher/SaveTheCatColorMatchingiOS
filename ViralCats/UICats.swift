@@ -97,19 +97,19 @@ class UICats {
         }
     }
     
-    func giveMouseCoins() {
-        var mutatingCount:Double = 0.0;
-        let squareRoot:Double = Double(cats.count).squareRoot();
-        mutatingCount += squareRoot;
-        for catButtonIndex in 0..<cats.count {
-            if (Double(catButtonIndex + 1) < mutatingCount) {
-                cats[catButtonIndex].giveMouseCoin(withNoise: false);
-            } else {
-                cats[catButtonIndex].giveMouseCoin(withNoise: true);
-                mutatingCount += squareRoot;
-            }
-        }
-    }
+//    func giveMouseCoins() {
+//        var mutatingCount:Double = 0.0;
+//        let squareRoot:Double = Double(cats.count).squareRoot();
+//        mutatingCount += squareRoot;
+//        for catButtonIndex in 0..<cats.count {
+//            if (Double(catButtonIndex + 1) < mutatingCount) {
+//                cats[catButtonIndex].giveMouseCoin(withNoise: false);
+//            } else {
+//                cats[catButtonIndex].giveMouseCoin(withNoise: true);
+//                mutatingCount += squareRoot;
+//            }
+//        }
+//    }
     
     func areAllColored() -> Bool {
         for catButton in cats {

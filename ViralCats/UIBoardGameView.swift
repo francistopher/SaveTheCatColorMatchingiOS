@@ -71,7 +71,6 @@ class UIBoardGameView: UIView {
                 currentTimer?.invalidate();
                 self.solved = true;
                 self.colorOptionsView!.selectedColor = UIColor.lightGray;
-                self.cats.giveMouseCoins();
                 self.promote();
             } else if (self.cats.aliveCatIsPodded()) {
                 currentTimer?.invalidate();
@@ -174,6 +173,7 @@ class UIBoardGameView: UIView {
                 catImageButton.fadeBackgroundIn(color: colorOptionsView!.selectedColor);
                 catButton.pod();
                 catButton.isPodded = true;
+                catButton.giveMouseCoin(withNoise: true);
             } else {
                 catButton.layer.borderColor! = UIColor.clear.cgColor;
             }

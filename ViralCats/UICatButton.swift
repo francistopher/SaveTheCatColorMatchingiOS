@@ -65,7 +65,6 @@ class UICatButton: UIButton {
     func giveMouseCoin(withNoise:Bool) {
         // Generate mouse coin
         let mouseCoin:UIMouseCoin = UIMouseCoin(parentView: self.imageContainerButton!, x: 0.0, y: 0.0, width: self.imageContainerButton!.frame.width / 4.0, height: self.imageContainerButton!.frame.height / 4.0);
-        mouseCoin.isEnabled = false;
         UICenterKit.center(childView: mouseCoin, parentRect: imageContainerButton!.frame, childRect: mouseCoin.frame);
         self.imageContainerButton!.addSubview(mouseCoin);
         // Create new frame for mouse coin on main view
@@ -83,8 +82,8 @@ class UICatButton: UIButton {
         let boardGameFrame:CGRect = self.superview!.frame;
         let time:Double = Double(mouseCoin.frame.minX / (boardGameFrame.minX + boardGameFrame.width));
         DispatchQueue.main.asyncAfter(deadline: .now() + time) {
+            mainView.bringSubviewToFront(mouseCoin);
             UIView.animate(withDuration: 1.0, delay: 0.125, options: [.curveEaseInOut], animations: {
-                mainView.bringSubviewToFront(mouseCoin);
                 let settingsButton:UISettingsButton = ViewController.settings!
                 let settingsMenuFrame:CGRect = settingsButton.settingsMenu!.frame;
                 let settingsMouseCoinFrame:CGRect = settingsButton.mouseCoin!.frame;

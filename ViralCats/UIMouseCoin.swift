@@ -12,6 +12,7 @@ class UIMouseCoin: UIButton {
     
     var originalFrame:CGRect? = nil;
     var reducedFrame:CGRect? = nil;
+    var isSelectable:Bool = false;
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -28,9 +29,11 @@ class UIMouseCoin: UIButton {
     }
     
     @objc func testingSelector() {
+        if (!isSelectable) {
+            return;
+        }
         print("Testing: Fish Coin!");
     }
-    
     
     func setIconImage(imageName:String) {
         let iconImage:UIImage? = UIImage(named:imageName);

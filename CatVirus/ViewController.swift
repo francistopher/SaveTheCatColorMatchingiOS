@@ -114,7 +114,7 @@ class ViewController: UIViewController {
         UICenterKit.center(childView: introLabel!, parentRect: mainViewController.frame, childRect: introLabel!.frame);
         introLabel!.font = UIFont.boldSystemFont(ofSize: unitViewHeight * 0.75);
         introLabel!.backgroundColor = .clear;
-        introLabel!.text = "Viral Cats";
+        introLabel!.text = "Cat Virus";
         introLabel!.alpha = 0.0;
         introLabel!.fadeInAndOut();
     }
@@ -158,4 +158,5 @@ class ViewController: UIViewController {
        }
     }
 }
+
 

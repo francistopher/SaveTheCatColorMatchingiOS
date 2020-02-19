@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "B833544723EC8F0B00835672"
-               BuildableName = "Viral Cats.app"
-               BlueprintName = "ViralCats"
-               ReferencedContainer = "container:ViralCats.xcodeproj">
+               BuildableName = "Cat Virus.app"
+               BlueprintName = "CatVirus"
+               ReferencedContainer = "container:CatVirus.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -45,9 +45,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "B833544723EC8F0B00835672"
-            BuildableName = "Viral Cats.app"
-            BlueprintName = "ViralCats"
-            ReferencedContainer = "container:ViralCats.xcodeproj">
+            BuildableName = "Cat Virus.app"
+            BlueprintName = "CatVirus"
+            ReferencedContainer = "container:CatVirus.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -62,9 +62,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "B833544723EC8F0B00835672"
-            BuildableName = "Viral Cats.app"
-            BlueprintName = "ViralCats"
-            ReferencedContainer = "container:ViralCats.xcodeproj">
+            BuildableName = "Cat Virus.app"
+            BlueprintName = "CatVirus"
+            ReferencedContainer = "container:CatVirus.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

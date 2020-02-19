@@ -23,9 +23,10 @@
 		B86A7E9223FC711200E4C4C4 /* lightSmilingCat.png in Resources */ = {isa = PBXBuildFile; fileRef = B86A7E9123FC711100E4C4C4 /* lightSmilingCat.png */; };
 		B86A7E9823FC81FC00E4C4C4 /* lightWavingCat.png in Resources */ = {isa = PBXBuildFile; fileRef = B86A7E9723FC81FB00E4C4C4 /* lightWavingCat.png */; };
 		B86A7E9A23FC826F00E4C4C4 /* lightDeadCat.png in Resources */ = {isa = PBXBuildFile; fileRef = B86A7E9923FC826F00E4C4C4 /* lightDeadCat.png */; };
-		B86A7E9E23FC837C00E4C4C4 /* darkWavingCat.png in Resources */ = {isa = PBXBuildFile; fileRef = B86A7E9B23FC837C00E4C4C4 /* darkWavingCat.png */; };
 		B86A7E9F23FC837C00E4C4C4 /* darkDeadCat.png in Resources */ = {isa = PBXBuildFile; fileRef = B86A7E9C23FC837C00E4C4C4 /* darkDeadCat.png */; };
-		B86A7EA023FC837C00E4C4C4 /* darkSmilingCat.png in Resources */ = {isa = PBXBuildFile; fileRef = B86A7E9D23FC837C00E4C4C4 /* darkSmilingCat.png */; };
+		B86A7EA323FCDC8B00E4C4C4 /* darkWavingCat.png in Resources */ = {isa = PBXBuildFile; fileRef = B86A7EA123FCDC8B00E4C4C4 /* darkWavingCat.png */; };
+		B86A7EA623FCDD7800E4C4C4 /* darkSmilingCat.png in Resources */ = {isa = PBXBuildFile; fileRef = B86A7EA523FCDD7800E4C4C4 /* darkSmilingCat.png */; };
+		B86A7EA823FCDDF000E4C4C4 /* Default-568h@2x 9.59.50 PM.png in Resources */ = {isa = PBXBuildFile; fileRef = B86A7EA723FCDDF000E4C4C4 /* Default-568h@2x 9.59.50 PM.png */; };
 		B88F996923F06801003ED805 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B88F996823F06801003ED805 /* ViewController.swift */; };
 		B88F996D23F09BB4003ED805 /* UISettingsButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B88F996C23F09BB4003ED805 /* UISettingsButton.swift */; };
 		B88F997323F1CDA0003ED805 /* UIViruses.swift in Sources */ = {isa = PBXBuildFile; fileRef = B88F997223F1CD9F003ED805 /* UIViruses.swift */; };
@@ -37,9 +38,6 @@
 		B8AE017B23ECCE3B007A6142 /* UIBoardGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8AE017A23ECCE3B007A6142 /* UIBoardGameView.swift */; };
 		B8AE017D23ECD078007A6142 /* UIColorOptionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8AE017C23ECD077007A6142 /* UIColorOptionsView.swift */; };
 		B8AE017F23ECD3B2007A6142 /* UICButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8AE017E23ECD3B2007A6142 /* UICButton.swift */; };
-		B8D98B6F23F99E4D0051D808 /* ebolaSquare.png in Resources */ = {isa = PBXBuildFile; fileRef = B8D98B6B23F99E4C0051D808 /* ebolaSquare.png */; };
-		B8D98B7023F99E4D0051D808 /* bacteriophage.png in Resources */ = {isa = PBXBuildFile; fileRef = B8D98B6C23F99E4C0051D808 /* bacteriophage.png */; };
-		B8D98B7123F99E4D0051D808 /* ebolaRectangle.png in Resources */ = {isa = PBXBuildFile; fileRef = B8D98B6D23F99E4D0051D808 /* ebolaRectangle.png */; };
 		B8D98B7223F99E4D0051D808 /* corona.png in Resources */ = {isa = PBXBuildFile; fileRef = B8D98B6E23F99E4D0051D808 /* corona.png */; };
 		B8D98B7423F9C4570051D808 /* UICats.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8D98B7323F9C4570051D808 /* UICats.swift */; };
 		B8D98B7823F9C6BE0051D808 /* UICatButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8D98B7723F9C6BE0051D808 /* UICatButton.swift */; };
@@ -67,7 +65,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		B833544823EC8F0B00835672 /* Viral Cats.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Viral Cats.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B833544823EC8F0B00835672 /* Cat Virus.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Cat Virus.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B833544B23EC8F0B00835672 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B833544D23EC8F0B00835672 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		B833545223EC8F0B00835672 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -85,9 +83,11 @@
 		B86A7E9123FC711100E4C4C4 /* lightSmilingCat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lightSmilingCat.png; sourceTree = "<group>"; };
 		B86A7E9723FC81FB00E4C4C4 /* lightWavingCat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lightWavingCat.png; sourceTree = "<group>"; };
 		B86A7E9923FC826F00E4C4C4 /* lightDeadCat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lightDeadCat.png; sourceTree = "<group>"; };
-		B86A7E9B23FC837C00E4C4C4 /* darkWavingCat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = darkWavingCat.png; sourceTree = "<group>"; };
 		B86A7E9C23FC837C00E4C4C4 /* darkDeadCat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = darkDeadCat.png; sourceTree = "<group>"; };
-		B86A7E9D23FC837C00E4C4C4 /* darkSmilingCat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = darkSmilingCat.png; sourceTree = "<group>"; };
+		B86A7EA123FCDC8B00E4C4C4 /* darkWavingCat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = darkWavingCat.png; sourceTree = "<group>"; };
+		B86A7EA523FCDD7800E4C4C4 /* darkSmilingCat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = darkSmilingCat.png; sourceTree = "<group>"; };
+		B86A7EA723FCDDF000E4C4C4 /* Default-568h@2x 9.59.50 PM.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-568h@2x 9.59.50 PM.png"; path = "../../.Trash/Default-568h@2x 9.59.50 PM.png"; sourceTree = "<group>"; };
+		B86A7EA923FCDDF900E4C4C4 /* Default-568h@2x 9.59.50 PM.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x 9.59.50 PM.png"; sourceTree = "<group>"; };
 		B88F996823F06801003ED805 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		B88F996C23F09BB4003ED805 /* UISettingsButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UISettingsButton.swift; sourceTree = "<group>"; };
 		B88F997223F1CD9F003ED805 /* UIViruses.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViruses.swift; sourceTree = "<group>"; };
@@ -99,9 +99,6 @@
 		B8AE017A23ECCE3B007A6142 /* UIBoardGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIBoardGameView.swift; sourceTree = "<group>"; };
 		B8AE017C23ECD077007A6142 /* UIColorOptionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorOptionsView.swift; sourceTree = "<group>"; };
 		B8AE017E23ECD3B2007A6142 /* UICButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UICButton.swift; sourceTree = "<group>"; };
-		B8D98B6B23F99E4C0051D808 /* ebolaSquare.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ebolaSquare.png; sourceTree = "<group>"; };
-		B8D98B6C23F99E4C0051D808 /* bacteriophage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bacteriophage.png; sourceTree = "<group>"; };
-		B8D98B6D23F99E4D0051D808 /* ebolaRectangle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ebolaRectangle.png; sourceTree = "<group>"; };
 		B8D98B6E23F99E4D0051D808 /* corona.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = corona.png; sourceTree = "<group>"; };
 		B8D98B7323F9C4570051D808 /* UICats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UICats.swift; sourceTree = "<group>"; };
 		B8D98B7723F9C6BE0051D808 /* UICatButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UICatButton.swift; sourceTree = "<group>"; };
@@ -142,20 +139,21 @@
 		B833543F23EC8F0B00835672 = {
 			isa = PBXGroup;
 			children = (
-				B833544A23EC8F0B00835672 /* ViralCats */,
+				B833544A23EC8F0B00835672 /* CatVirus */,
 				B833544923EC8F0B00835672 /* Products */,
+				B86A7EA723FCDDF000E4C4C4 /* Default-568h@2x 9.59.50 PM.png */,
 			);
 			sourceTree = "<group>";
 		};
 		B833544923EC8F0B00835672 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				B833544823EC8F0B00835672 /* Viral Cats.app */,
+				B833544823EC8F0B00835672 /* Cat Virus.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		B833544A23EC8F0B00835672 /* ViralCats */ = {
+		B833544A23EC8F0B00835672 /* CatVirus */ = {
 			isa = PBXGroup;
 			children = (
 				B88F996823F06801003ED805 /* ViewController.swift */,
@@ -165,7 +163,7 @@
 				B88F998B23F39838003ED805 /* Supporting Files */,
 				B88F999223F39975003ED805 /* Images */,
 			);
-			path = ViralCats;
+			path = CatVirus;
 			sourceTree = "<group>";
 		};
 		B8366D3523F772180043B45F /* Audio */ = {
@@ -183,6 +181,7 @@
 		B88F998B23F39838003ED805 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				B86A7EA923FCDDF900E4C4C4 /* Default-568h@2x 9.59.50 PM.png */,
 				B833544D23EC8F0B00835672 /* SceneDelegate.swift */,
 				B833544B23EC8F0B00835672 /* AppDelegate.swift */,
 				B833545923EC8F1400835672 /* LaunchScreen.storyboard */,
@@ -244,9 +243,9 @@
 		B88F999323F399A1003ED805 /* Standard */ = {
 			isa = PBXGroup;
 			children = (
+				B86A7EA523FCDD7800E4C4C4 /* darkSmilingCat.png */,
+				B86A7EA123FCDC8B00E4C4C4 /* darkWavingCat.png */,
 				B86A7E9C23FC837C00E4C4C4 /* darkDeadCat.png */,
-				B86A7E9D23FC837C00E4C4C4 /* darkSmilingCat.png */,
-				B86A7E9B23FC837C00E4C4C4 /* darkWavingCat.png */,
 				B86A7E9923FC826F00E4C4C4 /* lightDeadCat.png */,
 				B86A7E9723FC81FB00E4C4C4 /* lightWavingCat.png */,
 				B86A7E9123FC711100E4C4C4 /* lightSmilingCat.png */,
@@ -273,10 +272,7 @@
 		B88F999523F399D7003ED805 /* Virus */ = {
 			isa = PBXGroup;
 			children = (
-				B8D98B6C23F99E4C0051D808 /* bacteriophage.png */,
 				B8D98B6E23F99E4D0051D808 /* corona.png */,
-				B8D98B6D23F99E4D0051D808 /* ebolaRectangle.png */,
-				B8D98B6B23F99E4C0051D808 /* ebolaSquare.png */,
 			);
 			name = Virus;
 			sourceTree = "<group>";
@@ -383,9 +379,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		B833544723EC8F0B00835672 /* ViralCats */ = {
+		B833544723EC8F0B00835672 /* CatVirus */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = B833545F23EC8F1400835672 /* Build configuration list for PBXNativeTarget "ViralCats" */;
+			buildConfigurationList = B833545F23EC8F1400835672 /* Build configuration list for PBXNativeTarget "CatVirus" */;
 			buildPhases = (
 				B833544423EC8F0B00835672 /* Sources */,
 				B833544523EC8F0B00835672 /* Frameworks */,
@@ -395,9 +391,9 @@
 			);
 			dependencies = (
 			);
-			name = ViralCats;
+			name = CatVirus;
 			productName = bagDatCat;
-			productReference = B833544823EC8F0B00835672 /* Viral Cats.app */;
+			productReference = B833544823EC8F0B00835672 /* Cat Virus.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -415,7 +411,7 @@
 					};
 				};
 			};
-			buildConfigurationList = B833544323EC8F0B00835672 /* Build configuration list for PBXProject "ViralCats" */;
+			buildConfigurationList = B833544323EC8F0B00835672 /* Build configuration list for PBXProject "CatVirus" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -428,7 +424,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				B833544723EC8F0B00835672 /* ViralCats */,
+				B833544723EC8F0B00835672 /* CatVirus */,
 			);
 		};
 /* End PBXProject section */
@@ -440,23 +436,22 @@
 			files = (
 				B8366D4123F86BE10043B45F /* gearSpinning.mp3 in Resources */,
 				B833545B23EC8F1400835672 /* LaunchScreen.storyboard in Resources */,
+				B86A7EA623FCDD7800E4C4C4 /* darkSmilingCat.png in Resources */,
 				B8FBD6AB23F5EEAA00C8B50D /* lightStats.png in Resources */,
 				B8FBD6BA23F6016600C8B50D /* darkNoAds.png in Resources */,
-				B86A7E9E23FC837C00E4C4C4 /* darkWavingCat.png in Resources */,
 				B8FBD6BB23F6016600C8B50D /* lightNoAds.png in Resources */,
-				B8D98B6F23F99E4D0051D808 /* ebolaSquare.png in Resources */,
 				B8FBD6BF23F605B000C8B50D /* darkStats.png in Resources */,
 				B8FBD6A323F5E65F00C8B50D /* darkRestart.png in Resources */,
 				B8FBD6CE23F60D9E00C8B50D /* darkMultiplayer.png in Resources */,
 				B8FBD6B523F5FD7A00C8B50D /* lightRestart.png in Resources */,
 				B8FBD68423F59D2D00C8B50D /* lightGear.png in Resources */,
-				B86A7EA023FC837C00E4C4C4 /* darkSmilingCat.png in Resources */,
 				B8FBD6BD23F6048600C8B50D /* lightRestart1.png in Resources */,
 				B8366D3D23F842C20043B45F /* mouseCoin.png in Resources */,
 				B86A7E9F23FC837C00E4C4C4 /* darkDeadCat.png in Resources */,
 				B8FBD68123F58F2500C8B50D /* darkGear.png in Resources */,
 				B8FBD6C523F6098C00C8B50D /* darkMoreCats.png in Resources */,
 				B86A7E9823FC81FC00E4C4C4 /* lightWavingCat.png in Resources */,
+				B86A7EA323FCDC8B00E4C4C4 /* darkWavingCat.png in Resources */,
 				B833545823EC8F1400835672 /* Assets.xcassets in Resources */,
 				B8FBD6C623F6098C00C8B50D /* lightMoreCats.png in Resources */,
 				B833545323EC8F0B00835672 /* Main.storyboard in Resources */,
@@ -468,8 +463,7 @@
 				B8366D4723F8956C0043B45F /* kittenDie.mp3 in Resources */,
 				B8366D4923F8A1A60043B45F /* coinEarned.mp3 in Resources */,
 				B8366D3723F772270043B45F /* kittenMeow.mp3 in Resources */,
-				B8D98B7123F99E4D0051D808 /* ebolaRectangle.png in Resources */,
-				B8D98B7023F99E4D0051D808 /* bacteriophage.png in Resources */,
+				B86A7EA823FCDDF000E4C4C4 /* Default-568h@2x 9.59.50 PM.png in Resources */,
 				B8D98B7223F99E4D0051D808 /* corona.png in Resources */,
 				B8366D4523F880490043B45F /* mozartSonata.mp3 in Resources */,
 			);
@@ -650,13 +644,13 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = UM29RU6L4B;
-				INFOPLIST_FILE = "$(SRCROOT)/ViralCats/Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/CatVirus/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "ChristopherFrancisco.-ViralCats";
-				PRODUCT_NAME = "Viral Cats";
+				PRODUCT_BUNDLE_IDENTIFIER = "ChristopherFrancisco.-CatVirus";
+				PRODUCT_NAME = "Cat Virus";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -668,13 +662,13 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = UM29RU6L4B;
-				INFOPLIST_FILE = "$(SRCROOT)/ViralCats/Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/CatVirus/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "ChristopherFrancisco.-ViralCats";
-				PRODUCT_NAME = "Viral Cats";
+				PRODUCT_BUNDLE_IDENTIFIER = "ChristopherFrancisco.-CatVirus";
+				PRODUCT_NAME = "Cat Virus";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -683,7 +677,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		B833544323EC8F0B00835672 /* Build configuration list for PBXProject "ViralCats" */ = {
+		B833544323EC8F0B00835672 /* Build configuration list for PBXProject "CatVirus" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				B833545D23EC8F1400835672 /* Debug */,
@@ -692,7 +686,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		B833545F23EC8F1400835672 /* Build configuration list for PBXNativeTarget "ViralCats" */ = {
+		B833545F23EC8F1400835672 /* Build configuration list for PBXNativeTarget "CatVirus" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				B833546023EC8F1400835672 /* Debug */,

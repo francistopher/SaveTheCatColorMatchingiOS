@@ -17,11 +17,11 @@ class UICenterKit {
         childView.frame = CGRect(x: centeredX, y:centeredY, width: childRect.width, height: childRect.height);
     }
     
-    static func centerWithHorizontalDisplacement(childView:UIView, parentRect:CGRect, childRect:CGRect, horizontalDisplacement:CGFloat){
-        let centeredX:CGFloat = UICenterKit.getCenteredX(parentRect: parentRect, childRect: childRect) + horizontalDisplacement;
-        let centeredY:CGFloat = UICenterKit.getCenteredY(parentRect: parentRect, childRect: childRect);
-        childView.frame = CGRect(x: centeredX, y: centeredY, width: childRect.width, height: childRect.height);
-    }
+//    static func centerWithHorizontalDisplacement(childView:UIView, parentRect:CGRect, childRect:CGRect, horizontalDisplacement:CGFloat){
+//        let centeredX:CGFloat = UICenterKit.getCenteredX(parentRect: parentRect, childRect: childRect) + horizontalDisplacement;
+//        let centeredY:CGFloat = UICenterKit.getCenteredY(parentRect: parentRect, childRect: childRect);
+//        childView.frame = CGRect(x: centeredX, y: centeredY, width: childRect.width, height: childRect.height);
+//    }
     
     static func centerWithVerticalDisplacement(childView:UIView, parentRect:CGRect, childRect:CGRect, verticalDisplacement:CGFloat){
         let centeredX:CGFloat = UICenterKit.getCenteredX(parentRect: parentRect, childRect: childRect);
@@ -34,10 +34,10 @@ class UICenterKit {
         childView.frame = CGRect(x: centeredX, y: childRect.minY, width: childRect.width, height: childRect.height);
     }
     
-    static func centerVertically(childView:UIView, parentRect:CGRect, childRect:CGRect){
-        let centeredY:CGFloat = UICenterKit.getCenteredY(parentRect: parentRect, childRect: childRect);
-        childView.frame = CGRect(x: childRect.minX, y: centeredY, width: childRect.width, height: childRect.height);
-    }
+//    static func centerVertically(childView:UIView, parentRect:CGRect, childRect:CGRect){
+//        let centeredY:CGFloat = UICenterKit.getCenteredY(parentRect: parentRect, childRect: childRect);
+//        childView.frame = CGRect(x: childRect.minX, y: centeredY, width: childRect.width, height: childRect.height);
+//    }
     
     static func getCenteredX(parentRect:CGRect, childRect:CGRect) -> CGFloat {
         return (parentRect.width - childRect.width) / 2.0;

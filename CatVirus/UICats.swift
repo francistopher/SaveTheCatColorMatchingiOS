@@ -26,13 +26,6 @@ class UICats {
         return catButton;
     }
     
-    func isSquared() -> Bool {
-        if (cats[0].frame.width == cats[0].frame.height) {
-            return true;
-        }
-        return false;
-    }
-    
     func coloredCats() -> [UICatButton] {
         var coloredCats:[UICatButton] = [UICatButton]();
         for catButton in cats {
@@ -51,34 +44,6 @@ class UICats {
             }
         }
         return borderedCats;
-    }
-    
-    func unBorderedCats() -> [UICatButton] {
-        var unborderedCats:[UICatButton] = [UICatButton]();
-        for catButton in cats {
-            if (catButton.layer.borderWidth == 0.0) {
-                unborderedCats.append(catButton);
-            }
-        }
-        return unborderedCats;
-    }
-    
-    func areDead() -> Bool {
-        for catButton in cats {
-            if (catButton.isAlive) {
-                return false;
-            }
-        }
-        return true;
-    }
-    
-    func areAlive() -> Bool {
-        for catButton in cats {
-            if (!catButton.isAlive) {
-                return false;
-            }
-        }
-        return true;
     }
     
     func count() -> Int {
@@ -111,27 +76,9 @@ class UICats {
 //        }
 //    }
     
-    func areAllColored() -> Bool {
-        for catButton in cats {
-            if (catButton.imageContainerButton!.backgroundColor!.cgColor == UIColor.lightGray.cgColor) {
-                return false;
-            }
-        }
-        return true;
-    }
-    
     func arePodded() -> Bool{
         for catButton in cats {
             if (!catButton.isPodded) {
-                return false;
-            }
-        }
-        return true;
-    }
-    
-    func aliveCatIsPodded() -> Bool {
-        for catButton in cats {
-            if (catButton.isAlive && !catButton.isPodded) {
                 return false;
             }
         }

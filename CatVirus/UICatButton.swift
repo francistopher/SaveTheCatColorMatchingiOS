@@ -26,7 +26,6 @@ class UICatButton: UIButton {
     var imageContainerButton:UICButton? = nil;
     var isAlive:Bool = true;
     var isPodded:Bool = false;
-    var isTargeted:Bool = false;
     
     var kittenMeowPath:String? = nil;
     var kittenMeowUrl:URL? = nil;
@@ -39,8 +38,6 @@ class UICatButton: UIButton {
     var coinEarnedPath:String? = nil;
     var coinEarnedUrl:URL? = nil;
     var coinEarnedSoundEffect:AVAudioPlayer?
-    
-    var virus:UIVirus? = nil;
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented");
@@ -287,9 +284,6 @@ class UICatButton: UIButton {
     }
 
     func disperseVertically() {
-        if (virus != nil){
-            self.virus!.disperseRadially();
-        }
         displaceBoundsOntoMainView();
         self.setCat(named: "WavingCat", stage: 1);
         let angle:CGFloat = CGFloat(Int.random(in: 0..<30));
@@ -302,9 +296,6 @@ class UICatButton: UIButton {
     }
     
     func pod() {
-        if (virus != nil) {
-            virus!.disperseRadially();
-        }
         self.kittenMeow();
         // New radius and frames
         let newCornerRadius:CGFloat = self.frame.height / 2.0;

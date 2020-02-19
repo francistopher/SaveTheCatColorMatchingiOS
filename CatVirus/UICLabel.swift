@@ -87,20 +87,6 @@ class UICLabel:UILabel {
         }
     }
     
-    func fadeOnDark() {
-        UIView.animate(withDuration: 0.125, delay:0.0, options: .curveEaseIn, animations: {
-            super.backgroundColor = UIColor.white;
-            super.textColor = UIColor.black;
-        })
-    }
-    
-    func fadeOnLight(){
-        UIView.animate(withDuration: 0.125, delay: 0.0, options: .curveEaseIn, animations: {
-            super.backgroundColor = UIColor.black;
-            super.textColor = UIColor.white;
-        })
-    }
-    
     func setStyle() {
         if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1) {
             self.textColor = UIColor.black;

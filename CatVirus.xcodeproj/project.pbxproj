@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		B833544C23EC8F0B00835672 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B833544B23EC8F0B00835672 /* AppDelegate.swift */; };
-		B833544E23EC8F0B00835672 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B833544D23EC8F0B00835672 /* SceneDelegate.swift */; };
 		B833545323EC8F0B00835672 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B833545123EC8F0B00835672 /* Main.storyboard */; };
 		B833545623EC8F0B00835672 /* podDatCat.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = B833545423EC8F0B00835672 /* podDatCat.xcdatamodeld */; };
 		B833545823EC8F1400835672 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B833545723EC8F1400835672 /* Assets.xcassets */; };
@@ -30,7 +29,6 @@
 		B88F996923F06801003ED805 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B88F996823F06801003ED805 /* ViewController.swift */; };
 		B88F996D23F09BB4003ED805 /* UISettingsButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B88F996C23F09BB4003ED805 /* UISettingsButton.swift */; };
 		B88F997323F1CDA0003ED805 /* UIViruses.swift in Sources */ = {isa = PBXBuildFile; fileRef = B88F997223F1CD9F003ED805 /* UIViruses.swift */; };
-		B88F997523F25CA1003ED805 /* UICSwitch.swift in Sources */ = {isa = PBXBuildFile; fileRef = B88F997423F25CA1003ED805 /* UICSwitch.swift */; };
 		B88F997923F37FE2003ED805 /* UIVirus.swift in Sources */ = {isa = PBXBuildFile; fileRef = B88F997823F37FE2003ED805 /* UIVirus.swift */; };
 		B8AE017123ECB180007A6142 /* UICenterKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8AE017023ECB180007A6142 /* UICenterKit.swift */; };
 		B8AE017323ECB25C007A6142 /* UICLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8AE017223ECB25C007A6142 /* UICLabel.swift */; };
@@ -38,6 +36,7 @@
 		B8AE017B23ECCE3B007A6142 /* UIBoardGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8AE017A23ECCE3B007A6142 /* UIBoardGameView.swift */; };
 		B8AE017D23ECD078007A6142 /* UIColorOptionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8AE017C23ECD077007A6142 /* UIColorOptionsView.swift */; };
 		B8AE017F23ECD3B2007A6142 /* UICButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8AE017E23ECD3B2007A6142 /* UICButton.swift */; };
+		B8BBAA6523FD9A5500614F95 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8BBAA6423FD9A5500614F95 /* SceneDelegate.swift */; };
 		B8D98B7223F99E4D0051D808 /* corona.png in Resources */ = {isa = PBXBuildFile; fileRef = B8D98B6E23F99E4D0051D808 /* corona.png */; };
 		B8D98B7423F9C4570051D808 /* UICats.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8D98B7323F9C4570051D808 /* UICats.swift */; };
 		B8D98B7823F9C6BE0051D808 /* UICatButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8D98B7723F9C6BE0051D808 /* UICatButton.swift */; };
@@ -67,7 +66,6 @@
 /* Begin PBXFileReference section */
 		B833544823EC8F0B00835672 /* Cat Virus.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Cat Virus.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B833544B23EC8F0B00835672 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		B833544D23EC8F0B00835672 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		B833545223EC8F0B00835672 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		B833545523EC8F0B00835672 /* bagDatCat.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = bagDatCat.xcdatamodel; sourceTree = "<group>"; };
 		B833545723EC8F1400835672 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -91,7 +89,6 @@
 		B88F996823F06801003ED805 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		B88F996C23F09BB4003ED805 /* UISettingsButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UISettingsButton.swift; sourceTree = "<group>"; };
 		B88F997223F1CD9F003ED805 /* UIViruses.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViruses.swift; sourceTree = "<group>"; };
-		B88F997423F25CA1003ED805 /* UICSwitch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UICSwitch.swift; sourceTree = "<group>"; };
 		B88F997823F37FE2003ED805 /* UIVirus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIVirus.swift; sourceTree = "<group>"; };
 		B8AE017023ECB180007A6142 /* UICenterKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UICenterKit.swift; sourceTree = "<group>"; };
 		B8AE017223ECB25C007A6142 /* UICLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UICLabel.swift; sourceTree = "<group>"; };
@@ -99,6 +96,7 @@
 		B8AE017A23ECCE3B007A6142 /* UIBoardGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIBoardGameView.swift; sourceTree = "<group>"; };
 		B8AE017C23ECD077007A6142 /* UIColorOptionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorOptionsView.swift; sourceTree = "<group>"; };
 		B8AE017E23ECD3B2007A6142 /* UICButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UICButton.swift; sourceTree = "<group>"; };
+		B8BBAA6423FD9A5500614F95 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		B8D98B6E23F99E4D0051D808 /* corona.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = corona.png; sourceTree = "<group>"; };
 		B8D98B7323F9C4570051D808 /* UICats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UICats.swift; sourceTree = "<group>"; };
 		B8D98B7723F9C6BE0051D808 /* UICatButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UICatButton.swift; sourceTree = "<group>"; };
@@ -162,6 +160,7 @@
 				B88F998E23F398F2003ED805 /* Custom UIKit Components */,
 				B88F998B23F39838003ED805 /* Supporting Files */,
 				B88F999223F39975003ED805 /* Images */,
+				B8BBAA6423FD9A5500614F95 /* SceneDelegate.swift */,
 			);
 			path = CatVirus;
 			sourceTree = "<group>";
@@ -182,7 +181,6 @@
 			isa = PBXGroup;
 			children = (
 				B86A7EA923FCDDF900E4C4C4 /* Default-568h@2x 9.59.50 PM.png */,
-				B833544D23EC8F0B00835672 /* SceneDelegate.swift */,
 				B833544B23EC8F0B00835672 /* AppDelegate.swift */,
 				B833545923EC8F1400835672 /* LaunchScreen.storyboard */,
 				B833545123EC8F0B00835672 /* Main.storyboard */,
@@ -199,7 +197,6 @@
 			children = (
 				B8AE017E23ECD3B2007A6142 /* UICButton.swift */,
 				B8AE017423ECB758007A6142 /* UICView.swift */,
-				B88F997423F25CA1003ED805 /* UICSwitch.swift */,
 				B8AE017223ECB25C007A6142 /* UICLabel.swift */,
 			);
 			name = "Custom UIKit Components";
@@ -386,6 +383,7 @@
 				B833544423EC8F0B00835672 /* Sources */,
 				B833544523EC8F0B00835672 /* Frameworks */,
 				B833544623EC8F0B00835672 /* Resources */,
+				B8BBAA6323FD967300614F95 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -471,6 +469,26 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		B8BBAA6323FD967300614F95 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		B833544423EC8F0B00835672 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -480,10 +498,10 @@
 				B833545623EC8F0B00835672 /* podDatCat.xcdatamodeld in Sources */,
 				B8FBD69A23F5E1EA00C8B50D /* UIRestart.swift in Sources */,
 				B833544C23EC8F0B00835672 /* AppDelegate.swift in Sources */,
-				B88F997523F25CA1003ED805 /* UICSwitch.swift in Sources */,
 				B8FBD6A723F5EC4700C8B50D /* UIStats.swift in Sources */,
 				B8D98B7423F9C4570051D808 /* UICats.swift in Sources */,
 				B8FBD69623F5DC0C00C8B50D /* UIMultiplayer.swift in Sources */,
+				B8BBAA6523FD9A5500614F95 /* SceneDelegate.swift in Sources */,
 				B8AE017B23ECCE3B007A6142 /* UIBoardGameView.swift in Sources */,
 				B88F996923F06801003ED805 /* ViewController.swift in Sources */,
 				B8FBD69123F5D5C600C8B50D /* UIMoreCats.swift in Sources */,
@@ -496,7 +514,6 @@
 				B8AE017123ECB180007A6142 /* UICenterKit.swift in Sources */,
 				B8FBD68F23F5D5BE00C8B50D /* UIMouseCoin.swift in Sources */,
 				B8D98B7823F9C6BE0051D808 /* UICatButton.swift in Sources */,
-				B833544E23EC8F0B00835672 /* SceneDelegate.swift in Sources */,
 				B88F997323F1CDA0003ED805 /* UIViruses.swift in Sources */,
 				B88F997923F37FE2003ED805 /* UIVirus.swift in Sources */,
 			);
@@ -573,6 +590,8 @@
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_LABEL = YES;
+				GCC_WARN_UNUSED_PARAMETER = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
@@ -627,6 +646,8 @@
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_LABEL = YES;
+				GCC_WARN_UNUSED_PARAMETER = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
 				MTL_ENABLE_DEBUG_INFO = NO;

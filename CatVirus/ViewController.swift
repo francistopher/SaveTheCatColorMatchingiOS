@@ -25,18 +25,19 @@ class ViewController: UIViewController {
     var boardGameView:UIBoardGameView? = nil;
     var colorOptionsView:UIColorOptionsView? = nil;
     var settingsButton:UISettingsButton? = nil;
-    var resetButton:UICButton? = nil;
     static var settings:UISettingsButton? = nil;
     
     // Add heaven gradient layer
     var completionGradientLayer:CAGradientLayer? = nil;
     let mellowYellow:UIColor = UIColor(red: 252.0/255.0, green: 212.0/255.0, blue: 64.0/255.0, alpha: 1.0);
-    // Viruses
-    var viruses:UIViruses? = nil;
+    var viruses:UIViruses = UIViruses();
+    
     
     @IBOutlet var mainViewController: UIView!
     override func viewDidLoad() {
         super.viewDidLoad();
+        
+        viruses.backgroundVirusCollection = [UIVirus]();
         // Save the interface style to customize applications
         let userInterfaceStyle:Int = UIScreen.main.traitCollection.userInterfaceStyle.rawValue;
         saveMainViewFoundationalProperties();

@@ -18,10 +18,6 @@ enum Virus{
 class UIVirus:UIButton {
     
     var originalFrame:CGRect? = nil;
-    var targetCat:UICatButton? = nil;
-    var selectedVirus:Virus = .ebolaSquare;
-    var playerHits:Int = 0;
-    var hasBeenDispersed:Bool = false;
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -32,89 +28,7 @@ class UIVirus:UIButton {
         backgroundColor = .clear;
         self.frame = spawnFrame;
         setVirusImage(virus:virus);
-        self.targetCat = targetCat;
-        transitionToTargetFrame(targetFrame: targetFrame);
-        self.addTarget(self, action: #selector(playerTap), for: .touchUpInside);
         parentView.addSubview(self);
-    }
-    
-    @objc func playerTap() {
-        playerHits += 1;
-        switch(self.selectedVirus, playerHits) {
-        case (.corona, 5):
-            disperseRadially();
-        case (.ebolaSquare, 4):
-            disperseRadially();
-        case (.ebolaRectangle, 4):
-            disperseRadially();
-        case (.bacteriophage, 3):
-            disperseRadially();
-        case (_, _):
-            print("Do Something");
-        }
-    }
-    
-    func transitionToTargetFrame(targetFrame:CGRect) {
-        UIView.animate(withDuration: 1.0, delay: 0.125, options: [.curveEaseInOut], animations: {
-            self.frame = targetFrame;
-        }, completion: { _ in
-            self.startAction();
-        });
-    }
-    
-    func startAction() {
-        expandAndContract();
-        DispatchQueue.main.asyncAfter(deadline: .now() + 3.0, execute: {
-            if (!self.hasBeenDispersed) {
-                switch (self.selectedVirus) {
-                    case .bacteriophage:
-                        self.absorbColor();
-                    case .ebolaSquare:
-                        self.removeBorder();
-                    case .ebolaRectangle:
-                        self.removeBorder();
-                    case.corona:
-                        if (!self.targetCat!.isPodded) {
-                            self.targetCat!.isAlive = false;
-                            self.targetCat!.kittenDie();
-                            if (self.targetCat != nil) {
-                                self.targetCat!.disperseRadially();
-                            }
-                        }
-                }
-            }
-        });
-        DispatchQueue.main.asyncAfter(deadline: .now() + 4.0, execute: {
-            self.targetCat!.isTargeted = false;
-            self.disperseRadially();
-        });
-    }
-    
-    func absorbColor() {
-        self.targetCat!.imageContainerButton!.fadeBackgroundIn(color: UIColor.lightGray);
-        self.targetCat!.fadeBackgroundIn(color: UIColor.lightGray);
-    }
-    
-    func removeBorder() {
-        self.targetCat!.layer.borderWidth = 0.0;
-        self.targetCat!.imageContainerButton!.layer.borderWidth = 0.0;
-    }
-    
-    func disperseRadially() {
-        if (hasBeenDispersed) {
-            return;
-        }
-        let angle:CGFloat = CGFloat(Int.random(in: 0...360));
-        let targetPointX:CGFloat = getRadialXTargetPoint(parentFrame: self.superview!.frame, childFrame: self.frame, angle: angle);
-        let targetPointY:CGFloat = getRadialYTargetPoint(parentFrame: self.superview!.frame, childFrame: self.frame, angle: angle);
-        UIView.animate(withDuration: 1.5, delay: 0.125, options: .curveEaseIn, animations: {
-            self.transform = self.transform.rotated(by: CGFloat.pi);
-            let newFrame:CGRect = CGRect(x: targetPointX, y:targetPointY, width: self.frame.width, height: self.frame.height);
-            self.frame = newFrame;
-        }, completion: { _ in
-            self.removeFromSuperview();
-        });
-        hasBeenDispersed = true;
     }
     
     func getRadialXTargetPoint(parentFrame:CGRect, childFrame:CGRect, angle:CGFloat) -> CGFloat {
@@ -132,35 +46,17 @@ class UIVirus:UIButton {
         return targetY;
     }
     
-    func expandAndContract() {
-        UIView.animate(withDuration: 1.0, delay: 0.125, options: [.curveEaseInOut, .autoreverse, .repeat], animations: {
-            self.imageView!.transform = self.imageView!.transform.scaledBy(x: 1.25, y: 1.25);
-        })
-    }
+    
+//     func expandAndContract() {
+//    UIView.animate(withDuration: 1.0, delay: 0.125, options: [.curveEaseInOut, .autoreverse, .repeat], animations: {
+//        self.imageView!.transform = self.imageView!.transform.scaledBy(x: 1.25, y: 1.25);
+//    })
+//}
     
     func setVirusImage(virus:Virus) {
-        selectedVirus = virus;
-        let virusFileName:String = getVirusFileName(virus:virus);
-        let iconImage:UIImage? = UIImage(named: virusFileName);
+        let iconImage:UIImage? = UIImage(named: "corona.png");
         self.setImage(iconImage, for: .normal);
         self.imageView!.contentMode = UIView.ContentMode.scaleAspectFit;
-    }
-    
-    func getVirusFileName(virus:Virus) -> String {
-        switch (virus) {
-        case .corona:
-            return "corona.png";
-        case .ebolaSquare:
-            if (self.frame.width > self.frame.height) {
-                return "ebolaRectangle.png";
-            } else {
-                return "ebolaSquare.png";
-            }
-        case .bacteriophage:
-            return "bacteriophage.png";
-        case .ebolaRectangle:
-            return "ebolaRectangle.png";
-        }
     }
     
     func sway(){
@@ -183,11 +79,11 @@ class UIVirus:UIButton {
         });
     }
     
-    func fadeOut() {
-        UIView.animate(withDuration: 0.5, delay: 0.25, options: .curveEaseIn, animations: {
-            self.alpha = 0.0;
-        });
-    }
+//   func fadeOut() {
+//       UIView.animate(withDuration: 0.5, delay: 0.25, options: .curveEaseIn, animations: {
+//           self.alpha = 0.0;
+//        });
+//    }
     
     func translateToCatsAndBack() {
         UIView.animate(withDuration: 0.25, delay:0.0, options: [.curveEaseInOut], animations: {

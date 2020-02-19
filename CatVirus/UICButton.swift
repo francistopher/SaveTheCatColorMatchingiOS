@@ -14,10 +14,7 @@ class UICButton:UIButton {
     var originalFrame:CGRect? = nil;
     var shrunkFrame:CGRect? = nil;
     var originalBackgroundColor:UIColor? = nil;
-    
-    var selectColor:UIColor? = nil;
     var animationStage:Int = 0;
-    var previousNamed:String = "";
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented");

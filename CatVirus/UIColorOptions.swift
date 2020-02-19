@@ -10,13 +10,13 @@ import SwiftUI
 
 class UIColorOptions: UIView {
     
+    var colors:[UIColor] = [UIColor.systemGreen, UIColor.systemYellow, UIColor.systemOrange, UIColor.systemRed, UIColor.systemPurple, UIColor.systemBlue];
     var boardGameView:UIBoardGame? = nil;
     var selectedColor:UIColor = UIColor.lightGray;
     var selectionColors:[UIColor] = [UIColor]();
     var selectionButtons:[UICButton] = [UICButton]();
     var selectedButtons:[UICButton] = [UICButton]();
     var isTransitioned:Bool = false;
-    var isActive:Bool = false;
     
     required init?(coder: NSCoder) {
        fatalError("init(coder:) has not been implemented");
@@ -65,7 +65,6 @@ class UIColorOptions: UIView {
     }
     
     @objc func selectColorOption(sender:UICButton!){
-        isActive = true;
         let receiverButton:UICButton = sender;
         selectedColor = receiverButton.backgroundColor!;
         transitionBackgroundColorOfButtonsToLightGray();

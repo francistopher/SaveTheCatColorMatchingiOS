@@ -10,10 +10,8 @@ import SwiftUI
 
 class UIBoardGame: UIView {
     
-    var colors:[UIColor] = [UIColor.systemGreen, UIColor.systemYellow, UIColor.systemOrange, UIColor.systemRed, UIColor.systemPurple, UIColor.systemBlue];
-    var colorOptionsView:UIColorOptions? = nil;
+    var colorOptions:UIColorOptions? = nil;
     var gridColors:[[UIColor]] = [[UIColor]]();
-    var selectionColors:[UIColor] = [UIColor]();
     
     var currentStage:Int = 1;
     var columnsAndRows:[Int] = [];
@@ -43,24 +41,23 @@ class UIBoardGame: UIView {
     func buildBoardGame(){
         columnsAndRows = getRowsAndColumns(currentStage: currentStage);
         cats.reset();
-        selectSelectionColor();
+        selectSelectionColors();
         buildGridColors();
         buildGridButtons();
-        colorOptionsView!.selectColorsForSelection();
-        colorOptionsView!.buildColorOptionButtons();
+        colorOptions!.selectColorsForSelection();
+        colorOptions!.buildColorOptionButtons();
     }
     
-    func selectSelectionColor(){
-        selectionColors = [UIColor]();
+    func selectSelectionColors(){
+        colorOptions!.selectionColors =  [UIColor.systemGreen, UIColor.systemYellow, UIColor.systemOrange, UIColor.systemRed, UIColor.systemPurple, UIColor.systemBlue];
         repeat {
-            let newAvailableColor:UIColor = colors.randomElement()!;
-            if (!selectionColors.contains(newAvailableColor)){
-              selectionColors.append(newAvailableColor);
-            }
-            if (selectionColors.count == columnsAndRows[1] || selectionColors.count == 6) {
+            let index:Int = Int.random(in: 0..<colorOptions!.selectionColors.count);
+            colorOptions!.selectionColors.remove(at: index);
+            if (colorOptions!.selectionColors.count == columnsAndRows[1] || colorOptions!.selectionColors.count == 6) {
                 break;
             }
         } while(true);
+        print(colorOptions!.selectionColors.count);
     }
     
     func buildGridColors(){
@@ -72,7 +69,7 @@ class UIBoardGame: UIView {
             var rowIndex:Int = 0;
             while(rowIndex < columnsAndRows[1]) {
                 // Select random color and compare to diversify
-                let color = selectionColors.randomElement()!;
+                let color = colorOptions!.selectionColors.randomElement()!;
                 if (rowIndex > 0) {
                     if (color.cgColor == currentColumn[rowIndex - 1].cgColor){
                         columnIndex -= 1;
@@ -137,20 +134,20 @@ class UIBoardGame: UIView {
     }
     
     @objc func interaction(catButton:UICatButton, catImageButton:UICButton){
-        if (catButton.originalBackgroundColor.cgColor == colorOptionsView!.selectedColor.cgColor){
-            catImageButton.fadeBackgroundIn(color: colorOptionsView!.selectedColor);
+        if (catButton.originalBackgroundColor.cgColor == colorOptions!.selectedColor.cgColor){
+            catImageButton.fadeBackgroundIn(color: colorOptions!.selectedColor);
             catButton.pod();
             catButton.isPodded = true;
             catButton.giveMouseCoin(withNoise: true);
             if (cats.arePodded()) {
-                colorOptionsView!.selectedColor = UIColor.lightGray;
+                colorOptions!.selectedColor = UIColor.lightGray;
                 promote();
-                colorOptionsView!.isTransitioned = false;
+                colorOptions!.isTransitioned = false;
             }
         } else {
             catButton.layer.borderColor! = UIColor.clear.cgColor;
-            colorOptionsView!.selectedColor = UIColor.lightGray;
-            colorOptionsView!.isTransitioned = false;
+            colorOptions!.selectedColor = UIColor.lightGray;
+            colorOptions!.isTransitioned = false;
             restart();
         }
     }
@@ -162,11 +159,10 @@ class UIBoardGame: UIView {
             cats.disperseRadially();
         }
         gridColors = [[UIColor]]();
-        colorOptionsView!.selectionColors = [UIColor]();
+        colorOptions!.selectionColors = [UIColor]();
     }
     
     func restart(){
-        colorOptionsView!.isActive = false;
         settingsButton!.disable();
         resetGame(catsSurvived: false);
         currentStage = 1;
@@ -174,18 +170,16 @@ class UIBoardGame: UIView {
     }
     
     func maintain(){
-        colorOptionsView!.isActive = false;
         settingsButton!.disable();
         resetGame(catsSurvived: true);
         configureComponentsAfterBoardGameReset();
     }
     
     func promote(){
-        colorOptionsView!.isActive = false;
         settingsButton!.disable();
         resetGame(catsSurvived: true);
         successGradientLayer!.isHidden = false;
-        colorOptionsView!.loadSelectionButtonsToSelectedButtons();
+        colorOptions!.loadSelectionButtonsToSelectedButtons();
         // Build board game
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.25) {
             self.currentStage += 1;
@@ -201,7 +195,7 @@ class UIBoardGame: UIView {
         }
     }
     func configureComponentsAfterBoardGameReset() {
-        colorOptionsView!.loadSelectionButtonsToSelectedButtons();
+        colorOptions!.loadSelectionButtonsToSelectedButtons();
         // Build board game
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.25) {
             self.buildBoardGame();
@@ -214,6 +208,6 @@ class UIBoardGame: UIView {
     }
     func removeGridCatAndColorOptionButtonsAfterDelay() {
         cats.removePreviousCatButtonsFromSuperView();
-        self.colorOptionsView!.removeSelectedButtons();
+        self.colorOptions!.removeSelectedButtons();
     }
 }

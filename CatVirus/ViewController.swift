@@ -114,7 +114,7 @@ class ViewController: UIViewController {
     func setupColorOptionsView(){
         colorOptions = UIColorOptions(parentView: mainView, x: boardGame!.frame.minX, y: boardGame!.frame.maxY + unitViewWidth, width: boardGame!.frame.width, height: unitViewWidth * 2.5);
         UICenterKit.centerHorizontally(childView: colorOptions!, parentRect: mainView.frame, childRect: colorOptions!.frame);
-        boardGame!.colorOptionsView = colorOptions!;
+        boardGame!.colorOptions = colorOptions!;
         colorOptions!.boardGameView = boardGame!;
         colorOptions!.alpha = 0.0;
     }

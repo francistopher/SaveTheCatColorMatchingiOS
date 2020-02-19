@@ -51,14 +51,14 @@ class UIBoardGame: UIView {
     }
     
     func selectSelectionColor(){
+        selectionColors = [UIColor]();
         repeat {
-            if (selectionColors.count == 6 || selectionColors.count >= columnsAndRows[1]) {
-                break;
+            let newAvailableColor:UIColor = colors.randomElement()!;
+            if (!selectionColors.contains(newAvailableColor)){
+              selectionColors.append(newAvailableColor);
             }
-                let newAvailableColor:UIColor = colors.randomElement()!;
-                if (!selectionColors.contains(newAvailableColor)){
-                  selectionColors.append(newAvailableColor);
-                  break;
+            if (selectionColors.count == columnsAndRows[1] || selectionColors.count == 6) {
+                break;
             }
         } while(true);
     }

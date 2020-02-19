@@ -11,7 +11,8 @@ import SwiftUI
 class UIBoardGame: UIView {
     
     var colorOptions:UIColorOptions? = nil;
-    var gridColors:[[UIColor]] = [[UIColor]]();
+    var gridColorsCount:[UIColor:Int] = [:]
+    var gridColors:[[UIColor]]? = nil;
     
     var currentStage:Int = 1;
     var columnsAndRows:[Int] = [];
@@ -41,46 +42,53 @@ class UIBoardGame: UIView {
     func buildBoardGame(){
         columnsAndRows = getRowsAndColumns(currentStage: currentStage);
         cats.reset();
-        selectSelectionColors();
+        colorOptions!.selectSelectionColors();
         buildGridColors();
+        recordGridColorsUsed();
+        print(gridColorsCount);
         buildGridButtons();
-        colorOptions!.selectColorsForSelection();
         colorOptions!.buildColorOptionButtons();
     }
     
-    func selectSelectionColors(){
-        colorOptions!.selectionColors =  [UIColor.systemGreen, UIColor.systemYellow, UIColor.systemOrange, UIColor.systemRed, UIColor.systemPurple, UIColor.systemBlue];
-        repeat {
-            let index:Int = Int.random(in: 0..<colorOptions!.selectionColors.count);
-            colorOptions!.selectionColors.remove(at: index);
-            if (colorOptions!.selectionColors.count == columnsAndRows[1] || colorOptions!.selectionColors.count == 6) {
-                break;
-            }
-        } while(true);
-        print(colorOptions!.selectionColors.count);
-    }
-    
     func buildGridColors(){
-        // Traverse row indexes and build gridColors
+        gridColors = Array(repeating: Array(repeating: UIColor.lightGray, count: columnsAndRows[1]), count: columnsAndRows[0]);
         var columnIndex:Int = 0;
-        while(columnIndex < columnsAndRows[0]) {
-            var currentColumn:[UIColor] = [UIColor]();
-            // Traverse column indexes and build column
+        while (columnIndex < gridColors!.count) {
             var rowIndex:Int = 0;
-            while(rowIndex < columnsAndRows[1]) {
-                // Select random color and compare to diversify
-                let color = colorOptions!.selectionColors.randomElement()!;
-                if (rowIndex > 0) {
-                    if (color.cgColor == currentColumn[rowIndex - 1].cgColor){
+            while (rowIndex < gridColors![0].count) {
+                let randomColor:UIColor = colorOptions!.selectionColors.randomElement()!;
+                var randomNum:Int = Int.random(in: 0...2);
+                if (columnIndex > 0) {
+                    let previousColumnColor:UIColor = gridColors![columnIndex - 1][rowIndex];
+                    if (previousColumnColor.cgColor == randomColor.cgColor && randomNum != 1) {
                         columnIndex -= 1;
-                        continue;
                     }
                 }
-                currentColumn.append(color);
+                randomNum = Int.random(in: 0...3);
+                if (rowIndex > 0) {
+                    let previousRowColor:UIColor = gridColors![columnIndex][rowIndex - 1];
+                    if (previousRowColor.cgColor == randomColor.cgColor && randomNum != 1){
+                        rowIndex -= 1;
+                    }
+                }
+                gridColors![columnIndex][rowIndex] = randomColor;
                 rowIndex += 1;
             }
-            gridColors.append(currentColumn);
             columnIndex += 1;
+        }
+    }
+    
+    func recordGridColorsUsed(){
+        gridColorsCount = [:];
+        for columnIndex in 0..<gridColors!.count {
+            for rowIndex in 0..<gridColors![0].count {
+                let color:UIColor = gridColors![columnIndex][rowIndex];
+                if (gridColorsCount[color] == nil) {
+                    gridColorsCount[color] = 1;
+                } else {
+                    gridColorsCount[color]! += 1;
+                }
+            }
         }
     }
     
@@ -115,7 +123,7 @@ class UIBoardGame: UIView {
             for rows in 0..<columnsAndRows[1] {
                 y += rowGap;
                 let frame:CGRect = CGRect(x: x, y: y, width: buttonWidth, height: buttonHeight);
-                let catButton:UICatButton = cats.buildCatButton(parent: self, frame: frame, backgroundColor: gridColors[columns][rows]);
+                let catButton:UICatButton = cats.buildCatButton(parent: self, frame: frame, backgroundColor: gridColors![columns][rows]);
                 catButton.imageContainerButton!.addTarget(self, action: #selector(selectCatImageButton), for: .touchUpInside);
                 catButton.addTarget(self, action: #selector(selectCatButton), for: .touchUpInside);
                 y += buttonHeight;

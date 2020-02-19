@@ -52,6 +52,8 @@ class UICButton:UIButton {
         self.layer.removeAllAnimations();
         UIView.animate(withDuration: 1.0, delay: 0.25, options: .curveEaseIn, animations: {
             self.frame = self.shrunkFrame!;
+        }, completion: { _ in
+            self.removeFromSuperview();
         });
     }
     

@@ -11,11 +11,11 @@ import SwiftUI
 class UIColorOptions: UIView {
     
     var colors:[UIColor] = [UIColor.systemGreen, UIColor.systemYellow, UIColor.systemOrange, UIColor.systemRed, UIColor.systemPurple, UIColor.systemBlue];
-    var boardGameView:UIBoardGame? = nil;
     var selectedColor:UIColor = UIColor.lightGray;
-    var selectionColors:[UIColor] = [UIColor]();
     var selectionButtons:[UICButton] = [UICButton]();
     var selectedButtons:[UICButton] = [UICButton]();
+    var selectionColors:[UIColor] = [UIColor]();
+    var boardGameView:UIBoardGame? = nil;
     var isTransitioned:Bool = false;
     
     required init?(coder: NSCoder) {
@@ -35,15 +35,15 @@ class UIColorOptions: UIView {
       })
     }
     
-    func selectColorsForSelection(){
-        let rowsAndColumns:[Int] = boardGameView!.getRowsAndColumns(currentStage: boardGameView!.currentStage);
-        for rows in 0..<rowsAndColumns[0]{
-            for columns in 0..<rowsAndColumns[1]{
-                if (!selectionColors.contains(boardGameView!.gridColors[rows][columns])){
-                    selectionColors.append(boardGameView!.gridColors[rows][columns]);
-                }
+    func selectSelectionColors(){
+        selectionColors =  [UIColor.systemGreen, UIColor.systemYellow, UIColor.systemOrange, UIColor.systemRed, UIColor.systemPurple, UIColor.systemBlue];
+        repeat {
+            let index:Int = Int.random(in: 0..<selectionColors.count);
+            selectionColors.remove(at: index);
+            if (selectionColors.count == boardGameView!.columnsAndRows[1] || selectionColors.count == 6) {
+                break;
             }
-        }
+        } while(true);
     }
     
     func buildColorOptionButtons(){

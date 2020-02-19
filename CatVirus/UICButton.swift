@@ -14,7 +14,6 @@ class UICButton:UIButton {
     var originalFrame:CGRect? = nil;
     var shrunkFrame:CGRect? = nil;
     var originalBackgroundColor:UIColor? = nil;
-    var animationStage:Int = 0;
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented");
@@ -25,10 +24,10 @@ class UICButton:UIButton {
         originalFrame = frame;
         originalBackgroundColor = backgroundColor;
         self.backgroundColor = backgroundColor;
-        self.layer.cornerRadius = self.frame.height / 5.0;
-        self.layer.borderWidth = frame.width * 0.01;
         configureShrunkFrame();
         parentView.addSubview(self);
+        self.layer.cornerRadius = self.frame.height / 5.0;
+        self.layer.borderWidth = parentView.frame.width * 0.01;
         self.isSelected = false;
         self.setStyle();
     }

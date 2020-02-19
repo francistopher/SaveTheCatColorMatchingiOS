@@ -13,14 +13,16 @@ import AVFoundation
 
 class UISettingsButton:UIButton {
     
+    static var settingsButton:UISettingsButton? = nil;
+    
     var originalFrame:CGRect? = nil;
     var shrunkFrame:CGRect? = nil;
     var originalBackgroundColor:UIColor? = nil;
     var isPressed:Bool = false;
     var settingsMenu:UICView? = nil;
     
-    var colorOptionsView:UIColorOptionsView? = nil;
-    var boardGameView:UIBoardGameView? = nil;
+    var colorOptionsView:UIColorOptions? = nil;
+    var boardGameView:UIBoardGame? = nil;
     var cellFrame:CGRect? = nil;
     
     var mouseCoin:UIMouseCoin? = nil;
@@ -232,14 +234,14 @@ class UISettingsButton:UIButton {
         noAds!.setStyle();
     }
     
-    func setBoardGameAndColorOptionsView(boardGameView:UIBoardGameView, colorOptionsView:UIColorOptionsView) {
+    func setBoardGameAndColorOptionsView(boardGameView:UIBoardGame, colorOptionsView:UIColorOptions) {
         self.boardGameView = boardGameView;
         self.colorOptionsView = colorOptionsView;
         self.restart!.setTargetResources(boardGameView: boardGameView, settingsButton: self);
         self.restart1!.setTargetResources(boardGameView: boardGameView, settingsButton: self);
     }
     
-    func show(){
+    func fadeIn(){
         UIView.animate(withDuration: 1.0, delay: 0.125, options: .curveEaseIn, animations: {
             self.alpha = 1.0;
             self.settingsMenu!.alpha = 1.0;

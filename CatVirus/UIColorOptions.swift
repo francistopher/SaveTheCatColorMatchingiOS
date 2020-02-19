@@ -8,9 +8,9 @@
 
 import SwiftUI
 
-class UIColorOptionsView: UIView {
+class UIColorOptions: UIView {
     
-    var boardGameView:UIBoardGameView? = nil;
+    var boardGameView:UIBoardGame? = nil;
     var selectedColor:UIColor = UIColor.lightGray;
     var selectionColors:[UIColor] = [UIColor]();
     var selectionButtons:[UICButton] = [UICButton]();
@@ -51,16 +51,16 @@ class UIColorOptionsView: UIView {
         let columnGap = rowGap;
         let buttonHeight = (self.frame.height * 0.65);
         let buttonWidth = (self.frame.width - (rowGap * CGFloat(selectionColors.count + 1))) / CGFloat(selectionColors.count);
-        var currentButton:UICButton? = nil;
-        var currentColumnDisplacement:CGFloat = 0.0;
-        for index in 0..<selectionColors.count {
-            currentColumnDisplacement += columnGap;
-            currentButton = UICButton(parentView: self,  frame:CGRect(x: currentColumnDisplacement, y: rowGap, width: buttonWidth, height: buttonHeight), backgroundColor: selectionColors[index]);
-            currentButton!.frame = currentButton!.shrunkFrame!;
-            currentButton!.grow();
-            currentButton!.addTarget(self, action: #selector(selectColorOption), for: .touchUpInside);
-            selectionButtons.append(currentButton!);
-            currentColumnDisplacement += buttonWidth;
+        var button:UICButton? = nil;
+        var columnDisplacement:CGFloat = 0.0;
+        for selectionColor in selectionColors {
+            columnDisplacement += columnGap;
+            button = UICButton(parentView: self,  frame:CGRect(x: columnDisplacement, y: rowGap, width: buttonWidth, height: buttonHeight), backgroundColor: selectionColor);
+            button!.frame = button!.shrunkFrame!;
+            button!.grow();
+            button!.addTarget(self, action: #selector(selectColorOption), for: .touchUpInside);
+            selectionButtons.append(button!);
+            columnDisplacement += buttonWidth;
         }
     }
     
@@ -111,3 +111,4 @@ class UIColorOptionsView: UIView {
         }
     }
 }
+

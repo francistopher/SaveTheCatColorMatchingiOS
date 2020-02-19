@@ -81,7 +81,7 @@ class UICatButton: UIButton {
         DispatchQueue.main.asyncAfter(deadline: .now() + time) {
             mainView.bringSubviewToFront(mouseCoin);
             UIView.animate(withDuration: 1.0, delay: 0.125, options: [.curveEaseInOut], animations: {
-                let settingsButton:UISettingsButton = ViewController.settings!
+                let settingsButton:UISettingsButton = ViewController.settingsButton!;
                 let settingsMenuFrame:CGRect = settingsButton.settingsMenu!.frame;
                 let settingsMouseCoinFrame:CGRect = settingsButton.mouseCoin!.frame;
                 let newMouseCoinFrame:CGRect = CGRect(x: settingsMenuFrame.minX + settingsMouseCoinFrame.minX, y: settingsMenuFrame.minY + settingsMouseCoinFrame.minY, width: settingsMouseCoinFrame.width, height: settingsMouseCoinFrame.height);

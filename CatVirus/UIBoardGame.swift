@@ -8,18 +8,18 @@
 
 import SwiftUI
 
-class UIBoardGameView: UIView {
+class UIBoardGame: UIView {
     
     var colors:[UIColor] = [UIColor.systemGreen, UIColor.systemYellow, UIColor.systemOrange, UIColor.systemRed, UIColor.systemPurple, UIColor.systemBlue];
-    var colorOptionsView:UIColorOptionsView? = nil;
+    var colorOptionsView:UIColorOptions? = nil;
     var gridColors:[[UIColor]] = [[UIColor]]();
     var selectionColors:[UIColor] = [UIColor]();
     
     var currentStage:Int = 1;
     var columnsAndRows:[Int] = [];
-    let cats:UICats = UICats();
+    let cats:UICatButtons = UICatButtons();
     
-    var completionGradientLayer:CAGradientLayer? = nil;
+    var successGradientLayer:CAGradientLayer? = nil;
     var settingsButton:UISettingsButton? = nil;
    
     
@@ -184,7 +184,7 @@ class UIBoardGameView: UIView {
         colorOptionsView!.isActive = false;
         settingsButton!.disable();
         resetGame(catsSurvived: true);
-        completionGradientLayer!.isHidden = false;
+        successGradientLayer!.isHidden = false;
         colorOptionsView!.loadSelectionButtonsToSelectedButtons();
         // Build board game
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.25) {
@@ -197,7 +197,7 @@ class UIBoardGameView: UIView {
             self.currentStage -= 1;
             self.removeGridCatAndColorOptionButtonsAfterDelay();
             self.currentStage += 1;
-            self.completionGradientLayer!.isHidden = true;
+            self.successGradientLayer!.isHidden = true;
         }
     }
     func configureComponentsAfterBoardGameReset() {

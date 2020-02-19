@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-class UICats {
+class UICatButtons {
     
     var cats:[UICatButton] = [UICatButton]();
     var previousCats:[UICatButton] = [UICatButton]();

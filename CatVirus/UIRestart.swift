@@ -12,7 +12,7 @@ class UIRestart: UIButton {
     
     var originalFrame:CGRect? = nil;
     var reducedFrame:CGRect? = nil;
-    var boardGameView:UIBoardGameView? = nil;
+    var boardGameView:UIBoardGame? = nil;
     var settingsButton:UISettingsButton? = nil;
 
     required init?(coder: NSCoder) {
@@ -47,7 +47,7 @@ class UIRestart: UIButton {
          }
      }
     
-    func setTargetResources(boardGameView:UIBoardGameView, settingsButton:UISettingsButton) {
+    func setTargetResources(boardGameView:UIBoardGame, settingsButton:UISettingsButton) {
         self.boardGameView = boardGameView;
         self.settingsButton = settingsButton;
         self.addTarget(self, action: #selector(restartSelector), for: .touchUpInside);

@@ -47,13 +47,14 @@ class UIColorOptions: UIView {
     }
     
     func buildColorOptionButtons(){
+        let numOfUniqueGridColors:Int = boardGameView!.gridColorsCount.count;
         let rowGap = (self.frame.height * 0.35) / 2.0;
         let columnGap = rowGap;
         let buttonHeight = (self.frame.height * 0.65);
-        let buttonWidth = (self.frame.width - (rowGap * CGFloat(selectionColors.count + 1))) / CGFloat(selectionColors.count);
+        let buttonWidth = (self.frame.width - (rowGap * CGFloat(numOfUniqueGridColors + 1))) / CGFloat(numOfUniqueGridColors);
         var button:UICButton? = nil;
         var columnDisplacement:CGFloat = 0.0;
-        for selectionColor in selectionColors {
+        for (selectionColor, _) in boardGameView!.gridColorsCount {
             columnDisplacement += columnGap;
             button = UICButton(parentView: self,  frame:CGRect(x: columnDisplacement, y: rowGap, width: buttonWidth, height: buttonHeight), backgroundColor: selectionColor);
             button!.frame = button!.shrunkFrame!;

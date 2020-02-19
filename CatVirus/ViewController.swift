@@ -7,12 +7,10 @@
 //
 
 import UIKit
-import SpriteKit
 
 class ViewController: UIViewController {
 
     @IBOutlet var mainView: UIView!
-    // Main View Dimension Properties
     var mainViewWidth:CGFloat = 0.0;
     var mainViewHeight:CGFloat = 0.0;
     var unitViewWidth:CGFloat = 0.0;
@@ -25,7 +23,8 @@ class ViewController: UIViewController {
     var boardGame:UIBoardGame?
     var colorOptions:UIColorOptions?
     
-    var successGradientLayer:CACGradientLayer?
+    var successGradientLayer:CAGradientLayer?
+    let mellowYellow:UIColor = UIColor(red: 252.0/255.0, green: 212.0/255.0, blue: 64.0/255.0, alpha: 1.0);
     
     @IBOutlet var mainViewController: UIView!
     override func viewDidLoad() {
@@ -95,7 +94,12 @@ class ViewController: UIViewController {
     }
     
     func setupSuccessGradientLayer() {
-        successGradientLayer = CACGradientLayer(parentView: mainView, type: .radial);
+        successGradientLayer = CAGradientLayer();
+        successGradientLayer!.frame = mainView.frame;
+        mainView.layer.addSublayer(successGradientLayer!);
+        successGradientLayer!.type = .radial;
+        successGradientLayer!.startPoint = CGPoint(x:0.5, y:0.0);
+        successGradientLayer!.endPoint = CGPoint(x:-0.5, y:0.15);
         successGradientLayer!.isHidden = true;
     }
     
@@ -126,7 +130,11 @@ class ViewController: UIViewController {
     
     func setStyle() {
         introLabel!.setStyle();
-        successGradientLayer!.setStyle();
+        if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1){
+            self.successGradientLayer!.colors = [self.mellowYellow.cgColor, UIColor.white.cgColor];
+        } else {
+            self.successGradientLayer!.colors =  [self.mellowYellow.cgColor, UIColor.black.cgColor];
+        }
         settingsButton!.setStyle();
         boardGame!.cats.activateCatsForUIStyle();
         colorOptions!.setStyle();

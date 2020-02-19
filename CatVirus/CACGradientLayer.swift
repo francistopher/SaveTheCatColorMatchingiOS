@@ -22,15 +22,15 @@ class CACGradientLayer:CAGradientLayer {
         parentView.layer.addSublayer(self);
         self.type = type;
         self.startPoint = CGPoint(x:0.5, y:0.0);
-        self.endPoint = CGPoint(x:-0.5, y:0.15)
-        setStyle();
+        self.endPoint = CGPoint(x:-0.5, y:0.15);
     }
     
     func setStyle() {
+        super.isHidden = false;
         if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1){
-             self.colors = [self.mellowYellow.cgColor, UIColor.white.cgColor];
+             super.colors = [self.mellowYellow.cgColor, UIColor.white.cgColor];
          } else {
-             self.colors =  [self.mellowYellow.cgColor, UIColor.black.cgColor];
+             super.colors =  [self.mellowYellow.cgColor, UIColor.black.cgColor];
         }
     }
     

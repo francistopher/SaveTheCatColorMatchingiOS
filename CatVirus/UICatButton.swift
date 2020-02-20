@@ -96,8 +96,12 @@ class UICatButton: UIButton {
     }
     
     func kittenMeow() {
-        if (!kittenMeowSoundEffect!.isPlaying){
-            kittenMeowSoundEffect!.play();
+        if (kittenMeowSoundEffect != nil) {
+            if (!kittenMeowSoundEffect!.isPlaying){
+                kittenMeowSoundEffect!.play();
+            }
+        } else {
+            print("WHy nil?");
         }
     }
     
@@ -292,6 +296,8 @@ class UICatButton: UIButton {
         UIView.animate(withDuration: 2.5, delay: 0.125, options: .curveEaseIn, animations: {
             let newFrame:CGRect = CGRect(x: targetPointX, y:targetPointY, width: self.frame.width, height: self.frame.height);
             self.frame = newFrame;
+        }, completion: { _ in
+            self.removeFromSuperview();
         });
     }
     

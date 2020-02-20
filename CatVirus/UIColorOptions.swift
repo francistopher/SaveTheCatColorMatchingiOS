@@ -117,6 +117,14 @@ class UIColorOptions: UIView {
                     selectionButton.unSelect();
                 }
             }
+        } else {
+            if (isTransitioned) {
+                SoundController.mozartSonata(play: true);
+                isTransitioned = false;
+                selectedColor = UIColor.lightGray;
+                boardGameView!.cats.disperseRadially();
+                boardGameView!.restart();
+            }
         }
     }
     

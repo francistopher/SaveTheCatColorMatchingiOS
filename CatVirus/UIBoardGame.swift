@@ -173,7 +173,6 @@ class UIBoardGame: UIView {
                 SoundController.mozartSonata(play: true);
                 colorOptions!.isTransitioned = false;
                 colorOptions!.selectedColor = UIColor.lightGray;
-                cats.disperseRadially();
                 restart();
             }
         }

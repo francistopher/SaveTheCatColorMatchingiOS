@@ -216,11 +216,10 @@ class UICatButton: UIButton {
         displaceBoundsOntoMainView();
         self.backgroundColor = UIColor.clear;
         self.imageContainerButton!.backgroundColor = UIColor.clear;
-        let angle:CGFloat = CGFloat(Int.random(in: 0...360));
-        let targetPointX:CGFloat = getRadialXTargetPoint(parentFrame: self.superview!.frame, childFrame: self.frame, angle: angle);
-        let targetPointY:CGFloat = getRadialYTargetPoint(parentFrame: self.superview!.frame, childFrame: self.frame, angle: angle);
-        UIView.animate(withDuration: 1.75, delay: 0.125, options: .curveEaseIn, animations: {
-            self.transform = self.transform.rotated(by: CGFloat.pi);
+        let targetPointX:CGFloat = getRadialXTargetPoint(parentFrame: self.superview!.frame, childFrame: self.frame);
+        let targetPointY:CGFloat = getRadialYTargetPoint(parentFrame: self.superview!.frame, childFrame: self.frame);
+        UIView.animate(withDuration: 1.5, delay: 0.125, options: .curveEaseIn, animations: {
+            self.imageContainerButton!.transform =  self.imageContainerButton!.transform.rotated(by: CGFloat.pi);
             let newFrame:CGRect = CGRect(x: targetPointX, y:targetPointY, width: self.frame.width, height: self.frame.height);
             self.frame = newFrame;
         }, completion: { _ in
@@ -277,18 +276,25 @@ class UICatButton: UIButton {
         return targetY;
     }
     
-    func getRadialXTargetPoint(parentFrame:CGRect, childFrame:CGRect, angle:CGFloat) -> CGFloat {
-        var targetX:CGFloat = childFrame.minX;
-        targetX += parentFrame.width + childFrame.width;
+    func getRadialXTargetPoint(parentFrame:CGRect, childFrame:CGRect) -> CGFloat {
+        let angle:CGFloat = CGFloat.random(in: 0.0...45.0);
+        var targetX:CGFloat = parentFrame.width + childFrame.width;
         targetX *= cos((CGFloat.pi * angle) / 180.0);
+        print(targetX, "Target X");
+        if (Int.random(in: 0...1) == 1) {
+            targetX *= -1;
+        }
         return targetX;
     }
     
-    
-    func getRadialYTargetPoint(parentFrame:CGRect, childFrame:CGRect, angle:CGFloat) -> CGFloat {
-        var targetY:CGFloat = childFrame.minY;
-        targetY += parentFrame.height + childFrame.height;
+    func getRadialYTargetPoint(parentFrame:CGRect, childFrame:CGRect) -> CGFloat {
+        let angle:CGFloat = CGFloat.random(in: 45.0...90.0);
+        var targetY:CGFloat = parentFrame.height + childFrame.height;
         targetY *= sin((CGFloat.pi * angle) / 180.0);
+        if (Int.random(in: 0...1) == 1) {
+            targetY *= -1;
+        }
+        print(targetY, "Target Y");
         return targetY;
     }
     

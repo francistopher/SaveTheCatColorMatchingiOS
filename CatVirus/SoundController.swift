@@ -20,6 +20,14 @@ class SoundController {
     static var kittenMeowUrl:URL?
     static var kittenMeowSoundEffect:AVAudioPlayer?
     
+    static var kittenMeowPath2:String?
+    static var kittenMeowUrl2:URL?
+    static var kittenMeowSoundEffect2:AVAudioPlayer?
+    
+    static var kittenMeowPath3:String?
+    static var kittenMeowUrl3:URL?
+    static var kittenMeowSoundEffect3:AVAudioPlayer?
+    
     static var kittenDiePath:String? = nil;
     static var kittenDieUrl:URL? = nil;
     static var kittenDieSoundEffect:AVAudioPlayer?
@@ -46,7 +54,15 @@ class SoundController {
     }
     
     static func kittenMeow() {
-        SoundController.kittenMeowSoundEffect!.play();
+        if (SoundController.kittenMeowSoundEffect!.isPlaying) {
+            if (SoundController.kittenMeowSoundEffect2!.isPlaying) {
+                SoundController.kittenMeowSoundEffect3!.play();
+            } else {
+                SoundController.kittenMeowSoundEffect2!.play();
+            }
+        } else {
+            SoundController.kittenMeowSoundEffect!.play();
+        }
     }
     
     static func setupKittenMeow() {
@@ -54,6 +70,26 @@ class SoundController {
         SoundController.kittenMeowUrl = URL(fileURLWithPath: SoundController.kittenMeowPath!);
         do {
             SoundController.kittenMeowSoundEffect = try AVAudioPlayer(contentsOf: SoundController.kittenMeowUrl!);
+        } catch {
+            print("Unable to play kitten meow");
+        }
+    }
+    
+    static func setupKittenMeow2() {
+        SoundController.kittenMeowPath2 = Bundle.main.path(forResource: "kittenMeow.mp3", ofType: nil);
+        SoundController.kittenMeowUrl2 = URL(fileURLWithPath: SoundController.kittenMeowPath2!);
+        do {
+            SoundController.kittenMeowSoundEffect2 = try AVAudioPlayer(contentsOf: SoundController.kittenMeowUrl2!);
+        } catch {
+            print("Unable to play kitten meow");
+        }
+    }
+    
+    static func setupKittenMeow3() {
+        SoundController.kittenMeowPath3 = Bundle.main.path(forResource: "kittenMeow.mp3", ofType: nil);
+        SoundController.kittenMeowUrl3 = URL(fileURLWithPath: SoundController.kittenMeowPath3!);
+        do {
+            SoundController.kittenMeowSoundEffect3 = try AVAudioPlayer(contentsOf: SoundController.kittenMeowUrl3!);
         } catch {
             print("Unable to play kitten meow");
         }

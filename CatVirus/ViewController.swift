@@ -70,6 +70,8 @@ class ViewController: UIViewController {
     func setupSounds() {
         SoundController.setupCoinEarned();
         SoundController.setupKittenMeow();
+        SoundController.setupKittenMeow2();
+        SoundController.setupKittenMeow3();
         SoundController.setupKittenDie();
         SoundController.setupMozartSonata();
     }

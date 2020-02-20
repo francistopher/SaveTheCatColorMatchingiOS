@@ -27,18 +27,6 @@ class UICatButton: UIButton {
     var isAlive:Bool = true;
     var isPodded:Bool = false;
     
-    var kittenMeowPath:String? = nil;
-    var kittenMeowUrl:URL? = nil;
-    var kittenMeowSoundEffect:AVAudioPlayer?
-    
-    var kittenDiePath:String? = nil;
-    var kittenDieUrl:URL? = nil;
-    var kittenDieSoundEffect:AVAudioPlayer?
-    
-    var coinEarnedPath:String? = nil;
-    var coinEarnedUrl:URL? = nil;
-    var coinEarnedSoundEffect:AVAudioPlayer?
-    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented");
     }
@@ -54,9 +42,6 @@ class UICatButton: UIButton {
         configureImageContainerButton();
         self.shrink();
         self.setStyle();
-        configureKittenMeow();
-        configureKittenDie();
-        configureCoinEarned();
     }
     
     func giveMouseCoin(withNoise:Bool) {
@@ -88,62 +73,10 @@ class UICatButton: UIButton {
                 mouseCoin.frame = newMouseCoinFrame;
             }, completion: { _ in
                 if (withNoise) {
-                    self.coinEarned();
+                    SoundController.coinEarned();
                 }
                 mouseCoin.removeFromSuperview();
             })
-        }
-    }
-    
-    func kittenMeow() {
-        if (kittenMeowSoundEffect != nil) {
-            if (!kittenMeowSoundEffect!.isPlaying){
-                kittenMeowSoundEffect!.play();
-            }
-        } else {
-            print("WHy nil?");
-        }
-    }
-    
-    func kittenDie() {
-        if (!kittenDieSoundEffect!.isPlaying){
-            kittenDieSoundEffect!.play();
-        }
-    }
-    
-    func coinEarned() {
-        if (!coinEarnedSoundEffect!.isPlaying) {
-            coinEarnedSoundEffect!.play();
-        }
-    }
-    
-    func configureKittenMeow() {
-        kittenMeowPath = Bundle.main.path(forResource: "kittenMeow.mp3", ofType: nil);
-        kittenMeowUrl = URL(fileURLWithPath: kittenMeowPath!);
-        do {
-            kittenMeowSoundEffect = try AVAudioPlayer(contentsOf: kittenMeowUrl!);
-        } catch {
-            print("Unable to play kitten meow");
-        }
-    }
-    
-    func configureKittenDie() {
-        kittenDiePath = Bundle.main.path(forResource: "kittenDie.mp3", ofType: nil);
-        kittenDieUrl = URL(fileURLWithPath: kittenDiePath!);
-        do {
-           kittenDieSoundEffect = try AVAudioPlayer(contentsOf: kittenDieUrl!);
-        } catch {
-           print("Unable to play kitten die");
-        }
-    }
-    
-    func configureCoinEarned() {
-        coinEarnedPath = Bundle.main.path(forResource: "coinEarned.mp3", ofType: nil);
-        coinEarnedUrl = URL(fileURLWithPath: coinEarnedPath!);
-        do {
-            coinEarnedSoundEffect = try AVAudioPlayer(contentsOf: coinEarnedUrl!);
-        } catch {
-            print("Unable to play coin earned");
         }
     }
     
@@ -302,7 +235,7 @@ class UICatButton: UIButton {
     }
     
     func pod() {
-        self.kittenMeow();
+        SoundController.kittenMeow();
         // New radius and frames
         let newCornerRadius:CGFloat = self.frame.height / 2.0;
         let newCatButtonFrame:CGRect = CGRect(x: self.frame.minX + self.imageContainerButton!.frame.minX, y: self.frame.minY, width: self.imageContainerButton!.frame.width, height: self.frame.height);

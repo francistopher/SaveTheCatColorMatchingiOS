@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AVFoundation
 
 class ViewController: UIViewController {
 
@@ -29,6 +30,7 @@ class ViewController: UIViewController {
     @IBOutlet var mainViewController: UIView!
     override func viewDidLoad() {
         super.viewDidLoad();
+        setupSounds();
         setupMainViewDimensionProperties();
         setupIntroLabel();
         setupSuccessGradientLayer();
@@ -63,6 +65,13 @@ class ViewController: UIViewController {
     @objc func appDeactivated() {
         self.boardGame!.cats.activateCatsForUIStyle();
         print("App deactivated");
+    }
+    
+    func setupSounds() {
+        SoundController.setupCoinEarned();
+        SoundController.setupKittenMeow();
+        SoundController.setupKittenDie();
+        SoundController.setupMozartSonata();
     }
     
     func setupMainViewDimensionProperties() {

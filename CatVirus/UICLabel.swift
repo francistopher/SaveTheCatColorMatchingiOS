@@ -8,17 +8,8 @@
 
 import Foundation
 import UIKit
-import AVFoundation
 
 class UICLabel:UILabel {
-    
-    var kittenMeowPath:String? = nil;
-    var kittenMeowUrl:URL? = nil;
-    var kittenMeowSoundEffect:AVAudioPlayer?
-    
-    static var mozartSonataPath:String? = nil;
-    static var mozartSonataUrl:URL? = nil;
-    static var mozartSonataSoundEffect:AVAudioPlayer?
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -29,58 +20,17 @@ class UICLabel:UILabel {
         self.frame = CGRect(x: x, y: y, width: width, height: height);
         self.textAlignment = NSTextAlignment.center;
         self.setStyle()
-        configureKittenMeow();
-        configureMozartSonata();
         parentView.addSubview(self);
     }
     
-    func kittenMeow() {
-        if (!kittenMeowSoundEffect!.isPlaying){
-            kittenMeowSoundEffect!.play();
-        }
-    }
     
-    func configureKittenMeow() {
-        kittenMeowPath = Bundle.main.path(forResource: "kittenMeow.mp3", ofType: nil);
-        kittenMeowUrl = URL(fileURLWithPath: kittenMeowPath!);
-        do {
-            kittenMeowSoundEffect = try AVAudioPlayer(contentsOf: kittenMeowUrl!);
-        } catch {
-            print("Unable to play kitten meow");
-        }
-    }
-    
-    func configureMozartSonata() {
-        UICLabel.mozartSonataPath = Bundle.main.path(forResource: "mozartSonata.mp3", ofType: nil);
-        UICLabel.mozartSonataUrl = URL(fileURLWithPath: UICLabel.mozartSonataPath!);
-        do {
-            UICLabel.mozartSonataSoundEffect = try AVAudioPlayer(contentsOf: UICLabel.mozartSonataUrl!);
-            UICLabel.mozartSonataSoundEffect!.numberOfLoops = -1;
-        } catch {
-            print("Unable to play mozart sonata");
-        }
-    }
-    
-    static func mozartSonata(play:Bool) {
-        if (play) {
-            if (UICLabel.mozartSonataSoundEffect!.volume == 0.0) {
-                let timeInterval:TimeInterval = TimeInterval(1.0);
-                UICLabel.mozartSonataSoundEffect!.setVolume(1.0, fadeDuration: timeInterval);
-            } else {
-                UICLabel.mozartSonataSoundEffect!.play();
-            }
-        } else {
-            let timeInterval:TimeInterval = TimeInterval(1.0);
-            UICLabel.mozartSonataSoundEffect!.setVolume(0.0, fadeDuration: timeInterval);
-        }
-    }
     
     func fadeInAndOut(){
         UIView.animate(withDuration: 2, delay: 0.5, options: .curveEaseIn, animations: {
             super.alpha = 1.0;
         }) { (_) in
-            self.kittenMeow();
-            UICLabel.mozartSonata(play: true);
+            SoundController.kittenMeow();
+            SoundController.mozartSonata(play: true);
             UIView.animate(withDuration: 2, delay: 0.5, options: .curveEaseOut, animations: {
                 super.alpha = 0.0;
             })

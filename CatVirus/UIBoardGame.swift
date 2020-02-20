@@ -162,9 +162,11 @@ class UIBoardGame: UIView {
                 promote();
             }
         } else {
+            SoundController.kittenDie();
             cats.setAsDead();
-//            catButton.layer.borderColor! = UIColor.clear.cgColor;
-//            colorOptions!.selectedColor = UIColor.lightGray;
+            catButton.layer.borderColor! = UIColor.clear.cgColor;
+            colorOptions!.selectedColor = UIColor.lightGray;
+            colorOptions!.shrinkSelectionButtons();
 //            colorOptions!.isTransitioned = false;
 //            restart();
         }

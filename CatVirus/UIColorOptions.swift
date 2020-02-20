@@ -46,6 +46,12 @@ class UIColorOptions: UIView {
         } while(true);
     }
     
+    func shrinkSelectionButtons() {
+        for selectionButton in selectionButtons {
+            selectionButton.layer.borderWidth = 0.0;
+        }
+    }
+    
     func buildColorOptionButtons(setup:Bool){
         let numOfUniqueGridColors:Int = boardGameView!.nonZeroGridColorsCount();
         let rowGap = (self.frame.height * 0.35) / 2.0;
@@ -99,17 +105,19 @@ class UIColorOptions: UIView {
     }
     
     @objc func selectColorOption(colorOption:UICButton!){
-        selectedColor = colorOption.backgroundColor!;
-        buildColorOptionButtons(setup: false);
-        transitionBackgroundColorOfButtonsToLightGray();
-        for selectionButton in selectionButtons{
-            if (selectionButton.isEqual(colorOption)){
-                colorOption.select();
-                boardGameView!.gridColorsCount[selectedColor.cgColor] = 0;
-            } else {
-                selectionButton.unSelect();
+        if (boardGameView!.cats.cats[0].isAlive) {
+            selectedColor = colorOption.backgroundColor!;
+            buildColorOptionButtons(setup: false);
+            transitionBackgroundColorOfButtonsToLightGray();
+            for selectionButton in selectionButtons{
+                if (selectionButton.isEqual(colorOption)){
+                    colorOption.select();
+                    boardGameView!.gridColorsCount[selectedColor.cgColor] = 0;
+                } else {
+                    selectionButton.unSelect();
+                }
+                
             }
-            
         }
     }
     

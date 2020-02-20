@@ -14,6 +14,13 @@ class UICButton:UIButton {
     var originalFrame:CGRect? = nil;
     var shrunkFrame:CGRect? = nil;
     var originalBackgroundColor:UIColor? = nil;
+    var shrinkType:shrink = .mid;
+    var parentView:UIView? = nil;
+    enum shrink {
+        case left
+        case mid
+        case right
+    }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented");
@@ -21,6 +28,7 @@ class UICButton:UIButton {
     
     init(parentView: UIView, frame:CGRect, backgroundColor:UIColor) {
         super.init(frame:frame);
+        self.parentView = parentView;
         originalFrame = frame;
         originalBackgroundColor = backgroundColor;
         self.backgroundColor = backgroundColor;
@@ -32,8 +40,16 @@ class UICButton:UIButton {
         self.setStyle();
     }
     
+    func translate(newOriginalFrame:CGRect) {
+        UIView.animate(withDuration: 1.0, delay: 0.125, options: .curveEaseInOut, animations: {
+            self.frame = newOriginalFrame;
+            self.originalFrame! = newOriginalFrame;
+            self.configureShrunkFrame();
+        });
+    }
+    
     func configureShrunkFrame() {
-        shrunkFrame = CGRect(x: originalFrame!.minX + originalFrame!.width / 2.0, y: originalFrame!.minY + originalFrame!.height / 2.0, width: 0.0, height: 0.0);
+        shrunkFrame = CGRect(x: originalFrame!.midX, y: originalFrame!.minY, width: 0.0, height: originalFrame!.height);
     }
     
     func grow(){
@@ -50,8 +66,19 @@ class UICButton:UIButton {
     
     func shrink(){
         self.layer.removeAllAnimations();
-        UIView.animate(withDuration: 1.0, delay: 0.25, options: .curveEaseIn, animations: {
-            self.frame = self.shrunkFrame!;
+        print(self.shrinkType);
+        UIView.animate(withDuration: 0.75, delay: 0.125, options: .curveEaseIn, animations: {
+            var x:CGFloat = 0.0;
+            switch(self.shrinkType) {
+            case .left:
+                x = 0.0;
+            case .mid:
+                x = self.originalFrame!.midX;
+            case .right:
+                x = self.parentView!.frame.width;
+            }
+            self.frame = CGRect(x: x, y: self.frame.minY, width: 0.0, height: self.frame.height);
+            
         }, completion: { _ in
             self.removeFromSuperview();
         });

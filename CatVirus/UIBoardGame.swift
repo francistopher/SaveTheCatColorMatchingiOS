@@ -11,7 +11,7 @@ import SwiftUI
 class UIBoardGame: UIView {
     
     var colorOptions:UIColorOptions? = nil;
-    var gridColorsCount:[UIColor:Int] = [:]
+    var gridColorsCount:[CGColor:Int] = [:]
     var gridColors:[[UIColor]]? = nil;
     
     var currentStage:Int = 1;
@@ -45,9 +45,8 @@ class UIBoardGame: UIView {
         colorOptions!.selectSelectionColors();
         buildGridColors();
         recordGridColorsUsed();
-        print(gridColorsCount);
         buildGridButtons();
-        colorOptions!.buildColorOptionButtons();
+        colorOptions!.buildColorOptionButtons(setup: true);
     }
     
     func buildGridColors(){
@@ -78,11 +77,21 @@ class UIBoardGame: UIView {
         }
     }
     
+    func nonZeroGridColorsCount() -> Int {
+        var nonZeroCount:Int = 0;
+        for (_, count) in gridColorsCount {
+            if (count != 0) {
+                nonZeroCount += 1;
+            }
+        }
+        return nonZeroCount;
+    }
+    
     func recordGridColorsUsed(){
         gridColorsCount = [:];
         for columnIndex in 0..<gridColors!.count {
             for rowIndex in 0..<gridColors![0].count {
-                let color:UIColor = gridColors![columnIndex][rowIndex];
+                let color:CGColor = gridColors![columnIndex][rowIndex].cgColor;
                 if (gridColorsCount[color] == nil) {
                     gridColorsCount[color] = 1;
                 } else {

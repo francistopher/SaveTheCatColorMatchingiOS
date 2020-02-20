@@ -55,7 +55,8 @@ class UIColorOptions: UIView {
         var button:UICButton? = nil;
         var columnDisplacement:CGFloat = 0.0;
         var index:Int = 0;
-        for (selectionColor, count) in boardGameView!.gridColorsCount {
+        var count:Int = 0;
+        for (selectionColor, colorCount) in boardGameView!.gridColorsCount {
             if (setup) {
                 columnDisplacement += columnGap;
                 button = UICButton(parentView: self,  frame:CGRect(x: columnDisplacement, y: rowGap, width: buttonWidth, height: buttonHeight), backgroundColor: UIColor(cgColor: selectionColor));
@@ -66,30 +67,27 @@ class UIColorOptions: UIView {
                 columnDisplacement += buttonWidth;
             } else {
                 let revisitedButton:UICButton = selectionButtons[index];
-                if (count != 0) {
+                if (colorCount != 0) {
                     columnDisplacement += columnGap;
                     revisitedButton.translate(newOriginalFrame: CGRect(x: columnDisplacement, y: rowGap, width: buttonWidth, height: buttonHeight));
                     columnDisplacement += buttonWidth;
                 } else {
-                    print(numOfUniqueGridColors );
+                    count += 1;
                     if (numOfUniqueGridColors + 1 == 1) {
-                        print("uno")
                         revisitedButton.shrinkType = .mid;
                     } else if (numOfUniqueGridColors + 1 == 2) {
-                        print("dos")
-                        if (index == 0) {
+                        if (count > index) {
                             revisitedButton.shrinkType = .left;
                         } else {
                             revisitedButton.shrinkType = .right;
                         }
                     } else {
-                        print("mas")
-                        if (index == 0) {
+                        if (count > index) {
                             revisitedButton.shrinkType = .left;
-                        } else if (index == numOfUniqueGridColors - 1) {
-                            revisitedButton.shrinkType = .mid;
-                        } else {
+                        } else if (index > count) {
                             revisitedButton.shrinkType = .right;
+                        } else {
+                            revisitedButton.shrinkType = .mid;
                         }
                     }
                     revisitedButton.shrink();

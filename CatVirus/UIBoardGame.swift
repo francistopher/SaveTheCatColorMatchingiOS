@@ -158,14 +158,15 @@ class UIBoardGame: UIView {
             catButton.giveMouseCoin(withNoise: true);
             if (cats.arePodded()) {
                 colorOptions!.selectedColor = UIColor.lightGray;
-                promote();
                 colorOptions!.isTransitioned = false;
+                promote();
             }
         } else {
-            catButton.layer.borderColor! = UIColor.clear.cgColor;
-            colorOptions!.selectedColor = UIColor.lightGray;
-            colorOptions!.isTransitioned = false;
-            restart();
+            cats.setAsDead();
+//            catButton.layer.borderColor! = UIColor.clear.cgColor;
+//            colorOptions!.selectedColor = UIColor.lightGray;
+//            colorOptions!.isTransitioned = false;
+//            restart();
         }
     }
     

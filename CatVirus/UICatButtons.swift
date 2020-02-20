@@ -52,7 +52,7 @@ class UICatButtons {
     
     func reset() {
         loadPreviousCats();
-        cats = [UICatButton]();
+        cats.removeAll();
     }
     
     func loadPreviousCats() {
@@ -62,19 +62,11 @@ class UICatButtons {
         }
     }
     
-//    func giveMouseCoins() {
-//        var mutatingCount:Double = 0.0;
-//        let squareRoot:Double = Double(cats.count).squareRoot();
-//        mutatingCount += squareRoot;
-//        for catButtonIndex in 0..<cats.count {
-//            if (Double(catButtonIndex + 1) < mutatingCount) {
-//                cats[catButtonIndex].giveMouseCoin(withNoise: false);
-//            } else {
-//                cats[catButtonIndex].giveMouseCoin(withNoise: true);
-//                mutatingCount += squareRoot;
-//            }
-//        }
-//    }
+    func setAsDead() {
+        for catButton in cats {
+            catButton.setAsDead();
+        }
+    }
     
     func arePodded() -> Bool{
         for catButton in cats {

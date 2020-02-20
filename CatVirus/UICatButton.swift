@@ -201,13 +201,18 @@ class UICatButton: UIButton {
         self.superview!.superview!.addSubview(self);
     }
     
-    func disperseRadially() {
-        self.imageContainerButton!.backgroundColor = .clear;
+    func setAsDead() {
+//        self.imageContainerButton!.backgroundColor = .clear;
         self.imageContainerButton!.layer.borderWidth = 0.0;
         self.layer.borderWidth = 0.0;
-        displaceBoundsOntoMainView();
         self.setCat(named: "DeadCat", stage: 2);
-        self.imageView!.layer.removeAllAnimations();
+        self.imageContainerButton!.imageView!.layer.removeAllAnimations();
+        self.imageContainerButton!.backgroundColor = self.imageContainerButton!.originalBackgroundColor;
+        self.backgroundColor = self.imageContainerButton!.originalBackgroundColor;
+    }
+    
+    func disperseRadially() {
+        displaceBoundsOntoMainView();
         let angle:CGFloat = CGFloat(Int.random(in: 0...360));
         let targetPointX:CGFloat = getRadialXTargetPoint(parentFrame: self.superview!.frame, childFrame: self.frame, angle: angle);
         let targetPointY:CGFloat = getRadialYTargetPoint(parentFrame: self.superview!.frame, childFrame: self.frame, angle: angle);

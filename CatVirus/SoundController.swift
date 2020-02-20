@@ -11,10 +11,17 @@ import AVFoundation
 
 class SoundController {
     
-       
-    static var coinEarnedPath:String? = nil;
-    static var coinEarnedUrl:URL? = nil;
+    static var coinEarnedPath:String?
+    static var coinEarnedUrl:URL?
     static var coinEarnedSoundEffect:AVAudioPlayer?
+    
+    static var coinEarnedPath2:String?
+    static var coinEarnedUrl2:URL?
+    static var coinEarnedSoundEffect2:AVAudioPlayer?
+    
+    static var coinEarnedPath3:String?
+    static var coinEarnedUrl3:URL?
+    static var coinEarnedSoundEffect3:AVAudioPlayer?
     
     static var kittenMeowPath:String?
     static var kittenMeowUrl:URL?
@@ -28,8 +35,8 @@ class SoundController {
     static var kittenMeowUrl3:URL?
     static var kittenMeowSoundEffect3:AVAudioPlayer?
     
-    static var kittenDiePath:String? = nil;
-    static var kittenDieUrl:URL? = nil;
+    static var kittenDiePath:String?
+    static var kittenDieUrl:URL?
     static var kittenDieSoundEffect:AVAudioPlayer?
 
     static var mozartSonataPath:String?
@@ -37,9 +44,14 @@ class SoundController {
     static var mozartSonataSoundEffect:AVAudioPlayer?
     
     static func coinEarned() {
-        if (!SoundController.coinEarnedSoundEffect!.isPlaying) {
+        if (SoundController.coinEarnedSoundEffect!.isPlaying) {
+            if (SoundController.coinEarnedSoundEffect2!.isPlaying) {
+                SoundController.coinEarnedSoundEffect3!.play();
+            } else {
+                SoundController.coinEarnedSoundEffect2!.play();
+            }
+        } else {
             SoundController.coinEarnedSoundEffect!.play();
-            SoundController.coinEarnedSoundEffect!.prepareToPlay();
         }
     }
     
@@ -52,6 +64,26 @@ class SoundController {
             print("Unable to play coin earned");
         }
     }
+    
+    static func setupCoinEarned2() {
+       SoundController.coinEarnedPath2 = Bundle.main.path(forResource: "coinEarned.mp3", ofType: nil);
+       SoundController.coinEarnedUrl2 = URL(fileURLWithPath: SoundController.coinEarnedPath2!);
+       do {
+           SoundController.coinEarnedSoundEffect2 = try AVAudioPlayer(contentsOf: SoundController.coinEarnedUrl2!);
+       } catch {
+           print("Unable to play coin earned");
+       }
+    }
+    
+    static func setupCoinEarned3() {
+       SoundController.coinEarnedPath3 = Bundle.main.path(forResource: "coinEarned.mp3", ofType: nil);
+       SoundController.coinEarnedUrl3 = URL(fileURLWithPath: SoundController.coinEarnedPath3!);
+       do {
+           SoundController.coinEarnedSoundEffect3 = try AVAudioPlayer(contentsOf: SoundController.coinEarnedUrl3!);
+       } catch {
+           print("Unable to play coin earned");
+       }
+   }
     
     static func kittenMeow() {
         if (SoundController.kittenMeowSoundEffect!.isPlaying) {

@@ -62,7 +62,7 @@ class UICatButtons {
         }
     }
     
-    func setAsDead() {
+    func areNowDead() {
         for catButton in cats {
             catButton.setAsDead();
         }
@@ -87,9 +87,7 @@ class UICatButtons {
     
     func disperseRadially() {
         for catButton in cats {
-            if (catButton.isAlive) {
-                catButton.disperseRadially();
-            }
+            catButton.disperseRadially();
         }
     }
     

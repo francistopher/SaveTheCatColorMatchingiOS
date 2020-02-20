@@ -151,24 +151,31 @@ class UIBoardGame: UIView {
     }
     
     @objc func interaction(catButton:UICatButton, catImageButton:UICButton){
-        if (catButton.originalBackgroundColor.cgColor == colorOptions!.selectedColor.cgColor){
-            catImageButton.fadeBackgroundIn(color: colorOptions!.selectedColor);
-            catButton.pod();
-            catButton.isPodded = true;
-            catButton.giveMouseCoin(withNoise: true);
-            if (cats.arePodded()) {
-                colorOptions!.selectedColor = UIColor.lightGray;
-                colorOptions!.isTransitioned = false;
-                promote();
+        if (cats.cats[0].isAlive) {
+            if (catButton.originalBackgroundColor.cgColor == colorOptions!.selectedColor.cgColor){
+                catImageButton.fadeBackgroundIn(color: colorOptions!.selectedColor);
+                catButton.pod();
+                catButton.isPodded = true;
+                catButton.giveMouseCoin(withNoise: true);
+                if (cats.arePodded()) {
+                    colorOptions!.selectedColor = UIColor.lightGray;
+                    colorOptions!.isTransitioned = false;
+                    promote();
+                }
+            } else {
+                SoundController.kittenDie();
+                SoundController.mozartSonata(play: false);
+                colorOptions!.removeBorderOfSelectionButtons();
+                cats.areNowDead();
             }
         } else {
-            SoundController.kittenDie();
-            cats.setAsDead();
-            catButton.layer.borderColor! = UIColor.clear.cgColor;
-            colorOptions!.selectedColor = UIColor.lightGray;
-            colorOptions!.shrinkSelectionButtons();
-//            colorOptions!.isTransitioned = false;
-//            restart();
+            if (colorOptions!.isTransitioned) {
+                SoundController.mozartSonata(play: true);
+                colorOptions!.isTransitioned = false;
+                colorOptions!.selectedColor = UIColor.lightGray;
+                cats.disperseRadially();
+                restart();
+            }
         }
     }
     

@@ -214,10 +214,12 @@ class UICatButton: UIButton {
     
     func disperseRadially() {
         displaceBoundsOntoMainView();
+        self.backgroundColor = UIColor.clear;
+        self.imageContainerButton!.backgroundColor = UIColor.clear;
         let angle:CGFloat = CGFloat(Int.random(in: 0...360));
         let targetPointX:CGFloat = getRadialXTargetPoint(parentFrame: self.superview!.frame, childFrame: self.frame, angle: angle);
         let targetPointY:CGFloat = getRadialYTargetPoint(parentFrame: self.superview!.frame, childFrame: self.frame, angle: angle);
-        UIView.animate(withDuration: 2.5, delay: 0.25, options: .curveEaseIn, animations: {
+        UIView.animate(withDuration: 1.75, delay: 0.125, options: .curveEaseIn, animations: {
             self.transform = self.transform.rotated(by: CGFloat.pi);
             let newFrame:CGRect = CGRect(x: targetPointX, y:targetPointY, width: self.frame.width, height: self.frame.height);
             self.frame = newFrame;

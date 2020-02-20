@@ -46,7 +46,7 @@ class UIColorOptions: UIView {
         } while(true);
     }
     
-    func shrinkSelectionButtons() {
+    func removeBorderOfSelectionButtons() {
         for selectionButton in selectionButtons {
             selectionButton.layer.borderWidth = 0.0;
         }
@@ -116,7 +116,6 @@ class UIColorOptions: UIView {
                 } else {
                     selectionButton.unSelect();
                 }
-                
             }
         }
     }

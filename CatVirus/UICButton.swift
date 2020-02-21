@@ -66,7 +66,6 @@ class UICButton:UIButton {
     
     func shrink(){
         self.layer.removeAllAnimations();
-        print(self.shrinkType);
         UIView.animate(withDuration: 0.75, delay: 0.125, options: .curveEaseIn, animations: {
             var x:CGFloat = 0.0;
             switch(self.shrinkType) {
@@ -78,7 +77,6 @@ class UICButton:UIButton {
                 x = self.parentView!.frame.width;
             }
             self.frame = CGRect(x: x, y: self.frame.minY, width: 0.0, height: self.frame.height);
-            
         }, completion: { _ in
             self.removeFromSuperview();
         });

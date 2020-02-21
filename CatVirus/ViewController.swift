@@ -76,6 +76,7 @@ class ViewController: UIViewController {
         SoundController.setupKittenMeow3();
         SoundController.setupKittenDie();
         SoundController.setupMozartSonata();
+        SoundController.setupChopinPrelude();
     }
     
     func setupMainViewDimensionProperties() {

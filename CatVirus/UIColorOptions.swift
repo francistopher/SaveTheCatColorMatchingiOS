@@ -68,6 +68,7 @@ class UIColorOptions: UIView {
                 button = UICButton(parentView: self,  frame:CGRect(x: columnDisplacement, y: rowGap, width: buttonWidth, height: buttonHeight), backgroundColor: UIColor(cgColor: selectionColor));
                 button!.frame = button!.shrunkFrame!;
                 button!.grow();
+                
                 button!.addTarget(self, action: #selector(selectColorOption), for: .touchUpInside);
                 selectionButtons.append(button!);
                 columnDisplacement += buttonWidth;
@@ -100,12 +101,14 @@ class UIColorOptions: UIView {
                 }
                 index += 1;
             }
-            
+        }
+        if (setup) {
+            boardGameView!.statistics.stageStartTime = CFAbsoluteTimeGetCurrent();
         }
     }
     
     @objc func selectColorOption(colorOption:UICButton!){
-        if (boardGameView!.cats.cats[0].isAlive) {
+        if (boardGameView!.cats.presentCollection![0].isAlive) {
             selectedColor = colorOption.backgroundColor!;
             buildColorOptionButtons(setup: false);
             transitionBackgroundColorOfButtonsToLightGray();
@@ -119,11 +122,14 @@ class UIColorOptions: UIView {
             }
         } else {
             if (isTransitioned) {
-                SoundController.mozartSonata(play: true);
-                isTransitioned = false;
-                selectedColor = UIColor.lightGray;
-                boardGameView!.cats.disperseRadially();
-                boardGameView!.restart();
+                SoundController.kittenDie();
+                SoundController.mozartSonata(play: false);
+                SoundController.chopinPrelude(play: true);
+                removeBorderOfSelectionButtons();
+                boardGameView!.cats.areNowDead();
+                // App data
+                boardGameView!.statistics.catsThatDied = boardGameView!.cats.presentCollection!.count;
+                boardGameView!.statistics.catsThatLived = 0;
             }
         }
     }

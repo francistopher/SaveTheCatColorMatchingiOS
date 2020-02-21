@@ -10,11 +10,11 @@ import SwiftUI
 
 class UICatButtons {
     
-    var cats:[UICatButton] = [UICatButton]();
-    var previousCats:[UICatButton] = [UICatButton]();
+    var presentCollection:[UICatButton]?
+    var previousCollection:[UICatButton]?
     
     init() {
-        print("Building Cats")
+        presentCollection = [UICatButton]();
     }
     
     func buildCatButton(parent:UIView, frame:CGRect, backgroundColor:UIColor) -> UICatButton {
@@ -22,13 +22,13 @@ class UICatButtons {
         catButton.grow();
         catButton.imageContainerButton!.grow();
         catButton.setCat(named: "SmilingCat", stage:0);
-        cats.append(catButton);
+        presentCollection!.append(catButton);
         return catButton;
     }
     
     func coloredCats() -> [UICatButton] {
         var coloredCats:[UICatButton] = [UICatButton]();
-        for catButton in cats {
+        for catButton in presentCollection! {
             if (catButton.backgroundColor!.cgColor != UIColor.lightGray.cgColor) {
                 coloredCats.append(catButton);
             }
@@ -38,7 +38,7 @@ class UICatButtons {
     
     func borderedCats() -> [UICatButton] {
         var borderedCats:[UICatButton] = [UICatButton]();
-        for catButton in cats {
+        for catButton in presentCollection! {
             if (catButton.layer.borderWidth != 0.0) {
                 borderedCats.append(catButton);
             }
@@ -47,29 +47,29 @@ class UICatButtons {
     }
     
     func count() -> Int {
-        return cats.count;
+        return presentCollection!.count;
     }
     
     func reset() {
         loadPreviousCats();
-        cats.removeAll();
+        presentCollection!.removeAll();
     }
     
     func loadPreviousCats() {
-        previousCats = [UICatButton]();
-        for cat in cats {
-            previousCats.append(cat);
+        previousCollection = [UICatButton]();
+        for cat in presentCollection! {
+            previousCollection!.append(cat);
         }
     }
     
     func areNowDead() {
-        for catButton in cats {
+        for catButton in presentCollection! {
             catButton.setAsDead();
         }
     }
     
     func arePodded() -> Bool{
-        for catButton in cats {
+        for catButton in presentCollection! {
             if (!catButton.isPodded) {
                 return false;
             }
@@ -78,7 +78,7 @@ class UICatButtons {
     }
     
     func disperseVertically() {
-        for catButton in cats {
+        for catButton in presentCollection! {
             if (catButton.isAlive) {
                  catButton.disperseVertically();
             }
@@ -86,44 +86,44 @@ class UICatButtons {
     }
     
     func disperseRadially() {
-        for catButton in cats {
+        for catButton in presentCollection! {
             catButton.disperseRadially();
         }
     }
     
     func resumeCatAnimations() {
-        for catButton in cats {
+        for catButton in presentCollection! {
             catButton.animate(AgainWithoutDelay: true);
         }
     }
     
     func activateCatsForUIStyle() {
-        for catIndex in 0..<cats.count {
-            if (cats.count == 0) {
-                previousCats[catIndex].animate(AgainWithoutDelay: false);
-                previousCats[catIndex].setStyle();
+        for catIndex in 0..<presentCollection!.count {
+            if (presentCollection!.count == 0) {
+                previousCollection![catIndex].animate(AgainWithoutDelay: false);
+                previousCollection![catIndex].setStyle();
             } else {
-                cats[catIndex].animate(AgainWithoutDelay: false);
-                cats[catIndex].setStyle();
+                presentCollection![catIndex].animate(AgainWithoutDelay: false);
+                presentCollection![catIndex].setStyle();
             }
         }
     }
     
     func suspendCatAnimations() {
-        for catButton in cats {
+        for catButton in presentCollection! {
             catButton.hideCat();
         }
     }
     
     func transitionCatButtonBackgroundToLightgrey() {
-        for catButton in cats {
+        for catButton in presentCollection! {
             catButton.imageContainerButton!.fadeBackgroundIn(color:UIColor.lightGray);
             catButton.fadeBackgroundIn(color: UIColor.lightGray);
         }
     }
     
     func removePreviousCatButtonsFromSuperView() {
-        for catButton in previousCats {
+        for catButton in previousCollection! {
             catButton.removeFromSuperview();
         }
     }

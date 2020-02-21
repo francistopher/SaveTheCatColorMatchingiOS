@@ -70,7 +70,7 @@ class UISettingsButton:UIButton {
                 gearSpinningSoundEffect = try AVAudioPlayer(contentsOf: gearSpinningURL!);
             gearSpinningSoundEffect!.volume = 0.5;
            } catch {
-               print("Unable to play gear spinning");
+               print("Unable to play gearSpinning sound effect.");
            }
        }
     

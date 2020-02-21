@@ -43,102 +43,102 @@ class SoundController {
     static var mozartSonataUrl:URL?
     static var mozartSonataSoundEffect:AVAudioPlayer?
     
+    static var chopinPreludePath:String?
+    static var chopinPreludeUrl:URL?
+    static var chopinPreludeSoundEffect:AVAudioPlayer?
+    
     static func coinEarned() {
-        if (SoundController.coinEarnedSoundEffect!.isPlaying) {
-            if (SoundController.coinEarnedSoundEffect2!.isPlaying) {
-                SoundController.coinEarnedSoundEffect3!.play();
-            } else {
-                SoundController.coinEarnedSoundEffect2!.play();
-            }
+        if (coinEarnedSoundEffect!.isPlaying) {
+            coinEarnedSoundEffect2!.play();
         } else {
-            SoundController.coinEarnedSoundEffect!.play();
+            coinEarnedSoundEffect!.play();
         }
     }
     
     static func setupCoinEarned() {
-        SoundController.coinEarnedPath = Bundle.main.path(forResource: "coinEarned.mp3", ofType: nil);
-        SoundController.coinEarnedUrl = URL(fileURLWithPath: SoundController.coinEarnedPath!);
+        coinEarnedPath = Bundle.main.path(forResource: "coinEarned.mp3", ofType: nil);
+        coinEarnedUrl = URL(fileURLWithPath: coinEarnedPath!);
         do {
-            SoundController.coinEarnedSoundEffect = try AVAudioPlayer(contentsOf: SoundController.coinEarnedUrl!);
+            coinEarnedSoundEffect = try AVAudioPlayer(contentsOf: coinEarnedUrl!);
         } catch {
             print("Unable to play coin earned");
         }
     }
     
     static func setupCoinEarned2() {
-       SoundController.coinEarnedPath2 = Bundle.main.path(forResource: "coinEarned.mp3", ofType: nil);
-       SoundController.coinEarnedUrl2 = URL(fileURLWithPath: SoundController.coinEarnedPath2!);
+       coinEarnedPath2 = Bundle.main.path(forResource: "coinEarned.mp3", ofType: nil);
+       coinEarnedUrl2 = URL(fileURLWithPath: coinEarnedPath2!);
        do {
-           SoundController.coinEarnedSoundEffect2 = try AVAudioPlayer(contentsOf: SoundController.coinEarnedUrl2!);
+           coinEarnedSoundEffect2 = try AVAudioPlayer(contentsOf: coinEarnedUrl2!);
        } catch {
            print("Unable to play coin earned");
        }
     }
     
     static func setupCoinEarned3() {
-       SoundController.coinEarnedPath3 = Bundle.main.path(forResource: "coinEarned.mp3", ofType: nil);
-       SoundController.coinEarnedUrl3 = URL(fileURLWithPath: SoundController.coinEarnedPath3!);
+       coinEarnedPath3 = Bundle.main.path(forResource: "coinEarned.mp3", ofType: nil);
+       coinEarnedUrl3 = URL(fileURLWithPath: coinEarnedPath3!);
        do {
-           SoundController.coinEarnedSoundEffect3 = try AVAudioPlayer(contentsOf: SoundController.coinEarnedUrl3!);
+           coinEarnedSoundEffect3 = try AVAudioPlayer(contentsOf: coinEarnedUrl3!);
        } catch {
            print("Unable to play coin earned");
        }
    }
     
     static func kittenMeow() {
-        if (SoundController.kittenMeowSoundEffect!.isPlaying) {
-            if (SoundController.kittenMeowSoundEffect2!.isPlaying) {
-                SoundController.kittenMeowSoundEffect3!.play();
+        if (kittenMeowSoundEffect!.isPlaying) {
+            if (kittenMeowSoundEffect2!.isPlaying) {
+                kittenMeowSoundEffect3!.play();
             } else {
-                SoundController.kittenMeowSoundEffect2!.play();
+                kittenMeowSoundEffect2!.play();
             }
         } else {
-            SoundController.kittenMeowSoundEffect!.play();
+            kittenMeowSoundEffect!.play();
         }
     }
     
     static func setupKittenMeow() {
-        SoundController.kittenMeowPath = Bundle.main.path(forResource: "kittenMeow.mp3", ofType: nil);
-        SoundController.kittenMeowUrl = URL(fileURLWithPath: SoundController.kittenMeowPath!);
+        kittenMeowPath = Bundle.main.path(forResource: "kittenMeow.mp3", ofType: nil);
+        kittenMeowUrl = URL(fileURLWithPath: kittenMeowPath!);
         do {
-            SoundController.kittenMeowSoundEffect = try AVAudioPlayer(contentsOf: SoundController.kittenMeowUrl!);
+            kittenMeowSoundEffect = try AVAudioPlayer(contentsOf: kittenMeowUrl!);
         } catch {
             print("Unable to play kitten meow");
         }
     }
     
     static func setupKittenMeow2() {
-        SoundController.kittenMeowPath2 = Bundle.main.path(forResource: "kittenMeow.mp3", ofType: nil);
-        SoundController.kittenMeowUrl2 = URL(fileURLWithPath: SoundController.kittenMeowPath2!);
+        kittenMeowPath2 = Bundle.main.path(forResource: "kittenMeow.mp3", ofType: nil);
+        kittenMeowUrl2 = URL(fileURLWithPath: kittenMeowPath2!);
         do {
-            SoundController.kittenMeowSoundEffect2 = try AVAudioPlayer(contentsOf: SoundController.kittenMeowUrl2!);
+            kittenMeowSoundEffect2 = try AVAudioPlayer(contentsOf: SoundController.kittenMeowUrl2!);
         } catch {
             print("Unable to play kitten meow");
         }
     }
     
     static func setupKittenMeow3() {
-        SoundController.kittenMeowPath3 = Bundle.main.path(forResource: "kittenMeow.mp3", ofType: nil);
-        SoundController.kittenMeowUrl3 = URL(fileURLWithPath: SoundController.kittenMeowPath3!);
+        kittenMeowPath3 = Bundle.main.path(forResource: "kittenMeow.mp3", ofType: nil);
+        kittenMeowUrl3 = URL(fileURLWithPath: kittenMeowPath3!);
         do {
-            SoundController.kittenMeowSoundEffect3 = try AVAudioPlayer(contentsOf: SoundController.kittenMeowUrl3!);
+            kittenMeowSoundEffect3 = try AVAudioPlayer(contentsOf: kittenMeowUrl3!);
         } catch {
             print("Unable to play kitten meow");
         }
     }
     
     static func kittenDie() {
-        if (!SoundController.kittenDieSoundEffect!.isPlaying){
-            SoundController.kittenDieSoundEffect!.play();
-            SoundController.kittenDieSoundEffect!.prepareToPlay();
+        if (!kittenDieSoundEffect!.isPlaying){
+            kittenDieSoundEffect!.play();
+            kittenDieSoundEffect!.prepareToPlay();
         }
     }
     
     static func setupKittenDie() {
-        SoundController.kittenDiePath = Bundle.main.path(forResource: "kittenDie.mp3", ofType: nil);
-        SoundController.kittenDieUrl = URL(fileURLWithPath: SoundController.kittenDiePath!);
+        kittenDiePath = Bundle.main.path(forResource: "kittenDie.mp3", ofType: nil);
+        kittenDieUrl = URL(fileURLWithPath: kittenDiePath!);
         do {
-           SoundController.kittenDieSoundEffect = try AVAudioPlayer(contentsOf: SoundController.kittenDieUrl!);
+           kittenDieSoundEffect = try AVAudioPlayer(contentsOf: kittenDieUrl!);
         } catch {
            print("Unable to play kitten die");
         }
@@ -146,26 +146,45 @@ class SoundController {
     
     static func mozartSonata(play:Bool) {
         if (play) {
-            if (SoundController.mozartSonataSoundEffect!.volume == 0.0) {
+            if (mozartSonataSoundEffect!.volume == 0.0) {
                 let timeInterval:TimeInterval = TimeInterval(1.0);
-                SoundController.mozartSonataSoundEffect!.setVolume(1.0, fadeDuration: timeInterval);
+                mozartSonataSoundEffect!.setVolume(0.5, fadeDuration: timeInterval);
             } else {
-                SoundController.mozartSonataSoundEffect!.play();
+                mozartSonataSoundEffect!.play();
             }
         } else {
-            let timeInterval:TimeInterval = TimeInterval(1.0);
-            SoundController.mozartSonataSoundEffect!.setVolume(0.0, fadeDuration: timeInterval);
+            let timeInterval:TimeInterval = TimeInterval(0.5);
+            mozartSonataSoundEffect!.setVolume(0.0, fadeDuration: timeInterval);
         }
     }
     
     static func setupMozartSonata() {
-        SoundController.mozartSonataPath = Bundle.main.path(forResource: "mozartSonata.mp3", ofType: nil);
-        SoundController.mozartSonataUrl = URL(fileURLWithPath: SoundController.mozartSonataPath!);
+        mozartSonataPath = Bundle.main.path(forResource: "mozartSonata.mp3", ofType: nil);
+        mozartSonataUrl = URL(fileURLWithPath: mozartSonataPath!);
         do {
-            SoundController.mozartSonataSoundEffect = try AVAudioPlayer(contentsOf: SoundController.mozartSonataUrl!);
-            SoundController.mozartSonataSoundEffect!.numberOfLoops = -1;
+            mozartSonataSoundEffect = try AVAudioPlayer(contentsOf: mozartSonataUrl!);
+            mozartSonataSoundEffect!.numberOfLoops = -1;
         } catch {
             print("Unable to play mozart sonata");
+        }
+    }
+    
+    static func chopinPrelude(play:Bool) {
+        if (play) {
+            chopinPreludeSoundEffect!.play();
+        } else {
+            chopinPreludeSoundEffect!.stop();
+            setupChopinPrelude();
+        }
+    }
+    
+    static func setupChopinPrelude() {
+        chopinPreludePath = Bundle.main.path(forResource: "chopinPrelude.mp3", ofType: nil);
+        chopinPreludeUrl = URL(fileURLWithPath: chopinPreludePath!);
+        do {
+            chopinPreludeSoundEffect = try AVAudioPlayer(contentsOf: chopinPreludeUrl!);
+        } catch {
+            print("Unable to play chopin prelude");
         }
     }
 }

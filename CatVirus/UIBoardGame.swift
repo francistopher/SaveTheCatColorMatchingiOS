@@ -13,15 +13,13 @@ class UIBoardGame: UIView {
     var colorOptions:UIColorOptions? = nil;
     var gridColorsCount:[CGColor:Int] = [:]
     var gridColors:[[UIColor]]? = nil;
-    
     var currentStage:Int = 1;
     var columnsAndRows:[Int] = [];
     let cats:UICatButtons = UICatButtons();
-    
     var successGradientLayer:CAGradientLayer? = nil;
     var settingsButton:UISettingsButton? = nil;
+    var statistics:UIStatistics = UIStatistics();
    
-    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented");
     }
@@ -151,29 +149,46 @@ class UIBoardGame: UIView {
     }
     
     @objc func interaction(catButton:UICatButton, catImageButton:UICButton){
-        if (cats.cats[0].isAlive) {
+        // Selection of a color option is made after fresh new round
+        if (cats.presentCollection![0].isAlive && colorOptions!.selectedColor.cgColor != UIColor.lightGray.cgColor) {
+            // Correct matching grid button color and selection color
             if (catButton.originalBackgroundColor.cgColor == colorOptions!.selectedColor.cgColor){
                 catImageButton.fadeBackgroundIn(color: colorOptions!.selectedColor);
                 catButton.pod();
                 catButton.isPodded = true;
                 catButton.giveMouseCoin(withNoise: true);
+                // Check if all the cats have been podded
                 if (cats.arePodded()) {
+                    statistics.stageEndTime = CFAbsoluteTimeGetCurrent();
                     colorOptions!.selectedColor = UIColor.lightGray;
                     colorOptions!.isTransitioned = false;
+                    // Add data of survived cats
+                    statistics.catsThatLived += cats.presentCollection!.count;
+                    statistics.loadStageTimeLengths(stage: currentStage);
                     promote();
                 }
+                // Incorrect match
             } else {
                 SoundController.kittenDie();
                 SoundController.mozartSonata(play: false);
+                SoundController.chopinPrelude(play: true);
                 colorOptions!.removeBorderOfSelectionButtons();
                 cats.areNowDead();
+                // App data of dead cats
+                statistics.catsThatDied = cats.presentCollection!.count;
+                statistics.printSessionStatistics();
             }
         } else {
             if (colorOptions!.isTransitioned) {
+                statistics.catsThatLived = 0;
+                statistics.stageTimeLength = [:];
+                SoundController.chopinPrelude(play: false);
                 SoundController.mozartSonata(play: true);
                 colorOptions!.isTransitioned = false;
                 colorOptions!.selectedColor = UIColor.lightGray;
                 restart();
+            } else {
+                SoundController.kittenMeow();
             }
         }
     }

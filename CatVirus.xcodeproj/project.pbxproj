@@ -14,6 +14,8 @@
 		B833545623EC8F0B00835672 /* podDatCat.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = B833545423EC8F0B00835672 /* podDatCat.xcdatamodeld */; };
 		B833545823EC8F1400835672 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B833545723EC8F1400835672 /* Assets.xcassets */; };
 		B833545B23EC8F1400835672 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B833545923EC8F1400835672 /* LaunchScreen.storyboard */; };
+		B835801C23FF24CE00A2A211 /* chopinPrelude.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = B835801B23FF24CE00A2A211 /* chopinPrelude.mp3 */; };
+		B835801E23FF587600A2A211 /* UIStatistics.swift in Sources */ = {isa = PBXBuildFile; fileRef = B835801D23FF587600A2A211 /* UIStatistics.swift */; };
 		B8366D3723F772270043B45F /* kittenMeow.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = B8366D3623F772270043B45F /* kittenMeow.mp3 */; };
 		B8366D3D23F842C20043B45F /* mouseCoin.png in Resources */ = {isa = PBXBuildFile; fileRef = B8366D3C23F842C20043B45F /* mouseCoin.png */; };
 		B8366D4123F86BE10043B45F /* gearSpinning.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = B8366D4023F86BE10043B45F /* gearSpinning.mp3 */; };
@@ -75,6 +77,8 @@
 		B833545723EC8F1400835672 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B833545A23EC8F1400835672 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B833545C23EC8F1400835672 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B835801B23FF24CE00A2A211 /* chopinPrelude.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = chopinPrelude.mp3; sourceTree = "<group>"; };
+		B835801D23FF587600A2A211 /* UIStatistics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIStatistics.swift; sourceTree = "<group>"; };
 		B8366D3623F772270043B45F /* kittenMeow.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = kittenMeow.mp3; sourceTree = "<group>"; };
 		B8366D3C23F842C20043B45F /* mouseCoin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mouseCoin.png; sourceTree = "<group>"; };
 		B8366D4023F86BE10043B45F /* gearSpinning.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = gearSpinning.mp3; sourceTree = "<group>"; };
@@ -172,6 +176,7 @@
 		B8366D3523F772180043B45F /* Audio */ = {
 			isa = PBXGroup;
 			children = (
+				B835801B23FF24CE00A2A211 /* chopinPrelude.mp3 */,
 				B8366D4623F8956C0043B45F /* kittenDie.mp3 */,
 				B8366D4023F86BE10043B45F /* gearSpinning.mp3 */,
 				B8366D3623F772270043B45F /* kittenMeow.mp3 */,
@@ -213,6 +218,7 @@
 				B8FBD68B23F5D41100C8B50D /* Settings Menu Bar */,
 				B88F999023F3994D003ED805 /* Virus */,
 				B8AE017023ECB180007A6142 /* UICenterKit.swift */,
+				B835801D23FF587600A2A211 /* UIStatistics.swift */,
 				B88F996C23F09BB4003ED805 /* UISettingsButton.swift */,
 				B8AE017A23ECCE3B007A6142 /* UIBoardGame.swift */,
 				B8AE017C23ECD077007A6142 /* UIColorOptions.swift */,
@@ -447,6 +453,7 @@
 				B8FBD6BF23F605B000C8B50D /* darkStats.png in Resources */,
 				B8FBD6A323F5E65F00C8B50D /* darkRestart.png in Resources */,
 				B8FBD6CE23F60D9E00C8B50D /* darkMultiplayer.png in Resources */,
+				B835801C23FF24CE00A2A211 /* chopinPrelude.mp3 in Resources */,
 				B8FBD6B523F5FD7A00C8B50D /* lightRestart.png in Resources */,
 				B8FBD68423F59D2D00C8B50D /* lightGear.png in Resources */,
 				B8FBD6BD23F6048600C8B50D /* lightRestart1.png in Resources */,
@@ -501,6 +508,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B8AE017323ECB25C007A6142 /* UICLabel.swift in Sources */,
+				B835801E23FF587600A2A211 /* UIStatistics.swift in Sources */,
 				B833545623EC8F0B00835672 /* podDatCat.xcdatamodeld in Sources */,
 				B8FBD69A23F5E1EA00C8B50D /* UIRestart.swift in Sources */,
 				B833544C23EC8F0B00835672 /* AppDelegate.swift in Sources */,

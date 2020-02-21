@@ -95,9 +95,10 @@ class UIColorOptions: UIView {
                             revisitedButton.shrinkType = .right;
                         }
                     } else {
+                        print("Count: \(count) Index: \(index) Unique: \(numOfUniqueGridColors + 1)")
                         if (count > index) {
                             revisitedButton.shrinkType = .left;
-                        } else if (index > count) {
+                        } else if (index == numOfUniqueGridColors) {
                             revisitedButton.shrinkType = .right;
                         } else {
                             revisitedButton.shrinkType = .mid;

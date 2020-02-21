@@ -76,11 +76,15 @@ class UIStatistics:UICView {
     func setupStageTimeLabels() {
         // Setup stage label
         stageLabel = UICLabel(parentView: scrollView!, x: 0.0, y: contentY, width: scrollView!.frame.width * 0.5, height: unitHeight! * 0.5);
+        stageLabel!.isInverted = true;
+        stageLabel!.setStyle();
         stageLabel!.text = "Stage";
         stageLabel!.font = UIFont.boldSystemFont(ofSize: stageLabel!.frame.height * 0.40);
         contentHeight! += stageLabel!.frame.height;
         // Setup time label
         timeLabel = UICLabel(parentView: scrollView!, x: stageLabel!.frame.width - 1, y: contentY, width: scrollView!.frame.width * 0.5, height: unitHeight! * 0.5);
+        timeLabel!.isInverted = true;
+        timeLabel!.setStyle();
         timeLabel!.text = "Time";
         timeLabel!.font = UIFont.boldSystemFont(ofSize: timeLabel!.frame.height * 0.40);
         contentY += timeLabel!.frame.height;
@@ -135,7 +139,6 @@ class UIStatistics:UICView {
         gameOverLabel!.setStyle();
         contentHeight = gameOverLabel!.frame.height;
         contentY = gameOverLabel!.frame.maxY;
-        contentY += self.layer.borderWidth;
     }
     
     func setupScrollView() {

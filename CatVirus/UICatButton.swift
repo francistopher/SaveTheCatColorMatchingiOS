@@ -9,19 +9,17 @@
 import SwiftUI
 import AVFoundation
 
+enum Cat {
+    case fat
+    case standard
+}
+
 class UICatButton: UIButton {
-    
-    enum Cat {
-        case fat
-        case standard
-        
-    }
     
     var originalFrame:CGRect? = nil;
     var previousFileName:String = "";
     var animationStage:Int = 0;
     
-    var selectedCat:Cat = .standard;
     var originalBackgroundColor:UIColor = .clear;
     var imageContainerButton:UICButton? = nil;
     var isAlive:Bool = true;
@@ -98,33 +96,17 @@ class UICatButton: UIButton {
         });
     }
     
-    func getCatFileName(named:String) -> String {
-        switch (selectedCat) {
-        case Cat.fat:
-            return "fat" + named;
-        case Cat.standard:
-            return named;
-        }
-    }
-    
     func setCat(named:String, stage:Int){
         // Save non empty strings only
         if (named != "") {
-            previousFileName = getCatFileName(named:named) + ".png";
-        }
-        // Build cat directory string
-        var namedCatImage:String = "";
-        if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1){
-            namedCatImage += "light" + previousFileName;
-        } else{
-            namedCatImage += "dark" + previousFileName;
+            previousFileName = UIStatistics.getCatFileName(named:named) + ".png";
         }
         // Clear background if cat dies
         if (stage == 2) {
             self.backgroundColor = UIColor.clear;
         }
         // Configure the image icon
-        let iconImage:UIImage? = UIImage(named: namedCatImage);
+        let iconImage:UIImage? = UIImage(named: previousFileName);
         self.imageContainerButton!.setImage(iconImage, for: .normal);
         self.imageContainerButton!.imageView!.contentMode = UIView.ContentMode.scaleAspectFill;
         // Set the animation stage

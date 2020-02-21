@@ -11,6 +11,8 @@ import UIKit
 
 class UICLabel:UILabel {
     
+    var isInverted:Bool = false;
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -23,7 +25,10 @@ class UICLabel:UILabel {
         parentView.addSubview(self);
     }
     
-    
+    override func drawText(in rect: CGRect) {
+        let insets = UIEdgeInsets(top: 0, left: ViewController.staticUnitViewWidth, bottom: 0, right: ViewController.staticUnitViewWidth)//CGRect.inset(by:)
+        super.drawText(in: rect.inset(by: insets))
+    }
     
     func fadeInAndOut(){
         UIView.animate(withDuration: 2, delay: 0.5, options: .curveEaseIn, animations: {
@@ -38,10 +43,22 @@ class UICLabel:UILabel {
     }
     
     func setStyle() {
-        if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1) {
-            self.textColor = UIColor.black;
+        if (isInverted) {
+            if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1) {
+                self.textColor = UIColor.white;
+                self.backgroundColor = UIColor.black;
+            } else {
+                self.textColor = UIColor.black;
+                self.backgroundColor = UIColor.white;
+            }
         } else {
-            self.textColor = UIColor.white;
+            if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1) {
+                self.textColor = UIColor.black;
+                self.backgroundColor = UIColor.white;
+            } else {
+                self.textColor = UIColor.white;
+                self.backgroundColor = UIColor.black;
+            }
         }
     }
     

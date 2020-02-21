@@ -35,6 +35,12 @@ class UIColorOptions: UIView {
       })
     }
     
+    func shrinkColorOptions() {
+        for selectionButton in selectionButtons {
+            selectionButton.shrink();
+        }
+    }
+    
     func selectSelectionColors(){
         selectionColors =  [UIColor.systemGreen, UIColor.systemYellow, UIColor.systemOrange, UIColor.systemRed, UIColor.systemPurple, UIColor.systemBlue];
         repeat {
@@ -103,11 +109,14 @@ class UIColorOptions: UIView {
             }
         }
         if (setup) {
-            boardGameView!.statistics.stageStartTime = CFAbsoluteTimeGetCurrent();
+            boardGameView!.statistics!.stageStartTime = CFAbsoluteTimeGetCurrent();
         }
     }
     
     @objc func selectColorOption(colorOption:UICButton!){
+        if (colorOption.backgroundColor!.cgColor == selectedColor.cgColor){
+            return;
+        }
         if (boardGameView!.cats.presentCollection![0].isAlive) {
             selectedColor = colorOption.backgroundColor!;
             buildColorOptionButtons(setup: false);
@@ -128,8 +137,8 @@ class UIColorOptions: UIView {
                 removeBorderOfSelectionButtons();
                 boardGameView!.cats.areNowDead();
                 // App data
-                boardGameView!.statistics.catsThatDied = boardGameView!.cats.presentCollection!.count;
-                boardGameView!.statistics.catsThatLived = 0;
+                boardGameView!.statistics!.catsThatDied = boardGameView!.cats.presentCollection!.count;
+                boardGameView!.statistics!.catsThatLived = 0;
             }
         }
     }

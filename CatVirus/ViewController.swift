@@ -16,6 +16,7 @@ class ViewController: UIViewController {
     var mainViewHeight:CGFloat = 0.0;
     var unitViewWidth:CGFloat = 0.0;
     var unitViewHeight:CGFloat = 0.0;
+    static var staticUnitViewWidth:CGFloat = 0.0;
     
     var introLabel:UICLabel?;
     
@@ -95,6 +96,7 @@ class ViewController: UIViewController {
         }
         unitViewHeight = mainViewHeight / 18.0;
         unitViewWidth = mainViewWidth / 18.0;
+        ViewController.staticUnitViewWidth = unitViewWidth;
     }
     
     func setupIntroLabel(){

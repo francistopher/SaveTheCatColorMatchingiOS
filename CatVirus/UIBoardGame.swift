@@ -18,7 +18,7 @@ class UIBoardGame: UIView {
     let cats:UICatButtons = UICatButtons();
     var successGradientLayer:CAGradientLayer? = nil;
     var settingsButton:UISettingsButton? = nil;
-    var statistics:UIStatistics = UIStatistics();
+    var statistics:UIStatistics?
    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented");
@@ -28,6 +28,7 @@ class UIBoardGame: UIView {
         super.init(frame:CGRect(x: x, y: y, width: width, height: height));
         self.backgroundColor = UIColor.clear;
         self.layer.cornerRadius = width / 5.0;
+        self.statistics = UIStatistics(parentView: parentView);
         parentView.addSubview(self);
     }
     
@@ -159,12 +160,12 @@ class UIBoardGame: UIView {
                 catButton.giveMouseCoin(withNoise: true);
                 // Check if all the cats have been podded
                 if (cats.arePodded()) {
-                    statistics.stageEndTime = CFAbsoluteTimeGetCurrent();
+                    statistics!.stageEndTime = CFAbsoluteTimeGetCurrent();
                     colorOptions!.selectedColor = UIColor.lightGray;
                     colorOptions!.isTransitioned = false;
                     // Add data of survived cats
-                    statistics.catsThatLived += cats.presentCollection!.count;
-                    statistics.loadStageTimeLengths(stage: currentStage);
+                    statistics!.catsThatLived += cats.presentCollection!.count;
+                    statistics!.loadStageTimeLengths(stage: currentStage);
                     promote();
                 }
                 // Incorrect match
@@ -175,13 +176,22 @@ class UIBoardGame: UIView {
                 colorOptions!.removeBorderOfSelectionButtons();
                 cats.areNowDead();
                 // App data of dead cats
-                statistics.catsThatDied = cats.presentCollection!.count;
-                statistics.printSessionStatistics();
+                statistics!.catsThatDied = cats.presentCollection!.count;
+                Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false) { timer in
+                    self.settingsButton!.disable();
+                    self.resetGame(catsSurvived: false);
+                    self.colorOptions!.shrinkColorOptions();
+                    self.statistics!.printSessionStatistics();
+                    self.statistics!.update();
+                    self.statistics!.fadeIn();
+                }
             }
         } else {
             if (colorOptions!.isTransitioned) {
-                statistics.catsThatLived = 0;
-                statistics.stageTimeLength = [:];
+                self.statistics!.fadeOut();
+                statistics!.catsThatLived = 0;
+                statistics!.catsThatDied = 0;
+                statistics!.stageTimeLength = [:];
                 SoundController.chopinPrelude(play: false);
                 SoundController.mozartSonata(play: true);
                 colorOptions!.isTransitioned = false;
@@ -204,8 +214,6 @@ class UIBoardGame: UIView {
     }
     
     func restart(){
-        settingsButton!.disable();
-        resetGame(catsSurvived: false);
         currentStage = 1;
         configureComponentsAfterBoardGameReset();
     }

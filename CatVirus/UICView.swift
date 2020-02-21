@@ -23,13 +23,30 @@ import UIKit
         self.originalFrame = CGRect(x: x, y: y, width: width, height: height);
         self.backgroundColor = backgroundColor;
         self.layer.cornerRadius = height / 5.0;
+        self.setStyle();
         parentView.addSubview(self);
     }
     
-    func fadeIn(){
-       UIView.animate(withDuration: 2, delay: 0.5, options: .curveEaseIn, animations: {
-           super.alpha = 1.0;
-       })
+    func fadeIn() {
+        UIView.animate(withDuration: 1.0, delay: 0.125, options: .curveEaseInOut, animations: {
+            self.alpha = 1.0;
+        })
+    }
+    
+    func fadeOut() {
+        UIView.animate(withDuration: 1.0, delay: 0.125, options: .curveEaseInOut, animations: {
+            self.alpha = 0.0;
+        })
+    }
+    
+    func setStyle() {
+        if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1) {
+            self.layer.borderColor = UIColor.black.cgColor;
+            self.backgroundColor = UIColor.white;
+        } else {
+            self.layer.borderColor = UIColor.white.cgColor;
+            self.backgroundColor = UIColor.black;
+        }
     }
 }
 

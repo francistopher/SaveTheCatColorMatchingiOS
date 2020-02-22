@@ -25,11 +25,6 @@ class UICLabel:UILabel {
         parentView.addSubview(self);
     }
     
-    override func drawText(in rect: CGRect) {
-        let insets = UIEdgeInsets(top: 0, left: ViewController.staticUnitViewWidth * 0.75, bottom: 0, right: ViewController.staticUnitViewWidth * 0.75)
-        super.drawText(in: rect.inset(by: insets))
-    }
-    
     func fadeInAndOut(){
         UIView.animate(withDuration: 2, delay: 0.5, options: .curveEaseIn, animations: {
             super.alpha = 1.0;

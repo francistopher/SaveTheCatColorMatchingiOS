@@ -16,7 +16,7 @@ class ViewController: UIViewController {
     var mainViewHeight:CGFloat = 0.0;
     var unitViewWidth:CGFloat = 0.0;
     var unitViewHeight:CGFloat = 0.0;
-    static var staticUnitViewWidth:CGFloat = 0.0;
+    static var staticUnitViewHeight:CGFloat = 0.0;
     
     var introLabel:UICLabel?;
     
@@ -96,7 +96,7 @@ class ViewController: UIViewController {
         }
         unitViewHeight = mainViewHeight / 18.0;
         unitViewWidth = mainViewWidth / 18.0;
-        ViewController.staticUnitViewWidth = unitViewWidth;
+        ViewController.staticUnitViewHeight = unitViewHeight;
     }
     
     func setupIntroLabel(){
@@ -122,7 +122,7 @@ class ViewController: UIViewController {
     func setupBoardMainView(){
         let boardGameWidth:CGFloat = unitViewHeight * 8;
         boardGame = UIBoardGame(parentView: mainView, x: 0.0, y: 0.0, width: boardGameWidth, height:boardGameWidth);
-        UICenterKit.centerWithVerticalDisplacement(childView: boardGame!, parentRect: mainView.frame, childRect: boardGame!.frame, verticalDisplacement: -unitViewWidth * 0.75);
+        UICenterKit.centerWithVerticalDisplacement(childView: boardGame!, parentRect: mainView.frame, childRect: boardGame!.frame, verticalDisplacement: -unitViewWidth * 0.6);
         boardGame!.successGradientLayer = successGradientLayer!;
         boardGame!.alpha = 0.0;
     }

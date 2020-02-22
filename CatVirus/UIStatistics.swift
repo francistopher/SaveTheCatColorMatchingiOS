@@ -11,17 +11,19 @@ import SwiftUI
 class UIStatistics:UICView {
     
     static var selectedCat:Cat = .standard;
-    
-    var unitHeight:CGFloat?
+    static var mouseCoins:Int = 0;
     
     var gameOverLabel:UICLabel?
     var catsLivedLabel:UICLabel?
     var catsDiedLabel:UICLabel?
+    var catsLivedAmountLabel:UICLabel?
+    var catsDiedAmountLabel:UICLabel?
     var stagesLabel:UICLabel?
     var stagesRangeLabel:UICLabel?
     var durationLabel:UICLabel?
     var durationTimeLabel:UICLabel?
     var continueButton:UICButton?
+    var unitHeight:CGFloat?
     
     // Survival and Death Count
     var entiretyOfCatsThatDied:Int = 0;
@@ -48,8 +50,8 @@ class UIStatistics:UICView {
         self.unitHeight = width / 6.0;
         self.setStyle();
         setupGameOverLabel();
-        setupCatsLivedLabel();
-        setupCatsDiedLabel();
+        setupWavingCatLabel();
+        setupDeadCatLabel();
         setupStagesLabel();
         setupDurationLabel();
         setupContinueButton();
@@ -84,38 +86,47 @@ class UIStatistics:UICView {
         gameOverLabel!.text = "Game Over";
     }
     
-    func setupCatsLivedLabel() {
-        catsLivedLabel = UICLabel(parentView: self, x: 0.0, y: gameOverLabel!.frame.maxY, width: self.frame.width, height: unitHeight!);
-        catsLivedLabel!.textAlignment = NSTextAlignment.right;
-        catsLivedLabel!.text = "x" + String(catsThatLived);
-        catsLivedLabel!.font = UIFont.boldSystemFont(ofSize: catsLivedLabel!.frame.height * 0.40);
-        catsLivedLabel!.backgroundColor = UIColor.white;
+    func setupWavingCatLabel() {
+        catsLivedLabel = UICLabel(parentView: self, x: 0.0, y: gameOverLabel!.frame.maxY, width: self.frame.width * 0.5, height: unitHeight!);
+        catsLivedLabel!.backgroundColor = UIColor.clear;
         setupLivedCatImage();
+        setupCatsLivedAmount();
+    }
+    
+    func setupCatsLivedAmount() {
+        catsLivedAmountLabel = UICLabel(parentView: self, x: self.frame.width * 0.5, y: catsLivedLabel!.frame.minY, width: self.frame.width * 0.5, height: unitHeight!);
+        catsLivedAmountLabel!.font = UIFont.boldSystemFont(ofSize: catsLivedAmountLabel!.frame.height * 0.40);
+        catsLivedAmountLabel!.textColor = UIColor.black;
     }
     
     func setupLivedCatImage() {
-        let livedCatImageButton:UICButton = UICButton(parentView: catsLivedLabel!, frame:CGRect( x: ViewController.staticUnitViewWidth * 0.75, y: 0.0, width: catsLivedLabel!.frame.height * 0.8, height: catsLivedLabel!.frame.height * 0.75), backgroundColor: UIColor.clear);
+        let livedCatImageButton:UICButton = UICButton(parentView: catsLivedLabel!, frame:CGRect( x: ViewController.staticUnitViewHeight * 0.75, y: 0.0, width: catsLivedLabel!.frame.height * 0.8, height: catsLivedLabel!.frame.height * 0.75), backgroundColor: UIColor.clear);
         livedCatImageButton.layer.borderWidth = 0.0;
         livedCatImageButton.setImage(UIImage(named: UIStatistics.getCatFileName(named:"WavingCat.png")), for: .normal);
         livedCatImageButton.imageView!.contentMode = UIView.ContentMode.scaleAspectFill;
-        UICenterKit.centerVertically(childView: livedCatImageButton, parentRect: catsLivedLabel!.frame, childRect: livedCatImageButton.frame);
+        UICenterKit.center(childView: livedCatImageButton, parentRect: catsLivedLabel!.frame, childRect: livedCatImageButton.frame);
     }
     
-    func setupCatsDiedLabel() {
-        catsDiedLabel = UICLabel(parentView: self, x: 0.0, y: catsLivedLabel!.frame.maxY, width: self.frame.width, height: unitHeight!);
-        catsDiedLabel!.textAlignment = NSTextAlignment.right;
-        catsDiedLabel!.text = "x" + String(catsThatDied);
-        catsDiedLabel!.font = UIFont.boldSystemFont(ofSize: catsDiedLabel!.frame.height * 0.40);
+    func setupDeadCatLabel() {
+        catsDiedLabel = UICLabel(parentView: self, x: 0.0, y: catsLivedLabel!.frame.maxY, width: self.frame.width * 0.5, height: unitHeight!);
         catsDiedLabel!.backgroundColor = UIColor.clear;
+        setupCatsDiedAmount();
         setupDeadCatImage();
     }
     
+    func setupCatsDiedAmount() {
+        catsDiedAmountLabel = UICLabel(parentView: self, x: self.frame.width * 0.5, y: catsDiedLabel!.frame.minY, width: self.frame.width * 0.5, height: unitHeight!);
+        catsDiedAmountLabel!.font = UIFont.boldSystemFont(ofSize: catsDiedAmountLabel!.frame.height * 0.40);
+        catsDiedAmountLabel!.backgroundColor = UIColor.clear;
+        catsDiedAmountLabel!.textColor = UIColor.black;
+    }
+    
     func setupDeadCatImage() {
-        let deadCatImageButton:UICButton = UICButton(parentView: catsDiedLabel!, frame:CGRect( x: ViewController.staticUnitViewWidth * 0.75, y: 0.0, width: catsDiedLabel!.frame.height * 0.8, height: catsDiedLabel!.frame.height * 0.75), backgroundColor: UIColor.clear);
+        let deadCatImageButton:UICButton = UICButton(parentView: catsDiedLabel!, frame:CGRect( x: ViewController.staticUnitViewHeight * 0.75, y: 0.0, width: catsDiedLabel!.frame.height * 0.8, height: catsDiedLabel!.frame.height * 0.75), backgroundColor: UIColor.clear);
         deadCatImageButton.layer.borderWidth = 0.0;
         deadCatImageButton.setImage(UIImage(named: UIStatistics.getCatFileName(named: "DeadCat.png")), for: .normal);
         deadCatImageButton.imageView!.contentMode = UIView.ContentMode.scaleAspectFill;
-        UICenterKit.centerVertically(childView: deadCatImageButton, parentRect: catsDiedLabel!.frame, childRect: deadCatImageButton.frame);
+        UICenterKit.center(childView: deadCatImageButton, parentRect: catsDiedLabel!.frame, childRect: deadCatImageButton.frame);
     }
     
     func setupStagesLabel() {
@@ -163,8 +174,8 @@ class UIStatistics:UICView {
     }
     
     func update() {
-        catsLivedLabel!.text = "x" + String(catsThatLived);
-        catsDiedLabel!.text = "x" + String(catsThatDied);
+        catsLivedAmountLabel!.text = String(catsThatLived);
+        catsDiedAmountLabel!.text = String(catsThatDied);
         stagesRangeLabel!.text = "1 - " + finalStage;
         durationTimeLabel!.text = "\(sessionDuration) secs";
     }

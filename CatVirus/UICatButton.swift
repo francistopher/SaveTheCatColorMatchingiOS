@@ -73,6 +73,7 @@ class UICatButton: UIButton {
                 if (withNoise) {
                     SoundController.coinEarned();
                 }
+                UIStatistics.mouseCoins += 1;
                 mouseCoin.removeFromSuperview();
             })
         }

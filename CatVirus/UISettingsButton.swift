@@ -129,13 +129,13 @@ class UISettingsButton:UIButton {
     }
     
     func configureMouseCoinButton(parentView:UICView){
-        mouseCoin = UIMouseCoin(parentView: parentView, x: cellFrame!.width * 6.96, y: 0.0, width: cellFrame!.width, height: cellFrame!.height * 1.025);
-        mouseCoin!.frame = CGRect(x: cellFrame!.width * 0.7125, y: mouseCoin!.frame.minY, width: mouseCoin!.frame.width, height:  mouseCoin!.frame.height);
+        mouseCoin = UIMouseCoin(parentView: parentView, x: cellFrame!.width * 6.965, y: 0.0, width: cellFrame!.width, height: cellFrame!.height * 1.025);
+        mouseCoin!.frame = CGRect(x: cellFrame!.width * 0.725, y: mouseCoin!.frame.minY, width: mouseCoin!.frame.width, height:  mouseCoin!.frame.height);
         mouseCoin!.reducedFrame = mouseCoin!.frame;
     }
     
     func configureSettingsMenu(parentView:UIView) {
-        settingsMenu = UICView(parentView: parentView, x: self.frame.midX * 0.75, y: self.frame.minY, width: parentView.frame.width * 0.86, height: self.frame.height, backgroundColor: .clear);
+        settingsMenu = UICView(parentView: parentView, x: self.frame.midX * 0.75, y: self.frame.minY, width: parentView.frame.width * 0.8575, height: self.frame.height, backgroundColor: .clear);
         settingsMenu!.layer.cornerRadius = settingsMenu!.frame.height / 2.0;
         settingsMenu!.layer.borderWidth = self.frame.height / 12.0;
         parentView.bringSubviewToFront(self);

@@ -104,8 +104,10 @@ class UICatButton: UIButton {
         if (named == "updateStyle") {
             if (previousFileName.contains("light")) {
                 previousFileName = "dark" + String(previousFileName.suffix(previousFileName.count - 5));
+                self.layer.borderColor = UIColor.white.cgColor;
             } else {
                 previousFileName = "light" + String(previousFileName.suffix(previousFileName.count - 4));
+                self.layer.borderColor = UIColor.black.cgColor;
             }
         }
         print(previousFileName);

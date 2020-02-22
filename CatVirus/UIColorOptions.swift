@@ -95,7 +95,6 @@ class UIColorOptions: UIView {
                             revisitedButton.shrinkType = .right;
                         }
                     } else {
-                        print("Count: \(count) Index: \(index) Unique: \(numOfUniqueGridColors + 1)")
                         if (count > index) {
                             revisitedButton.shrinkType = .left;
                         } else if (index == numOfUniqueGridColors) {
@@ -109,8 +108,8 @@ class UIColorOptions: UIView {
                 index += 1;
             }
         }
-        if (setup) {
-            boardGameView!.statistics!.stageStartTime = CFAbsoluteTimeGetCurrent();
+        if (setup && boardGameView!.currentStage == 1) {
+            boardGameView!.statistics!.sessionStartTime = CFAbsoluteTimeGetCurrent();
         }
     }
     

@@ -26,7 +26,7 @@ class UICLabel:UILabel {
     }
     
     override func drawText(in rect: CGRect) {
-        let insets = UIEdgeInsets(top: 0, left: ViewController.staticUnitViewWidth, bottom: 0, right: ViewController.staticUnitViewWidth)//CGRect.inset(by:)
+        let insets = UIEdgeInsets(top: 0, left: ViewController.staticUnitViewWidth, bottom: 0, right: ViewController.staticUnitViewWidth)
         super.drawText(in: rect.inset(by: insets))
     }
     

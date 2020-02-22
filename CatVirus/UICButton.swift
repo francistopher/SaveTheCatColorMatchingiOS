@@ -16,6 +16,8 @@ class UICButton:UIButton {
     var originalBackgroundColor:UIColor? = nil;
     var shrinkType:shrink = .mid;
     var parentView:UIView? = nil;
+    
+    var inverted:Bool = false;
     enum shrink {
         case left
         case mid
@@ -65,17 +67,20 @@ class UICButton:UIButton {
     }
     
     func shrink(){
-        self.layer.removeAllAnimations();
-        UIView.animate(withDuration: 0.75, delay: 0.125, options: .curveEaseIn, animations: {
-            var x:CGFloat = 0.0;
-            switch(self.shrinkType) {
-            case .left:
-                x = 0.0;
-            case .mid:
-                x = self.originalFrame!.midX;
-            case .right:
-                x = self.parentView!.frame.width;
-            }
+        var x:CGFloat = 0.0;
+        var duration:Double = 0;
+        switch(self.shrinkType) {
+        case .left:
+            x = 0.0;
+            duration = 0.75;
+        case .mid:
+            x = self.originalFrame!.midX;
+            duration = 0.50;
+        case .right:
+            duration = 0.75;
+            x = self.parentView!.frame.width;
+        }
+        UIView.animate(withDuration: duration, delay: 0.125, options: .curveEaseIn, animations: {
             self.frame = CGRect(x: x, y: self.frame.minY, width: 0.0, height: self.frame.height);
         }, completion: { _ in
             self.removeFromSuperview();
@@ -122,11 +127,20 @@ class UICButton:UIButton {
     }
     
     func setStyle() {
-        if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1){
-            self.layer.borderColor = UIColor.black.cgColor;
+        if (inverted) {
+            if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1){
+                self.layer.borderColor = UIColor.white.cgColor;
+            } else {
+                self.layer.borderColor = UIColor.black.cgColor;
+            }
         } else {
-            self.layer.borderColor = UIColor.white.cgColor;
+            if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1){
+                self.layer.borderColor = UIColor.black.cgColor;
+            } else {
+                self.layer.borderColor = UIColor.white.cgColor;
+            }
         }
+        
     }
 }
 

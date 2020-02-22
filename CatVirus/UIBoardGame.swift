@@ -62,7 +62,7 @@ class UIBoardGame: UIView {
                         columnIndex -= 1;
                     }
                 }
-                randomNum = Int.random(in: 0...3);
+                randomNum = Int.random(in: 0...4);
                 if (rowIndex > 0) {
                     let previousRowColor:UIColor = gridColors![columnIndex][rowIndex - 1];
                     if (previousRowColor.cgColor == randomColor.cgColor && randomNum != 1){
@@ -160,28 +160,28 @@ class UIBoardGame: UIView {
                 catButton.giveMouseCoin(withNoise: true);
                 // Check if all the cats have been podded
                 if (cats.arePodded()) {
-                    statistics!.stageEndTime = CFAbsoluteTimeGetCurrent();
                     colorOptions!.selectedColor = UIColor.lightGray;
                     colorOptions!.isTransitioned = false;
                     // Add data of survived cats
+                    statistics!.finalStage = "\(self.currentStage + 1)";
                     statistics!.catsThatLived += cats.presentCollection!.count;
-                    statistics!.loadStageTimeLengths(stage: currentStage);
                     promote();
                 }
                 // Incorrect match
             } else {
+                statistics!.sessionEndTime = CFAbsoluteTimeGetCurrent();
+                statistics!.setSessionDuration();
+                statistics!.catsThatDied = cats.presentCollection!.count;
                 SoundController.kittenDie();
                 SoundController.mozartSonata(play: false);
                 SoundController.chopinPrelude(play: true);
                 colorOptions!.removeBorderOfSelectionButtons();
                 cats.areNowDead();
                 // App data of dead cats
-                statistics!.catsThatDied = cats.presentCollection!.count;
                 Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false) { timer in
                     self.settingsButton!.disable();
                     self.resetGame(catsSurvived: false);
                     self.colorOptions!.shrinkColorOptions();
-                    self.statistics!.printSessionStatistics();
                     self.statistics!.update();
                     self.statistics!.fadeIn();
                 }
@@ -191,7 +191,6 @@ class UIBoardGame: UIView {
                 self.statistics!.fadeOut();
                 statistics!.catsThatLived = 0;
                 statistics!.catsThatDied = 0;
-                statistics!.stageTimeLength = [:];
                 SoundController.chopinPrelude(play: false);
                 SoundController.mozartSonata(play: true);
                 colorOptions!.isTransitioned = false;

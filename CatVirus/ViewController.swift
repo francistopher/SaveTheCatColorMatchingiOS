@@ -69,6 +69,7 @@ class ViewController: UIViewController {
     }
     
     func setupSounds() {
+        SoundController.setupHeaven();
         SoundController.setupCoinEarned();
         SoundController.setupCoinEarned2();
         SoundController.setupCoinEarned3();

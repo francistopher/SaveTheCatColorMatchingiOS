@@ -11,6 +11,10 @@ import AVFoundation
 
 class SoundController {
     
+    static var heavenPath:String?
+    static var heavenUrl:URL?
+    static var heavenSoundEffect:AVAudioPlayer?
+    
     static var coinEarnedPath:String?
     static var coinEarnedUrl:URL?
     static var coinEarnedSoundEffect:AVAudioPlayer?
@@ -46,6 +50,20 @@ class SoundController {
     static var chopinPreludePath:String?
     static var chopinPreludeUrl:URL?
     static var chopinPreludeSoundEffect:AVAudioPlayer?
+    
+    static func heaven() {
+        heavenSoundEffect!.play();
+    }
+    
+    static func setupHeaven() {
+        heavenPath = Bundle.main.path(forResource: "heaven.mp3", ofType: nil);
+        heavenUrl = URL(fileURLWithPath: heavenPath!);
+        do {
+            heavenSoundEffect = try AVAudioPlayer(contentsOf: heavenUrl!);
+        } catch {
+            print("Unable to play heaven");
+        }
+    }
     
     static func coinEarned() {
         if (coinEarnedSoundEffect!.isPlaying) {

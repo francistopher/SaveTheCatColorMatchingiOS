@@ -192,6 +192,7 @@ class UIBoardGame: UIView {
                 catButton.giveMouseCoin(withNoise: true);
                 // Check if all the cats have been podded
                 if (cats.arePodded()) {
+                    SoundController.heaven();
                     colorOptions!.selectedColor = UIColor.lightGray;
                     colorOptions!.isTransitioned = false;
                     // Add data of survived cats

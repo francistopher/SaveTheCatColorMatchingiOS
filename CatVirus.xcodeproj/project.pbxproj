@@ -34,6 +34,7 @@
 		B88F996D23F09BB4003ED805 /* UISettingsButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B88F996C23F09BB4003ED805 /* UISettingsButton.swift */; };
 		B88F997323F1CDA0003ED805 /* UIViruses.swift in Sources */ = {isa = PBXBuildFile; fileRef = B88F997223F1CD9F003ED805 /* UIViruses.swift */; };
 		B88F997923F37FE2003ED805 /* UIVirus.swift in Sources */ = {isa = PBXBuildFile; fileRef = B88F997823F37FE2003ED805 /* UIVirus.swift */; };
+		B8948F4E24019A280070F8E6 /* heaven.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = B8948F4D24019A280070F8E6 /* heaven.mp3 */; };
 		B8AE017123ECB180007A6142 /* UICenterKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8AE017023ECB180007A6142 /* UICenterKit.swift */; };
 		B8AE017323ECB25C007A6142 /* UICLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8AE017223ECB25C007A6142 /* UICLabel.swift */; };
 		B8AE017523ECB758007A6142 /* UICView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8AE017423ECB758007A6142 /* UICView.swift */; };
@@ -97,6 +98,7 @@
 		B88F996C23F09BB4003ED805 /* UISettingsButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UISettingsButton.swift; sourceTree = "<group>"; };
 		B88F997223F1CD9F003ED805 /* UIViruses.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViruses.swift; sourceTree = "<group>"; };
 		B88F997823F37FE2003ED805 /* UIVirus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIVirus.swift; sourceTree = "<group>"; };
+		B8948F4D24019A280070F8E6 /* heaven.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = heaven.mp3; sourceTree = "<group>"; };
 		B8AE017023ECB180007A6142 /* UICenterKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UICenterKit.swift; sourceTree = "<group>"; };
 		B8AE017223ECB25C007A6142 /* UICLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UICLabel.swift; sourceTree = "<group>"; };
 		B8AE017423ECB758007A6142 /* UICView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UICView.swift; sourceTree = "<group>"; };
@@ -160,6 +162,7 @@
 		B833544A23EC8F0B00835672 /* CatVirus */ = {
 			isa = PBXGroup;
 			children = (
+				B8948F4D24019A280070F8E6 /* heaven.mp3 */,
 				B88F996823F06801003ED805 /* ViewController.swift */,
 				B81C3F7723FED88E00042729 /* SoundController.swift */,
 				B8366D3523F772180043B45F /* Audio */,
@@ -446,6 +449,7 @@
 				B86A7EA623FCDD7800E4C4C4 /* darkSmilingCat.png in Resources */,
 				B8FBD6AB23F5EEAA00C8B50D /* lightStats.png in Resources */,
 				B8FBD6BA23F6016600C8B50D /* darkNoAds.png in Resources */,
+				B8948F4E24019A280070F8E6 /* heaven.mp3 in Resources */,
 				B8FBD6BB23F6016600C8B50D /* lightNoAds.png in Resources */,
 				B8FBD6BF23F605B000C8B50D /* darkStats.png in Resources */,
 				B8FBD6A323F5E65F00C8B50D /* darkRestart.png in Resources */,

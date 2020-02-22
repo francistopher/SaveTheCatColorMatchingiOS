@@ -98,9 +98,17 @@ class UICatButton: UIButton {
     
     func setCat(named:String, stage:Int){
         // Save non empty strings only
-        if (named != "") {
+        if (named != "" && named != "updateStyle") {
             previousFileName = UIStatistics.getCatFileName(named:named) + ".png";
         }
+        if (named == "updateStyle") {
+            if (previousFileName.contains("light")) {
+                previousFileName = "dark" + String(previousFileName.suffix(previousFileName.count - 5));
+            } else {
+                previousFileName = "light" + String(previousFileName.suffix(previousFileName.count - 4));
+            }
+        }
+        print(previousFileName);
         // Clear background if cat dies
         if (stage == 2) {
             self.backgroundColor = UIColor.clear;
@@ -284,6 +292,10 @@ class UICatButton: UIButton {
         } else {
             self.setCat(named: "", stage: 5);
         }
+    }
+    
+    func updateUIStyle() {
+        self.setCat(named:"updateStyle", stage: 5);
     }
     
     func hideCat(){

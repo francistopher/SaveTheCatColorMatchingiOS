@@ -100,11 +100,21 @@ class UICatButtons {
     func activateCatsForUIStyle() {
         for catIndex in 0..<presentCollection!.count {
             if (presentCollection!.count == 0) {
-                previousCollection![catIndex].animate(AgainWithoutDelay: false);
-                previousCollection![catIndex].setStyle();
+                presentCollection![catIndex].animate(AgainWithoutDelay: false);
+                presentCollection![catIndex].setStyle();
             } else {
                 presentCollection![catIndex].animate(AgainWithoutDelay: false);
                 presentCollection![catIndex].setStyle();
+            }
+        }
+    }
+    
+    func updateUIStyle() {
+        for catIndex in 0..<presentCollection!.count {
+            if (presentCollection!.count == 0) {
+                presentCollection![catIndex].updateUIStyle();
+            } else {
+                presentCollection![catIndex].updateUIStyle();
             }
         }
     }

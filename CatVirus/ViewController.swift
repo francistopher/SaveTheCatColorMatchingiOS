@@ -152,7 +152,7 @@ class ViewController: UIViewController {
             self.successGradientLayer!.colors =  [self.mellowYellow.cgColor, UIColor.black.cgColor];
         }
         settingsButton!.setStyle();
-        boardGame!.cats.activateCatsForUIStyle();
+        boardGame!.cats.updateUIStyle();
         colorOptions!.setStyle();
     }
     

@@ -49,7 +49,6 @@
 		B8FBD68F23F5D5BE00C8B50D /* UIMouseCoin.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8FBD68E23F5D5BE00C8B50D /* UIMouseCoin.swift */; };
 		B8FBD69123F5D5C600C8B50D /* UIMoreCats.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8FBD69023F5D5C600C8B50D /* UIMoreCats.swift */; };
 		B8FBD69623F5DC0C00C8B50D /* UIMultiplayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8FBD69523F5DC0C00C8B50D /* UIMultiplayer.swift */; };
-		B8FBD69A23F5E1EA00C8B50D /* UIRestart.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8FBD69923F5E1EA00C8B50D /* UIRestart.swift */; };
 		B8FBD69C23F5E21800C8B50D /* UIRestart1.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8FBD69B23F5E21800C8B50D /* UIRestart1.swift */; };
 		B8FBD6A323F5E65F00C8B50D /* darkRestart.png in Resources */ = {isa = PBXBuildFile; fileRef = B8FBD6A123F5E65E00C8B50D /* darkRestart.png */; };
 		B8FBD6A423F5E65F00C8B50D /* darkRestart1.png in Resources */ = {isa = PBXBuildFile; fileRef = B8FBD6A223F5E65F00C8B50D /* darkRestart1.png */; };
@@ -113,7 +112,6 @@
 		B8FBD68E23F5D5BE00C8B50D /* UIMouseCoin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIMouseCoin.swift; sourceTree = "<group>"; };
 		B8FBD69023F5D5C600C8B50D /* UIMoreCats.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIMoreCats.swift; sourceTree = "<group>"; };
 		B8FBD69523F5DC0C00C8B50D /* UIMultiplayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIMultiplayer.swift; sourceTree = "<group>"; };
-		B8FBD69923F5E1EA00C8B50D /* UIRestart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIRestart.swift; sourceTree = "<group>"; };
 		B8FBD69B23F5E21800C8B50D /* UIRestart1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIRestart1.swift; sourceTree = "<group>"; };
 		B8FBD6A123F5E65E00C8B50D /* darkRestart.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = darkRestart.png; sourceTree = "<group>"; };
 		B8FBD6A223F5E65F00C8B50D /* darkRestart1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = darkRestart1.png; sourceTree = "<group>"; };
@@ -357,7 +355,6 @@
 				B8FBD69023F5D5C600C8B50D /* UIMoreCats.swift */,
 				B8FBD68E23F5D5BE00C8B50D /* UIMouseCoin.swift */,
 				B8FBD69523F5DC0C00C8B50D /* UIMultiplayer.swift */,
-				B8FBD69923F5E1EA00C8B50D /* UIRestart.swift */,
 				B8FBD69B23F5E21800C8B50D /* UIRestart1.swift */,
 				B8FBD6A623F5EC4700C8B50D /* UIStats.swift */,
 				B8FBD6A823F5EC5600C8B50D /* UINoAds.swift */,
@@ -510,7 +507,6 @@
 				B8AE017323ECB25C007A6142 /* UICLabel.swift in Sources */,
 				B835801E23FF587600A2A211 /* UIStatistics.swift in Sources */,
 				B833545623EC8F0B00835672 /* podDatCat.xcdatamodeld in Sources */,
-				B8FBD69A23F5E1EA00C8B50D /* UIRestart.swift in Sources */,
 				B833544C23EC8F0B00835672 /* AppDelegate.swift in Sources */,
 				B8FBD6A723F5EC4700C8B50D /* UIStats.swift in Sources */,
 				B8D98B7423F9C4570051D808 /* UICatButtons.swift in Sources */,

@@ -128,7 +128,7 @@ class UIStatistics:UICView {
     
     func setupStagesRangeLabel() {
         stagesRangeLabel = UICLabel(parentView: self, x: stagesLabel!.frame.width, y:catsDiedLabel!.frame.maxY, width: self.frame.width * 0.5, height: unitHeight!);
-        stagesRangeLabel!.font = UIFont.boldSystemFont(ofSize: stagesRangeLabel!.frame.height * 0.30);
+        stagesRangeLabel!.font = UIFont.boldSystemFont(ofSize: stagesRangeLabel!.frame.height * 0.25);
         stagesRangeLabel!.backgroundColor = UIColor.clear;
     }
     
@@ -142,7 +142,7 @@ class UIStatistics:UICView {
     
     func setupDurationTimeLabel() {
         durationTimeLabel = UICLabel(parentView: self, x: durationLabel!.frame.width, y: stagesLabel!.frame.maxY, width: self.frame.width * 0.5, height: unitHeight!);
-        durationTimeLabel!.font = UIFont.boldSystemFont(ofSize: durationTimeLabel!.frame.height * 0.30);
+        durationTimeLabel!.font = UIFont.boldSystemFont(ofSize: durationTimeLabel!.frame.height * 0.25);
         durationTimeLabel!.backgroundColor = UIColor.clear;
     }
     
@@ -166,7 +166,7 @@ class UIStatistics:UICView {
         catsLivedLabel!.text = "x" + String(catsThatLived);
         catsDiedLabel!.text = "x" + String(catsThatDied);
         stagesRangeLabel!.text = "1 - " + finalStage;
-        durationTimeLabel!.text = "\(sessionDuration)";
+        durationTimeLabel!.text = "\(sessionDuration) secs";
     }
     
     override func setStyle() {

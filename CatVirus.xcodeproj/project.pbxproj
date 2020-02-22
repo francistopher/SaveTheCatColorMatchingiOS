@@ -64,8 +64,6 @@
 		B8FBD6BF23F605B000C8B50D /* darkStats.png in Resources */ = {isa = PBXBuildFile; fileRef = B8FBD6BE23F605B000C8B50D /* darkStats.png */; };
 		B8FBD6C523F6098C00C8B50D /* darkMoreCats.png in Resources */ = {isa = PBXBuildFile; fileRef = B8FBD6C123F6098C00C8B50D /* darkMoreCats.png */; };
 		B8FBD6C623F6098C00C8B50D /* lightMoreCats.png in Resources */ = {isa = PBXBuildFile; fileRef = B8FBD6C223F6098C00C8B50D /* lightMoreCats.png */; };
-		B8FBD6CE23F60D9E00C8B50D /* darkMultiplayer.png in Resources */ = {isa = PBXBuildFile; fileRef = B8FBD6CC23F60D9E00C8B50D /* darkMultiplayer.png */; };
-		B8FBD6CF23F60D9E00C8B50D /* lightMultiplayer.png in Resources */ = {isa = PBXBuildFile; fileRef = B8FBD6CD23F60D9E00C8B50D /* lightMultiplayer.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -129,8 +127,6 @@
 		B8FBD6BE23F605B000C8B50D /* darkStats.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = darkStats.png; sourceTree = "<group>"; };
 		B8FBD6C123F6098C00C8B50D /* darkMoreCats.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = darkMoreCats.png; sourceTree = "<group>"; };
 		B8FBD6C223F6098C00C8B50D /* lightMoreCats.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lightMoreCats.png; sourceTree = "<group>"; };
-		B8FBD6CC23F60D9E00C8B50D /* darkMultiplayer.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = darkMultiplayer.png; sourceTree = "<group>"; };
-		B8FBD6CD23F60D9E00C8B50D /* lightMultiplayer.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lightMultiplayer.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -385,8 +381,6 @@
 				B8FBD6A223F5E65F00C8B50D /* darkRestart1.png */,
 				B8FBD6B323F5FD7A00C8B50D /* lightRestart.png */,
 				B8FBD6C123F6098C00C8B50D /* darkMoreCats.png */,
-				B8FBD6CC23F60D9E00C8B50D /* darkMultiplayer.png */,
-				B8FBD6CD23F60D9E00C8B50D /* lightMultiplayer.png */,
 				B8FBD6C223F6098C00C8B50D /* lightMoreCats.png */,
 				B8FBD6A123F5E65E00C8B50D /* darkRestart.png */,
 				B8FBD6BE23F605B000C8B50D /* darkStats.png */,
@@ -464,7 +458,6 @@
 				B8FBD6BB23F6016600C8B50D /* lightNoAds.png in Resources */,
 				B8FBD6BF23F605B000C8B50D /* darkStats.png in Resources */,
 				B8FBD6A323F5E65F00C8B50D /* darkRestart.png in Resources */,
-				B8FBD6CE23F60D9E00C8B50D /* darkMultiplayer.png in Resources */,
 				B835801C23FF24CE00A2A211 /* chopinPrelude.mp3 in Resources */,
 				B8FBD6B523F5FD7A00C8B50D /* lightRestart.png in Resources */,
 				B8FBD68423F59D2D00C8B50D /* lightGear.png in Resources */,
@@ -478,7 +471,6 @@
 				B833545823EC8F1400835672 /* Assets.xcassets in Resources */,
 				B8FBD6C623F6098C00C8B50D /* lightMoreCats.png in Resources */,
 				B833545323EC8F0B00835672 /* Main.storyboard in Resources */,
-				B8FBD6CF23F60D9E00C8B50D /* lightMultiplayer.png in Resources */,
 				B86A7E9023FC3C7700E4C4C4 /* Default-568h@2x.png in Resources */,
 				B86A7E9223FC711200E4C4C4 /* lightSmilingCat.png in Resources */,
 				B86A7E9A23FC826F00E4C4C4 /* lightDeadCat.png in Resources */,

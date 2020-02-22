@@ -29,19 +29,15 @@ class UIMouseCoin: UIButton {
         setIconImage(imageName: "mouseCoin.png");
         self.addTarget(self, action: #selector(testingSelector), for: .touchUpInside);
         parentView.addSubview(self);
-        setupMouseCoinsView();
-        setupImageMouseCoinView();
-        setupAmountLabel();
+        setupMouseCoinView();
         mouseCoinView!.alpha = 0.0;
     }
     
     @objc func testingSelector() {
         if (isSelectable) {
-            print("is not displayed");
             fadeBackgroundOut();
             isSelectable = false;
         } else {
-            print("is being displayed");
             self.amountLabel!.text = "\(UIStatistics.mouseCoins)";
             mouseCoinView!.superview!.bringSubviewToFront(mouseCoinView!);
             fadeBackgroundIn();
@@ -49,12 +45,14 @@ class UIMouseCoin: UIButton {
         }
     }
     
-    func setupMouseCoinsView() {
+    func setupMouseCoinView() {
         self.mouseCoinView = UICView(parentView: self.superview!.superview!, x: 0.0, y: 0.0, width: ViewController.staticUnitViewHeight * 8, height: ViewController.staticUnitViewHeight * 8, backgroundColor: UIColor.white);
         UICenterKit.centerWithVerticalDisplacement(childView: mouseCoinView!, parentRect: mouseCoinView!.superview!.frame, childRect: mouseCoinView!.frame, verticalDisplacement: -ViewController.staticUnitViewHeight * 0.25);
         mouseCoinView!.layer.cornerRadius = mouseCoinView!.frame.height * 0.25;
         mouseCoinView!.layer.borderWidth = mouseCoinView!.frame.height * 0.015;
         mouseCoinView!.layer.borderColor = UIColor.black.cgColor;
+        setupImageMouseCoinView();
+        setupAmountLabel();
     }
     
     func setupImageMouseCoinView() {

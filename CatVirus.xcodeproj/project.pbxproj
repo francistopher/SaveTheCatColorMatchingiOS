@@ -213,8 +213,8 @@
 		B88F998F23F39934003ED805 /* Custom Components */ = {
 			isa = PBXGroup;
 			children = (
-				B8FBD68B23F5D41100C8B50D /* Settings Menu Bar */,
 				B88F999023F3994D003ED805 /* Virus */,
+				B8FBD68B23F5D41100C8B50D /* Settings Menu Bar */,
 				B8AE017023ECB180007A6142 /* UICenterKit.swift */,
 				B835801D23FF587600A2A211 /* UIStatistics.swift */,
 				B88F996C23F09BB4003ED805 /* UISettingsButton.swift */,

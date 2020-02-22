@@ -99,13 +99,13 @@ class UISettingsButton:UIButton {
     }
     
     func configureNoAdsButton(parentView:UICView!) {
-        noAds = UINoAds(parentView: parentView, x: cellFrame!.width * 1.10, y: 0.0, width: cellFrame!.width, height: cellFrame!.height);
+        noAds = UINoAds(parentView: parentView, x: cellFrame!.width * 1.05, y: 0.0, width: cellFrame!.width, height: cellFrame!.height);
         noAds!.frame = CGRect(x: -cellFrame!.width * 0.25, y: noAds!.frame.minY, width: noAds!.frame.width, height: noAds!.frame.height);
         noAds!.reducedFrame = noAds!.frame;
     }
     
     func configureRestart1Button(parentView:UICView) {
-        restart1 = UIRestart1(parentView: parentView, x: cellFrame!.width * 2.30, y: 0.0, width: cellFrame!.width, height: cellFrame!.height);
+        restart1 = UIRestart1(parentView: parentView, x: cellFrame!.width * 2.25, y: 0.0, width: cellFrame!.width, height: cellFrame!.height);
         restart1!.frame = CGRect(x: -cellFrame!.width * 0.25, y: restart1!.frame.minY, width: restart1!.frame.width, height: restart1!.frame.height);
         restart1!.reducedFrame = restart1!.frame;
     }
@@ -129,13 +129,13 @@ class UISettingsButton:UIButton {
     }
     
     func configureMouseCoinButton(parentView:UICView){
-        mouseCoin = UIMouseCoin(parentView: parentView, x: cellFrame!.width * 6.975, y: 0.0, width: cellFrame!.width, height: cellFrame!.height * 1.025);
+        mouseCoin = UIMouseCoin(parentView: parentView, x: cellFrame!.width * 6.96, y: 0.0, width: cellFrame!.width, height: cellFrame!.height * 1.025);
         mouseCoin!.frame = CGRect(x: cellFrame!.width * 0.7125, y: mouseCoin!.frame.minY, width: mouseCoin!.frame.width, height:  mouseCoin!.frame.height);
         mouseCoin!.reducedFrame = mouseCoin!.frame;
     }
     
     func configureSettingsMenu(parentView:UIView) {
-        settingsMenu = UICView(parentView: parentView, x: self.frame.midX * 0.75, y: self.frame.minY, width: parentView.frame.width * 0.875, height: self.frame.height, backgroundColor: .clear);
+        settingsMenu = UICView(parentView: parentView, x: self.frame.midX * 0.75, y: self.frame.minY, width: parentView.frame.width * 0.86, height: self.frame.height, backgroundColor: .clear);
         settingsMenu!.layer.cornerRadius = settingsMenu!.frame.height / 2.0;
         settingsMenu!.layer.borderWidth = self.frame.height / 12.0;
         parentView.bringSubviewToFront(self);

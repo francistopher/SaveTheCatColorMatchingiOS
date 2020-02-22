@@ -147,8 +147,8 @@ class SoundController {
     static func mozartSonata(play:Bool) {
         if (play) {
             if (mozartSonataSoundEffect!.volume == 0.0) {
-                let timeInterval:TimeInterval = TimeInterval(1.0);
-                mozartSonataSoundEffect!.setVolume(0.5, fadeDuration: timeInterval);
+                let timeInterval:TimeInterval = TimeInterval(0.5);
+                mozartSonataSoundEffect!.setVolume(1.0, fadeDuration: timeInterval);
             } else {
                 mozartSonataSoundEffect!.play();
             }
@@ -173,8 +173,12 @@ class SoundController {
         if (play) {
             chopinPreludeSoundEffect!.play();
         } else {
-            chopinPreludeSoundEffect!.stop();
-            setupChopinPrelude();
+            let timeInterval:TimeInterval = TimeInterval(0.5);
+            chopinPreludeSoundEffect!.setVolume(0.0, fadeDuration: timeInterval);
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                chopinPreludeSoundEffect!.stop();
+                setupChopinPrelude();
+            }
         }
     }
     

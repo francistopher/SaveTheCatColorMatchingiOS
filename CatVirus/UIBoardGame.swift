@@ -29,7 +29,19 @@ class UIBoardGame: UIView {
         self.backgroundColor = UIColor.clear;
         self.layer.cornerRadius = width / 5.0;
         self.statistics = UIStatistics(parentView: parentView);
+        self.statistics!.continueButton!.addTarget(self, action: #selector(continueSelector), for: .touchUpInside);
         parentView.addSubview(self);
+    }
+    
+    @objc func continueSelector() {
+        self.statistics!.fadeOut();
+        statistics!.catsThatLived = 0;
+        statistics!.catsThatDied = 0;
+        SoundController.chopinPrelude(play: false);
+        SoundController.mozartSonata(play: true);
+        colorOptions!.isTransitioned = false;
+        colorOptions!.selectedColor = UIColor.lightGray;
+        restart();
     }
     
     func fadeIn(){
@@ -187,16 +199,7 @@ class UIBoardGame: UIView {
                 }
             }
         } else {
-            if (colorOptions!.isTransitioned) {
-                self.statistics!.fadeOut();
-                statistics!.catsThatLived = 0;
-                statistics!.catsThatDied = 0;
-                SoundController.chopinPrelude(play: false);
-                SoundController.mozartSonata(play: true);
-                colorOptions!.isTransitioned = false;
-                colorOptions!.selectedColor = UIColor.lightGray;
-                restart();
-            } else {
+            if (!colorOptions!.isTransitioned) {
                 SoundController.kittenMeow();
             }
         }

@@ -220,13 +220,8 @@ class UIBoardGame: UIView {
     
     func revertSelections() {
         colorOptions!.selectedColor = UIColor.lightGray;
-        for catButton in cats.presentCollection! {
-            catButton.shrink();
-        }
-        for selectionButton in colorOptions!.selectionButtons {
-            selectionButton.shrink();
-        }
-        restart();
+        cats.shrink();
+        configureComponentsAfterBoardGameReset();
     }
     
     func reset(catsSurvived:Bool){
@@ -266,12 +261,12 @@ class UIBoardGame: UIView {
     func configureComponentsAfterBoardGameReset() {
         colorOptions!.loadSelectionButtonsToSelectedButtons();
         // Build board game
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.25) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.75) {
             self.buildBoardGame();
             self.settingsButton!.enable();
         }
         // Remove dispersed buttons after they've dispersed
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.75) {
             self.removeGridCatAndColorOptionButtonsAfterDelay();
         }
     }

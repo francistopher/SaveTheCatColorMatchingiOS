@@ -37,6 +37,7 @@ class UIColorOptions: UIView {
     
     func shrinkColorOptions() {
         for selectionButton in selectionButtons {
+            selectionButton.shrinkType = .mid;
             selectionButton.shrink();
         }
     }

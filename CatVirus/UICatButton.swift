@@ -38,7 +38,7 @@ class UICatButton: UIButton {
         self.layer.borderWidth = parentView.frame.width * 0.01;
         parentView.addSubview(self);
         configureImageContainerButton();
-        self.shrink();
+        shrunk();
         self.setStyle();
     }
     
@@ -88,9 +88,14 @@ class UICatButton: UIButton {
     }
     
     func shrink(){
-        UIView.animate(withDuration: 1.0, delay: 0.125, options: .curveEaseIn, animations: {
+        UIView.animate(withDuration: 0.5, delay: 0.125, options: .curveEaseIn, animations: {
             self.frame = CGRect(x: self.frame.midX, y: self.frame.midY, width: 1.0, height: 1.0);
+            self.imageContainerButton!.frame = CGRect(x: 0.0, y:0.0, width: 1.0, height: 1.0);
         })
+    }
+    
+    func shrunk() {
+        self.frame = CGRect(x: self.frame.midX, y: self.frame.midY, width: 1.0, height: 1.0);
     }
     
     func grow(){

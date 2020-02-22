@@ -80,7 +80,7 @@ class UICButton:UIButton {
             duration = 0.75;
             x = self.parentView!.frame.width;
         }
-        UIView.animate(withDuration: duration, delay: 0.125, options: .curveEaseIn, animations: {
+        UIView.animate(withDuration: duration, delay: 0.0, options: .curveEaseIn, animations: {
             self.frame = CGRect(x: x, y: self.frame.minY, width: 0.0, height: self.frame.height);
         }, completion: { _ in
             self.removeFromSuperview();

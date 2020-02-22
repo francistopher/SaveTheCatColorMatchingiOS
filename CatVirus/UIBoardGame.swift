@@ -152,6 +152,26 @@ class UIBoardGame: UIView {
         }
     }
     
+    func gameOverTransition() {
+        statistics!.finalStage = "\(self.currentStage)";
+        statistics!.sessionEndTime = CFAbsoluteTimeGetCurrent();
+        statistics!.setSessionDuration();
+        statistics!.catsThatDied = cats.presentCollection!.count;
+        SoundController.kittenDie();
+        SoundController.mozartSonata(play: false);
+        SoundController.chopinPrelude(play: true);
+        colorOptions!.removeBorderOfSelectionButtons();
+        cats.areNowDead();
+        // App data of dead cats
+        Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false) { timer in
+            self.settingsButton!.disable();
+            self.resetGame(catsSurvived: false);
+            self.colorOptions!.shrinkColorOptions();
+            self.statistics!.update();
+            self.statistics!.fadeIn();
+        }
+    }
+    
     @objc func selectCatButton(catButton:UICatButton) {
         interaction(catButton: catButton, catImageButton: catButton.imageContainerButton!);
     }
@@ -175,28 +195,12 @@ class UIBoardGame: UIView {
                     colorOptions!.selectedColor = UIColor.lightGray;
                     colorOptions!.isTransitioned = false;
                     // Add data of survived cats
-                    statistics!.finalStage = "\(self.currentStage + 1)";
                     statistics!.catsThatLived += cats.presentCollection!.count;
                     promote();
                 }
                 // Incorrect match
             } else {
-                statistics!.sessionEndTime = CFAbsoluteTimeGetCurrent();
-                statistics!.setSessionDuration();
-                statistics!.catsThatDied = cats.presentCollection!.count;
-                SoundController.kittenDie();
-                SoundController.mozartSonata(play: false);
-                SoundController.chopinPrelude(play: true);
-                colorOptions!.removeBorderOfSelectionButtons();
-                cats.areNowDead();
-                // App data of dead cats
-                Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false) { timer in
-                    self.settingsButton!.disable();
-                    self.resetGame(catsSurvived: false);
-                    self.colorOptions!.shrinkColorOptions();
-                    self.statistics!.update();
-                    self.statistics!.fadeIn();
-                }
+                gameOverTransition();
             }
         } else {
             if (!colorOptions!.isTransitioned) {

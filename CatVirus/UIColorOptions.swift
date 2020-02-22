@@ -118,9 +118,10 @@ class UIColorOptions: UIView {
             return;
         }
         if (boardGameView!.cats.presentCollection![0].isAlive) {
+            // What we need to unselect
             selectedColor = colorOption.backgroundColor!;
             buildColorOptionButtons(setup: false);
-            transitionBackgroundColorOfButtonsToLightGray();
+            boardGameView!.transitionBackgroundColorOfButtonsToLightGray();
             for selectionButton in selectionButtons{
                 if (selectionButton.isEqual(colorOption)){
                     colorOption.select();
@@ -130,24 +131,7 @@ class UIColorOptions: UIView {
                 }
             }
         } else {
-            if (isTransitioned) {
-                SoundController.kittenDie();
-                SoundController.mozartSonata(play: false);
-                SoundController.chopinPrelude(play: true);
-                removeBorderOfSelectionButtons();
-                boardGameView!.cats.areNowDead();
-                // App data
-                boardGameView!.statistics!.catsThatDied = boardGameView!.cats.presentCollection!.count;
-                boardGameView!.statistics!.catsThatLived = 0;
-            }
-        }
-    }
-    
-    @objc func transitionBackgroundColorOfButtonsToLightGray(){
-        if (!isTransitioned){
-            print("Transitioning!");
-            boardGameView!.cats.transitionCatButtonBackgroundToLightgrey();
-            isTransitioned = true;
+            boardGameView!.gameOverTransition();
         }
     }
     

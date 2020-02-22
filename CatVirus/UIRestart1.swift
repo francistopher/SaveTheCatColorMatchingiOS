@@ -56,6 +56,6 @@ class UIRestart1: UIButton {
     
     @objc func restart1Selector() {
         self.settingsButton!.sendActions(for: .touchUpInside);
-        self.boardGameView!.gameOverTransition();
+        self.boardGameView!.revertSelections();
     }
 }

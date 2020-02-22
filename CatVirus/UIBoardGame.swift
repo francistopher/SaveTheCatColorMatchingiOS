@@ -165,7 +165,7 @@ class UIBoardGame: UIView {
         // App data of dead cats
         Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false) { timer in
             self.settingsButton!.disable();
-            self.resetGame(catsSurvived: false);
+            self.reset(catsSurvived: false);
             self.colorOptions!.shrinkColorOptions();
             self.statistics!.update();
             self.statistics!.fadeIn();
@@ -210,7 +210,26 @@ class UIBoardGame: UIView {
         }
     }
     
-    func resetGame(catsSurvived:Bool){
+    @objc func transitionBackgroundColorOfButtonsToLightGray(){
+        if (!colorOptions!.isTransitioned){
+            print("Transitioning!");
+            cats.transitionCatButtonBackgroundToLightgrey();
+            colorOptions!.isTransitioned = true;
+        }
+    }
+    
+    func revertSelections() {
+        colorOptions!.selectedColor = UIColor.lightGray;
+        for catButton in cats.presentCollection! {
+            catButton.shrink();
+        }
+        for selectionButton in colorOptions!.selectionButtons {
+            selectionButton.shrink();
+        }
+        restart();
+    }
+    
+    func reset(catsSurvived:Bool){
         if (catsSurvived) {
             cats.disperseVertically()
         } else {
@@ -221,20 +240,14 @@ class UIBoardGame: UIView {
     }
     
     func restart(){
-        currentStage = 1;
-        configureComponentsAfterBoardGameReset();
-    }
-    
-    func maintain(){
-        settingsButton!.disable();
-        resetGame(catsSurvived: true);
+        currentStage = 1
         configureComponentsAfterBoardGameReset();
     }
     
     func promote(){
         successGradientLayer!.isHidden = false;
         settingsButton!.disable();
-        resetGame(catsSurvived: true);
+        reset(catsSurvived: true);
         colorOptions!.loadSelectionButtonsToSelectedButtons();
         // Build board game
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.25) {
@@ -262,6 +275,7 @@ class UIBoardGame: UIView {
             self.removeGridCatAndColorOptionButtonsAfterDelay();
         }
     }
+    
     func removeGridCatAndColorOptionButtonsAfterDelay() {
         cats.removePreviousCatButtonsFromSuperView();
         self.colorOptions!.removeSelectedButtons();

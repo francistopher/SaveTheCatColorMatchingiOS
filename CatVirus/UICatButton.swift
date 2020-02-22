@@ -88,7 +88,9 @@ class UICatButton: UIButton {
     }
     
     func shrink(){
-        self.frame = CGRect(x: self.frame.midX, y: self.frame.midY, width: 1.0, height: 1.0);
+        UIView.animate(withDuration: 1.0, delay: 0.125, options: .curveEaseIn, animations: {
+            self.frame = CGRect(x: self.frame.midX, y: self.frame.midY, width: 1.0, height: 1.0);
+        })
     }
     
     func grow(){

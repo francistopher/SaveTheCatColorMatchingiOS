@@ -22,7 +22,6 @@ class UIMultiplayer: UIButton {
         self.originalFrame = CGRect(x: x, y: y, width: width, height: height);
         self.backgroundColor = .clear;
         self.layer.cornerRadius = height / 2.0;
-        setIconImage(imageName: "multiplayer.png");
         self.addTarget(self, action: #selector(testingSelector), for: .touchUpInside);
         parentView.addSubview(self);
     }
@@ -32,7 +31,7 @@ class UIMultiplayer: UIButton {
     }
     
     func setIconImage(imageName:String) {
-        let iconImage:UIImage? = UIImage(named:imageName);
+        let iconImage:UIImage? = UIImage(named: UIStatistics.getCatFileName(named: "SmilingCat.png"));
         self.setImage(iconImage, for: .normal);
         self.imageView!.contentMode = UIView.ContentMode.scaleAspectFit;
     }

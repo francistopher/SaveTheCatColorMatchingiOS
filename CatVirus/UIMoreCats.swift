@@ -28,8 +28,8 @@ class UIMoreCats: UIButton {
     }
 
     @objc func testingSelector() {
-           print("Testing: More Cats!");
-       }
+       print("Testing: More Cats!");
+    }
        
     func setIconImage() {
         let iconImage:UIImage? = UIImage(named: UIStatistics.getCatFileName(named: "SmilingCat.png"));

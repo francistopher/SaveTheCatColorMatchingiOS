@@ -12,7 +12,11 @@ class UIMultiplayer: UIButton {
 
     var originalFrame:CGRect? = nil;
     var reducedFrame:CGRect? = nil;
+    
     var multiplayerView:UICView?;
+    var unitViewHeight:CGFloat = 0.0;
+    var displayNameLabel:UICLabel?
+    var displayNameTextField:UITextField?
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -40,10 +44,32 @@ class UIMultiplayer: UIButton {
     func setupMultiplayerView() {
         multiplayerView = UICView(parentView: self.superview!.superview!, x: 0.0, y: 0.0, width: ViewController.staticUnitViewHeight * 8, height: ViewController.staticUnitViewHeight * 8, backgroundColor: UIColor.white);
         UICenterKit.centerWithVerticalDisplacement(childView: multiplayerView!, parentRect: self.multiplayerView!.superview!.frame, childRect: multiplayerView!.frame, verticalDisplacement: -ViewController.staticUnitViewHeight * 0.25);
-        multiplayerView!.layer.cornerRadius = self.multiplayerView!.frame.height * 0.25;
+        multiplayerView!.layer.cornerRadius = self.multiplayerView!.frame.height * 0.20;
         multiplayerView!.layer.borderWidth = self.multiplayerView!.frame.height * 0.015;
         multiplayerView!.layer.borderColor = UIColor.black.cgColor;
         multiplayerView!.alpha = 0.0;
+        unitViewHeight = multiplayerView!.frame.height / 6.0;
+        setupDisplayNameLabel();
+        setupDisplayNameTextField();
+    }
+    
+    func setupDisplayNameLabel() {
+        displayNameLabel = UICLabel(parentView: self.multiplayerView!, x: 0.0, y: 0.0, width: multiplayerView!.frame.width, height: unitViewHeight);
+        displayNameLabel!.text = "Display Name";
+        displayNameLabel!.font = UIFont.boldSystemFont(ofSize: displayNameLabel!.frame.height * 0.5);
+        displayNameLabel!.layer.cornerRadius = multiplayerView!.layer.cornerRadius;
+        displayNameLabel!.layer.masksToBounds = true;
+        displayNameLabel!.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner];
+    }
+    
+    func setupDisplayNameTextField() {
+        displayNameTextField = UITextField(frame: CGRect(x: self.multiplayerView!.frame.width * 0.1 , y: displayNameLabel!.frame.maxY, width: self.multiplayerView!.frame.width * 0.8, height: unitViewHeight));
+        displayNameTextField!.layer.borderWidth = displayNameTextField!.frame.height * 0.1;
+        displayNameTextField!.layer.borderColor = UIColor.black.cgColor;
+        displayNameTextField!.layer.cornerRadius = displayNameTextField!.frame.height * 0.2;
+        displayNameTextField!.textAlignment = NSTextAlignment.center;
+        displayNameTextField!.font = UIFont.boldSystemFont(ofSize: displayNameTextField!.frame.height * 0.5);
+        self.multiplayerView!.addSubview(displayNameTextField!);
     }
     
     func setIconImage(imageName: String) {

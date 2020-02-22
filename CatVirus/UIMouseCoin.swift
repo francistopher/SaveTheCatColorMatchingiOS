@@ -51,7 +51,7 @@ class UIMouseCoin: UIButton {
     
     func setupMouseCoinsView() {
         self.mouseCoinView = UICView(parentView: self.superview!.superview!, x: 0.0, y: 0.0, width: ViewController.staticUnitViewHeight * 8, height: ViewController.staticUnitViewHeight * 8, backgroundColor: UIColor.white);
-        UICenterKit.center(childView: mouseCoinView!, parentRect: mouseCoinView!.superview!.frame, childRect: mouseCoinView!.frame);
+        UICenterKit.centerWithVerticalDisplacement(childView: mouseCoinView!, parentRect: mouseCoinView!.superview!.frame, childRect: mouseCoinView!.frame, verticalDisplacement: -ViewController.staticUnitViewHeight * 0.25);
         mouseCoinView!.layer.cornerRadius = mouseCoinView!.frame.height * 0.25;
         mouseCoinView!.layer.borderWidth = mouseCoinView!.frame.height * 0.015;
         mouseCoinView!.layer.borderColor = UIColor.black.cgColor;

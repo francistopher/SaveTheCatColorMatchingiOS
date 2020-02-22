@@ -231,9 +231,9 @@ class UIBoardGame: UIView {
     }
     
     func promote(){
+        successGradientLayer!.isHidden = false;
         settingsButton!.disable();
         resetGame(catsSurvived: true);
-        successGradientLayer!.isHidden = false;
         colorOptions!.loadSelectionButtonsToSelectedButtons();
         // Build board game
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.25) {

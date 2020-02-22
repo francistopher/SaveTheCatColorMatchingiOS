@@ -117,6 +117,15 @@ class ViewController: UIViewController {
         successGradientLayer!.startPoint = CGPoint(x:0.5, y:0.0);
         successGradientLayer!.endPoint = CGPoint(x:-0.5, y:0.15);
         successGradientLayer!.isHidden = true;
+        setSuccessGradientLayerStyle();
+    }
+    
+    func setSuccessGradientLayerStyle() {
+        if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1){
+            self.successGradientLayer!.colors = [self.mellowYellow.cgColor, UIColor.white.cgColor];
+        } else {
+            self.successGradientLayer!.colors =  [self.mellowYellow.cgColor, UIColor.black.cgColor];
+        }
     }
     
     func setupBoardMainView(){
@@ -146,11 +155,7 @@ class ViewController: UIViewController {
     
     func setStyle() {
         introLabel!.setStyle();
-        if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1){
-            self.successGradientLayer!.colors = [self.mellowYellow.cgColor, UIColor.white.cgColor];
-        } else {
-            self.successGradientLayer!.colors =  [self.mellowYellow.cgColor, UIColor.black.cgColor];
-        }
+        setSuccessGradientLayerStyle();
         settingsButton!.setStyle();
         boardGame!.cats.updateUIStyle();
         colorOptions!.setStyle();

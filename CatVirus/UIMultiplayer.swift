@@ -51,9 +51,11 @@ class UIMultiplayer: UIButton {
         if (multiplayerView!.alpha == 0.0) {
             fadeBackgroundIn();
             mcController!.advertisingAndBrowsing(start: true);
+            activePlayersScrollView!.isSearching = true;
         } else {
             fadeBackgroundOut();
             mcController!.advertisingAndBrowsing(start: false);
+            activePlayersScrollView!.isSearching = false;
         }
     }
     
@@ -151,17 +153,32 @@ class UIPlayerAdScrollView:UICScrollView {
     var mcController:MCController?
     var searchingForPlayersView:UIView?
     var searchingForPlayersLabel:UILabel?
+    var foundPlayerAds:[String:playerAdLabel] = [:];
+    var contentSizeHeight:CGFloat = 0.0;
     var catButton:UICatButton?
+    var searchTimer:Timer?
+    var isSearching = false;
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    
     init(parentView:UIView, frame:CGRect, mcController:MCController) {
         super.init(parentView: parentView, frame: frame);
         self.mcController = mcController;
         setupSearchingForPlayersView();
+        searchForFoundAndLostPeers();
+    }
+    
+    func searchForFoundAndLostPeers() {
+        searchTimer = Timer.scheduledTimer(withTimeInterval: 0.25, repeats: true) { timer in
+            if (self.isSearching) {
+                print("Found display names ----------------------------")
+                for foundDisplayName in self.mcController!.foundDisplayNames {
+                    print("Found display name \(foundDisplayName)!");
+                }
+            }
+        }
     }
     
     func setupSearchingForPlayersView() {
@@ -186,10 +203,6 @@ class UIPlayerAdScrollView:UICScrollView {
         catButton!.imageContainerButton!.frame = catButton!.imageContainerButton!.originalFrame!;
     }
     
-    func addPlayerAdvertisement(peerID:String) {
-        
-    }
-    
     func setContentSize() {
         self.contentSize = CGSize(width: 1000, height: 100);
     }
@@ -203,6 +216,17 @@ class UIPlayerAdScrollView:UICScrollView {
     
 }
 
-class playerAdvertisementLabel: UILabel {
+class playerAdLabel: UICLabel {
+    
+    var displayName:String = "";
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    init(parentView:UIView, frame:CGRect, displayName:String) {
+        super.init(parentView: parentView, x: frame.minX, y: frame.minY, width: frame.width, height: frame.height);
+        self.displayName = displayName;
+    }
     
 }

@@ -18,8 +18,7 @@ class UIMultiplayer: UIButton, MCSessionDelegate, MCBrowserViewControllerDelegat
     var unitViewHeight:CGFloat = 0.0;
     var multiplayerTitleLabel:UICLabel?
     var displayNameTextField:UICTextField?
-    var localButton:UICButton?
-    var globalButton:UICButton?
+    var updateDisplayNameButton:UICButton?
     
     var peerID:MCPeerID!
     var session:MCSession!
@@ -42,6 +41,7 @@ class UIMultiplayer: UIButton, MCSessionDelegate, MCBrowserViewControllerDelegat
         self.setupMultiplayerView();
         self.setupDisplayNameTextField();
         self.setupConnectionFramework();
+        self.setupUpdateDisplayNameButton();
         self.setStyle();
     }
 
@@ -82,18 +82,52 @@ class UIMultiplayer: UIButton, MCSessionDelegate, MCBrowserViewControllerDelegat
     }
     
     func setupDisplayNameTextField() {
-        displayNameTextField = UICTextField(parentView:self.multiplayerView!, frame: CGRect(x: self.multiplayerView!.frame.width * 0.1 , y: multiplayerTitleLabel!.frame.maxY, width: self.multiplayerView!.frame.width * 0.8, height: unitViewHeight));
+        displayNameTextField = UICTextField(parentView:self.multiplayerView!, frame: CGRect(x: self.multiplayerView!.frame.width * 0.1 , y: unitViewHeight * 2, width: self.multiplayerView!.frame.width * 0.8, height: unitViewHeight));
         displayNameTextField!.layer.borderWidth = displayNameTextField!.frame.height * 0.1;
         displayNameTextField!.layer.borderColor = UIColor.black.cgColor;
         displayNameTextField!.layer.cornerRadius = displayNameTextField!.frame.height * 0.2;
-        displayNameTextField!.addTarget(self, action: #selector(displayNameTextFieldSelector), for: .editingDidEnd);
+        displayNameTextField!.addTarget(self, action: #selector(displayNameTextFieldSelector), for: .editingChanged);
         displayNameTextField!.text = "EnterDisplayName";
     }
     
+    func setupUpdateDisplayNameButton() {
+        updateDisplayNameButton = UICButton(parentView: self.multiplayerView!, frame: CGRect(x: self.multiplayerView!.frame.width * 0.1, y: unitViewHeight, width: self.multiplayerView!.frame.width * 0.8, height: unitViewHeight * 0.8), backgroundColor: UIColor.white);
+        updateDisplayNameButton!.layer.borderWidth = updateDisplayNameButton!.frame.height * 0.1;
+        updateDisplayNameButton!.layer.borderColor = UIColor.black.cgColor;
+        updateDisplayNameButton!.layer.cornerRadius = updateDisplayNameButton!.frame.height * 0.2;
+        updateDisplayNameButton!.addTarget(self, action: #selector(updateDisplayNameSelector), for: .touchUpInside);
+        updateDisplayNameButton!.setTitle( "Display Name", for: .normal);
+        updateDisplayNameButton!.titleLabel!.font = UIFont.boldSystemFont(ofSize: updateDisplayNameButton!.frame.height * 0.4);
+        updateDisplayNameButton!.backgroundColor = UIColor.systemGreen;
+    }
+    
     @objc func displayNameTextFieldSelector() {
-        print("Set a new display name!");
-        advertiserAssistant.stop();
-        advertiserAssistant.start();
+        if (peerID.displayName != displayNameTextField!.text) {
+            updateDisplayNameButton!.backgroundColor = UIColor.systemPink;
+            updateDisplayNameButton!.setTitle( "Update Display Name", for: .normal);
+        } else {
+            updateDisplayNameButton!.backgroundColor = UIColor.systemGreen;
+            updateDisplayNameButton!.setTitle( "Display Name", for: .normal);
+        }
+    }
+    
+    @objc func updateDisplayNameSelector() {
+        if (updateDisplayNameButton!.backgroundColor!.cgColor == UIColor.systemPink.cgColor){
+            advertiserAssistant.stop();
+            browser.browser!.stopBrowsingForPeers();
+            self.peerID = nil;
+            self.session.delegate = nil;
+            self.session = nil;
+            self.advertiserAssistant = nil;
+            self.browser.browser!.delegate = nil;
+            self.browser.delegate = nil;
+            self.browser = nil;
+            self.setupConnectionFramework();
+            advertiserAssistant.start();
+            browser.browser!.startBrowsingForPeers();
+            updateDisplayNameButton!.backgroundColor = UIColor.systemGreen;
+            print("New session");
+        }
     }
     
 //    func setupLocalButton() {

@@ -37,8 +37,4 @@ class UICTextField:UITextField, UITextFieldDelegate {
         // Limit result
         return updatedText.count <= 16
     }
-    
-    
-    
-    
 }

@@ -88,11 +88,9 @@ class UIMultiplayer: UIButton {
         updateDisplayNameButton!.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMaxXMaxYCorner];
         updateDisplayNameButton!.backgroundColor = UIColor.systemGreen;
     }
-    
-   
-    
+
     func setupActivePlayersScrollView() {
-        activePlayersScrollView = PlayerAdScrollView(parentView: multiplayerView!, frame: CGRect(x: multiplayerView!.frame.width * 0.15, y: unitViewHeight * 2.9, width: multiplayerView!.frame.width * 0.7, height: unitViewHeight * 2.6), mcController: mcController!);
+        activePlayersScrollView = PlayerAdScrollView(parentView: multiplayerView!, frame: CGRect(x: multiplayerView!.frame.width * 0.15, y: unitViewHeight * 1.7, width: multiplayerView!.frame.width * 0.7, height: unitViewHeight * 3.8), mcController: mcController!);
     }
     
     @objc func displayNameTextFieldSelector() {
@@ -167,21 +165,25 @@ class PlayerAdScrollView:UICScrollView {
     }
     
     func setupSearchingForPlayersView() {
-        searchingForPlayersView = UICView(parentView: self, x: 0.0, y: 0.0, width: self.frame.width, height: self.frame.height, backgroundColor: UIColor.black);
+        searchingForPlayersView = UICView(parentView: self, x: 0.0, y: 0.0, width: self.frame.width, height: self.frame.height, backgroundColor: UIColor.white);
         setupSearchingForPlayersLabel();
         setupCatButton();
     }
     
     func setupSearchingForPlayersLabel() {
-        searchingForPlayersLabel = UICLabel(parentView: searchingForPlayersView!, x: 0.0, y: self.frame.height * 0.75, width: self.frame.width, height: self.frame.height * 0.25);
-        searchingForPlayersLabel!.text = "Searching for Players";
+        searchingForPlayersLabel = UICLabel(parentView: searchingForPlayersView!, x: 0.0, y: self.frame.height * 0.725, width: self.frame.width, height: self.frame.height * 0.2);
+        searchingForPlayersLabel!.layer.borderWidth = 0.0;
+        searchingForPlayersLabel!.text = "Searching...";
         searchingForPlayersLabel!.textColor = UIColor.black;
+        searchingForPlayersLabel!.font! = UIFont.boldSystemFont(ofSize: searchingForPlayersLabel!.frame.height * 0.4);
     }
     
     func setupCatButton() {
-        catButton = UICatButton(parentView: searchingForPlayersView!, x: 0.0, y: 0.0, width: self.frame.width, height: self.frame.height * 0.75, backgroundColor: UIColor.clear);
-        catButton!.setCat(named: "smilingCat", stage: 1);
+        catButton = UICatButton(parentView: searchingForPlayersView!, x: 0.0, y: self.frame.height * 0.09, width: self.frame.width, height: self.frame.height * 0.60, backgroundColor: UIColor.clear);
+        catButton!.layer.borderWidth = 0.0;
+        catButton!.setCat(named: "SmilingCat", stage: 0);
         catButton!.frame = catButton!.originalFrame!;
+        catButton!.imageContainerButton!.frame = catButton!.imageContainerButton!.originalFrame!;
     }
     
     func addPlayerAdvertisement(peerID:String) {

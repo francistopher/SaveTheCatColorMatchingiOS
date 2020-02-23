@@ -22,6 +22,7 @@
 		B8366D4523F880490043B45F /* mozartSonata.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = B8366D4323F880490043B45F /* mozartSonata.mp3 */; };
 		B8366D4723F8956C0043B45F /* kittenDie.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = B8366D4623F8956C0043B45F /* kittenDie.mp3 */; };
 		B8366D4923F8A1A60043B45F /* coinEarned.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = B8366D4823F8A1A60043B45F /* coinEarned.mp3 */; };
+		B83B2BF02403061100B4C92D /* UICScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B83B2BEF2403061100B4C92D /* UICScrollView.swift */; };
 		B86A7E9023FC3C7700E4C4C4 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B86A7E8F23FC3C7600E4C4C4 /* Default-568h@2x.png */; };
 		B86A7E9223FC711200E4C4C4 /* lightSmilingCat.png in Resources */ = {isa = PBXBuildFile; fileRef = B86A7E9123FC711100E4C4C4 /* lightSmilingCat.png */; };
 		B86A7E9823FC81FC00E4C4C4 /* lightWavingCat.png in Resources */ = {isa = PBXBuildFile; fileRef = B86A7E9723FC81FB00E4C4C4 /* lightWavingCat.png */; };
@@ -30,6 +31,7 @@
 		B86A7EA323FCDC8B00E4C4C4 /* darkWavingCat.png in Resources */ = {isa = PBXBuildFile; fileRef = B86A7EA123FCDC8B00E4C4C4 /* darkWavingCat.png */; };
 		B86A7EA623FCDD7800E4C4C4 /* darkSmilingCat.png in Resources */ = {isa = PBXBuildFile; fileRef = B86A7EA523FCDD7800E4C4C4 /* darkSmilingCat.png */; };
 		B86A7EA823FCDDF000E4C4C4 /* Default-568h@2x 9.59.50 PM.png in Resources */ = {isa = PBXBuildFile; fileRef = B86A7EA723FCDDF000E4C4C4 /* Default-568h@2x 9.59.50 PM.png */; };
+		B88DE8082402E5F80076B8F2 /* MCController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B88DE8072402E5F80076B8F2 /* MCController.swift */; };
 		B88F996923F06801003ED805 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B88F996823F06801003ED805 /* ViewController.swift */; };
 		B88F996D23F09BB4003ED805 /* UISettingsButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B88F996C23F09BB4003ED805 /* UISettingsButton.swift */; };
 		B88F997323F1CDA0003ED805 /* UIViruses.swift in Sources */ = {isa = PBXBuildFile; fileRef = B88F997223F1CD9F003ED805 /* UIViruses.swift */; };
@@ -84,6 +86,7 @@
 		B8366D4323F880490043B45F /* mozartSonata.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = mozartSonata.mp3; sourceTree = "<group>"; };
 		B8366D4623F8956C0043B45F /* kittenDie.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = kittenDie.mp3; sourceTree = "<group>"; };
 		B8366D4823F8A1A60043B45F /* coinEarned.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = coinEarned.mp3; sourceTree = "<group>"; };
+		B83B2BEF2403061100B4C92D /* UICScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UICScrollView.swift; sourceTree = "<group>"; };
 		B86A7E8F23FC3C7600E4C4C4 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		B86A7E9123FC711100E4C4C4 /* lightSmilingCat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lightSmilingCat.png; sourceTree = "<group>"; };
 		B86A7E9723FC81FB00E4C4C4 /* lightWavingCat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lightWavingCat.png; sourceTree = "<group>"; };
@@ -93,6 +96,7 @@
 		B86A7EA523FCDD7800E4C4C4 /* darkSmilingCat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = darkSmilingCat.png; sourceTree = "<group>"; };
 		B86A7EA723FCDDF000E4C4C4 /* Default-568h@2x 9.59.50 PM.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-568h@2x 9.59.50 PM.png"; path = "../../.Trash/Default-568h@2x 9.59.50 PM.png"; sourceTree = "<group>"; };
 		B86A7EA923FCDDF900E4C4C4 /* Default-568h@2x 9.59.50 PM.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x 9.59.50 PM.png"; sourceTree = "<group>"; };
+		B88DE8072402E5F80076B8F2 /* MCController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MCController.swift; sourceTree = "<group>"; };
 		B88F996823F06801003ED805 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		B88F996C23F09BB4003ED805 /* UISettingsButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UISettingsButton.swift; sourceTree = "<group>"; };
 		B88F997223F1CD9F003ED805 /* UIViruses.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViruses.swift; sourceTree = "<group>"; };
@@ -163,6 +167,7 @@
 			children = (
 				B8948F4D24019A280070F8E6 /* heaven.mp3 */,
 				B88F996823F06801003ED805 /* ViewController.swift */,
+				B88DE8072402E5F80076B8F2 /* MCController.swift */,
 				B81C3F7723FED88E00042729 /* SoundController.swift */,
 				B8366D3523F772180043B45F /* Audio */,
 				B88F998F23F39934003ED805 /* Custom Components */,
@@ -209,6 +214,7 @@
 				B8AE017423ECB758007A6142 /* UICView.swift */,
 				B8AE017223ECB25C007A6142 /* UICLabel.swift */,
 				B8948F54240224F50070F8E6 /* UICTextField.swift */,
+				B83B2BEF2403061100B4C92D /* UICScrollView.swift */,
 			);
 			name = "Custom UIKit Components";
 			sourceTree = "<group>";
@@ -505,8 +511,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				B8AE017323ECB25C007A6142 /* UICLabel.swift in Sources */,
+				B88DE8082402E5F80076B8F2 /* MCController.swift in Sources */,
 				B835801E23FF587600A2A211 /* UIStatistics.swift in Sources */,
 				B833545623EC8F0B00835672 /* podDatCat.xcdatamodeld in Sources */,
+				B83B2BF02403061100B4C92D /* UICScrollView.swift in Sources */,
 				B833544C23EC8F0B00835672 /* AppDelegate.swift in Sources */,
 				B8FBD6A723F5EC4700C8B50D /* UIStats.swift in Sources */,
 				B8D98B7423F9C4570051D808 /* UICatButtons.swift in Sources */,

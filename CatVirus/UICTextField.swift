@@ -29,11 +29,12 @@ class UICTextField:UITextField, UITextFieldDelegate {
         // Read range that is being changed
         guard let stringRange = Range(range, in: currentText) else { return false }
         // Remove spaces being typed
-        if (currentText.replacingCharacters(in: stringRange, with: string).contains(" ")) {
+        let mostCurrentText = currentText.replacingCharacters(in: stringRange, with: string);
+        if (mostCurrentText.contains(" ")) {
             return false;
         }
         // Add new text to existing text
-        let updatedText = currentText.replacingCharacters(in: stringRange, with: string)
+        let updatedText = mostCurrentText;
         // Limit result
         return updatedText.count <= 16
     }

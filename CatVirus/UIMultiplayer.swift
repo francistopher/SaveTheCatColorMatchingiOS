@@ -25,7 +25,9 @@ class UIMultiplayer: UIButton, MCSessionDelegate, MCBrowserViewControllerDelegat
     var advertiserAssistant:MCAdvertiserAssistant!
     var browser:MCBrowserViewController!
     var hosting:Bool = false;
-    var displayName:String = UIDevice.current.name;
+    var myDisplayName:String = "";
+    var myUUID:UUID = UUID();
+    var foundDisplayNameUUIDs:[String] = [];
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -67,22 +69,10 @@ class UIMultiplayer: UIButton, MCSessionDelegate, MCBrowserViewControllerDelegat
         multiplayerView!.layer.borderColor = UIColor.black.cgColor;
         multiplayerView!.alpha = 0.0;
         unitViewHeight = multiplayerView!.frame.height / 6.0;
-        setupMultiplayerLabel();
-//        setupLocalButton();
-//        setupGlobalButton();
-    }
-    
-    func setupMultiplayerLabel() {
-        multiplayerTitleLabel = UICLabel(parentView: self.multiplayerView!, x: 0.0, y: 0.0, width: multiplayerView!.frame.width, height: unitViewHeight);
-        multiplayerTitleLabel!.text = "Multiplayer";
-        multiplayerTitleLabel!.font = UIFont.boldSystemFont(ofSize: multiplayerTitleLabel!.frame.height * 0.4);
-        multiplayerTitleLabel!.layer.cornerRadius = multiplayerView!.layer.cornerRadius;
-        multiplayerTitleLabel!.layer.masksToBounds = true;
-        multiplayerTitleLabel!.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner];
     }
     
     func setupDisplayNameTextField() {
-        displayNameTextField = UICTextField(parentView:self.multiplayerView!, frame: CGRect(x: self.multiplayerView!.frame.width * 0.1 , y: unitViewHeight * 2, width: self.multiplayerView!.frame.width * 0.8, height: unitViewHeight));
+        displayNameTextField = UICTextField(parentView:self.multiplayerView!, frame: CGRect(x: self.multiplayerView!.frame.width * 0.15 , y: unitViewHeight * 1.7, width: self.multiplayerView!.frame.width * 0.7, height: unitViewHeight * 0.8));
         displayNameTextField!.layer.borderWidth = displayNameTextField!.frame.height * 0.1;
         displayNameTextField!.layer.borderColor = UIColor.black.cgColor;
         displayNameTextField!.layer.cornerRadius = displayNameTextField!.frame.height * 0.2;
@@ -91,7 +81,7 @@ class UIMultiplayer: UIButton, MCSessionDelegate, MCBrowserViewControllerDelegat
     }
     
     func setupUpdateDisplayNameButton() {
-        updateDisplayNameButton = UICButton(parentView: self.multiplayerView!, frame: CGRect(x: self.multiplayerView!.frame.width * 0.1, y: unitViewHeight, width: self.multiplayerView!.frame.width * 0.8, height: unitViewHeight * 0.8), backgroundColor: UIColor.white);
+        updateDisplayNameButton = UICButton(parentView: self.multiplayerView!, frame: CGRect(x: self.multiplayerView!.frame.width * 0.15, y: unitViewHeight * 0.5, width: self.multiplayerView!.frame.width * 0.7, height: unitViewHeight * 0.8), backgroundColor: UIColor.white);
         updateDisplayNameButton!.layer.borderWidth = updateDisplayNameButton!.frame.height * 0.1;
         updateDisplayNameButton!.layer.borderColor = UIColor.black.cgColor;
         updateDisplayNameButton!.layer.cornerRadius = updateDisplayNameButton!.frame.height * 0.2;
@@ -115,57 +105,20 @@ class UIMultiplayer: UIButton, MCSessionDelegate, MCBrowserViewControllerDelegat
         if (updateDisplayNameButton!.backgroundColor!.cgColor == UIColor.systemPink.cgColor){
             advertiserAssistant.stop();
             browser.browser!.stopBrowsingForPeers();
-            self.peerID = nil;
-            self.session.delegate = nil;
-            self.session = nil;
-            self.advertiserAssistant = nil;
-            self.browser.browser!.delegate = nil;
-            self.browser.delegate = nil;
-            self.browser = nil;
-            self.setupConnectionFramework();
+            browser.browser!.delegate = nil;
+            browser.delegate = nil;
+            browser = nil
+            advertiserAssistant = nil;
+            session.delegate = nil;
+            session = nil;
+            peerID = nil;
+            setupConnectionFramework();
             advertiserAssistant.start();
             browser.browser!.startBrowsingForPeers();
             updateDisplayNameButton!.backgroundColor = UIColor.systemGreen;
-            print("New session");
+            updateDisplayNameButton!.setTitle( "Display Name", for: .normal);
         }
     }
-    
-//    func setupLocalButton() {
-//        localButton = UICButton(parentView: self.multiplayerView!, frame: CGRect(x: self.multiplayerView!.frame.width * 0.1, y: unitViewHeight * 2, width: (self.multiplayerView!.frame.width * 0.4) + (unitViewHeight * 0.04), height: unitViewHeight * 0.8), backgroundColor: UIColor.white);
-//        localButton!.setTitle("Local", for: .normal);
-//        localButton!.layer.cornerRadius = localButton!.frame.height * 0.2;
-//        localButton!.layer.borderWidth = localButton!.frame.height * 0.1;
-//        localButton!.layer.maskedCorners = [.layerMinXMinYCorner, .layerMinXMaxYCorner];
-//        localButton!.backgroundColor = UIColor.systemPink;
-//        localButton!.setTitleColor(UIColor.black, for: .normal);
-//        localButton!.titleLabel!.font = UIFont.boldSystemFont(ofSize: localButton!.frame.height * 0.4);
-//        localButton!.addTarget(self, action: #selector(localButtonSelector), for: .touchUpInside);
-//    }
-    
-//    @objc func localButtonSelector() {
-//        if (localButton!.backgroundColor!.cgColor != UIColor.systemPink.cgColor) {
-//            localButton!.backgroundColor = UIColor.systemPink;
-//            globalButton!.backgroundColor = UIColor.clear;
-//        }
-//    }
-    
-//    func setupGlobalButton() {
-//        globalButton = UICButton(parentView: self.multiplayerView!, frame: CGRect(x: (self.multiplayerView!.frame.width * 0.5) - (unitViewHeight * 0.04), y: unitViewHeight, width: (self.multiplayerView!.frame.width * 0.4) , height: unitViewHeight * 0.8), backgroundColor: UIColor.white);
-//        globalButton!.setTitle("Global", for: .normal);
-//        globalButton!.layer.cornerRadius = localButton!.frame.height * 0.2;
-//        globalButton!.layer.borderWidth = localButton!.frame.height * 0.1;
-//        globalButton!.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMaxXMaxYCorner];
-//        globalButton!.setTitleColor(UIColor.black, for: .normal);
-//        globalButton!.titleLabel!.font = UIFont.boldSystemFont(ofSize: globalButton!.frame.height * 0.4);
-//        globalButton!.addTarget(self, action: #selector(globalButtonSelector), for: .touchUpInside);
-//    }
-    
-//    @objc func globalButtonSelector() {
-//        if (globalButton!.backgroundColor!.cgColor != UIColor.systemPink.cgColor) {
-//            globalButton!.backgroundColor = UIColor.systemPink;
-//            localButton!.backgroundColor = UIColor.clear;
-//        }
-//    }
     
     func setIconImage(imageName: String) {
         let iconImage:UIImage? = UIImage(named: imageName);
@@ -195,7 +148,8 @@ class UIMultiplayer: UIButton, MCSessionDelegate, MCBrowserViewControllerDelegat
     
     func setupConnectionFramework() {
         // Setup framework
-        self.peerID = MCPeerID(displayName: self.displayNameTextField!.text!);
+        myDisplayName = myUUID.uuidString + displayNameTextField!.text!
+        self.peerID = MCPeerID(displayName: myDisplayName);
         self.session = MCSession(peer: peerID, securityIdentity: nil, encryptionPreference: .required);
         self.session.delegate = self;
         // Setup advertising framework - to host
@@ -225,19 +179,23 @@ class UIMultiplayer: UIButton, MCSessionDelegate, MCBrowserViewControllerDelegat
         
     }
     
+    func browser(_ browser: MCNearbyServiceBrowser, foundPeer peerID: MCPeerID, withDiscoveryInfo info: [String : String]?) {
+        if (peerID.displayName.prefix(36) != myDisplayName.prefix(36)) {
+            print("Found peer!");
+        }
+    }
+    
+    func browser(_ browser: MCNearbyServiceBrowser, lostPeer peerID: MCPeerID) {
+        if (peerID.displayName.prefix(36) != myDisplayName.prefix(36)) {
+            print("Lost peer!");
+        }
+    }
+    
     func browserViewControllerDidFinish(_ browserViewController: MCBrowserViewController) {
         
     }
     
     func browserViewControllerWasCancelled(_ browserViewController: MCBrowserViewController) {
         
-    }
-    
-    func browser(_ browser: MCNearbyServiceBrowser, foundPeer peerID: MCPeerID, withDiscoveryInfo info: [String : String]?) {
-        print("Found \(peerID.displayName)")
-    }
-    
-    func browser(_ browser: MCNearbyServiceBrowser, lostPeer peerID: MCPeerID) {
-         print("\(peerID.displayName) lost")
     }
 }

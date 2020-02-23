@@ -144,6 +144,7 @@
 			isa = PBXGroup;
 			children = (
 				B833544A23EC8F0B00835672 /* CatVirus */,
+				B88F998B23F39838003ED805 /* Supporting Files */,
 				B833544923EC8F0B00835672 /* Products */,
 				B86A7EA723FCDDF000E4C4C4 /* Default-568h@2x 9.59.50 PM.png */,
 			);
@@ -166,7 +167,6 @@
 				B8366D3523F772180043B45F /* Audio */,
 				B88F998F23F39934003ED805 /* Custom Components */,
 				B88F998E23F398F2003ED805 /* Custom UIKit Components */,
-				B88F998B23F39838003ED805 /* Supporting Files */,
 				B88F999223F39975003ED805 /* Images */,
 			);
 			path = CatVirus;
@@ -199,6 +199,7 @@
 				B833545C23EC8F1400835672 /* Info.plist */,
 			);
 			name = "Supporting Files";
+			path = CatVirus;
 			sourceTree = "<group>";
 		};
 		B88F998E23F398F2003ED805 /* Custom UIKit Components */ = {

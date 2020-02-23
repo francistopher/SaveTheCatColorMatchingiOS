@@ -22,12 +22,12 @@ class UIMoreCats: UIButton {
         self.originalFrame = CGRect(x: x, y: y, width: width, height: height);
         self.backgroundColor = .clear;
         self.layer.cornerRadius = height / 2.0;
-        self.addTarget(self, action: #selector(testingSelector), for: .touchUpInside);
+        self.addTarget(self, action: #selector(moreCatsSelector), for: .touchUpInside);
         self.setStyle();
         parentView.addSubview(self);
     }
 
-    @objc func testingSelector() {
+    @objc func moreCatsSelector() {
        print("Testing: More Cats!");
     }
        

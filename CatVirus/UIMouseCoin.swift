@@ -27,13 +27,13 @@ class UIMouseCoin: UIButton {
         self.backgroundColor = .clear;
         self.layer.cornerRadius = height / 2.0;
         setIconImage(imageName: "mouseCoin.png");
-        self.addTarget(self, action: #selector(testingSelector), for: .touchUpInside);
+        self.addTarget(self, action: #selector(mouseCoinSelector), for: .touchUpInside);
         parentView.addSubview(self);
         setupMouseCoinView();
         mouseCoinView!.alpha = 0.0;
     }
     
-    @objc func testingSelector() {
+    @objc func mouseCoinSelector() {
         if (isSelectable) {
             fadeBackgroundOut();
             isSelectable = false;

@@ -23,11 +23,11 @@ class UINoAds: UIButton {
         self.backgroundColor = .clear;
         self.layer.cornerRadius = height / 2.0;
         setStyle();
-        self.addTarget(self, action: #selector(testingSelector), for: .touchUpInside);
+        self.addTarget(self, action: #selector(noAdsSelector), for: .touchUpInside);
         parentView.addSubview(self);
     }
 
-    @objc func testingSelector() {
+    @objc func noAdsSelector() {
         print("Testing: No Ads!");
     }
 

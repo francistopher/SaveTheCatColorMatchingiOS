@@ -23,11 +23,11 @@ class UIStats: UIButton {
         self.backgroundColor = .clear;
         self.layer.cornerRadius = height / 2.0;
         setStyle();
-        self.addTarget(self, action: #selector(testingSelector), for: .touchUpInside);
+        self.addTarget(self, action: #selector(statsSelector), for: .touchUpInside);
         parentView.addSubview(self);
     }
 
-    @objc func testingSelector() {
+    @objc func statsSelector() {
         print("Testing: Stats!");
     }
 

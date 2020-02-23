@@ -25,14 +25,9 @@ class UIRestart1: UIButton {
         self.backgroundColor = .clear;
         self.layer.cornerRadius = height / 2.0;
         setStyle();
-        self.addTarget(self, action: #selector(testingSelector), for: .touchUpInside);
+        self.addTarget(self, action: #selector(restart1Selector), for: .touchUpInside);
         parentView.addSubview(self);
     }
-
-    @objc func testingSelector() {
-        print("Testing: Restart1!");
-    }
-
 
     func setIconImage(imageName:String) {
         let iconImage:UIImage? = UIImage(named:imageName);

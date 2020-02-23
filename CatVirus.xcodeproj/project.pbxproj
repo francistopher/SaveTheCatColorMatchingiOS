@@ -35,6 +35,7 @@
 		B88F997323F1CDA0003ED805 /* UIViruses.swift in Sources */ = {isa = PBXBuildFile; fileRef = B88F997223F1CD9F003ED805 /* UIViruses.swift */; };
 		B88F997923F37FE2003ED805 /* UIVirus.swift in Sources */ = {isa = PBXBuildFile; fileRef = B88F997823F37FE2003ED805 /* UIVirus.swift */; };
 		B8948F4E24019A280070F8E6 /* heaven.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = B8948F4D24019A280070F8E6 /* heaven.mp3 */; };
+		B8948F55240224F50070F8E6 /* UICTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8948F54240224F50070F8E6 /* UICTextField.swift */; };
 		B8AE017123ECB180007A6142 /* UICenterKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8AE017023ECB180007A6142 /* UICenterKit.swift */; };
 		B8AE017323ECB25C007A6142 /* UICLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8AE017223ECB25C007A6142 /* UICLabel.swift */; };
 		B8AE017523ECB758007A6142 /* UICView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8AE017423ECB758007A6142 /* UICView.swift */; };
@@ -97,6 +98,7 @@
 		B88F997223F1CD9F003ED805 /* UIViruses.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViruses.swift; sourceTree = "<group>"; };
 		B88F997823F37FE2003ED805 /* UIVirus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIVirus.swift; sourceTree = "<group>"; };
 		B8948F4D24019A280070F8E6 /* heaven.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = heaven.mp3; sourceTree = "<group>"; };
+		B8948F54240224F50070F8E6 /* UICTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UICTextField.swift; sourceTree = "<group>"; };
 		B8AE017023ECB180007A6142 /* UICenterKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UICenterKit.swift; sourceTree = "<group>"; };
 		B8AE017223ECB25C007A6142 /* UICLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UICLabel.swift; sourceTree = "<group>"; };
 		B8AE017423ECB758007A6142 /* UICView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UICView.swift; sourceTree = "<group>"; };
@@ -205,6 +207,7 @@
 				B8AE017E23ECD3B2007A6142 /* UICButton.swift */,
 				B8AE017423ECB758007A6142 /* UICView.swift */,
 				B8AE017223ECB25C007A6142 /* UICLabel.swift */,
+				B8948F54240224F50070F8E6 /* UICTextField.swift */,
 			);
 			name = "Custom UIKit Components";
 			sourceTree = "<group>";
@@ -519,6 +522,7 @@
 				B8FBD6A923F5EC5600C8B50D /* UINoAds.swift in Sources */,
 				B88F996D23F09BB4003ED805 /* UISettingsButton.swift in Sources */,
 				B8AE017523ECB758007A6142 /* UICView.swift in Sources */,
+				B8948F55240224F50070F8E6 /* UICTextField.swift in Sources */,
 				B8AE017123ECB180007A6142 /* UICenterKit.swift in Sources */,
 				B8FBD68F23F5D5BE00C8B50D /* UIMouseCoin.swift in Sources */,
 				B8D98B7823F9C6BE0051D808 /* UICatButton.swift in Sources */,

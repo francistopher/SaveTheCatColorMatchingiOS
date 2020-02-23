@@ -59,11 +59,13 @@ class ViewController: UIViewController {
     
     @objc func appMovedToBackground() {
         self.boardGame!.cats.suspendCatAnimations();
+        self.settingsButton!.multiplayer!.activePlayersScrollView!.catButton!.hideCat();
         print("App backgrounded");
     }
     
     @objc func appMovedToForeground() {
         self.boardGame!.cats.resumeCatAnimations();
+        self.settingsButton!.multiplayer!.activePlayersScrollView!.catButton!.animate(AgainWithoutDelay: true);
         print("App foregrounded");
     }
     @objc func appDeactivated() {

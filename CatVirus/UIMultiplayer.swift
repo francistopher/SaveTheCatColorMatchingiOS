@@ -21,7 +21,7 @@ class UIMultiplayer: UIButton {
     var updateDisplayNameButton:UICButton?
     
     var mcController:MCController?
-    var activePlayersScrollView:UICScrollView?
+    var activePlayersScrollView:UIPlayerAdScrollView?
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -90,7 +90,7 @@ class UIMultiplayer: UIButton {
     }
 
     func setupActivePlayersScrollView() {
-        activePlayersScrollView = PlayerAdScrollView(parentView: multiplayerView!, frame: CGRect(x: multiplayerView!.frame.width * 0.15, y: unitViewHeight * 1.7, width: multiplayerView!.frame.width * 0.7, height: unitViewHeight * 3.8), mcController: mcController!);
+        activePlayersScrollView = UIPlayerAdScrollView(parentView: multiplayerView!, frame: CGRect(x: multiplayerView!.frame.width * 0.15, y: unitViewHeight * 1.7, width: multiplayerView!.frame.width * 0.7, height: unitViewHeight * 3.8), mcController: mcController!);
     }
     
     @objc func displayNameTextFieldSelector() {
@@ -146,7 +146,7 @@ class UIMultiplayer: UIButton {
     }
 }
 
-class PlayerAdScrollView:UICScrollView {
+class UIPlayerAdScrollView:UICScrollView {
     
     var mcController:MCController?
     var searchingForPlayersView:UIView?

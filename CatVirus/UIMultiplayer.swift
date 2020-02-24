@@ -153,11 +153,19 @@ class UIMultiplayer: UIButton {
 class UIPlayerAdScrollView:UICScrollView {
     
     var mcController:MCController?
+    
     var searchingForPlayersView:UICView?
-    var searchingForPlayersLabel:UILabel?
+    var searchingForPlayersLabel:UICLabel?
+    var searchingCatButton:UICatButton?
+    
+    var invitationView:UICView?
+    var invitationLabel:UICLabel?
+    var invitationCatButton:UICatButton?
+    var acceptButton:UICButton?
+    var ignoreButton:UICButton?
+    
     var playerAdLabels:[String:PlayerAdLabel] = [:];
     var contentSizeHeight:CGFloat = 0.0;
-    var catButton:UICatButton?
     var searchTimer:Timer?
     var unitHeight:CGFloat = 0.0
     var isSearching = false;
@@ -171,6 +179,7 @@ class UIPlayerAdScrollView:UICScrollView {
         self.mcController = mcController;
         self.unitHeight = unitHeight;
         setupSearchingForPlayersView();
+        setupInvitationView();
         searchForFoundAndLostPeers();
     }
     
@@ -239,10 +248,11 @@ class UIPlayerAdScrollView:UICScrollView {
                 self.isSearching = false;
                 let peerID:MCPeerID = self.mcController!.receivedInvitationPeerIDs[0];
                 let displayName:String = String(peerID.displayName.suffix(peerID.displayName.count - 36));
-                self.searchingForPlayersLabel!.text = "Received invitation from \(displayName)";
-                self.bringSubviewToFront(self.searchingForPlayersView!);
+                self.invitationLabel!.text = "Invited by\n\(displayName)";
+                self.invitationView!.fadeIn();
                 self.searchingForPlayersView!.fadeIn();
             } else {
+                self.searchingForPlayersView!.fadeOut();
                 self.isSearching = true;
             }
             if (self.isSearching) {
@@ -253,26 +263,87 @@ class UIPlayerAdScrollView:UICScrollView {
         }
     }
     
+    func setupInvitationView() {
+        invitationView = UICView(parentView: self, x: 0.0, y: 0.0, width: self.frame.width, height: self.frame.height, backgroundColor: UIColor.clear);
+        setupInvitationLabel();
+        setupInvitationCatButton();
+        setupAcceptButton();
+        setupRejectButton();
+    }
+    
+    func setupInvitationLabel() {
+        invitationLabel = UICLabel(parentView: invitationView!, x: 0.0, y: 0.0, width: self.frame.width, height: self.frame.height * 0.33);
+        invitationLabel!.backgroundColor = UIColor.clear;
+        invitationLabel!.layer.borderWidth = 0.0;
+        invitationLabel!.lineBreakMode = NSLineBreakMode.byWordWrapping;
+        invitationLabel!.numberOfLines = 2;
+        invitationLabel!.text = "Invited by\nijnjkhvjgvgjvhbjh";
+        invitationLabel!.textColor = UIColor.black;
+        invitationLabel!.font! = UIFont.boldSystemFont(ofSize: searchingForPlayersLabel!.frame.height * 0.15);
+    }
+    
+    func setupInvitationCatButton() {
+        invitationCatButton = UICatButton(parentView: invitationView!, x: 0.0, y: self.frame.height * 0.25, width: self.frame.width * 0.5, height: self.frame.height * 0.125, backgroundColor: UIColor.clear);
+        invitationCatButton!.setCat(named: "WavingCat", stage: 0);
+        invitationCatButton!.frame = invitationCatButton!.originalFrame!;
+        invitationCatButton!.layer.borderWidth = 0.0;
+        invitationCatButton!.imageContainerButton!.frame = searchingCatButton!.imageContainerButton!.originalFrame!;
+        invitationCatButton!.imageContainerButton!.transform = invitationCatButton!.imageContainerButton!.transform.scaledBy(x: 0.8, y: 0.8);
+    }
+    
+    func setupAcceptButton() {
+        acceptButton = UICButton(parentView: invitationView!, frame: CGRect(x: self.frame.width * 0.1, y: self.frame.height * 0.775, width: self.frame.width * 0.35, height: self.frame.height * 0.16), backgroundColor: UIColor.systemGreen);
+        acceptButton!.layer.cornerRadius = acceptButton!.frame.width * 0.1;
+        acceptButton!.layer.borderWidth = acceptButton!.frame.width * 0.03;
+        acceptButton!.layer.borderColor = UIColor.black.cgColor;
+        acceptButton!.titleLabel!.font = UIFont.boldSystemFont(ofSize: acceptButton!.frame.height * 0.4);
+        acceptButton!.setTitle("Accept", for: .normal);
+        acceptButton!.setTitleColor(UIColor.white, for: .normal);
+        acceptButton!.addTarget(self, action: #selector(acceptButtonSelector), for: .touchUpInside);
+    }
+    
+    @objc func acceptButtonSelector() {
+        print("Invitation Accepted!");
+    }
+    
+    func setupRejectButton() {
+        ignoreButton = UICButton(parentView: invitationView!, frame: CGRect(x: self.frame.width * 0.55, y: self.frame.height * 0.775, width: self.frame.width * 0.35, height: self.frame.height * 0.16), backgroundColor: UIColor.systemRed);
+        ignoreButton!.layer.cornerRadius = ignoreButton!.frame.width * 0.1;
+        ignoreButton!.layer.borderWidth = ignoreButton!.frame.width * 0.03;
+        ignoreButton!.layer.borderColor = UIColor.black.cgColor;
+        ignoreButton!.titleLabel!.font = UIFont.boldSystemFont(ofSize: ignoreButton!.frame.height * 0.4);
+        ignoreButton!.setTitle("Ignore", for: .normal);
+        ignoreButton!.setTitleColor(UIColor.white, for: .normal);
+        ignoreButton!.addTarget(self, action: #selector(ignoreButtonSelector), for: .touchUpInside);
+    }
+    
+    @objc func ignoreButtonSelector() {
+        print("Invitation Ignored!");
+    }
+    
     func setupSearchingForPlayersView() {
-        searchingForPlayersView = UICView(parentView: self, x: 0.0, y: 0.0, width: self.frame.width, height: self.frame.height, backgroundColor: UIColor.white);
+        searchingForPlayersView = UICView(parentView: self, x: 0.0, y: 0.0, width: self.frame.width, height: self.frame.height, backgroundColor: UIColor.clear);
         setupSearchingForPlayersLabel();
         setupCatButton();
     }
     
-    func setupSearchingForPlayersLabel() {
-        searchingForPlayersLabel = UICLabel(parentView: searchingForPlayersView!, x: 0.0, y: self.frame.height * 0.725, width: self.frame.width, height: self.frame.height * 0.2);
-        searchingForPlayersLabel!.layer.borderWidth = 0.0;
-        searchingForPlayersLabel!.text = "Searching...";
-        searchingForPlayersLabel!.textColor = UIColor.black;
-        searchingForPlayersLabel!.font! = UIFont.boldSystemFont(ofSize: searchingForPlayersLabel!.frame.height * 0.4);
+    func setupCatButton() {
+        searchingCatButton = UICatButton(parentView: searchingForPlayersView!, x: 0.0, y: self.frame.height * 0.075, width: self.frame.width, height: self.frame.height * 0.5, backgroundColor: UIColor.clear);
+        searchingCatButton!.layer.borderWidth = 0.0;
+        searchingCatButton!.setCat(named: "SmilingCat", stage: 0);
+        searchingCatButton!.frame = searchingCatButton!.originalFrame!;
+        searchingCatButton!.imageContainerButton!.frame = searchingCatButton!.imageContainerButton!.originalFrame!;
     }
     
-    func setupCatButton() {
-        catButton = UICatButton(parentView: searchingForPlayersView!, x: 0.0, y: self.frame.height * 0.09, width: self.frame.width, height: self.frame.height * 0.60, backgroundColor: UIColor.clear);
-        catButton!.layer.borderWidth = 0.0;
-        catButton!.setCat(named: "SmilingCat", stage: 0);
-        catButton!.frame = catButton!.originalFrame!;
-        catButton!.imageContainerButton!.frame = catButton!.imageContainerButton!.originalFrame!;
+    func setupSearchingForPlayersLabel() {
+        searchingForPlayersLabel = UICLabel(parentView: searchingForPlayersView!, x: 0.0, y: self.frame.height * 0.5, width: self.frame.width, height: self.frame.height * 0.5);
+        searchingForPlayersLabel!.backgroundColor = UIColor.clear;
+        searchingForPlayersLabel!.layer.borderWidth = 0.0;
+        searchingForPlayersLabel!.lineBreakMode = NSLineBreakMode.byWordWrapping;
+        searchingForPlayersLabel!.numberOfLines = 2;
+        searchingForPlayersLabel!.text = "Searching for\nPlayers";
+        searchingForPlayersLabel!.textColor = UIColor.black;
+        searchingForPlayersLabel!.font! = UIFont.boldSystemFont(ofSize: searchingForPlayersLabel!.frame.height * 0.2);
     }
     
     func setContentSize(height:CGFloat) {
@@ -288,7 +359,6 @@ class UIPlayerAdScrollView:UICScrollView {
 }
 
 class PlayerAdLabel: UICButton {
-    
     var UUIDString:String = "";
     var displayName:String = "";
     var isPresent:Bool = true;

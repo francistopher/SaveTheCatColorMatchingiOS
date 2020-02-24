@@ -20,6 +20,7 @@ class UICScrollView: UIScrollView {
         super.init(frame:frame);
         super.layer.borderWidth = super.frame.width * 0.02;
         super.layer.cornerRadius = super.frame.width * 0.04;
+        super.backgroundColor = UIColor.clear;
         parentView.addSubview(self);
     }
     

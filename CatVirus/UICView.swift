@@ -13,6 +13,7 @@ import UIKit
     
     var originalFrame:CGRect? = nil;
     var reducedFrame:CGRect? = nil;
+    var isFadedOut:Bool = false;
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented");
@@ -30,12 +31,16 @@ import UIKit
     func fadeIn() {
         UIView.animate(withDuration: 1.0, delay: 0.125, options: .curveEaseInOut, animations: {
             self.alpha = 1.0;
+        }, completion: { _ in
+            self.isFadedOut = false;
         })
     }
     
     func fadeOut() {
         UIView.animate(withDuration: 1.0, delay: 0.125, options: .curveEaseInOut, animations: {
             self.alpha = 0.0;
+        }, completion: { _ in
+            self.isFadedOut = true;
         })
     }
     

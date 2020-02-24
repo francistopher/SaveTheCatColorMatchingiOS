@@ -30,6 +30,14 @@ class UICLabel:UILabel {
         })
     }
     
+    func shrink() {
+        UIView.animate(withDuration: 0.25, delay: 0.125, options: .curveEaseInOut, animations: {
+            self.frame = CGRect(x: self.frame.midX, y: self.frame.midY, width: 0.0, height: 0.0);
+        }, completion: { _ in
+            self.removeFromSuperview();
+        })
+    }
+    
     func fadeInAndOut(){
         UIView.animate(withDuration: 2, delay: 0.5, options: .curveEaseIn, animations: {
             super.alpha = 1.0;

@@ -96,9 +96,9 @@ class MCController: ViewController, MCSessionDelegate, MCBrowserViewControllerDe
     func browser(_ browser: MCNearbyServiceBrowser, lostPeer peerID: MCPeerID) {
         var index:Int = 0;
         while(index < foundDisplayNames.count) {
-            if (foundDisplayNames[index] == peerID.displayName) {
-               foundDisplayNames.remove(at: index);
-               return;
+            if (foundDisplayNames[index].prefix(36) == peerID.displayName.prefix(36)) {
+                foundDisplayNames.remove(at: index);
+                return;
            } else {
                index += 1;
            }

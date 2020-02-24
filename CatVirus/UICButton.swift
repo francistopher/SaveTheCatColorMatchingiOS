@@ -16,6 +16,7 @@ class UICButton:UIButton {
     var originalBackgroundColor:UIColor? = nil;
     var shrinkType:shrink = .mid;
     var parentView:UIView? = nil;
+    var hasFadedOut:Bool = false;
     
     var inverted:Bool = false;
     enum shrink {

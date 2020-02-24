@@ -180,13 +180,20 @@ class UIPlayerAdScrollView:UICScrollView {
                 var newNewY = self.unitHeight * 0.6;
                 for foundDisplayName in self.mcController!.foundDisplayNames {
                     let displayName:String = String(foundDisplayName.suffix(foundDisplayName.count - 36));
+                    let UUIDString:String = String(foundDisplayName.prefix(36));
                     // Add new found player ad label
-                    if (self.playerAdLabels[foundDisplayName] == nil) {
+                    if (self.playerAdLabels[UUIDString] == nil) {
                         let playerAdLabel = PlayerAdLabel(parentView: self, frame: CGRect(x: newNewX, y: newNewY, width: 0.0, height: 0.0), displayName: displayName);
-                        self.playerAdLabels[foundDisplayName] = playerAdLabel;
+                        self.playerAdLabels[UUIDString] = playerAdLabel;
                     // Previously added player ad label
                     } else {
-                        self.playerAdLabels[foundDisplayName]!.isPresent = true;
+                        self.playerAdLabels[UUIDString]!.isPresent = true;
+                        if (displayName != self.playerAdLabels[UUIDString]!.displayName){
+                            print("New Display Name", displayName)
+                            print("Old Display Name", self.playerAdLabels[UUIDString]!.displayName)
+                            self.playerAdLabels[UUIDString]!.displayName = displayName;
+                            self.playerAdLabels[UUIDString]!.text = displayName;
+                        }
                     }
                     newNewY += self.unitHeight;
                 }
@@ -200,7 +207,7 @@ class UIPlayerAdScrollView:UICScrollView {
                 var newY:CGFloat = 0.0;
                 var newFrame:CGRect = CGRect(x: self.frame.width * 0.1, y: newY + self.unitHeight * 0.2, width: self.frame.width * 0.8, height: self.unitHeight * 0.8);
                 for (displayName, playerAdLabel) in self.playerAdLabels {
-                    if (playerAdLabel.isPresent) {
+                    if (playerAdLabel.isPresent && self.searchingForPlayersView!.isFadedOut) {
                         playerAdLabel.isPresent = false;
                         playerAdLabel.transformation(frame: newFrame);
                         playerAdLabel.resetPhysicalStyle();
@@ -208,7 +215,7 @@ class UIPlayerAdScrollView:UICScrollView {
                         self.setContentSize(height: newY);
                         newFrame = CGRect(x: self.frame.width * 0.1, y: newY + self.unitHeight * 0.4, width: self.frame.width * 0.8, height: self.unitHeight * 0.8);
                     } else {
-                        playerAdLabel.removeFromSuperview();
+                        playerAdLabel.shrink();
                         self.playerAdLabels[displayName] = nil;
                     }
                 }
@@ -253,6 +260,7 @@ class UIPlayerAdScrollView:UICScrollView {
 
 class PlayerAdLabel: UICLabel {
     
+    var UUIDString:String = "";
     var displayName:String = "";
     var isPresent:Bool = true;
     

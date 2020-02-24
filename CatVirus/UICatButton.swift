@@ -24,6 +24,8 @@ class UICatButton: UIButton {
     var imageContainerButton:UICButton? = nil;
     var isAlive:Bool = true;
     var isPodded:Bool = false;
+    var isFadedOut = false;
+    
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented");
@@ -161,6 +163,8 @@ class UICatButton: UIButton {
     func fadeBackgroundIn(){
         UIView.animate(withDuration: 0.5, delay: 0.25, options: .curveEaseIn, animations: {
             self.backgroundColor = self.originalBackgroundColor;
+        }, completion: { _ in
+            self.isFadedOut = false;
         });
     }
     
@@ -322,9 +326,21 @@ class UICatButton: UIButton {
         }
     }
     
+    func fadeBackgroundOut() {
+        UIView.animate(withDuration: 0.5, delay: 0.25, options: .curveEaseIn, animations: {
+            self.backgroundColor = UIColor.clear;
+        }, completion: { _ in
+            self.isFadedOut = true;
+        });
+    }
+    
     func fadeBackgroundIn(color:UIColor){
         UIView.animate(withDuration: 0.5, delay: 0.25, options: .curveEaseIn, animations: {
             self.backgroundColor = color;
+        }, completion: { _ in
+            if (color.cgColor != UIColor.clear.cgColor) {
+                self.isFadedOut = false;
+            }
         });
     }
 }

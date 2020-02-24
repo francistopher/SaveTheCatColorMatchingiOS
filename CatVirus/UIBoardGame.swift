@@ -221,6 +221,7 @@ class UIBoardGame: UIView {
     func revertSelections() {
         colorOptions!.selectedColor = UIColor.lightGray;
         cats.shrink();
+        currentStage = 1;
         configureComponentsAfterBoardGameReset();
     }
     

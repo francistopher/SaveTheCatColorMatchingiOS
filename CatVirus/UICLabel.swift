@@ -24,12 +24,6 @@ class UICLabel:UILabel {
         parentView.addSubview(self);
     }
     
-    func transformation(frame:CGRect) {
-        UIView.animate(withDuration: 0.25, delay: 0.125, options: .curveEaseInOut, animations: {
-            self.frame = frame;
-        })
-    }
-    
     func shrink() {
         UIView.animate(withDuration: 0.25, delay: 0.125, options: .curveEaseInOut, animations: {
             self.frame = CGRect(x: self.frame.midX, y: self.frame.midY, width: 0.0, height: 0.0);

@@ -54,7 +54,7 @@ class UIMultiplayer: UIButton {
         } else {
             fadeBackgroundOut();
             mcController!.advertisingAndBrowsing(start: false);
-            mcController!.foundDisplayNames = [];
+            mcController!.foundPeerIDs = [];
             activePlayersScrollView!.removePlayerAds();
             activePlayersScrollView!.isSearching = false;
         }
@@ -184,24 +184,23 @@ class UIPlayerAdScrollView:UICScrollView {
         searchTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
             if (self.isSearching) {
                 // Iterate through found display names
-                let newNewX = self.frame.width * 0.5;
-                var newNewY = self.unitHeight * 0.6;
-                for foundDisplayName in self.mcController!.foundDisplayNames {
-                    let displayName:String = String(foundDisplayName.suffix(foundDisplayName.count - 36));
-                    let UUIDString:String = String(foundDisplayName.prefix(36));
+                var y = self.unitHeight * 0.6;
+                for foundPeerID in self.mcController!.foundPeerIDs {
+                    let displayName:String = String(foundPeerID.displayName.suffix(foundPeerID.displayName.count - 36));
+                    let UUIDString:String = String(foundPeerID.displayName.prefix(36));
                     // Add new found player ad label
                     if (self.playerAdLabels[UUIDString] == nil) {
-                        let playerAdLabel = PlayerAdLabel(parentView: self, frame: CGRect(x: newNewX, y: newNewY, width: 0.0, height: 0.0), displayName: displayName);
+                        let playerAdLabel = PlayerAdLabel(parentView: self, frame: CGRect(x: self.frame.width * 0.5, y: y, width: 0.0, height: 0.0), mcController: self.mcController!, peerID:foundPeerID, UUIDString:UUIDString, displayName: displayName);
                         self.playerAdLabels[UUIDString] = playerAdLabel;
                     // Previously added player ad label
                     } else {
                         self.playerAdLabels[UUIDString]!.isPresent = true;
                         if (displayName != self.playerAdLabels[UUIDString]!.displayName){
                             self.playerAdLabels[UUIDString]!.displayName = displayName;
-                            self.playerAdLabels[UUIDString]!.text = displayName;
+                            self.playerAdLabels[UUIDString]!.setTitle(displayName, for: .normal);
                         }
                     }
-                    newNewY += self.unitHeight;
+                    y += self.unitHeight;
                 }
                 // If player ad labels exist hide searching for players view
                 if (self.playerAdLabels.count > 0) {
@@ -210,16 +209,16 @@ class UIPlayerAdScrollView:UICScrollView {
                     self.searchingForPlayersView!.fadeIn();
                 }
                 // Iterate through player ad labels
-                var newY:CGFloat = 0.0;
-                var newFrame:CGRect = CGRect(x: self.frame.width * 0.1, y: newY + self.unitHeight * 0.2, width: self.frame.width * 0.8, height: self.unitHeight * 0.8);
+                y = 0.0;
+                var newFrame:CGRect = CGRect(x: self.frame.width * 0.1, y: y + self.unitHeight * 0.2, width: self.frame.width * 0.8, height: self.unitHeight * 0.8);
                 for (displayName, playerAdLabel) in self.playerAdLabels.reversed() {
                     if (playerAdLabel.isPresent && self.searchingForPlayersView!.isFadedOut) {
                         playerAdLabel.isPresent = false;
                         playerAdLabel.transformation(frame: newFrame);
                         playerAdLabel.resetPhysicalStyle();
-                        newY += self.unitHeight * 0.8;
-                        self.setContentSize(height: newY);
-                        newFrame = CGRect(x: self.frame.width * 0.1, y: newY + self.unitHeight * 0.4, width: self.frame.width * 0.8, height: self.unitHeight * 0.8);
+                        y += self.unitHeight * 0.8;
+                        self.setContentSize(height: y);
+                        newFrame = CGRect(x: self.frame.width * 0.1, y: y + self.unitHeight * 0.4, width: self.frame.width * 0.8, height: self.unitHeight * 0.8);
                     } else {
                         playerAdLabel.shrink();
                         self.playerAdLabels[displayName] = nil;
@@ -261,37 +260,51 @@ class UIPlayerAdScrollView:UICScrollView {
         topAnchor.constraint(equalTo: playerAdvertisementLabel.topAnchor).isActive = true
         bottomAnchor.constraint(equalTo: playerAdvertisementLabel.bottomAnchor).isActive = true
     }
-    
 }
 
-class PlayerAdLabel: UICLabel {
+class PlayerAdLabel: UICButton {
     
     var UUIDString:String = "";
     var displayName:String = "";
     var isPresent:Bool = true;
+    var mcController:MCController?
+    var peerID:MCPeerID?
     var colors:[UIColor] = [UIColor.systemGreen, UIColor.systemYellow, UIColor.systemOrange, UIColor.systemRed, UIColor.systemPurple, UIColor.systemBlue];
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    init(parentView:UIView, frame:CGRect, displayName:String) {
-        super.init(parentView: parentView, x: frame.minX, y: frame.minY, width: frame.width, height: frame.height);
-        self.backgroundColor = colors.randomElement();
+    init(parentView:UIView, frame:CGRect, mcController:MCController, peerID:MCPeerID, UUIDString:String, displayName:String) {
+        super.init(parentView: parentView, frame: CGRect(x: frame.minX, y: frame.minY, width: frame.width, height: frame.height), backgroundColor: colors.randomElement()!);
         self.clipsToBounds = true;
+        self.mcController = mcController;
+        self.UUIDString = UUIDString;
         self.displayName = displayName;
+        self.peerID = peerID;
+        self.addTarget(self, action: #selector(playerAdLabelSelector), for: .touchUpInside);
     }
     
     func resetPhysicalStyle() {
         self.layer.cornerRadius = self.frame.height * 0.2;
         self.layer.borderWidth = self.frame.height * 0.1;
         self.layer.borderColor = UIColor.black.cgColor;
-        self.font = UIFont.boldSystemFont(ofSize: frame.height * 0.4);
-        self.text = displayName;
-        self.textColor = UIColor.white;
-        
-        
+        self.titleLabel!.font = UIFont.boldSystemFont(ofSize: frame.height * 0.4);
+        self.setTitle(displayName, for: .normal);
+        self.setTitleColor(UIColor.white, for: .normal);
     }
+    
+    func transformation(frame:CGRect) {
+        UIView.animate(withDuration: 0.25, delay: 0.125, options: .curveEaseInOut, animations: {
+            self.frame = frame;
+        })
+    }
+    
+    @objc func playerAdLabelSelector() {
+        mcController!.browser!.invitePeer(peerID!, to: mcController!.session!, withContext: nil, timeout: 30.0);
+        print("Selected \(UUIDString + displayName)")
+    }
+    
     
     
 }

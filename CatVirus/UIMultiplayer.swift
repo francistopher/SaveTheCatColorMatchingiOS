@@ -19,7 +19,6 @@ class UIMultiplayer: UIButton {
     var multiplayerTitleLabel:UICLabel?
     var displayNameTextField:UICTextField?
     var updateDisplayNameButton:UICButton?
-    
     var mcController:MCController?
     var activePlayersScrollView:UIPlayerAdScrollView?
     
@@ -55,6 +54,8 @@ class UIMultiplayer: UIButton {
         } else {
             fadeBackgroundOut();
             mcController!.advertisingAndBrowsing(start: false);
+            mcController!.foundDisplayNames = [];
+            activePlayersScrollView!.removePlayerAds();
             activePlayersScrollView!.isSearching = false;
         }
     }
@@ -172,6 +173,13 @@ class UIPlayerAdScrollView:UICScrollView {
         searchForFoundAndLostPeers();
     }
     
+    func removePlayerAds() {
+        for (_, playerAdLabel) in playerAdLabels {
+            playerAdLabel.shrink();
+        }
+        self.playerAdLabels = [:]
+    }
+    
     func searchForFoundAndLostPeers() {
         searchTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
             if (self.isSearching) {
@@ -189,8 +197,6 @@ class UIPlayerAdScrollView:UICScrollView {
                     } else {
                         self.playerAdLabels[UUIDString]!.isPresent = true;
                         if (displayName != self.playerAdLabels[UUIDString]!.displayName){
-                            print("New Display Name", displayName)
-                            print("Old Display Name", self.playerAdLabels[UUIDString]!.displayName)
                             self.playerAdLabels[UUIDString]!.displayName = displayName;
                             self.playerAdLabels[UUIDString]!.text = displayName;
                         }
@@ -272,17 +278,19 @@ class PlayerAdLabel: UICLabel {
     init(parentView:UIView, frame:CGRect, displayName:String) {
         super.init(parentView: parentView, x: frame.minX, y: frame.minY, width: frame.width, height: frame.height);
         self.backgroundColor = colors.randomElement();
+        self.clipsToBounds = true;
         self.displayName = displayName;
     }
     
     func resetPhysicalStyle() {
+        self.layer.cornerRadius = self.frame.height * 0.2;
+        self.layer.borderWidth = self.frame.height * 0.1;
+        self.layer.borderColor = UIColor.black.cgColor;
         self.font = UIFont.boldSystemFont(ofSize: frame.height * 0.4);
         self.text = displayName;
         self.textColor = UIColor.white;
-        self.layer.borderWidth = self.frame.height * 0.1;
-        self.layer.borderColor = UIColor.black.cgColor;
-        self.layer.cornerRadius = self.frame.height * 0.2;
-        self.clipsToBounds = true;
+        
+        
     }
     
     

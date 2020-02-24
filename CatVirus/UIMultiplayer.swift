@@ -55,6 +55,7 @@ class UIMultiplayer: UIButton {
             fadeBackgroundOut();
             mcController!.advertisingAndBrowsing(start: false);
             mcController!.foundPeerIDs = [];
+            mcController!.receivedInvitationPeerIDs = [];
             activePlayersScrollView!.removePlayerAds();
             activePlayersScrollView!.isSearching = false;
         }
@@ -180,50 +181,74 @@ class UIPlayerAdScrollView:UICScrollView {
         self.playerAdLabels = [:]
     }
     
+    func addOrModifyExistingPlayerAds() {
+        // Iterate through found display names
+        var y = self.unitHeight * 0.6;
+        for foundPeerID in self.mcController!.foundPeerIDs {
+            let displayName:String = String(foundPeerID.displayName.suffix(foundPeerID.displayName.count - 36));
+            let UUIDString:String = String(foundPeerID.displayName.prefix(36));
+            // Add new found player ad label
+            if (self.playerAdLabels[UUIDString] == nil) {
+                let playerAdLabel = PlayerAdLabel(parentView: self, frame: CGRect(x: self.frame.width * 0.5, y: y, width: 0.0, height: 0.0), mcController: self.mcController!, peerID:foundPeerID, UUIDString:UUIDString, displayName: displayName);
+                self.playerAdLabels[UUIDString] = playerAdLabel;
+            // Previously added player ad label
+            } else {
+                self.playerAdLabels[UUIDString]!.isPresent = true;
+                if (displayName != self.playerAdLabels[UUIDString]!.displayName){
+                    self.playerAdLabels[UUIDString]!.peerID = foundPeerID;
+                    self.playerAdLabels[UUIDString]!.displayName = displayName;
+                    self.playerAdLabels[UUIDString]!.setTitle(displayName, for: .normal);
+                }
+            }
+            y += self.unitHeight;
+        }
+    }
+    
+    func growExistingOrDisposePlayerAds() {
+        // Iterate through player ad labels
+        var y:CGFloat = 0.0;
+        var newFrame:CGRect = CGRect(x: self.frame.width * 0.1, y: y + self.unitHeight * 0.2, width: self.frame.width * 0.8, height: self.unitHeight * 0.8);
+        for (displayName, playerAdLabel) in self.playerAdLabels.reversed() {
+            if (playerAdLabel.isPresent && self.searchingForPlayersView!.isFadedOut) {
+                playerAdLabel.isPresent = false;
+                playerAdLabel.transformation(frame: newFrame);
+                playerAdLabel.resetPhysicalStyle();
+                y += self.unitHeight * 0.8;
+                self.setContentSize(height: y);
+                newFrame = CGRect(x: self.frame.width * 0.1, y: y + self.unitHeight * 0.4, width: self.frame.width * 0.8, height: self.unitHeight * 0.8);
+            } else {
+                playerAdLabel.shrink();
+                self.playerAdLabels[displayName] = nil;
+            }
+        }
+    }
+    
+    func hideOrShowView() {
+            // If player ad labels exist hide searching for players view
+            if (self.playerAdLabels.count > 0) {
+                self.searchingForPlayersView!.fadeOut();
+            } else {
+                self.searchingForPlayersView!.fadeIn();
+            }
+    }
+    
+    
     func searchForFoundAndLostPeers() {
         searchTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
+            if (self.mcController!.receivedInvitationPeerIDs.count > 0) {
+                self.isSearching = false;
+                let peerID:MCPeerID = self.mcController!.receivedInvitationPeerIDs[0];
+                let displayName:String = String(peerID.displayName.suffix(peerID.displayName.count - 36));
+                self.searchingForPlayersLabel!.text = "Received invitation from \(displayName)";
+                self.bringSubviewToFront(self.searchingForPlayersView!);
+                self.searchingForPlayersView!.fadeIn();
+            } else {
+                self.isSearching = true;
+            }
             if (self.isSearching) {
-                // Iterate through found display names
-                var y = self.unitHeight * 0.6;
-                for foundPeerID in self.mcController!.foundPeerIDs {
-                    let displayName:String = String(foundPeerID.displayName.suffix(foundPeerID.displayName.count - 36));
-                    let UUIDString:String = String(foundPeerID.displayName.prefix(36));
-                    // Add new found player ad label
-                    if (self.playerAdLabels[UUIDString] == nil) {
-                        let playerAdLabel = PlayerAdLabel(parentView: self, frame: CGRect(x: self.frame.width * 0.5, y: y, width: 0.0, height: 0.0), mcController: self.mcController!, peerID:foundPeerID, UUIDString:UUIDString, displayName: displayName);
-                        self.playerAdLabels[UUIDString] = playerAdLabel;
-                    // Previously added player ad label
-                    } else {
-                        self.playerAdLabels[UUIDString]!.isPresent = true;
-                        if (displayName != self.playerAdLabels[UUIDString]!.displayName){
-                            self.playerAdLabels[UUIDString]!.displayName = displayName;
-                            self.playerAdLabels[UUIDString]!.setTitle(displayName, for: .normal);
-                        }
-                    }
-                    y += self.unitHeight;
-                }
-                // If player ad labels exist hide searching for players view
-                if (self.playerAdLabels.count > 0) {
-                    self.searchingForPlayersView!.fadeOut();
-                } else {
-                    self.searchingForPlayersView!.fadeIn();
-                }
-                // Iterate through player ad labels
-                y = 0.0;
-                var newFrame:CGRect = CGRect(x: self.frame.width * 0.1, y: y + self.unitHeight * 0.2, width: self.frame.width * 0.8, height: self.unitHeight * 0.8);
-                for (displayName, playerAdLabel) in self.playerAdLabels.reversed() {
-                    if (playerAdLabel.isPresent && self.searchingForPlayersView!.isFadedOut) {
-                        playerAdLabel.isPresent = false;
-                        playerAdLabel.transformation(frame: newFrame);
-                        playerAdLabel.resetPhysicalStyle();
-                        y += self.unitHeight * 0.8;
-                        self.setContentSize(height: y);
-                        newFrame = CGRect(x: self.frame.width * 0.1, y: y + self.unitHeight * 0.4, width: self.frame.width * 0.8, height: self.unitHeight * 0.8);
-                    } else {
-                        playerAdLabel.shrink();
-                        self.playerAdLabels[displayName] = nil;
-                    }
-                }
+                self.addOrModifyExistingPlayerAds();
+                self.hideOrShowView();
+                self.growExistingOrDisposePlayerAds();
             }
         }
     }
@@ -254,7 +279,7 @@ class UIPlayerAdScrollView:UICScrollView {
         self.contentSize = CGSize(width: self.frame.width, height: height);
     }
     
-    func setupPlayerAdvertisementConstraints(playerAdvertisementLabel:UILabel) {
+    func setupPlayerAdvertisementConstraints(playerAdvertisementLabel:UIButton) {
         leadingAnchor.constraint(equalTo: playerAdvertisementLabel.leadingAnchor).isActive = true
         trailingAnchor.constraint(equalTo: playerAdvertisementLabel.trailingAnchor).isActive = true
         topAnchor.constraint(equalTo: playerAdvertisementLabel.topAnchor).isActive = true

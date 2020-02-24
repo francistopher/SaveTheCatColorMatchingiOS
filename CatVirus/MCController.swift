@@ -5,11 +5,9 @@
 //  Created by Christopher Francisco on 2/23/20.
 //  Copyright © 2020 Christopher Francisco. All rights reserved.
 //
-
 import Foundation
 import MultipeerConnectivity
-class MCController: ViewController, MCSessionDelegate, MCAdvertiserAssistantDelegate, MCNearbyServiceAdvertiserDelegate, MCBrowserViewControllerDelegate, MCNearbyServiceBrowserDelegate {
-    
+class MCController: ViewController,MCSessionDelegate, MCNearbyServiceAdvertiserDelegate, MCNearbyServiceBrowserDelegate {
     
     var peerID:MCPeerID!
     var session:MCSession!
@@ -17,6 +15,7 @@ class MCController: ViewController, MCSessionDelegate, MCAdvertiserAssistantDele
     var browser:MCNearbyServiceBrowser!
     var myUuidDisplayName:String = "";
     var myUUID:UUID = UUID();
+    var receivedInvitationPeerIDs:[MCPeerID] = [];
     var foundPeerIDs:[MCPeerID] = [];
     var isHosting:Bool = false;
     var hasJoined:Bool = false;
@@ -70,12 +69,8 @@ class MCController: ViewController, MCSessionDelegate, MCAdvertiserAssistantDele
         peerID = MCPeerID(displayName: myUuidDisplayName);
     }
     
-    func advertiser(_ advertiser: MCNearbyServiceAdvertiser, didReceiveInvitationFromPeer peerID: MCPeerID, withContext context: Data?, invitationHandler: @escaping (Bool, MCSession?) -> Void) {
-        print(peerID.displayName + "I think i received an invitation");
-    }
-    
     func setupSession() {
-        session = MCSession(peer: peerID, securityIdentity: nil, encryptionPreference: .none);
+        session = MCSession(peer: peerID, securityIdentity: nil, encryptionPreference: .required);
         session.delegate = self;
     }
     
@@ -113,6 +108,10 @@ class MCController: ViewController, MCSessionDelegate, MCAdvertiserAssistantDele
         }
     }
     
+    func advertiser(_ advertiser: MCNearbyServiceAdvertiser, didReceiveInvitationFromPeer peerID: MCPeerID, withContext context: Data?, invitationHandler: @escaping (Bool, MCSession?) -> Void) {
+        print(peerID.displayName + "I think i received an invitation");
+        receivedInvitationPeerIDs.append(peerID);
+    }
     
     func session(_ session: MCSession, peer peerID: MCPeerID, didChange state: MCSessionState) {
         switch state {
@@ -126,6 +125,7 @@ class MCController: ViewController, MCSessionDelegate, MCAdvertiserAssistantDele
             print("Otro");
         }
     }
+
     
     func session(_ session: MCSession, didReceive data: Data, fromPeer peerID: MCPeerID) {
         print("Received data from\(peerID.displayName)")

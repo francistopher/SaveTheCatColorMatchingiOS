@@ -171,11 +171,11 @@ class UIPlayerAdScrollView:UICScrollView {
     }
     
     func searchForFoundAndLostPeers() {
-        searchTimer = Timer.scheduledTimer(withTimeInterval: 0.25, repeats: true) { timer in
+        searchTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
             if (self.isSearching) {
                 print("Found display names ----------------------------")
                 for foundDisplayName in self.mcController!.foundDisplayNames {
-                    print("Found display name \(foundDisplayName)!");
+                    print("Found display name \(foundDisplayName)");
                 }
             }
         }

@@ -15,7 +15,7 @@ class MCController: ViewController, MCSessionDelegate, MCBrowserViewControllerDe
     var advertiserAssistant:MCAdvertiserAssistant!
     var browser:MCBrowserViewController!
     var hosting:Bool = false;
-    var displayName:String = "";
+    var myUuidDisplayName:String = "";
     var myUUID:UUID = UUID();
     var foundDisplayNames:[String] = [];
     
@@ -25,7 +25,7 @@ class MCController: ViewController, MCSessionDelegate, MCBrowserViewControllerDe
     
     init(displayName:String) {
         super.init(nibName: nil, bundle: nil);
-        self.displayName = displayName;
+        self.myUuidDisplayName =  myUUID.uuidString + displayName;
     }
     
     func advertisingAndBrowsing(start:Bool) {
@@ -39,18 +39,17 @@ class MCController: ViewController, MCSessionDelegate, MCBrowserViewControllerDe
     }
     
     func invalidateAdvertiserAndBrowser() {
-        
-        advertiserAssistant = nil;
         browser.browser!.delegate = nil;
         browser.delegate = nil;
         browser = nil
+        advertiserAssistant = nil;
         session.delegate = nil;
         session = nil;
         peerID = nil;
     }
     
     func resetFramework(displayName:String) {
-        self.displayName = displayName;
+        myUuidDisplayName = myUUID.uuidString + displayName;
         advertisingAndBrowsing(start: false);
         invalidateAdvertiserAndBrowser();
         setupFramework();
@@ -66,7 +65,7 @@ class MCController: ViewController, MCSessionDelegate, MCBrowserViewControllerDe
     }
     
     func setupPeerID() {
-        peerID = MCPeerID(displayName: myUUID.uuidString + displayName);
+        peerID = MCPeerID(displayName: myUuidDisplayName);
     }
     
     func setupSession() {
@@ -75,7 +74,7 @@ class MCController: ViewController, MCSessionDelegate, MCBrowserViewControllerDe
     }
     
     func setupAdvertiserAssistant() {
-        advertiserAssistant = MCAdvertiserAssistant(serviceType: "PodDatCat", discoveryInfo: ["peerID":self.peerID.displayName], session: self.session);
+        advertiserAssistant = MCAdvertiserAssistant(serviceType: "PodDatCat", discoveryInfo: nil, session: self.session);
     }
     
     func setupBrowser() {
@@ -84,38 +83,26 @@ class MCController: ViewController, MCSessionDelegate, MCBrowserViewControllerDe
         browser.delegate = self;
     }
     
-    func isNotOwnsDisplayName(peerID:MCPeerID) -> Bool {
-        return (peerID.displayName.prefix(36) != displayName.prefix(36))
+    func isMyOwnUUID(peerID:MCPeerID) -> Bool {
+        return (peerID.displayName.prefix(36) == myUUID.uuidString)
     }
     
     func browser(_ browser: MCNearbyServiceBrowser, foundPeer peerID: MCPeerID, withDiscoveryInfo info: [String : String]?) {
-        if (peerID.displayName.prefix(36) != displayName.prefix(36)) {
-            foundDisplayNames.append(String(peerID.displayName.suffix(peerID.displayName.count - 36)));
+        if (!isMyOwnUUID(peerID: peerID)) {
+            foundDisplayNames.append(peerID.displayName);
         }
     }
     
     func browser(_ browser: MCNearbyServiceBrowser, lostPeer peerID: MCPeerID) {
-        
-        func getLostDisplayName() -> String{
-            return (String(peerID.displayName.suffix(peerID.displayName.count - 36)));
+        var index:Int = 0;
+        while(index < foundDisplayNames.count) {
+            if (foundDisplayNames[index] == peerID.displayName) {
+               foundDisplayNames.remove(at: index);
+               return;
+           } else {
+               index += 1;
+           }
         }
-        
-        func removeLostDisplayNameFromFoundDisplayName() {
-            var index:Int = 0;
-            while(index < foundDisplayNames.count) {
-                if (foundDisplayNames[index] == getLostDisplayName()) {
-                    foundDisplayNames.remove(at: index);
-                    return;
-                } else {
-                    index += 1;
-                }
-            }
-        }
-        
-        if (isNotOwnsDisplayName(peerID: peerID)) {
-            removeLostDisplayNameFromFoundDisplayName();
-        }
-    
     }
     
     func session(_ session: MCSession, peer peerID: MCPeerID, didChange state: MCSessionState) {

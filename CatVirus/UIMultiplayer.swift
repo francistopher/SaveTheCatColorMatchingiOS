@@ -206,7 +206,7 @@ class UIPlayerAdScrollView:UICScrollView {
                 // Iterate through player ad labels
                 var newY:CGFloat = 0.0;
                 var newFrame:CGRect = CGRect(x: self.frame.width * 0.1, y: newY + self.unitHeight * 0.2, width: self.frame.width * 0.8, height: self.unitHeight * 0.8);
-                for (displayName, playerAdLabel) in self.playerAdLabels {
+                for (displayName, playerAdLabel) in self.playerAdLabels.reversed() {
                     if (playerAdLabel.isPresent && self.searchingForPlayersView!.isFadedOut) {
                         playerAdLabel.isPresent = false;
                         playerAdLabel.transformation(frame: newFrame);
@@ -263,6 +263,7 @@ class PlayerAdLabel: UICLabel {
     var UUIDString:String = "";
     var displayName:String = "";
     var isPresent:Bool = true;
+    var colors:[UIColor] = [UIColor.systemGreen, UIColor.systemYellow, UIColor.systemOrange, UIColor.systemRed, UIColor.systemPurple, UIColor.systemBlue];
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -270,16 +271,18 @@ class PlayerAdLabel: UICLabel {
     
     init(parentView:UIView, frame:CGRect, displayName:String) {
         super.init(parentView: parentView, x: frame.minX, y: frame.minY, width: frame.width, height: frame.height);
+        self.backgroundColor = colors.randomElement();
         self.displayName = displayName;
     }
     
     func resetPhysicalStyle() {
         self.font = UIFont.boldSystemFont(ofSize: frame.height * 0.4);
         self.text = displayName;
-        self.textColor = UIColor.black;
+        self.textColor = UIColor.white;
         self.layer.borderWidth = self.frame.height * 0.1;
         self.layer.borderColor = UIColor.black.cgColor;
         self.layer.cornerRadius = self.frame.height * 0.2;
+        self.clipsToBounds = true;
     }
     
     

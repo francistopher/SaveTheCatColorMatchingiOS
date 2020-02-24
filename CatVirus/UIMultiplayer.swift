@@ -92,7 +92,7 @@ class UIMultiplayer: UIButton {
     }
 
     func setupActivePlayersScrollView() {
-        activePlayersScrollView = UIPlayerAdScrollView(parentView: multiplayerView!, frame: CGRect(x: multiplayerView!.frame.width * 0.15, y: unitViewHeight * 1.7, width: multiplayerView!.frame.width * 0.7, height: unitViewHeight * 3.8), mcController: mcController!);
+        activePlayersScrollView = UIPlayerAdScrollView(parentView: multiplayerView!, frame: CGRect(x: multiplayerView!.frame.width * 0.15, y: unitViewHeight * 1.7, width: multiplayerView!.frame.width * 0.7, height: unitViewHeight * 3.8), mcController: mcController!, unitHeight: unitViewHeight);
     }
     
     @objc func displayNameTextFieldSelector() {
@@ -151,21 +151,23 @@ class UIMultiplayer: UIButton {
 class UIPlayerAdScrollView:UICScrollView {
     
     var mcController:MCController?
-    var searchingForPlayersView:UIView?
+    var searchingForPlayersView:UICView?
     var searchingForPlayersLabel:UILabel?
-    var foundPlayerAds:[String:playerAdLabel] = [:];
+    var playerAdLabels:[String:PlayerAdLabel] = [:];
     var contentSizeHeight:CGFloat = 0.0;
     var catButton:UICatButton?
     var searchTimer:Timer?
+    var unitHeight:CGFloat = 0.0
     var isSearching = false;
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    init(parentView:UIView, frame:CGRect, mcController:MCController) {
+    init(parentView:UIView, frame:CGRect, mcController:MCController, unitHeight:CGFloat) {
         super.init(parentView: parentView, frame: frame);
         self.mcController = mcController;
+        self.unitHeight = unitHeight;
         setupSearchingForPlayersView();
         searchForFoundAndLostPeers();
     }
@@ -173,9 +175,42 @@ class UIPlayerAdScrollView:UICScrollView {
     func searchForFoundAndLostPeers() {
         searchTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
             if (self.isSearching) {
-                print("Found display names ----------------------------")
+                // Iterate through found display names
+                let newNewX = self.frame.width * 0.5;
+                var newNewY = self.unitHeight * 0.6;
                 for foundDisplayName in self.mcController!.foundDisplayNames {
-                    print("Found display name \(foundDisplayName)");
+                    let displayName:String = String(foundDisplayName.suffix(foundDisplayName.count - 36));
+                    // Add new found player ad label
+                    if (self.playerAdLabels[foundDisplayName] == nil) {
+                        let playerAdLabel = PlayerAdLabel(parentView: self, frame: CGRect(x: newNewX, y: newNewY, width: 0.0, height: 0.0), displayName: displayName);
+                        self.playerAdLabels[foundDisplayName] = playerAdLabel;
+                    // Previously added player ad label
+                    } else {
+                        self.playerAdLabels[foundDisplayName]!.isPresent = true;
+                    }
+                    newNewY += self.unitHeight;
+                }
+                // If player ad labels exist hide searching for players view
+                if (self.playerAdLabels.count > 0) {
+                    self.searchingForPlayersView!.fadeOut();
+                } else {
+                    self.searchingForPlayersView!.fadeIn();
+                }
+                // Iterate through player ad labels
+                var newY:CGFloat = 0.0;
+                var newFrame:CGRect = CGRect(x: self.frame.width * 0.1, y: newY + self.unitHeight * 0.2, width: self.frame.width * 0.8, height: self.unitHeight * 0.8);
+                for (displayName, playerAdLabel) in self.playerAdLabels {
+                    if (playerAdLabel.isPresent) {
+                        playerAdLabel.isPresent = false;
+                        playerAdLabel.transformation(frame: newFrame);
+                        playerAdLabel.resetPhysicalStyle();
+                        newY += self.unitHeight * 0.8;
+                        self.setContentSize(height: newY);
+                        newFrame = CGRect(x: self.frame.width * 0.1, y: newY + self.unitHeight * 0.4, width: self.frame.width * 0.8, height: self.unitHeight * 0.8);
+                    } else {
+                        playerAdLabel.removeFromSuperview();
+                        self.playerAdLabels[displayName] = nil;
+                    }
                 }
             }
         }
@@ -203,8 +238,8 @@ class UIPlayerAdScrollView:UICScrollView {
         catButton!.imageContainerButton!.frame = catButton!.imageContainerButton!.originalFrame!;
     }
     
-    func setContentSize() {
-        self.contentSize = CGSize(width: 1000, height: 100);
+    func setContentSize(height:CGFloat) {
+        self.contentSize = CGSize(width: self.frame.width, height: height);
     }
     
     func setupPlayerAdvertisementConstraints(playerAdvertisementLabel:UILabel) {
@@ -216,9 +251,10 @@ class UIPlayerAdScrollView:UICScrollView {
     
 }
 
-class playerAdLabel: UICLabel {
+class PlayerAdLabel: UICLabel {
     
     var displayName:String = "";
+    var isPresent:Bool = true;
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -228,5 +264,15 @@ class playerAdLabel: UICLabel {
         super.init(parentView: parentView, x: frame.minX, y: frame.minY, width: frame.width, height: frame.height);
         self.displayName = displayName;
     }
+    
+    func resetPhysicalStyle() {
+        self.font = UIFont.boldSystemFont(ofSize: frame.height * 0.4);
+        self.text = displayName;
+        self.textColor = UIColor.black;
+        self.layer.borderWidth = self.frame.height * 0.1;
+        self.layer.borderColor = UIColor.black.cgColor;
+        self.layer.cornerRadius = self.frame.height * 0.2;
+    }
+    
     
 }

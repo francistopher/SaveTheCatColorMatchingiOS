@@ -19,10 +19,15 @@ class UICLabel:UILabel {
     
     init(parentView:UIView, x:CGFloat, y:CGFloat, width:CGFloat, height:CGFloat){
         super.init(frame: CGRect(x: x, y: y, width: width, height: height))
-        self.frame = CGRect(x: x, y: y, width: width, height: height);
         self.textAlignment = NSTextAlignment.center;
         self.setStyle()
         parentView.addSubview(self);
+    }
+    
+    func transformation(frame:CGRect) {
+        UIView.animate(withDuration: 0.25, delay: 0.125, options: .curveEaseInOut, animations: {
+            self.frame = frame;
+        })
     }
     
     func fadeInAndOut(){

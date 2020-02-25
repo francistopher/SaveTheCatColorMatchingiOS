@@ -62,8 +62,6 @@ class UIBoardGame: UIView {
     
     func buildGridColors(){
         gridColors = Array(repeating: Array(repeating: UIColor.lightGray, count: rowAndColumnNums[1]), count: rowAndColumnNums[0]);
-        print(gridColors!.count);
-        print(gridColors![0].count);
         var rowIndex:Int = 0;
         while (rowIndex < gridColors!.count) {
             var columnIndex:Int = 0;
@@ -85,9 +83,6 @@ class UIBoardGame: UIView {
                 columnIndex += 1;
             }
             rowIndex += 1;
-        }
-        for rowGridColor in gridColors! {
-            print(rowGridColor);
         }
     }
     
@@ -190,8 +185,8 @@ class UIBoardGame: UIView {
             // Correct matching grid button color and selection color
             if (catButton.originalBackgroundColor.cgColor == colorOptions!.selectedColor.cgColor){
                 gridColorsCount[catButton.originalBackgroundColor.cgColor]! -= 1;
-                colorOptions!.buildColorOptionButtons(setup: false);
                 catImageButton.fadeBackgroundIn(color: colorOptions!.selectedColor);
+                colorOptions!.buildColorOptionButtons(setup: false);
                 catButton.pod();
                 catButton.isPodded = true;
                 catButton.giveMouseCoin(withNoise: true);
@@ -215,7 +210,6 @@ class UIBoardGame: UIView {
                 SoundController.kittenMeow();
             }
         }
-        print(gridColorsCount);
     }
     
     @objc func transitionBackgroundColorOfButtonsToLightGray(){

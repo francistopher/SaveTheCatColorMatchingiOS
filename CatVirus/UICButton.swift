@@ -16,7 +16,7 @@ class UICButton:UIButton {
     var originalBackgroundColor:UIColor? = nil;
     var shrinkType:shrink = .mid;
     var parentView:UIView? = nil;
-    var hasFadedOut:Bool = false;
+    var willBeShrunk:Bool = false;
     
     var inverted:Bool = false;
     enum shrink {
@@ -67,7 +67,8 @@ class UICButton:UIButton {
         });
     }
     
-    func shrink(){
+    func shrink() {
+        willBeShrunk = true;
         var x:CGFloat = 0.0;
         var duration:Double = 0;
         switch(self.shrinkType) {

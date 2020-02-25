@@ -93,6 +93,15 @@ class UIColorOptions: UIView {
                     }
                     columnDisplacement += buttonWidth;
                 } else {
+                    // Select another unshrunk
+                    if (revisitedButton.isSelected) {
+                        revisitedButton.willBeShrunk = true;
+                        for selectionButton in selectionButtons.reversed() {
+                            if (!selectionButton.willBeShrunk) {
+                                selectionButton.sendActions(for: .touchUpInside);
+                            }
+                        }
+                    }
                     count += 1;
                     if (numOfUniqueGridColors + 1 == 1) {
                         revisitedButton.shrinkType = .mid;
@@ -126,17 +135,15 @@ class UIColorOptions: UIView {
             return;
         }
         
-            // What we need to unselect
-            selectedColor = colorOption.backgroundColor!;
-            buildColorOptionButtons(setup: false);
-            boardGameView!.transitionBackgroundColorOfButtonsToLightGray();
-            for selectionButton in selectionButtons{
-                if (selectionButton.isEqual(colorOption)){
-                    colorOption.select();
-                } else {
-                    selectionButton.unSelect();
-                }
+        selectedColor = colorOption.backgroundColor!;
+        boardGameView!.transitionBackgroundColorOfButtonsToLightGray();
+        for selectionButton in selectionButtons{
+            if (selectionButton.isEqual(colorOption)){
+                colorOption.select();
+            } else {
+                selectionButton.unSelect();
             }
+        }
         
     }
     

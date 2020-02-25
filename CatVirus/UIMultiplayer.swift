@@ -217,14 +217,23 @@ class UIPlayerAdScrollView:UICScrollView {
     func growExistingOrDisposePlayerAds() {
         // Iterate through player ad labels
         var y:CGFloat = 0.0;
-        var newFrame:CGRect = CGRect(x: self.frame.width * 0.1, y: y + self.unitHeight * 0.2, width: self.frame.width * 0.8, height: self.unitHeight * 0.8);
+        var height:CGFloat = self.unitHeight * 0.8;
+        var newFrame:CGRect = CGRect(x: self.frame.width * 0.1, y: y + self.unitHeight * 0.2, width: self.frame.width * 0.8, height: height);
         for (displayName, playerAdLabel) in self.playerAdLabels.reversed() {
             if (playerAdLabel.isPresent && self.searchingForPlayersView!.isFadedOut) {
                 playerAdLabel.isPresent = false;
+                // Double height for invitation sent
+                if (playerAdLabel.invitationSent){
+                    height = ((self.unitHeight * 2.0) * 0.8);
+                    newFrame = CGRect(x: self.frame.width * 0.1, y: y + self.unitHeight * 0.2, width: self.frame.width * 0.8, height: height);
+                }
                 playerAdLabel.transformation(frame: newFrame);
                 playerAdLabel.resetPhysicalStyle();
-                y += self.unitHeight * 0.8;
+                // Height
+                y += height;
                 self.setContentSize(height: y);
+                // Height and new frame renewal
+                height = self.unitHeight * 0.8;
                 newFrame = CGRect(x: self.frame.width * 0.1, y: y + self.unitHeight * 0.4, width: self.frame.width * 0.8, height: self.unitHeight * 0.8);
             } else {
                 playerAdLabel.shrink();
@@ -365,7 +374,7 @@ class PlayerAdLabel: UICButton {
     var UUIDString:String = "";
     var displayName:String = "";
     var isPresent:Bool = true;
-    var ignoredBy:Bool = false;
+    var invitationSent:Bool = false;
     var mcController:MCController?
     var peerID:MCPeerID?
     var colors:[UIColor] = [UIColor.systemGreen, UIColor.systemYellow, UIColor.systemOrange, UIColor.systemRed, UIColor.systemPurple, UIColor.systemBlue];
@@ -411,6 +420,8 @@ class PlayerAdLabel: UICButton {
     
     @objc func playerAdLabelSelector() {
         mcController!.browser!.invitePeer(peerID!, to: mcController!.session!, withContext: nil, timeout: 30.0);
+        self.invitationSent = true;
+        self.isEnabled = false;
         print("Selected \(UUIDString + displayName)")
     }
     

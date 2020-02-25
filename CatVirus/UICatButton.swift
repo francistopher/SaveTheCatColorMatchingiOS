@@ -26,6 +26,8 @@ class UICatButton: UIButton {
     var isPodded:Bool = false;
     var isFadedOut = false;
     
+    var rowIndex:Int = 0;
+    var columnIndex:Int = 0;
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented");
@@ -87,6 +89,18 @@ class UICatButton: UIButton {
         imageContainerButton!.frame = imageContainerButton!.originalFrame!;
         imageContainerButton!.layer.borderWidth = 0.0;
         imageContainerButton!.shrinked();
+    }
+    
+    func transformTo(frame:CGRect) {
+        UIView.animate(withDuration: 0.5, delay: 0.125, options: .curveEaseIn, animations: {
+            self.frame = frame;
+            var imageContainerButtonWidth:CGFloat = frame.width;
+            if (frame.width > frame.height) {
+                imageContainerButtonWidth = frame.width * 0.5;
+            }
+            self.imageContainerButton!.frame = CGRect(x: self.imageContainerButton!.frame.minX, y: self.imageContainerButton!.frame.minY, width: imageContainerButtonWidth, height: frame.height);
+            UICenterKit.center(childView: self.imageContainerButton!, parentRect: frame, childRect: self.imageContainerButton!.frame);
+        })
     }
     
     func shrink(){

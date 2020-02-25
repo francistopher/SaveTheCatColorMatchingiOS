@@ -147,6 +147,8 @@ class UIBoardGame: UIView {
                 x += columnGap;
                 let frame:CGRect = CGRect(x: x, y: y, width: buttonWidth, height: buttonHeight);
                 let catButton:UICatButton = cats.buildCatButton(parent: self, frame: frame, backgroundColor: gridColors![rowIndex][columnIndex]);
+                catButton.rowIndex = rowIndex;
+                catButton.columnIndex = columnIndex;
                 catButton.imageContainerButton!.addTarget(self, action: #selector(selectCatImageButton), for: .touchUpInside);
                 catButton.addTarget(self, action: #selector(selectCatButton), for: .touchUpInside);
                 x += buttonWidth;
@@ -186,7 +188,7 @@ class UIBoardGame: UIView {
     
     @objc func interaction(catButton:UICatButton, catImageButton:UICButton){
         // Selection of a color option is made after fresh new round
-        if (cats.presentCollection![0].isAlive && colorOptions!.selectedColor.cgColor != UIColor.lightGray.cgColor) {
+        if (cats.isOneAlive() && colorOptions!.selectedColor.cgColor != UIColor.lightGray.cgColor) {
             // Correct matching grid button color and selection color
             if (catButton.originalBackgroundColor.cgColor == colorOptions!.selectedColor.cgColor){
                 catImageButton.fadeBackgroundIn(color: colorOptions!.selectedColor);
@@ -194,7 +196,7 @@ class UIBoardGame: UIView {
                 catButton.isPodded = true;
                 catButton.giveMouseCoin(withNoise: true);
                 // Check if all the cats have been podded
-                if (cats.arePodded()) {
+                if (cats.aliveCatsArePodded()) {
                     SoundController.heaven();
                     colorOptions!.selectedColor = UIColor.lightGray;
                     colorOptions!.isTransitioned = false;
@@ -206,6 +208,7 @@ class UIBoardGame: UIView {
             } else {
                 catButton.isDead();
                 catButton.disperseRadially();
+                displaceArea(ofCatButton: catButton);
             }
         } else {
             if (!colorOptions!.isTransitioned) {
@@ -221,6 +224,52 @@ class UIBoardGame: UIView {
             colorOptions!.isTransitioned = true;
         }
     }
+    
+    func displaceArea(ofCatButton:UICatButton) {
+        let rowOfAliveCats:[UICatButton] = cats.getRowOfAliveCats(rowIndex: ofCatButton.rowIndex);
+        let columnMaxCountAndIndexCatButtons:(Int, [Int:[UICatButton]]) = cats.getColumnMaxCountOfAliveCatsAndIndexCatButtonsDictionary();
+        // Row is still occupied
+        if (rowOfAliveCats.count > 0) {
+            disperseRow(aliveCats: rowOfAliveCats);
+        } else {
+            // Column is still occupied
+            if (columnMaxCountAndIndexCatButtons.0 > 0) {
+                disperseColumns(columnMaxCountAndIndexCatButtons: columnMaxCountAndIndexCatButtons);
+            }
+        }
+    }
+    
+    func disperseRow(aliveCats:[UICatButton]) {
+        // Establish shared y, column gap
+        var x:CGFloat = 0.0;
+        let y:CGFloat = aliveCats[0].frame.minY;
+        let columnGap:CGFloat = self.frame.width * 0.1 / CGFloat(aliveCats.count + 1);
+        let buttonWidth:CGFloat = self.frame.height * 0.90 / CGFloat(aliveCats.count);
+        for aliveCat in aliveCats {
+            x += columnGap;
+            let newFrame:CGRect = CGRect(x: x, y: y, width: buttonWidth, height: aliveCats[0].frame.height);
+            aliveCat.transformTo(frame: newFrame);
+            x += buttonWidth;
+        }
+    }
+    
+    func disperseColumns(columnMaxCountAndIndexCatButtons:(Int, [Int:[UICatButton]])) {
+        var y:CGFloat = 0.0;
+        let rowGap:CGFloat = self.frame.height * 0.1 / CGFloat(columnMaxCountAndIndexCatButtons.0 + 1);
+        let buttonHeight:CGFloat = self.frame.width * 0.90 / CGFloat(columnMaxCountAndIndexCatButtons.0);
+        for (_, catButtons) in columnMaxCountAndIndexCatButtons.1 {
+            for catButton in catButtons {
+                y += rowGap;
+                let newFrame:CGRect = CGRect(x: catButton.frame.minX, y: y, width: catButton.frame.width, height: buttonHeight);
+                catButton.transformTo(frame: newFrame);
+                y += buttonHeight;
+            }
+            y = 0.0;
+        }
+        print("finished");
+    }
+    
+    
     
     func revertSelections() {
         colorOptions!.selectedColor = UIColor.lightGray;

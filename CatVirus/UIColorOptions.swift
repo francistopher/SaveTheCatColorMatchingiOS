@@ -118,20 +118,20 @@ class UIColorOptions: UIView {
         if (colorOption.backgroundColor!.cgColor == selectedColor.cgColor){
             return;
         }
-        if (boardGameView!.cats.presentCollection![0].isAlive) {
+        
             // What we need to unselect
             selectedColor = colorOption.backgroundColor!;
-            buildColorOptionButtons(setup: false);
+            // buildColorOptionButtons(setup: false);
             boardGameView!.transitionBackgroundColorOfButtonsToLightGray();
             for selectionButton in selectionButtons{
                 if (selectionButton.isEqual(colorOption)){
                     colorOption.select();
-                    boardGameView!.gridColorsCount[selectedColor.cgColor] = 0;
+                    // boardGameView!.gridColorsCount[selectedColor.cgColor] = 0;
                 } else {
                     selectionButton.unSelect();
                 }
             }
-        }
+        
     }
     
     func loadSelectionButtonsToSelectedButtons(){

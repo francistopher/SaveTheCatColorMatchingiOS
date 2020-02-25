@@ -94,12 +94,7 @@ class UICatButton: UIButton {
     func transformTo(frame:CGRect) {
         UIView.animate(withDuration: 0.5, delay: 0.125, options: .curveEaseIn, animations: {
             self.frame = frame;
-            if (frame.height > frame.width) {
-                 self.imageContainerButton!.frame = CGRect(x: self.imageContainerButton!.frame.minX, y: self.imageContainerButton!.frame.minY, width: frame.width, height: frame.width);
-            } else {
-                 self.imageContainerButton!.frame = CGRect(x: self.imageContainerButton!.frame.minX, y: self.imageContainerButton!.frame.minY, width: frame.height, height: frame.height);
-            }
-           
+            self.imageContainerButton!.frame = CGRect(x: self.imageContainerButton!.frame.minX, y: self.imageContainerButton!.frame.minY, width: frame.height, height: frame.height);
             UICenterKit.center(childView: self.imageContainerButton!, parentRect: frame, childRect: self.imageContainerButton!.frame);
             if (!self.isPodded) {
                 self.layer.cornerRadius = frame.height * 0.2;
@@ -235,13 +230,12 @@ class UICatButton: UIButton {
         self.setCat(named: "DeadCat", stage: 2);
         self.imageContainerButton!.imageView!.layer.removeAllAnimations();
         self.imageContainerButton!.backgroundColor = self.imageContainerButton!.originalBackgroundColor;
-        self.backgroundColor = self.imageContainerButton!.originalBackgroundColor;
+        self.backgroundColor = UIColor.clear;
     }
     
     func disperseRadially() {
         displaceBoundsOntoMainView();
         self.backgroundColor = UIColor.clear;
-        self.imageContainerButton!.backgroundColor = UIColor.clear;
         let targetPointX:CGFloat = getRadialXTargetPoint(parentFrame: self.superview!.frame, childFrame: self.frame);
         let targetPointY:CGFloat = getRadialYTargetPoint(parentFrame: self.superview!.frame, childFrame: self.frame);
         UIView.animate(withDuration: 2.0, delay: 0.125, options: .curveEaseIn, animations: {

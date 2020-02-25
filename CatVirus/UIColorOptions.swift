@@ -83,7 +83,14 @@ class UIColorOptions: UIView {
                 let revisitedButton:UICButton = selectionButtons[index];
                 if (colorCount != 0) {
                     columnDisplacement += columnGap;
-                    revisitedButton.translate(newOriginalFrame: CGRect(x: columnDisplacement, y: rowGap, width: buttonWidth, height: buttonHeight));
+                    var newFrame:CGRect = CGRect(x: columnDisplacement, y: rowGap, width: buttonWidth, height: buttonHeight);
+                    if (revisitedButton.isSelected) {
+                        newFrame = CGRect(x: columnDisplacement, y: (rowGap * 1.375) - rowGap, width: buttonWidth, height: buttonHeight * 1.375);
+                    }
+                    revisitedButton.translate(newOriginalFrame: newFrame);
+                    if (!revisitedButton.isSelected) {
+                        revisitedButton.frame = revisitedButton.originalFrame!;
+                    }
                     columnDisplacement += buttonWidth;
                 } else {
                     count += 1;
@@ -121,12 +128,11 @@ class UIColorOptions: UIView {
         
             // What we need to unselect
             selectedColor = colorOption.backgroundColor!;
-            // buildColorOptionButtons(setup: false);
+            buildColorOptionButtons(setup: false);
             boardGameView!.transitionBackgroundColorOfButtonsToLightGray();
             for selectionButton in selectionButtons{
                 if (selectionButton.isEqual(colorOption)){
                     colorOption.select();
-                    // boardGameView!.gridColorsCount[selectedColor.cgColor] = 0;
                 } else {
                     selectionButton.unSelect();
                 }

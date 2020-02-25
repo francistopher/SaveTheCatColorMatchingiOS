@@ -162,11 +162,9 @@ class UIBoardGame: UIView {
         statistics!.sessionEndTime = CFAbsoluteTimeGetCurrent();
         statistics!.setSessionDuration();
         statistics!.catsThatDied = cats.presentCollection!.count;
-        SoundController.kittenDie();
         SoundController.mozartSonata(play: false);
         SoundController.chopinPrelude(play: true);
         colorOptions!.removeBorderOfSelectionButtons();
-        cats.areNowDead();
         // App data of dead cats
         Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false) { timer in
             self.settingsButton!.disable();
@@ -191,6 +189,8 @@ class UIBoardGame: UIView {
         if (cats.isOneAlive() && colorOptions!.selectedColor.cgColor != UIColor.lightGray.cgColor) {
             // Correct matching grid button color and selection color
             if (catButton.originalBackgroundColor.cgColor == colorOptions!.selectedColor.cgColor){
+                gridColorsCount[catButton.originalBackgroundColor.cgColor]! -= 1;
+                colorOptions!.buildColorOptionButtons(setup: false);
                 catImageButton.fadeBackgroundIn(color: colorOptions!.selectedColor);
                 catButton.pod();
                 catButton.isPodded = true;
@@ -198,16 +198,24 @@ class UIBoardGame: UIView {
                 // Incorrect match
                 verifyThatRemainingCatsArePodded();
             } else {
+                gridColorsCount[catButton.originalBackgroundColor.cgColor]! -= 1;
+                colorOptions!.buildColorOptionButtons(setup: false);
                 catButton.isDead();
                 catButton.disperseRadially();
                 displaceArea(ofCatButton: catButton);
-                verifyThatRemainingCatsArePodded();
+                SoundController.kittenDie();
+                if (cats.areAllCatsDead()){
+                    gameOverTransition();
+                } else {
+                    verifyThatRemainingCatsArePodded();
+                }
             }
         } else {
             if (!colorOptions!.isTransitioned) {
                 SoundController.kittenMeow();
             }
         }
+        print(gridColorsCount);
     }
     
     @objc func transitionBackgroundColorOfButtonsToLightGray(){
@@ -226,7 +234,11 @@ class UIBoardGame: UIView {
             colorOptions!.isTransitioned = false;
             // Add data of survived cats
             statistics!.catsThatLived += cats.presentCollection!.count;
-            promote();
+            if (cats.didAllSurvive()) {
+                promote();
+            } else {
+                maintain();
+            }
         }
     }
     
@@ -278,7 +290,6 @@ class UIBoardGame: UIView {
             }
             y += buttonHeight;
         }
-        
         if (!(countOfMaxCatButtonsInARow > countOfRowsLeft)) {
             for rowIndexOf in Array(indexesOfRowsWithAliveCatsCount.keys).sorted(by:<) {
                 resetCatButtonsPosition(rowIndexOf: rowIndexOf);
@@ -293,10 +304,7 @@ class UIBoardGame: UIView {
                 resetCatButtonsPosition(rowIndexOf: rowIndexOf);
             }
         }
-        print("finished");
     }
-    
-    
     
     func revertSelections() {
         colorOptions!.selectedColor = UIColor.lightGray;
@@ -317,6 +325,13 @@ class UIBoardGame: UIView {
     
     func restart(){
         currentStage = 1
+        configureComponentsAfterBoardGameReset();
+    }
+    
+    func maintain() {
+        successGradientLayer!.isHidden = false;
+        settingsButton!.disable();
+        reset(catsSurvived: true);
         configureComponentsAfterBoardGameReset();
     }
     
@@ -349,6 +364,7 @@ class UIBoardGame: UIView {
         // Remove dispersed buttons after they've dispersed
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.75) {
             self.removeGridCatAndColorOptionButtonsAfterDelay();
+            self.successGradientLayer!.isHidden = true;
         }
     }
     

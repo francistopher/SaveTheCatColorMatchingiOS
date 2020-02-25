@@ -35,6 +35,15 @@ class UICatButtons {
         return false;
     }
     
+    func didAllSurvive() -> Bool {
+        for catButton in presentCollection! {
+            if (!catButton.isAlive) {
+                return false;
+            }
+        }
+        return true;
+    }
+    
     func count() -> Int {
         return presentCollection!.count;
     }
@@ -55,6 +64,15 @@ class UICatButtons {
         for catButton in presentCollection! {
             catButton.isDead();
         }
+    }
+    
+    func areAllCatsDead() -> Bool {
+        for catButton in presentCollection! {
+            if (catButton.isAlive) {
+                return false;
+            }
+        }
+        return true;
     }
     
     func aliveCatsArePodded() -> Bool{
@@ -109,7 +127,9 @@ class UICatButtons {
     
     func disperseRadially() {
         for catButton in presentCollection! {
-            catButton.disperseRadially();
+            if (catButton.isAlive) {
+                catButton.disperseRadially();
+            }
         }
     }
     

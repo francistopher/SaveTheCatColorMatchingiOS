@@ -14,7 +14,7 @@ class UIBoardGame: UIView {
     var gridColorsCount:[CGColor:Int] = [:]
     var gridColors:[[UIColor]]? = nil;
     var currentStage:Int = 1;
-    var columnsAndRows:[Int] = [];
+    var rowAndColumnNums:[Int] = [];
     let cats:UICatButtons = UICatButtons();
     var successGradientLayer:CAGradientLayer? = nil;
     var settingsButton:UISettingsButton? = nil;
@@ -51,7 +51,7 @@ class UIBoardGame: UIView {
     }
     
     func buildBoardGame(){
-        columnsAndRows = getRowsAndColumns(currentStage: currentStage);
+        rowAndColumnNums = getRowsAndColumns(currentStage: currentStage);
         cats.reset();
         colorOptions!.selectSelectionColors();
         buildGridColors();
@@ -61,30 +61,33 @@ class UIBoardGame: UIView {
     }
     
     func buildGridColors(){
-        gridColors = Array(repeating: Array(repeating: UIColor.lightGray, count: columnsAndRows[1]), count: columnsAndRows[0]);
-        var columnIndex:Int = 0;
-        while (columnIndex < gridColors!.count) {
-            var rowIndex:Int = 0;
-            while (rowIndex < gridColors![0].count) {
+        gridColors = Array(repeating: Array(repeating: UIColor.lightGray, count: rowAndColumnNums[1]), count: rowAndColumnNums[0]);
+        print(gridColors!.count);
+        print(gridColors![0].count);
+        var rowIndex:Int = 0;
+        while (rowIndex < gridColors!.count) {
+            var columnIndex:Int = 0;
+            while (columnIndex < gridColors![0].count) {
                 let randomColor:UIColor = colorOptions!.selectionColors.randomElement()!;
-                var randomNum:Int = Int.random(in: 0...2);
-                if (columnIndex > 0) {
-                    let previousColumnColor:UIColor = gridColors![columnIndex - 1][rowIndex];
-                    if (previousColumnColor.cgColor == randomColor.cgColor && randomNum != 1) {
-                        columnIndex -= 1;
-                    }
-                }
-                randomNum = Int.random(in: 0...4);
                 if (rowIndex > 0) {
-                    let previousRowColor:UIColor = gridColors![columnIndex][rowIndex - 1];
-                    if (previousRowColor.cgColor == randomColor.cgColor && randomNum != 1){
+                    let previousColumnColor:UIColor = gridColors![rowIndex - 1][columnIndex];
+                    if (previousColumnColor.cgColor == randomColor.cgColor) {
                         rowIndex -= 1;
                     }
                 }
-                gridColors![columnIndex][rowIndex] = randomColor;
-                rowIndex += 1;
+                if (columnIndex > 0) {
+                    let previousRowColor:UIColor = gridColors![rowIndex][columnIndex - 1];
+                    if (previousRowColor.cgColor == randomColor.cgColor){
+                        columnIndex -= 1;
+                    }
+                }
+                gridColors![rowIndex][columnIndex] = randomColor;
+                columnIndex += 1;
             }
-            columnIndex += 1;
+            rowIndex += 1;
+        }
+        for rowGridColor in gridColors! {
+            print(rowGridColor);
         }
     }
     
@@ -100,9 +103,9 @@ class UIBoardGame: UIView {
     
     func recordGridColorsUsed(){
         gridColorsCount = [:];
-        for columnIndex in 0..<gridColors!.count {
-            for rowIndex in 0..<gridColors![0].count {
-                let color:CGColor = gridColors![columnIndex][rowIndex].cgColor;
+        for rowIndex in 0..<gridColors!.count {
+            for columnIndex in 0..<gridColors![0].count {
+                let color:CGColor = gridColors![rowIndex][columnIndex].cgColor;
                 if (gridColorsCount[color] == nil) {
                     gridColorsCount[color] = 1;
                 } else {
@@ -118,10 +121,10 @@ class UIBoardGame: UIView {
         var columns:Int = 1;
         while (currentStage >= initialStage) {
             if (initialStage % 2 == 0){
-                columns += 1;
+                rows += 1;
             }
             else {
-                rows += 1;
+                columns += 1;
             }
             initialStage += 1;
         }
@@ -129,26 +132,26 @@ class UIBoardGame: UIView {
     }
     
     func buildGridButtons(){
-        let rowGap:CGFloat = self.frame.height * 0.1 / CGFloat(columnsAndRows[0] + 1);
-        let columnGap:CGFloat = self.frame.width * 0.1 / CGFloat(columnsAndRows[1] + 1);
+        let rowGap:CGFloat = self.frame.height * 0.1 / CGFloat(rowAndColumnNums[0] + 1);
+        let columnGap:CGFloat = self.frame.width * 0.1 / CGFloat(rowAndColumnNums[1] + 1);
         // Sizes
-        let buttonWidth:CGFloat = self.frame.width * 0.90 / CGFloat(columnsAndRows[0]);
-        let buttonHeight:CGFloat = self.frame.height * 0.90 / CGFloat(columnsAndRows[1]);
+        let buttonHeight:CGFloat = self.frame.width * 0.90 / CGFloat(rowAndColumnNums[0]);
+        let buttonWidth:CGFloat = self.frame.height * 0.90 / CGFloat(rowAndColumnNums[1]);
         // Points
         var x:CGFloat = 0.0;
         var y:CGFloat = 0.0;
-        for columns in 0..<columnsAndRows[0] {
-            x += columnGap;
-            y = 0.0;
-            for rows in 0..<columnsAndRows[1] {
-                y += rowGap;
+        for rowIndex in 0..<rowAndColumnNums[0] {
+            y += rowGap;
+            x = 0.0;
+            for columnIndex in 0..<rowAndColumnNums[1] {
+                x += columnGap;
                 let frame:CGRect = CGRect(x: x, y: y, width: buttonWidth, height: buttonHeight);
-                let catButton:UICatButton = cats.buildCatButton(parent: self, frame: frame, backgroundColor: gridColors![columns][rows]);
+                let catButton:UICatButton = cats.buildCatButton(parent: self, frame: frame, backgroundColor: gridColors![rowIndex][columnIndex]);
                 catButton.imageContainerButton!.addTarget(self, action: #selector(selectCatImageButton), for: .touchUpInside);
                 catButton.addTarget(self, action: #selector(selectCatButton), for: .touchUpInside);
-                y += buttonHeight;
+                x += buttonWidth;
             }
-            x += buttonWidth;
+            y += buttonHeight;
         }
     }
     
@@ -201,7 +204,8 @@ class UIBoardGame: UIView {
                 }
                 // Incorrect match
             } else {
-                gameOverTransition();
+                catButton.isDead();
+                catButton.disperseRadially();
             }
         } else {
             if (!colorOptions!.isTransitioned) {

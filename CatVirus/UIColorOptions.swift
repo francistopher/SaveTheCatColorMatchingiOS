@@ -47,7 +47,7 @@ class UIColorOptions: UIView {
         repeat {
             let index:Int = Int.random(in: 0..<selectionColors.count);
             selectionColors.remove(at: index);
-            if (selectionColors.count == boardGameView!.columnsAndRows[1] || selectionColors.count == 6) {
+            if (selectionColors.count == boardGameView!.rowAndColumnNums[0] || selectionColors.count == 6) {
                 break;
             }
         } while(true);
@@ -131,8 +131,6 @@ class UIColorOptions: UIView {
                     selectionButton.unSelect();
                 }
             }
-        } else {
-            boardGameView!.gameOverTransition();
         }
     }
     

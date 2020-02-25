@@ -44,7 +44,7 @@ class UICatButtons {
     
     func areNowDead() {
         for catButton in presentCollection! {
-            catButton.setAsDead();
+            catButton.isDead();
         }
     }
     

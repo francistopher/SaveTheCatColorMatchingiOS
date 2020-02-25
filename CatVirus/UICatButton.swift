@@ -205,7 +205,7 @@ class UICatButton: UIButton {
         self.superview!.superview!.addSubview(self);
     }
     
-    func setAsDead() {
+    func isDead() {
 //        self.imageContainerButton!.backgroundColor = .clear;
         self.isAlive = false;
         self.imageContainerButton!.layer.borderWidth = 0.0;

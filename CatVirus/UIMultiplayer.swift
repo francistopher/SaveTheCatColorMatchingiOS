@@ -251,7 +251,6 @@ class UIPlayerAdScrollView:UICScrollView {
         }
     }
     
-    
     func searchForFoundAndLostPeers() {
         searchTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
             if (self.mcController!.receivedInvitationPeerIDs.count > 0) {
@@ -379,6 +378,8 @@ class PlayerAdLabel: UICButton {
     var peerID:MCPeerID?
     var colors:[UIColor] = [UIColor.systemGreen, UIColor.systemYellow, UIColor.systemOrange, UIColor.systemRed, UIColor.systemPurple, UIColor.systemBlue];
     
+    var cancelInvitationButton:UICButton?;
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -391,15 +392,47 @@ class PlayerAdLabel: UICButton {
         self.displayName = displayName;
         self.peerID = peerID;
         self.addTarget(self, action: #selector(playerAdLabelSelector), for: .touchUpInside);
+        setupCancelInvitationButton();
+    }
+    
+    func setupCancelInvitationButton() {
+        cancelInvitationButton = UICButton(parentView: self, frame: CGRect(x: self.frame.midX, y: self.frame.midY, width: 0.0, height: 0.0), backgroundColor: UIColor.red);
+        cancelInvitationButton!.addTarget(self, action: #selector(cancelButtonSelector), for: .touchUpInside);
+    }
+    
+    @objc func cancelButtonSelector() {
+        print("Canceling invite sent to \(displayName)");
     }
     
     func resetPhysicalStyle() {
-        self.layer.cornerRadius = self.frame.height * 0.2;
-        self.layer.borderWidth = self.frame.height * 0.1;
-        self.layer.borderColor = UIColor.black.cgColor;
-        self.titleLabel!.font = UIFont.boldSystemFont(ofSize: frame.height * 0.4);
-        self.setTitle(displayName, for: .normal);
-        self.setTitleColor(UIColor.white, for: .normal);
+        if (invitationSent) {
+            self.titleLabel!.lineBreakMode = NSLineBreakMode.byWordWrapping;
+            self.titleLabel!.textAlignment = NSTextAlignment.center;
+            self.titleLabel!.numberOfLines = 3;
+            self.setTitle(displayName + "\n.\n.", for: .normal);
+            // Reset cancel button
+            cancelInvitationButton!.frame = CGRect(x: self.frame.width * 0.2, y: self.frame.height * 0.475, width: self.frame.width * 0.6, height: self.frame.height * 0.4);
+            cancelInvitationButton!.layer.cornerRadius = cancelInvitationButton!.frame.height * 0.2;
+            cancelInvitationButton!.layer.borderWidth = cancelInvitationButton!.frame.height * 0.1;
+            cancelInvitationButton!.layer.borderColor = UIColor.black.cgColor;
+            cancelInvitationButton!.setTitleColor(UIColor.white, for: .normal);
+            cancelInvitationButton!.setTitle("Cancel Invite", for: .normal);
+            cancelInvitationButton!.titleLabel!.font = UIFont.boldSystemFont(ofSize: cancelInvitationButton!.frame.height * 0.4);
+            self.bringSubviewToFront(cancelInvitationButton!);
+        } else {
+            self.layer.cornerRadius = self.frame.height * 0.2;
+            self.layer.borderWidth = self.frame.height * 0.1;
+            self.layer.borderColor = UIColor.black.cgColor;
+            self.titleLabel!.font = UIFont.boldSystemFont(ofSize: frame.height * 0.4);
+            self.setTitle(displayName, for: .normal);
+            self.setTitleColor(UIColor.white, for: .normal);
+            print(self.titleLabel!.lineBreakMode);
+            self.titleLabel!.numberOfLines = 1;
+            // Reset cancel button
+            cancelInvitationButton!.frame = CGRect(x: self.frame.midX, y: self.frame.midY, width: 0.0, height: 0.0);
+            
+        }
+        
     }
     
     func transformation(frame:CGRect) {
@@ -419,10 +452,11 @@ class PlayerAdLabel: UICButton {
     }
     
     @objc func playerAdLabelSelector() {
-        mcController!.browser!.invitePeer(peerID!, to: mcController!.session!, withContext: nil, timeout: 30.0);
-        self.invitationSent = true;
-        self.isEnabled = false;
-        print("Selected \(UUIDString + displayName)")
+        if (!self.invitationSent){
+            mcController!.browser!.invitePeer(peerID!, to: mcController!.session!, withContext: nil, timeout: 30.0);
+            self.invitationSent = true;
+            print("Selected \(UUIDString + displayName)")
+        }
     }
     
     

@@ -93,28 +93,18 @@ class UICatButtons {
         return rowOfAliveCats;
     }
     
-    func getColumnMaxCountOfAliveCatsAndIndexCatButtonsDictionary() -> (Int, [Int:[UICatButton]]) {
-        var columnIndexCatButtonsDictionary:[Int:[UICatButton]] = [:];
-        var maxCountOfAliveCatsInAColumn:Int = 0;
-        
+    func getIndexesOfRowsWithAliveCatsCount() -> [Int:Int] {
+        var indexesOfRowsWithAliveCatsCount:[Int:Int] = [:];
         for catButton in presentCollection! {
-            if (catButton.isAlive) {
-                if (columnIndexCatButtonsDictionary[catButton.columnIndex] == nil) {
-                    columnIndexCatButtonsDictionary[catButton.columnIndex] = [];
-                    columnIndexCatButtonsDictionary[catButton.columnIndex]!.append(catButton);
+            if (getRowOfAliveCats(rowIndex: catButton.rowIndex).count > 0) {
+                if (indexesOfRowsWithAliveCatsCount[catButton.rowIndex] == nil) {
+                    indexesOfRowsWithAliveCatsCount[catButton.rowIndex] = 1;
                 } else {
-                    columnIndexCatButtonsDictionary[catButton.columnIndex]!.append(catButton);
+                    indexesOfRowsWithAliveCatsCount[catButton.rowIndex]! += 1;
                 }
             }
         }
-        
-        for (_, catButtons) in columnIndexCatButtonsDictionary {
-            if (catButtons.count > maxCountOfAliveCatsInAColumn) {
-                maxCountOfAliveCatsInAColumn = catButtons.count;
-            }
-        }
-        
-        return (maxCountOfAliveCatsInAColumn, columnIndexCatButtonsDictionary);
+        return indexesOfRowsWithAliveCatsCount;
     }
     
     func disperseRadially() {

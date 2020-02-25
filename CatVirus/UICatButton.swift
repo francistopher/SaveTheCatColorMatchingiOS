@@ -94,12 +94,20 @@ class UICatButton: UIButton {
     func transformTo(frame:CGRect) {
         UIView.animate(withDuration: 0.5, delay: 0.125, options: .curveEaseIn, animations: {
             self.frame = frame;
-            var imageContainerButtonWidth:CGFloat = frame.width;
-            if (frame.width > frame.height) {
-                imageContainerButtonWidth = frame.width * 0.5;
+            if (frame.height > frame.width) {
+                 self.imageContainerButton!.frame = CGRect(x: self.imageContainerButton!.frame.minX, y: self.imageContainerButton!.frame.minY, width: frame.width, height: frame.width);
+            } else {
+                 self.imageContainerButton!.frame = CGRect(x: self.imageContainerButton!.frame.minX, y: self.imageContainerButton!.frame.minY, width: frame.height, height: frame.height);
             }
-            self.imageContainerButton!.frame = CGRect(x: self.imageContainerButton!.frame.minX, y: self.imageContainerButton!.frame.minY, width: imageContainerButtonWidth, height: frame.height);
+           
             UICenterKit.center(childView: self.imageContainerButton!, parentRect: frame, childRect: self.imageContainerButton!.frame);
+            if (!self.isPodded) {
+                self.layer.cornerRadius = frame.height * 0.2;
+                self.imageContainerButton!.layer.cornerRadius = self.layer.cornerRadius;
+            } else {
+                self.layer.cornerRadius = frame.height * 0.5;
+                self.imageContainerButton!.layer.cornerRadius = self.layer.cornerRadius;
+            }
         })
     }
     
@@ -262,7 +270,8 @@ class UICatButton: UIButton {
     func pod() {
         SoundController.kittenMeow();
         // New radius and frames
-        let newCornerRadius:CGFloat = self.frame.height / 2.0;
+        
+        let newCornerRadius:CGFloat = self.frame.height * 0.5;
         let newCatButtonFrame:CGRect = CGRect(x: self.frame.minX + self.imageContainerButton!.frame.minX, y: self.frame.minY, width: self.imageContainerButton!.frame.width, height: self.frame.height);
         let newImageButtonFrame:CGRect = CGRect(x: 0.0, y: 0.0, width: self.frame.height, height: self.frame.height);
         // Adjust frames if necessary
@@ -308,9 +317,6 @@ class UICatButton: UIButton {
         let angle:CGFloat = CGFloat.random(in: 45.0...90.0);
         var targetY:CGFloat = parentFrame.height + childFrame.height;
         targetY *= sin((CGFloat.pi * angle) / 180.0);
-        if (Int.random(in: 0...1) == 1) {
-            targetY *= -1;
-        }
         return targetY;
     }
     

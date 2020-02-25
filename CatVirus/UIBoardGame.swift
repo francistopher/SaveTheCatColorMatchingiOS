@@ -195,20 +195,13 @@ class UIBoardGame: UIView {
                 catButton.pod();
                 catButton.isPodded = true;
                 catButton.giveMouseCoin(withNoise: true);
-                // Check if all the cats have been podded
-                if (cats.aliveCatsArePodded()) {
-                    SoundController.heaven();
-                    colorOptions!.selectedColor = UIColor.lightGray;
-                    colorOptions!.isTransitioned = false;
-                    // Add data of survived cats
-                    statistics!.catsThatLived += cats.presentCollection!.count;
-                    promote();
-                }
                 // Incorrect match
+                verifyThatRemainingCatsArePodded();
             } else {
                 catButton.isDead();
                 catButton.disperseRadially();
                 displaceArea(ofCatButton: catButton);
+                verifyThatRemainingCatsArePodded();
             }
         } else {
             if (!colorOptions!.isTransitioned) {
@@ -225,17 +218,26 @@ class UIBoardGame: UIView {
         }
     }
     
+    func verifyThatRemainingCatsArePodded() {
+        // Check if all the cats have been podded
+        if (cats.aliveCatsArePodded()) {
+            SoundController.heaven();
+            colorOptions!.selectedColor = UIColor.lightGray;
+            colorOptions!.isTransitioned = false;
+            // Add data of survived cats
+            statistics!.catsThatLived += cats.presentCollection!.count;
+            promote();
+        }
+    }
+    
     func displaceArea(ofCatButton:UICatButton) {
         let rowOfAliveCats:[UICatButton] = cats.getRowOfAliveCats(rowIndex: ofCatButton.rowIndex);
-        let columnMaxCountAndIndexCatButtons:(Int, [Int:[UICatButton]]) = cats.getColumnMaxCountOfAliveCatsAndIndexCatButtonsDictionary();
         // Row is still occupied
         if (rowOfAliveCats.count > 0) {
             disperseRow(aliveCats: rowOfAliveCats);
         } else {
-            // Column is still occupied
-            if (columnMaxCountAndIndexCatButtons.0 > 0) {
-                disperseColumns(columnMaxCountAndIndexCatButtons: columnMaxCountAndIndexCatButtons);
-            }
+            // If all cats are alive
+            disperseColumns();
         }
     }
     
@@ -253,18 +255,43 @@ class UIBoardGame: UIView {
         }
     }
     
-    func disperseColumns(columnMaxCountAndIndexCatButtons:(Int, [Int:[UICatButton]])) {
+    func disperseColumns() {
+        // Get the dictionary with row index and corresponding count
+        var indexesOfRowsWithAliveCatsCount:[Int:Int] = cats.getIndexesOfRowsWithAliveCatsCount();
+        // Get count of rows left
+        let countOfRowsLeft:Int = indexesOfRowsWithAliveCatsCount.count;
+        if (countOfRowsLeft == 0) {
+            return;
+        }
+        // Get max count of cats alive in a row
+        let countOfMaxCatButtonsInARow:Int = (indexesOfRowsWithAliveCatsCount.max { a, b in a.value < b.value})!.1;
+        // Set dimensions
         var y:CGFloat = 0.0;
-        let rowGap:CGFloat = self.frame.height * 0.1 / CGFloat(columnMaxCountAndIndexCatButtons.0 + 1);
-        let buttonHeight:CGFloat = self.frame.width * 0.90 / CGFloat(columnMaxCountAndIndexCatButtons.0);
-        for (_, catButtons) in columnMaxCountAndIndexCatButtons.1 {
-            for catButton in catButtons {
-                y += rowGap;
-                let newFrame:CGRect = CGRect(x: catButton.frame.minX, y: y, width: catButton.frame.width, height: buttonHeight);
-                catButton.transformTo(frame: newFrame);
-                y += buttonHeight;
+        var rowGap:CGFloat = self.frame.height * 0.1 / CGFloat(countOfRowsLeft + 1);
+        var buttonHeight:CGFloat = self.frame.width * 0.90 / CGFloat(countOfRowsLeft);
+        
+        func resetCatButtonsPosition(rowIndexOf:Int) {
+            y += rowGap;
+            for catButton in cats.getRowOfAliveCats(rowIndex: rowIndexOf) {
+               let frame:CGRect = CGRect(x: catButton.frame.minX, y: y, width: catButton.frame.width, height: buttonHeight);
+               catButton.transformTo(frame: frame);
             }
-            y = 0.0;
+            y += buttonHeight;
+        }
+        
+        if (!(countOfMaxCatButtonsInARow > countOfRowsLeft)) {
+            for rowIndexOf in Array(indexesOfRowsWithAliveCatsCount.keys).sorted(by:<) {
+                resetCatButtonsPosition(rowIndexOf: rowIndexOf);
+            }
+        } else {
+            rowGap = self.frame.height * 0.1 / CGFloat(countOfRowsLeft + 2);
+            buttonHeight = self.frame.width * 0.90 / CGFloat(countOfRowsLeft + 1);
+            let sumOfRowGaps:CGFloat = rowGap * CGFloat(countOfRowsLeft + 1);
+            let sumOfButtonHeights:CGFloat = (buttonHeight * CGFloat(countOfRowsLeft))
+            y = (self.frame.height - sumOfRowGaps + sumOfButtonHeights) * 0.125;
+            for rowIndexOf in Array(indexesOfRowsWithAliveCatsCount.keys).sorted(by:<) {
+                resetCatButtonsPosition(rowIndexOf: rowIndexOf);
+            }
         }
         print("finished");
     }

@@ -15,7 +15,7 @@ class MCController: ViewController,MCSessionDelegate, MCNearbyServiceAdvertiserD
     var browser:MCNearbyServiceBrowser!
     var myUuidDisplayName:String = "";
     var myUUID:UUID = UUID();
-    var receivedInvitationPeerIDs:[MCPeerID] = [];
+    var receivedInvitationPeerIDs:[MCPeerID:(Bool, MCSession?) -> Void] = [:];
     var foundPeerIDs:[MCPeerID] = [];
     var isHosting:Bool = false;
     var hasJoined:Bool = false;
@@ -109,8 +109,8 @@ class MCController: ViewController,MCSessionDelegate, MCNearbyServiceAdvertiserD
     }
     
     func advertiser(_ advertiser: MCNearbyServiceAdvertiser, didReceiveInvitationFromPeer peerID: MCPeerID, withContext context: Data?, invitationHandler: @escaping (Bool, MCSession?) -> Void) {
-        print(peerID.displayName + "I think i received an invitation");
-        receivedInvitationPeerIDs.append(peerID);
+        print("Invitation from \(peerID.displayName)");
+        receivedInvitationPeerIDs[peerID] = invitationHandler;
     }
     
     func session(_ session: MCSession, peer peerID: MCPeerID, didChange state: MCSessionState) {

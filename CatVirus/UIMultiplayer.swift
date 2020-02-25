@@ -55,8 +55,8 @@ class UIMultiplayer: UIButton {
             fadeBackgroundOut();
             mcController!.advertisingAndBrowsing(start: false);
             mcController!.foundPeerIDs = [];
-            mcController!.receivedInvitationPeerIDs = [];
-            activePlayersScrollView!.removePlayerAds();
+            mcController!.receivedInvitationPeerIDs = [:];
+            activePlayersScrollView!.removePlayerAds(forever:true);
             activePlayersScrollView!.isSearching = false;
         }
     }
@@ -169,6 +169,7 @@ class UIPlayerAdScrollView:UICScrollView {
     var searchTimer:Timer?
     var unitHeight:CGFloat = 0.0
     var isSearching = false;
+    var currentInvitationHandler:((Bool, MCSession?) -> Void)? = nil;
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -183,9 +184,9 @@ class UIPlayerAdScrollView:UICScrollView {
         searchForFoundAndLostPeers();
     }
     
-    func removePlayerAds() {
+    func removePlayerAds(forever:Bool) {
         for (_, playerAdLabel) in playerAdLabels {
-            playerAdLabel.shrink();
+            playerAdLabel.shrink(edForever: forever);
         }
         self.playerAdLabels = [:]
     }
@@ -233,27 +234,26 @@ class UIPlayerAdScrollView:UICScrollView {
     }
     
     func hideOrShowView() {
-            // If player ad labels exist hide searching for players view
-            if (self.playerAdLabels.count > 0) {
-                self.searchingForPlayersView!.fadeOut();
-            } else {
-                self.searchingForPlayersView!.fadeIn();
-            }
+        // If player ad labels exist hide searching for players view
+        if (self.playerAdLabels.count > 0) {
+            self.searchingForPlayersView!.fadeOut();
+        } else {
+            self.searchingForPlayersView!.fadeIn();
+        }
     }
     
     
     func searchForFoundAndLostPeers() {
         searchTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
             if (self.mcController!.receivedInvitationPeerIDs.count > 0) {
+                self.removePlayerAds(forever: false);
                 self.isSearching = false;
-                let peerID:MCPeerID = self.mcController!.receivedInvitationPeerIDs[0];
+                let peerID:MCPeerID = Array(self.mcController!.receivedInvitationPeerIDs.keys)[0];
+                self.currentInvitationHandler = self.mcController!.receivedInvitationPeerIDs[peerID];
                 let displayName:String = String(peerID.displayName.suffix(peerID.displayName.count - 36));
-                self.invitationLabel!.text = "Invited by\n\(displayName)";
+                self.invitationLabel!.text = "Invitation from\n\(displayName)";
                 self.invitationView!.fadeIn();
-                self.searchingForPlayersView!.fadeIn();
-            } else {
                 self.searchingForPlayersView!.fadeOut();
-                self.isSearching = true;
             }
             if (self.isSearching) {
                 self.addOrModifyExistingPlayerAds();
@@ -269,6 +269,7 @@ class UIPlayerAdScrollView:UICScrollView {
         setupInvitationCatButton();
         setupAcceptButton();
         setupRejectButton();
+        invitationView!.alpha = 0.0;
     }
     
     func setupInvitationLabel() {
@@ -283,7 +284,7 @@ class UIPlayerAdScrollView:UICScrollView {
     }
     
     func setupInvitationCatButton() {
-        invitationCatButton = UICatButton(parentView: invitationView!, x: 0.0, y: self.frame.height * 0.25, width: self.frame.width * 0.5, height: self.frame.height * 0.125, backgroundColor: UIColor.clear);
+        invitationCatButton = UICatButton(parentView: invitationView!, x: 0.0, y: self.frame.height * 0.2625, width: self.frame.width * 0.5, height: self.frame.height * 0.145, backgroundColor: UIColor.clear);
         invitationCatButton!.setCat(named: "WavingCat", stage: 0);
         invitationCatButton!.frame = invitationCatButton!.originalFrame!;
         invitationCatButton!.layer.borderWidth = 0.0;
@@ -304,6 +305,7 @@ class UIPlayerAdScrollView:UICScrollView {
     
     @objc func acceptButtonSelector() {
         print("Invitation Accepted!");
+        currentInvitationHandler!(true, self.mcController!.session);
     }
     
     func setupRejectButton() {
@@ -319,6 +321,7 @@ class UIPlayerAdScrollView:UICScrollView {
     
     @objc func ignoreButtonSelector() {
         print("Invitation Ignored!");
+        currentInvitationHandler!(false, self.mcController!.session);
     }
     
     func setupSearchingForPlayersView() {
@@ -362,6 +365,7 @@ class PlayerAdLabel: UICButton {
     var UUIDString:String = "";
     var displayName:String = "";
     var isPresent:Bool = true;
+    var ignoredBy:Bool = false;
     var mcController:MCController?
     var peerID:MCPeerID?
     var colors:[UIColor] = [UIColor.systemGreen, UIColor.systemYellow, UIColor.systemOrange, UIColor.systemRed, UIColor.systemPurple, UIColor.systemBlue];
@@ -393,6 +397,16 @@ class PlayerAdLabel: UICButton {
         UIView.animate(withDuration: 0.25, delay: 0.125, options: .curveEaseInOut, animations: {
             self.frame = frame;
         })
+    }
+    
+    func shrink(edForever:Bool) {
+        UIView.animate(withDuration: 0.5, delay: 0.0, options: .curveEaseIn, animations: {
+            self.frame = CGRect(x: self.frame.midX, y: self.frame.midY, width: 0.0, height: 0.0);
+        }, completion: { _ in
+            if (edForever) {
+                self.removeFromSuperview();
+            }
+        });
     }
     
     @objc func playerAdLabelSelector() {

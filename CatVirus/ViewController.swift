@@ -57,8 +57,9 @@ class ViewController: UIViewController {
     func setupNotificationCenter() {
         let notificationCenter = NotificationCenter.default;
         notificationCenter.addObserver(self, selector: #selector(self.appMovedToForeground), name: UIApplication.willEnterForegroundNotification, object: nil);
-        notificationCenter.addObserver(self, selector: #selector(self.appDeactivated), name: UIApplication.willResignActiveNotification, object: nil);
         notificationCenter.addObserver(self, selector: #selector(self.appMovedToBackground), name: UIApplication.didEnterBackgroundNotification, object: nil);
+        notificationCenter.addObserver(self, selector: #selector(self.appDeactivated), name: UIApplication.willResignActiveNotification, object: nil);
+        notificationCenter.addObserver(self, selector: #selector(self.appDeactivated), name: UIApplication.didBecomeActiveNotification, object: nil)
     }
     
     @objc func appMovedToBackground() {
@@ -75,8 +76,8 @@ class ViewController: UIViewController {
     @objc func appDeactivated() {
         self.boardGame!.cats.activateCatsForUIStyle();
         print("App deactivated");
-    }
     
+    }
     func setupSounds() {
         SoundController.setupHeaven();
         SoundController.setupCoinEarned();

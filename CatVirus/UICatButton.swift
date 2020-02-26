@@ -20,6 +20,9 @@ class UICatButton: UIButton {
     var previousFileName:String = "";
     var animationStage:Int = 0;
     
+    
+    var backgroundCGColor:CGColor?
+    
     var originalBackgroundColor:UIColor = .clear;
     var imageContainerButton:UICButton? = nil;
     var isAlive:Bool = true;
@@ -37,6 +40,7 @@ class UICatButton: UIButton {
         super.init(frame:CGRect(x: x, y: y, width: width, height: height));
         self.originalFrame = CGRect(x: x, y: y, width: width, height: height);
         self.originalBackgroundColor = backgroundColor;
+        self.backgroundCGColor = backgroundColor.cgColor;
         self.backgroundColor = backgroundColor;
         self.layer.cornerRadius = height / 5.0;
         self.layer.borderWidth = parentView.frame.width * 0.01;
@@ -115,6 +119,7 @@ class UICatButton: UIButton {
     
     func shrunk() {
         self.frame = CGRect(x: self.frame.midX, y: self.frame.midY, width: 1.0, height: 1.0);
+        self.imageContainerButton!.frame = CGRect(x: 0.0, y: 0.0, width: 1.0, height: 1.0)
     }
     
     func grow(){

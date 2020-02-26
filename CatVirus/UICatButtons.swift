@@ -49,7 +49,6 @@ class UICatButtons {
     }
     
     func reset() {
-        loadPreviousCats();
         presentCollection!.removeAll();
     }
     
@@ -171,12 +170,6 @@ class UICatButtons {
         for catButton in presentCollection! {
             catButton.imageContainerButton!.fadeBackgroundIn(color:UIColor.lightGray);
             catButton.fadeBackgroundIn(color: UIColor.lightGray);
-        }
-    }
-    
-    func removePreviousCatButtonsFromSuperView() {
-        for catButton in previousCollection! {
-            catButton.removeFromSuperview();
         }
     }
 }

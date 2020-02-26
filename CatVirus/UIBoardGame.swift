@@ -62,8 +62,9 @@ class UIBoardGame: UIView {
         cats.reset();
         colorOptions!.selectSelectionColors();
         buildGridColors();
-        recordGridColorsUsed();
         buildGridButtons();
+        cats.loadPreviousCats();
+        recordGridColorsUsed();
         colorOptions!.buildColorOptionButtons(setup: true);
     }
     
@@ -105,14 +106,12 @@ class UIBoardGame: UIView {
     
     func recordGridColorsUsed(){
         gridColorsCount = [:];
-        for rowIndex in 0..<gridColors!.count {
-            for columnIndex in 0..<gridColors![0].count {
-                let color:CGColor = gridColors![rowIndex][columnIndex].cgColor;
-                if (gridColorsCount[color] == nil) {
-                    gridColorsCount[color] = 1;
-                } else {
-                    gridColorsCount[color]! += 1;
-                }
+        for catButton in cats.presentCollection! {
+            let color:CGColor = catButton.originalBackgroundColor.cgColor;
+            if (gridColorsCount[color] == nil) {
+                gridColorsCount[color] = 1;
+            } else {
+                gridColorsCount[color]! += 1;
             }
         }
     }
@@ -190,8 +189,8 @@ class UIBoardGame: UIView {
         // Selection of a color option is made after fresh new round
         if (cats.isOneAlive() && colorOptions!.selectedColor.cgColor != UIColor.lightGray.cgColor) {
             // Correct matching grid button color and selection color
-            if (catButton.originalBackgroundColor.cgColor == colorOptions!.selectedColor.cgColor){
-                gridColorsCount[catButton.originalBackgroundColor.cgColor]! -= 1;
+            if (catButton.backgroundCGColor! == colorOptions!.selectedColor.cgColor){
+                gridColorsCount[catButton.backgroundCGColor!]! -= 1;
                 catImageButton.fadeBackgroundIn(color: colorOptions!.selectedColor);
                 colorOptions!.buildColorOptionButtons(setup: false);
                 catButton.pod();
@@ -200,7 +199,7 @@ class UIBoardGame: UIView {
                 // Incorrect match
                 verifyThatRemainingCatsArePodded();
             } else {
-                gridColorsCount[catButton.originalBackgroundColor.cgColor]! -= 1;
+                gridColorsCount[catButton.backgroundCGColor!]! -= 1;
                 colorOptions!.buildColorOptionButtons(setup: false);
                 catButton.isDead();
                 self.superview!.sendSubviewToBack(catButton);
@@ -352,7 +351,7 @@ class UIBoardGame: UIView {
         // Remove selected buttons after they've shrunk
         DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
             self.currentStage -= 1;
-            self.removeGridCatAndColorOptionButtonsAfterDelay();
+            self.colorOptions!.removeSelectedButtons();
             self.currentStage += 1;
             self.successGradientLayer!.isHidden = true;
         }
@@ -365,14 +364,9 @@ class UIBoardGame: UIView {
             self.settingsButton!.enable();
         }
         // Remove dispersed buttons after they've dispersed
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.75) {
-            self.removeGridCatAndColorOptionButtonsAfterDelay();
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+            self.colorOptions!.removeSelectedButtons();
             self.successGradientLayer!.isHidden = true;
         }
-    }
-    
-    func removeGridCatAndColorOptionButtonsAfterDelay() {
-        cats.removePreviousCatButtonsFromSuperView();
-        self.colorOptions!.removeSelectedButtons();
     }
 }

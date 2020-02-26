@@ -172,4 +172,13 @@ class UICatButtons {
             catButton.fadeBackgroundIn(color: UIColor.lightGray);
         }
     }
+    
+    func getRandomCatThatIsAlive() -> UICatButton {
+        while (true) {
+            let randomCatButton:UICatButton = presentCollection!.randomElement()!;
+            if (randomCatButton.isAlive) {
+                return randomCatButton;
+            }
+        }
+    }
 }

@@ -38,7 +38,7 @@ class UICButton:UIButton {
         configureShrunkFrame();
         parentView.addSubview(self);
         self.layer.cornerRadius = self.frame.height / 5.0;
-        self.layer.borderWidth = parentView.frame.width * 0.01;
+        self.layer.borderWidth = parentView.frame.width * 0.005;
         self.isSelected = false;
         self.setStyle();
     }

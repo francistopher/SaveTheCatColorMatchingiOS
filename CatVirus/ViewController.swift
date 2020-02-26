@@ -16,7 +16,9 @@ class ViewController: UIViewController {
     var mainViewHeight:CGFloat = 0.0;
     var unitViewWidth:CGFloat = 0.0;
     var unitViewHeight:CGFloat = 0.0;
+    
     static var staticUnitViewHeight:CGFloat = 0.0;
+    static var staticUnitViewWidth:CGFloat = 0.0;
     
     var introLabel:UICLabel?;
     
@@ -108,6 +110,7 @@ class ViewController: UIViewController {
         unitViewHeight = mainViewHeight / 18.0;
         unitViewWidth = mainViewWidth / 18.0;
         ViewController.staticUnitViewHeight = unitViewHeight;
+        ViewController.staticUnitViewWidth = unitViewWidth;
     }
     
     func setupViruses() {
@@ -163,7 +166,7 @@ class ViewController: UIViewController {
     }
     
     func setupSettingsButton() {
-        settingsButton = UISettingsButton(parentView: mainView, x: unitViewWidth, y: unitViewHeight * 0.75, width: unitViewWidth * 2, height: unitViewWidth * 2);
+        settingsButton = UISettingsButton(parentView: mainView, x: unitViewWidth, y: unitViewHeight, width: unitViewWidth * 2, height: unitViewWidth * 2);
         settingsButton!.setBoardGameAndColorOptionsView(boardGameView:boardGame!, colorOptionsView: colorOptions!);
         ViewController.settingsButton = settingsButton!;
         boardGame!.settingsButton = settingsButton!;

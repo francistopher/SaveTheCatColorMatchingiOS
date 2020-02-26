@@ -426,7 +426,6 @@ class PlayerAdLabel: UICButton {
             self.titleLabel!.font = UIFont.boldSystemFont(ofSize: frame.height * 0.4);
             self.setTitle(displayName, for: .normal);
             self.setTitleColor(UIColor.white, for: .normal);
-            print(self.titleLabel!.lineBreakMode);
             self.titleLabel!.numberOfLines = 1;
             // Reset cancel button
             cancelInvitationButton!.frame = CGRect(x: self.frame.midX, y: self.frame.midY, width: 0.0, height: 0.0);

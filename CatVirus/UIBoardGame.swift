@@ -15,7 +15,7 @@ class UIBoardGame: UIView {
     var gridColorsCount:[CGColor:Int] = [:]
     var gridColors:[[UIColor]]? = nil;
     
-    var currentStage:Int = 1;
+    var currentRound:Int = 1;
     var rowAndColumnNums:[Int] = [];
     
     let cats:UICatButtons = UICatButtons();
@@ -26,7 +26,12 @@ class UIBoardGame: UIView {
     var statistics:UIStatistics?
     
     var viruses:UIViruses?
-   
+    
+    var gameStatusLabel:UIGameStatus?
+    var currentTimer:Timer?
+    var nextAttackInSecondsTenth:Double = 0.0;
+    var setNextAttackInSecondsTenth:Double = 0.0;
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented");
     }
@@ -35,12 +40,14 @@ class UIBoardGame: UIView {
         super.init(frame:CGRect(x: x, y: y, width: width, height: height));
         self.backgroundColor = UIColor.clear;
         self.layer.cornerRadius = width / 5.0;
+        parentView.addSubview(self);
         self.statistics = UIStatistics(parentView: parentView);
         self.statistics!.continueButton!.addTarget(self, action: #selector(continueSelector), for: .touchUpInside);
-        parentView.addSubview(self);
+        setupGameStatusLabel();
     }
     
     @objc func continueSelector() {
+        print("Continuing?");
         self.statistics!.fadeOut();
         statistics!.catsThatLived = 0;
         statistics!.catsThatDied = 0;
@@ -52,13 +59,13 @@ class UIBoardGame: UIView {
     }
     
     func fadeIn(){
-       UIView.animate(withDuration: 2, delay: 0.5, options: .curveEaseIn, animations: {
-           super.alpha = 1.0;
-       })
+        UIView.animate(withDuration: 2, delay: 0.5, options: .curveEaseIn, animations: {
+            super.alpha = 1.0;
+        })
     }
     
     func buildBoardGame(){
-        rowAndColumnNums = getRowsAndColumns(currentStage: currentStage);
+        rowAndColumnNums = getRowsAndColumns(currentStage: currentRound);
         cats.reset();
         colorOptions!.selectSelectionColors();
         buildGridColors();
@@ -66,6 +73,50 @@ class UIBoardGame: UIView {
         cats.loadPreviousCats();
         recordGridColorsUsed();
         colorOptions!.buildColorOptionButtons(setup: true);
+        displayGameStage();
+        if (currentRound > 1) {
+            prepareAttack();
+        }
+    }
+    
+    func prepareAttack() {
+        setNextAttackInSecondsTenth = 3.0
+        nextAttackInSecondsTenth = setNextAttackInSecondsTenth;
+        currentTimer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true, block: { timer in
+            if (!self.gameStatusLabel!.displayingRound) {
+                self.gameStatusLabel!.fadeIn(text: "Attack in \(Double(floor(10 * self.nextAttackInSecondsTenth) / 10))");
+                print("Should work")
+                self.nextAttackInSecondsTenth -= 0.1;
+                if (self.nextAttackInSecondsTenth < 0.0) {
+                    print("Attacking!");
+                    self.setNextAttackInSecondsTenth -= 0.3;
+                    self.nextAttackInSecondsTenth = self.setNextAttackInSecondsTenth;
+                    // Setup the cat to disperse
+                    let randomCat:UICatButton = self.cats.getRandomCatThatIsAlive();
+                    self.gridColorsCount[randomCat.backgroundCGColor!]! -= 1;
+                    randomCat.isDead();
+                    self.viruses!.translateToCatsAndBack(targetX: randomCat.frame.midX, targetY: randomCat.frame.midY);
+                    randomCat.disperseRadially();
+                    // If all cats are dead game over
+                    if (self.cats.areAllCatsDead()) {
+                        self.gameOverTransition();
+                    } else {
+                        self.verifyThatRemainingCatsArePodded();
+                    }
+                }
+            }
+        })
+        print(currentTimer!.isValid);
+    }
+    
+    func displayGameStage() {
+        gameStatusLabel!.fadeInAndOut(text: "Round \(currentRound)");
+    }
+    
+    func setupGameStatusLabel() {
+        gameStatusLabel = UIGameStatus(parentView: self.superview!, frame: CGRect(x: 0.0, y: ViewController.staticUnitViewHeight, width: ViewController.staticUnitViewHeight * 4, height: ViewController.staticUnitViewWidth * 2));
+        UICenterKit.centerHorizontally(childView: gameStatusLabel!, parentRect: self.superview!.frame, childRect: gameStatusLabel!.frame);
+        gameStatusLabel!.layer.masksToBounds = true;
     }
     
     func buildGridColors(){
@@ -159,7 +210,9 @@ class UIBoardGame: UIView {
     }
     
     func gameOverTransition() {
-        statistics!.finalStage = "\(self.currentStage)";
+        self.currentTimer!.invalidate();
+        self.gameStatusLabel!.fadeOut();
+        statistics!.finalStage = "\(self.currentRound)";
         statistics!.sessionEndTime = CFAbsoluteTimeGetCurrent();
         statistics!.setSessionDuration();
         statistics!.catsThatDied = cats.presentCollection!.count;
@@ -190,6 +243,10 @@ class UIBoardGame: UIView {
         if (cats.isOneAlive() && colorOptions!.selectedColor.cgColor != UIColor.lightGray.cgColor) {
             // Correct matching grid button color and selection color
             if (catButton.backgroundCGColor! == colorOptions!.selectedColor.cgColor){
+                // Set attack seconds tenth
+                self.setNextAttackInSecondsTenth += 0.1;
+                nextAttackInSecondsTenth = nextAttackInSecondsTenth + 0.3;
+                //
                 gridColorsCount[catButton.backgroundCGColor!]! -= 1;
                 catImageButton.fadeBackgroundIn(color: colorOptions!.selectedColor);
                 colorOptions!.buildColorOptionButtons(setup: false);
@@ -230,6 +287,7 @@ class UIBoardGame: UIView {
     func verifyThatRemainingCatsArePodded() {
         // Check if all the cats have been podded
         if (cats.aliveCatsArePodded()) {
+            currentTimer?.invalidate();
             SoundController.heaven();
             colorOptions!.selectedColor = UIColor.lightGray;
             colorOptions!.isTransitioned = false;
@@ -308,7 +366,7 @@ class UIBoardGame: UIView {
     func revertSelections() {
         colorOptions!.selectedColor = UIColor.lightGray;
         cats.shrink();
-        currentStage = 1;
+        currentRound = 1;
         configureComponentsAfterBoardGameReset();
     }
     
@@ -323,7 +381,7 @@ class UIBoardGame: UIView {
     }
     
     func restart(){
-        currentStage = 1
+        currentRound = 1
         configureComponentsAfterBoardGameReset();
     }
     
@@ -341,15 +399,15 @@ class UIBoardGame: UIView {
         colorOptions!.loadSelectionButtonsToSelectedButtons();
         // Build board game
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.25) {
-            self.currentStage += 1;
+            self.currentRound += 1;
             self.buildBoardGame();
             self.settingsButton!.enable();
         }
         // Remove selected buttons after they've shrunk
         DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
-            self.currentStage -= 1;
+            self.currentRound -= 1;
             self.colorOptions!.removeSelectedButtons();
-            self.currentStage += 1;
+            self.currentRound += 1;
             self.successGradientLayer!.isHidden = true;
         }
     }
@@ -366,4 +424,55 @@ class UIBoardGame: UIView {
             self.successGradientLayer!.isHidden = true;
         }
     }
+}
+
+class UIGameStatus:UICLabel {
+    
+    var displayingRound:Bool = false;
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    init(parentView:UIView, frame:CGRect) {
+        super.init(parentView: parentView, x: frame.minX, y: frame.minY, width: frame.width, height: frame.height);
+        
+        self.layer.borderColor = UIColor.black.cgColor;
+        self.layer.borderWidth = self.frame.height * 0.03;
+        self.layer.cornerRadius = self.frame.height * 0.2;
+        
+        self.font = UIFont.boldSystemFont(ofSize: self.frame.height * 0.4);
+        self.backgroundColor = UIColor.white;
+        self.alpha = 0.0;
+        
+    }
+    
+    func fadeInAndOut(text:String) {
+        displayingRound = true;
+        self.text = "\(text)";
+        UIView.animate(withDuration: 0.5, delay: 0.0, options: .curveEaseIn, animations: {
+            self.alpha = 1.0;
+        }, completion: { _ in
+            let finalDelay:Double = 0.4 + (Double(self.text!.count - 4) * 0.4);
+            UIView.animate(withDuration: 0.5, delay: finalDelay, options: .curveEaseOut, animations: {
+                self.alpha = 0.0;
+            }, completion:  { _ in
+                self.displayingRound = false;
+            })
+        })
+    }
+    
+    func fadeIn(text: String) {
+        self.text = "\(text)";
+        UIView.animate(withDuration: 0.5, delay: 0.125, options: .curveEaseOut, animations: {
+            self.alpha = 1.0;
+        })
+    }
+    
+    func fadeOut() {
+        UIView.animate(withDuration: 0.5, delay: 0.125, options: .curveEaseOut, animations: {
+            self.alpha = 0.0;
+        })
+    }
+
 }

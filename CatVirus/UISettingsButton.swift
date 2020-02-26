@@ -44,7 +44,7 @@ class UISettingsButton:UIButton {
         super.init(frame: CGRect(x: x, y: y, width: width, height: height));
         self.backgroundColor = backgroundColor;
         self.layer.cornerRadius = height / 2.0625;
-        self.layer.borderWidth = self.frame.height / 12.0;
+        self.layer.borderWidth = self.frame.height / 24.0;
         parentView.addSubview(self);
         configureSettingsMenu(parentView:parentView);
         configureCellFrame();
@@ -137,7 +137,7 @@ class UISettingsButton:UIButton {
     func configureSettingsMenu(parentView:UIView) {
         settingsMenu = UICView(parentView: parentView, x: self.frame.midX * 0.75, y: self.frame.minY, width: parentView.frame.width * 0.8575, height: self.frame.height, backgroundColor: .clear);
         settingsMenu!.layer.cornerRadius = settingsMenu!.frame.height / 2.0;
-        settingsMenu!.layer.borderWidth = self.frame.height / 12.0;
+        settingsMenu!.layer.borderWidth = self.frame.height / 24.0;
         parentView.bringSubviewToFront(self);
     }
     

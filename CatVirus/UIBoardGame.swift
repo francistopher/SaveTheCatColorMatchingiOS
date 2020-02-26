@@ -222,7 +222,6 @@ class UIBoardGame: UIView {
     
     @objc func transitionBackgroundColorOfButtonsToLightGray(){
         if (!colorOptions!.isTransitioned){
-            print("Transitioning!");
             cats.transitionCatButtonBackgroundToLightgrey();
             colorOptions!.isTransitioned = true;
         }
@@ -292,6 +291,7 @@ class UIBoardGame: UIView {
             }
             y += buttonHeight;
         }
+        
         if (!(countOfMaxCatButtonsInARow > countOfRowsLeft)) {
             for rowIndexOf in Array(indexesOfRowsWithAliveCatsCount.keys).sorted(by:<) {
                 resetCatButtonsPosition(rowIndexOf: rowIndexOf);
@@ -299,9 +299,6 @@ class UIBoardGame: UIView {
         } else {
             rowGap = self.frame.height * 0.1 / CGFloat(countOfRowsLeft + 2);
             buttonHeight = self.frame.width * 0.90 / CGFloat(countOfRowsLeft + 1);
-            let sumOfRowGaps:CGFloat = rowGap * CGFloat(countOfRowsLeft + 1);
-            let sumOfButtonHeights:CGFloat = (buttonHeight * CGFloat(countOfRowsLeft))
-            y = (self.frame.height - sumOfRowGaps + sumOfButtonHeights) * 0.125;
             for rowIndexOf in Array(indexesOfRowsWithAliveCatsCount.keys).sorted(by:<) {
                 resetCatButtonsPosition(rowIndexOf: rowIndexOf);
             }

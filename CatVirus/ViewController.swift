@@ -38,9 +38,9 @@ class ViewController: UIViewController {
         ViewController.staticSelf = self;
         setupSounds();
         setupMainViewDimensionProperties();
-        setupViruses();
         setupIntroLabel();
         setupSuccessGradientLayer();
+        setupViruses();
         setupBoardMainView();
         setupColorOptionsView();
         setupSettingsButton();
@@ -139,9 +139,9 @@ class ViewController: UIViewController {
     
     func setSuccessGradientLayerStyle() {
         if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1){
-            self.successGradientLayer!.colors = [self.mellowYellow.cgColor, UIColor.clear.cgColor];
+            self.successGradientLayer!.colors = [self.mellowYellow.cgColor, UIColor.white.cgColor];
         } else {
-            self.successGradientLayer!.colors =  [self.mellowYellow.cgColor, UIColor.clear.cgColor];
+            self.successGradientLayer!.colors =  [self.mellowYellow.cgColor, UIColor.black.cgColor];
         }
     }
     

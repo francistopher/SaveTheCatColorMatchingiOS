@@ -11,14 +11,21 @@ import SwiftUI
 class UIBoardGame: UIView {
     
     var colorOptions:UIColorOptions? = nil;
+    
     var gridColorsCount:[CGColor:Int] = [:]
     var gridColors:[[UIColor]]? = nil;
+    
     var currentStage:Int = 1;
     var rowAndColumnNums:[Int] = [];
+    
     let cats:UICatButtons = UICatButtons();
+    
     var successGradientLayer:CAGradientLayer? = nil;
+    
     var settingsButton:UISettingsButton? = nil;
     var statistics:UIStatistics?
+    
+    var viruses:UIViruses?
    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented");
@@ -196,6 +203,8 @@ class UIBoardGame: UIView {
                 gridColorsCount[catButton.originalBackgroundColor.cgColor]! -= 1;
                 colorOptions!.buildColorOptionButtons(setup: false);
                 catButton.isDead();
+                self.superview!.sendSubviewToBack(catButton);
+                viruses!.translateToCatsAndBack(targetX: catButton.frame.midX, targetY: catButton.frame.midY);
                 catButton.disperseRadially();
                 displaceArea(ofCatButton: catButton);
                 SoundController.kittenDie();

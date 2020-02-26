@@ -150,6 +150,7 @@ class ViewController: UIViewController {
         UICenterKit.centerWithVerticalDisplacement(childView: boardGame!, parentRect: mainView.frame, childRect: boardGame!.frame, verticalDisplacement: -unitViewWidth * 0.6);
         boardGame!.successGradientLayer = successGradientLayer!;
         boardGame!.alpha = 0.0;
+        boardGame!.viruses = viruses!;
     }
 
     func setupColorOptionsView(){

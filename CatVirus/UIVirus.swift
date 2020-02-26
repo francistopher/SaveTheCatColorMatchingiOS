@@ -79,13 +79,13 @@ class UIVirus:UIButton {
         });
     }
     
-    func translateToCatsAndBack() {
+    func translateToAndBackAt(xTarget:CGFloat, yTarget:CGFloat) {
         UIView.animate(withDuration: 0.25, delay:0.0, options: [.curveEaseInOut], animations: {
-            let xDistance:CGFloat = self.superview!.center.x - self.frame.midX;
-            let yDistance:CGFloat = self.superview!.center.y - self.frame.midY;
+            let xDistance:CGFloat = xTarget - self.frame.midX;
+            let yDistance:CGFloat = yTarget - self.frame.midY;
             self.transform = self.transform.translatedBy(x: xDistance, y: yDistance);
         }, completion: { _ in
-            UIView.animate(withDuration: 1.5, delay:0.125, options: [.curveEaseInOut], animations: {
+            UIView.animate(withDuration: 1.0, delay:0.125, options: [.curveEaseInOut], animations: {
                 self.frame = self.originalFrame!;
             })
             self.sway();

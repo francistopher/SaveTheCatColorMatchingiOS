@@ -28,6 +28,8 @@ class ViewController: UIViewController {
     var successGradientLayer:CAGradientLayer?
     let mellowYellow:UIColor = UIColor(red: 252.0/255.0, green: 212.0/255.0, blue: 64.0/255.0, alpha: 1.0);
     
+    var viruses:UIViruses?
+    
     static var staticSelf:ViewController?
     
     @IBOutlet var mainViewController: UIView!
@@ -36,12 +38,14 @@ class ViewController: UIViewController {
         ViewController.staticSelf = self;
         setupSounds();
         setupMainViewDimensionProperties();
+        setupViruses();
         setupIntroLabel();
         setupSuccessGradientLayer();
         setupBoardMainView();
         setupColorOptionsView();
         setupSettingsButton();
         DispatchQueue.main.asyncAfter(deadline: .now() + 4.0) {
+            self.viruses!.fadeIn();
             self.boardGame!.fadeIn();
             self.colorOptions!.fadeIn();
             self.boardGame!.buildBoardGame();
@@ -105,12 +109,18 @@ class ViewController: UIViewController {
         ViewController.staticUnitViewHeight = unitViewHeight;
     }
     
+    func setupViruses() {
+        viruses = UIViruses(mainView: mainView, unitView: unitViewHeight);
+        viruses!.sway();
+        viruses!.hide();
+    }
+    
     func setupIntroLabel(){
-        introLabel = UICLabel(parentView: mainView, x: 0.0, y: 0.0, width: unitViewWidth * 6, height: unitViewHeight);
+        introLabel = UICLabel(parentView: mainView, x: 0.0, y: 0.0, width: unitViewWidth * 10, height: unitViewHeight);
         UICenterKit.center(childView: introLabel!, parentRect: mainView.frame, childRect: introLabel!.frame);
         introLabel!.font = UIFont.boldSystemFont(ofSize: unitViewHeight * 0.75);
         introLabel!.backgroundColor = .clear;
-        introLabel!.text = "Cat Virus";
+        introLabel!.text = "Save The Cat";
         introLabel!.alpha = 0.0;
         introLabel!.fadeInAndOut();
     }
@@ -128,9 +138,9 @@ class ViewController: UIViewController {
     
     func setSuccessGradientLayerStyle() {
         if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1){
-            self.successGradientLayer!.colors = [self.mellowYellow.cgColor, UIColor.white.cgColor];
+            self.successGradientLayer!.colors = [self.mellowYellow.cgColor, UIColor.clear.cgColor];
         } else {
-            self.successGradientLayer!.colors =  [self.mellowYellow.cgColor, UIColor.black.cgColor];
+            self.successGradientLayer!.colors =  [self.mellowYellow.cgColor, UIColor.clear.cgColor];
         }
     }
     
@@ -160,6 +170,7 @@ class ViewController: UIViewController {
     }
     
     func setStyle() {
+        viruses!.setStyle();
         introLabel!.setStyle();
         setSuccessGradientLayerStyle();
         settingsButton!.setStyle();

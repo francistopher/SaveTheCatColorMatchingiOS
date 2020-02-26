@@ -16,6 +16,8 @@
 		B833545B23EC8F1400835672 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B833545923EC8F1400835672 /* LaunchScreen.storyboard */; };
 		B835801C23FF24CE00A2A211 /* chopinPrelude.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = B835801B23FF24CE00A2A211 /* chopinPrelude.mp3 */; };
 		B835801E23FF587600A2A211 /* UIStatistics.swift in Sources */ = {isa = PBXBuildFile; fileRef = B835801D23FF587600A2A211 /* UIStatistics.swift */; };
+		B8361D112405FB9A005EE9C5 /* darkVirus.png in Resources */ = {isa = PBXBuildFile; fileRef = B8361D0F2405FB99005EE9C5 /* darkVirus.png */; };
+		B8361D122405FB9A005EE9C5 /* lightVirus.png in Resources */ = {isa = PBXBuildFile; fileRef = B8361D102405FB99005EE9C5 /* lightVirus.png */; };
 		B8366D3723F772270043B45F /* kittenMeow.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = B8366D3623F772270043B45F /* kittenMeow.mp3 */; };
 		B8366D3D23F842C20043B45F /* mouseCoin.png in Resources */ = {isa = PBXBuildFile; fileRef = B8366D3C23F842C20043B45F /* mouseCoin.png */; };
 		B8366D4123F86BE10043B45F /* gearSpinning.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = B8366D4023F86BE10043B45F /* gearSpinning.mp3 */; };
@@ -45,7 +47,6 @@
 		B8AE017D23ECD078007A6142 /* UIColorOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8AE017C23ECD077007A6142 /* UIColorOptions.swift */; };
 		B8AE017F23ECD3B2007A6142 /* UICButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8AE017E23ECD3B2007A6142 /* UICButton.swift */; };
 		B8BBAA6523FD9A5500614F95 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8BBAA6423FD9A5500614F95 /* SceneDelegate.swift */; };
-		B8D98B7223F99E4D0051D808 /* corona.png in Resources */ = {isa = PBXBuildFile; fileRef = B8D98B6E23F99E4D0051D808 /* corona.png */; };
 		B8D98B7423F9C4570051D808 /* UICatButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8D98B7323F9C4570051D808 /* UICatButtons.swift */; };
 		B8D98B7823F9C6BE0051D808 /* UICatButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8D98B7723F9C6BE0051D808 /* UICatButton.swift */; };
 		B8FBD68123F58F2500C8B50D /* darkGear.png in Resources */ = {isa = PBXBuildFile; fileRef = B8FBD68023F58F2500C8B50D /* darkGear.png */; };
@@ -80,6 +81,8 @@
 		B833545C23EC8F1400835672 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B835801B23FF24CE00A2A211 /* chopinPrelude.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = chopinPrelude.mp3; sourceTree = "<group>"; };
 		B835801D23FF587600A2A211 /* UIStatistics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIStatistics.swift; sourceTree = "<group>"; };
+		B8361D0F2405FB99005EE9C5 /* darkVirus.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = darkVirus.png; sourceTree = "<group>"; };
+		B8361D102405FB99005EE9C5 /* lightVirus.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lightVirus.png; sourceTree = "<group>"; };
 		B8366D3623F772270043B45F /* kittenMeow.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = kittenMeow.mp3; sourceTree = "<group>"; };
 		B8366D3C23F842C20043B45F /* mouseCoin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mouseCoin.png; sourceTree = "<group>"; };
 		B8366D4023F86BE10043B45F /* gearSpinning.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = gearSpinning.mp3; sourceTree = "<group>"; };
@@ -110,7 +113,6 @@
 		B8AE017C23ECD077007A6142 /* UIColorOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorOptions.swift; sourceTree = "<group>"; };
 		B8AE017E23ECD3B2007A6142 /* UICButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UICButton.swift; sourceTree = "<group>"; };
 		B8BBAA6423FD9A5500614F95 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		B8D98B6E23F99E4D0051D808 /* corona.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = corona.png; sourceTree = "<group>"; };
 		B8D98B7323F9C4570051D808 /* UICatButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UICatButtons.swift; sourceTree = "<group>"; };
 		B8D98B7723F9C6BE0051D808 /* UICatButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UICatButton.swift; sourceTree = "<group>"; };
 		B8FBD68023F58F2500C8B50D /* darkGear.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = darkGear.png; sourceTree = "<group>"; };
@@ -166,8 +168,8 @@
 			isa = PBXGroup;
 			children = (
 				B8948F4D24019A280070F8E6 /* heaven.mp3 */,
-				B88F996823F06801003ED805 /* ViewController.swift */,
 				B88DE8072402E5F80076B8F2 /* MCController.swift */,
+				B88F996823F06801003ED805 /* ViewController.swift */,
 				B81C3F7723FED88E00042729 /* SoundController.swift */,
 				B8366D3523F772180043B45F /* Audio */,
 				B88F998F23F39934003ED805 /* Custom Components */,
@@ -288,7 +290,8 @@
 		B88F999523F399D7003ED805 /* Virus */ = {
 			isa = PBXGroup;
 			children = (
-				B8D98B6E23F99E4D0051D808 /* corona.png */,
+				B8361D0F2405FB99005EE9C5 /* darkVirus.png */,
+				B8361D102405FB99005EE9C5 /* lightVirus.png */,
 			);
 			name = Virus;
 			sourceTree = "<group>";
@@ -472,13 +475,14 @@
 				B833545323EC8F0B00835672 /* Main.storyboard in Resources */,
 				B86A7E9023FC3C7700E4C4C4 /* Default-568h@2x.png in Resources */,
 				B86A7E9223FC711200E4C4C4 /* lightSmilingCat.png in Resources */,
+				B8361D112405FB9A005EE9C5 /* darkVirus.png in Resources */,
 				B86A7E9A23FC826F00E4C4C4 /* lightDeadCat.png in Resources */,
 				B8FBD6A423F5E65F00C8B50D /* darkRestart1.png in Resources */,
 				B8366D4723F8956C0043B45F /* kittenDie.mp3 in Resources */,
 				B8366D4923F8A1A60043B45F /* coinEarned.mp3 in Resources */,
 				B8366D3723F772270043B45F /* kittenMeow.mp3 in Resources */,
 				B86A7EA823FCDDF000E4C4C4 /* Default-568h@2x 9.59.50 PM.png in Resources */,
-				B8D98B7223F99E4D0051D808 /* corona.png in Resources */,
+				B8361D122405FB9A005EE9C5 /* lightVirus.png in Resources */,
 				B8366D4523F880490043B45F /* mozartSonata.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

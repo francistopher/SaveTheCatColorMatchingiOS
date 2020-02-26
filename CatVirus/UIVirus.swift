@@ -8,55 +8,49 @@
 
 import SwiftUI
 
+
 enum Virus{
-    case corona
-    case ebolaSquare
-    case bacteriophage
-    case ebolaRectangle
+    case standard
 }
 
 class UIVirus:UIButton {
     
-    var originalFrame:CGRect? = nil;
-    
+     var originalFrame:CGRect? = nil;
+        var selectedVirus:Virus = .standard;
+        
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    init(parentView:UIView, spawnFrame: CGRect, targetFrame:CGRect, virus:Virus, targetCat:UICatButton) {
-        super.init(frame: spawnFrame);
-        backgroundColor = .clear;
-        self.frame = spawnFrame;
-        setVirusImage(virus:virus);
+    init(parentView:UIView, frame: CGRect) {
+        super.init(frame: frame);
+        self.backgroundColor = .clear;
+        self.originalFrame = frame;
+        self.setVirusImage();
+//        self.addTarget(self, action: #selector(virusAudio), for: .touchUpInside);
         parentView.addSubview(self);
     }
     
-    func getRadialXTargetPoint(parentFrame:CGRect, childFrame:CGRect, angle:CGFloat) -> CGFloat {
-        var targetX:CGFloat = childFrame.minX;
-        targetX += parentFrame.width + childFrame.width;
-        targetX *= cos((CGFloat.pi * angle) / 180.0);
-        return targetX;
+    
+    func hide() {
+        alpha = 0.0;
     }
     
-    
-    func getRadialYTargetPoint(parentFrame:CGRect, childFrame:CGRect, angle:CGFloat) -> CGFloat {
-        var targetY:CGFloat = childFrame.minY;
-        targetY += parentFrame.height + childFrame.height;
-        targetY *= sin((CGFloat.pi * angle) / 180.0);
-        return targetY;
-    }
-    
-    
-//     func expandAndContract() {
-//    UIView.animate(withDuration: 1.0, delay: 0.125, options: [.curveEaseInOut, .autoreverse, .repeat], animations: {
-//        self.imageView!.transform = self.imageView!.transform.scaledBy(x: 1.25, y: 1.25);
-//    })
-//}
-    
-    func setVirusImage(virus:Virus) {
-        let iconImage:UIImage? = UIImage(named: "corona.png");
+    func setVirusImage() {
+        let iconImage:UIImage? = UIImage(named: getVirusFileName());
         self.setImage(iconImage, for: .normal);
         self.imageView!.contentMode = UIView.ContentMode.scaleAspectFit;
+    }
+    
+    func getVirusFileName() -> String {
+        switch (selectedVirus) {
+        case Virus.standard:
+            if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1) {
+                 return "lightVirus.png";
+            } else {
+                 return "darkVirus.png";
+            }
+        }
     }
     
     func sway(){
@@ -79,11 +73,11 @@ class UIVirus:UIButton {
         });
     }
     
-//   func fadeOut() {
-//       UIView.animate(withDuration: 0.5, delay: 0.25, options: .curveEaseIn, animations: {
-//           self.alpha = 0.0;
-//        });
-//    }
+    func fadeOut() {
+        UIView.animate(withDuration: 0.5, delay: 0.25, options: .curveEaseIn, animations: {
+            self.alpha = 0.0;
+        });
+    }
     
     func translateToCatsAndBack() {
         UIView.animate(withDuration: 0.25, delay:0.0, options: [.curveEaseInOut], animations: {

@@ -34,36 +34,21 @@ class UIMouseCoin: UIButton {
     }
     
     @objc func mouseCoinSelector() {
-        if (isSelectable) {
-            fadeBackgroundOut();
-            isSelectable = false;
-        } else {
-            self.amountLabel!.text = "\(UIStatistics.mouseCoins)";
-            mouseCoinView!.superview!.bringSubviewToFront(mouseCoinView!);
-            fadeBackgroundIn();
-            isSelectable = true;
+        self.mouseCoinView!.backgroundColor = self.superview!.backgroundColor;
+        let mouseCoins:Int = UIStatistics.mouseCoins;
+        self.amountLabel!.text = "\(mouseCoins)";
+        if (UIStatistics.mouseCoins > 0) {
+            SoundController.coinEarned();
         }
-    }
-    
-    func setupMouseCoinView() {
-        self.mouseCoinView = UICView(parentView: self.superview!.superview!, x: 0.0, y: 0.0, width: ViewController.staticUnitViewHeight * 8, height: ViewController.staticUnitViewHeight * 8, backgroundColor: UIColor.white);
-        UICenterKit.centerWithVerticalDisplacement(childView: mouseCoinView!, parentRect: mouseCoinView!.superview!.frame, childRect: mouseCoinView!.frame, verticalDisplacement: -ViewController.staticUnitViewHeight * 0.25);
-        mouseCoinView!.layer.cornerRadius = mouseCoinView!.frame.height * 0.25;
-        mouseCoinView!.layer.borderWidth = mouseCoinView!.frame.height * 0.015;
-        mouseCoinView!.layer.borderColor = UIColor.black.cgColor;
-        setupImageMouseCoinView();
-        setupAmountLabel();
-    }
-    
-    func setupImageMouseCoinView() {
-        self.imageMouseCoinView = UIImageView(frame: CGRect(x: self.mouseCoinView!.frame.width * 0.125, y: self.mouseCoinView!.frame.width * 0.035, width: self.mouseCoinView!.frame.width * 0.75, height: self.mouseCoinView!.frame.width * 0.75));
-        self.imageMouseCoinView!.image = UIImage(named: "mouseCoin.png");
-        self.mouseCoinView!.addSubview(imageMouseCoinView!);
-    }
-    
-    func setupAmountLabel() {
-        self.amountLabel = UICLabel(parentView: mouseCoinView!, x: 0.0, y: self.mouseCoinView!.frame.width * 0.6975, width: self.mouseCoinView!.frame.width, height: self.mouseCoinView!.frame.width * 0.25);
-        self.amountLabel!.font = UIFont.boldSystemFont(ofSize: amountLabel!.frame.height * 0.5);
+        mouseCoinView!.superview!.bringSubviewToFront(mouseCoinView!);
+        UIView.animate(withDuration: 0.5, delay: 0.0, options: .curveEaseIn, animations: {
+            self.mouseCoinView!.alpha = 1.0;
+        }, completion: { _ in
+            let finalDelay:Double = 0.4 + (Double(self.amountLabel!.text!.count) * 0.4);
+            UIView.animate(withDuration: 0.5, delay: finalDelay, options: .curveEaseOut, animations: {
+                self.mouseCoinView!.alpha = 0.0;
+            })
+        })
     }
     
     func setIconImage(imageName:String) {
@@ -72,16 +57,22 @@ class UIMouseCoin: UIButton {
         self.imageView!.contentMode = UIView.ContentMode.scaleAspectFit;
     }
     
-    func fadeBackgroundIn(){
-        UIView.animate(withDuration: 0.5, delay: 0.125, options: .curveEaseIn, animations: {
-            self.mouseCoinView!.alpha = 1.0;
-        });
+    func setupMouseCoinView() {
+        self.mouseCoinView = UICView(parentView: self.superview!.superview!, x: 0.0, y: self.superview!.frame.minY, width: ViewController.staticUnitViewHeight * 4, height: self.superview!.frame.height, backgroundColor: UIColor.white);
+        UICenterKit.centerHorizontally(childView: mouseCoinView!, parentRect: mouseCoinView!.superview!.frame, childRect: mouseCoinView!.frame);
+        mouseCoinView!.layer.cornerRadius = self.superview!.layer.cornerRadius;
+        mouseCoinView!.layer.borderWidth = self.superview!.layer.borderWidth;
+        mouseCoinView!.layer.borderColor = UIColor.systemYellow.cgColor;
+        mouseCoinView!.backgroundColor = UIColor.clear;
+        setupAmountLabel();
     }
     
-    func fadeBackgroundOut(){
-        UIView.animate(withDuration: 0.5, delay: 0.125, options: .curveEaseIn, animations: {
-            self.mouseCoinView!.alpha = 0.0;
-        });
+    func setupAmountLabel() {
+        self.amountLabel = UICLabel(parentView: mouseCoinView!, x: 0.0, y: 0.0, width: self.mouseCoinView!.frame.width, height: self.mouseCoinView!.frame.width * 0.25);
+        self.amountLabel!.textColor = UIColor.systemYellow;
+        self.amountLabel!.backgroundColor = UIColor.clear;
+        self.amountLabel!.font = UIFont.boldSystemFont(ofSize: amountLabel!.frame.height * 0.5);
+        UICenterKit.center(childView: self.amountLabel!, parentRect: mouseCoinView!.frame, childRect: self.amountLabel!.frame);
     }
 
 }

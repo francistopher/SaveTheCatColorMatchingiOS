@@ -148,14 +148,14 @@ class ViewController: UIViewController {
     func setupBoardMainView(){
         let boardGameWidth:CGFloat = unitViewHeight * 8;
         boardGame = UIBoardGame(parentView: mainView, x: 0.0, y: 0.0, width: boardGameWidth, height:boardGameWidth);
-        UICenterKit.centerWithVerticalDisplacement(childView: boardGame!, parentRect: mainView.frame, childRect: boardGame!.frame, verticalDisplacement: -unitViewWidth * 0.6);
+        UICenterKit.center(childView: boardGame!, parentRect: mainView.frame, childRect: boardGame!.frame);
         boardGame!.successGradientLayer = successGradientLayer!;
         boardGame!.alpha = 0.0;
         boardGame!.viruses = viruses!;
     }
 
     func setupColorOptionsView(){
-        colorOptions = UIColorOptions(parentView: mainView, x: boardGame!.frame.minX, y: boardGame!.frame.maxY + unitViewWidth, width: boardGame!.frame.width, height: unitViewWidth * 2.5);
+        colorOptions = UIColorOptions(parentView: mainView, x: boardGame!.frame.minX, y: boardGame!.frame.maxY, width: boardGame!.frame.width, height: unitViewHeight * 1.5);
         UICenterKit.centerHorizontally(childView: colorOptions!, parentRect: mainView.frame, childRect: colorOptions!.frame);
         boardGame!.colorOptions = colorOptions!;
         colorOptions!.boardGameView = boardGame!;
@@ -163,7 +163,7 @@ class ViewController: UIViewController {
     }
     
     func setupSettingsButton() {
-        settingsButton = UISettingsButton(parentView: mainView, x: unitViewWidth, y: unitViewHeight * 1.125, width: unitViewWidth * 2, height: unitViewWidth * 2);
+        settingsButton = UISettingsButton(parentView: mainView, x: unitViewWidth, y: unitViewHeight * 0.75, width: unitViewWidth * 2, height: unitViewWidth * 2);
         settingsButton!.setBoardGameAndColorOptionsView(boardGameView:boardGame!, colorOptionsView: colorOptions!);
         ViewController.settingsButton = settingsButton!;
         boardGame!.settingsButton = settingsButton!;

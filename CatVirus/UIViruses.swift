@@ -58,10 +58,10 @@ class UIViruses {
         }
     }
     
-    func translateToCatsAndBack(targetX:CGFloat, targetY:CGFloat){
+    func translateToCatAndBack(catButton:UICatButton){
         // Translate each virus to the center of the grid of cats
         for virus in self.virusCollection! {
-            virus.translateToAndBackAt(xTarget: targetX, yTarget: targetY);
+            virus.translateToAndBackAt(xTarget: catButton.frame.midX, yTarget: catButton.frame.midY);
         }
     }
     

@@ -227,7 +227,6 @@ class UICatButton: UIButton {
     }
     
     func isDead() {
-//        self.imageContainerButton!.backgroundColor = .clear;
         self.isAlive = false;
         self.imageContainerButton!.layer.borderWidth = 0.0;
         self.layer.borderWidth = 0.0;

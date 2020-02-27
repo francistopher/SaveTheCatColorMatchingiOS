@@ -28,9 +28,7 @@ class UIBoardGame: UIView {
     var viruses:UIViruses?
     
     var gameStatusLabel:UIGameStatus?
-    var currentTimer:Timer?
-    var nextAttackInSecondsTenth:Double = 0.0;
-    var setNextAttackInSecondsTenth:Double = 0.0;
+    var livesLeft:Int = 3;
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented");
@@ -77,40 +75,6 @@ class UIBoardGame: UIView {
 //        if (currentRound > 1) {
 //            prepareAttack();
 //        }
-    }
-    
-    func prepareAttack() {
-        setNextAttackInSecondsTenth = 3.5;
-        nextAttackInSecondsTenth = setNextAttackInSecondsTenth;
-        currentTimer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true, block: { timer in
-            if (!self.gameStatusLabel!.displayingRound) {
-                self.gameStatusLabel!.fadeIn(text: "Attack in \(Double(floor(10 * self.nextAttackInSecondsTenth) / 10))");
-                print("Should work")
-                self.nextAttackInSecondsTenth -= 0.1;
-                if (self.nextAttackInSecondsTenth < 0.0) {
-                    print("Attacking!");
-                    self.setNextAttackInSecondsTenth -= 0.2;
-                    self.nextAttackInSecondsTenth = self.setNextAttackInSecondsTenth;
-                    // Setup the cat to disperse
-                    let randomCat:UICatButton = self.cats.getRandomCatThatIsAlive();
-                    if (!randomCat.isPodded) {
-                        self.gridColorsCount[randomCat.backgroundCGColor!]! -= 1;
-                        self.colorOptions!.buildColorOptionButtons(setup: false);
-                    }
-                    self.statistics!.catsThatDied -= 1;
-                    randomCat.isDead();
-                    self.viruses!.translateToCatsAndBack(targetX: randomCat.frame.midX, targetY: randomCat.frame.midY);
-                    randomCat.disperseRadially();
-                    // If all cats are dead game over
-                    if (self.cats.areAllCatsDead()) {
-                        self.gameOverTransition();
-                    } else {
-                        self.verifyThatRemainingCatsArePodded();
-                    }
-                }
-            }
-        })
-        print(currentTimer!.isValid);
     }
     
     func displayGameStage() {
@@ -214,7 +178,7 @@ class UIBoardGame: UIView {
     }
     
     func gameOverTransition() {
-        self.currentTimer!.invalidate();
+        livesLeft = 3;
         self.gameStatusLabel!.fadeOut();
         statistics!.finalStage = "\(self.currentRound)";
         statistics!.sessionEndTime = CFAbsoluteTimeGetCurrent();
@@ -247,10 +211,6 @@ class UIBoardGame: UIView {
         if (cats.isOneAlive() && colorOptions!.selectedColor.cgColor != UIColor.lightGray.cgColor) {
             // Correct matching grid button color and selection color
             if (catButton.backgroundCGColor! == colorOptions!.selectedColor.cgColor){
-                // Set attack seconds tenth
-                self.setNextAttackInSecondsTenth += 0.2;
-                nextAttackInSecondsTenth = nextAttackInSecondsTenth + 0.7;
-                //
                 gridColorsCount[catButton.backgroundCGColor!]! -= 1;
                 catImageButton.fadeBackgroundIn(color: colorOptions!.selectedColor);
                 colorOptions!.buildColorOptionButtons(setup: false);
@@ -260,13 +220,43 @@ class UIBoardGame: UIView {
                 // Incorrect match
                 verifyThatRemainingCatsArePodded();
             } else {
-                SoundController.kittenMeow();
+                if (livesLeft > 0) {
+                    setCatButtonAsDead(catButton: catButton);
+                    livesLeft -= 1;
+                    print("\(livesLeft) lives left.")
+                } else {
+                    setAllCatButtonsAsDead();
+                }
+                if (cats.areAllCatsDead()){
+                    gameOverTransition();
+                } else {
+                    verifyThatRemainingCatsArePodded();
+                }
             }
         } else {
             if (!colorOptions!.isTransitioned) {
                 SoundController.kittenMeow();
             }
         }
+    }
+    
+    func setAllCatButtonsAsDead() {
+        for catButton in cats.presentCollection! {
+            if (catButton.isAlive) {
+                setCatButtonAsDead(catButton: catButton);
+            }
+        }
+    }
+    
+    func setCatButtonAsDead(catButton:UICatButton) {
+        gridColorsCount[catButton.originalBackgroundColor.cgColor]! -= 1;
+        colorOptions!.buildColorOptionButtons(setup: false);
+        catButton.isDead();
+        self.superview!.sendSubviewToBack(catButton);
+        self.viruses!.translateToCatAndBack(catButton:catButton);
+        catButton.disperseRadially();
+        displaceArea(ofCatButton: catButton);
+        SoundController.kittenDie();
     }
     
     @objc func transitionBackgroundColorOfButtonsToLightGray(){
@@ -279,7 +269,6 @@ class UIBoardGame: UIView {
     func verifyThatRemainingCatsArePodded() {
         // Check if all the cats have been podded
         if (cats.aliveCatsArePodded()) {
-            currentTimer?.invalidate();
             SoundController.heaven();
             colorOptions!.selectedColor = UIColor.lightGray;
             colorOptions!.isTransitioned = false;
@@ -287,10 +276,8 @@ class UIBoardGame: UIView {
             statistics!.catsThatLived += cats.presentCollection!.count;
             if (cats.didAllSurvive()) {
                 promote();
-                self.setNextAttackInSecondsTenth += 0.7;
             } else {
                 maintain();
-                self.setNextAttackInSecondsTenth -= 1.0;
             }
         }
     }
@@ -375,7 +362,6 @@ class UIBoardGame: UIView {
     }
     
     func restart(){
-        currentTimer?.invalidate();
         currentRound = 1
         configureComponentsAfterBoardGameReset();
     }

@@ -26,22 +26,22 @@ class UIViruses {
         let totalWidthSpacing:CGFloat = mainView!.frame.width - (virusSideLength * 4.0);
         let totalHeightSpacing:CGFloat = mainView!.frame.height - (virusSideLength * 5.0);
         // Virus Spacing Length
-        let virusWidthSpacing:CGFloat = totalWidthSpacing / 3.75;
-        let virusHeightSpacing:CGFloat = totalHeightSpacing / 5.875;
+        let virusWidthSpacing:CGFloat = totalWidthSpacing / 1.625;
+        let virusHeightSpacing:CGFloat = totalHeightSpacing / 3.0;
         // Initial starting coordinates
         var x:CGFloat = -virusWidthSpacing * 0.71875;
-        var y:CGFloat = -virusHeightSpacing * 0.125;
+        var y:CGFloat = -virusHeightSpacing * 0.2;
         // Plot and build viruses
-        for _ in 0..<4 {
+        for _ in 0..<3 {
             x += virusWidthSpacing;
-            for _ in 0..<5 {
+            for _ in 0..<4 {
                 y += virusHeightSpacing;
                 let virus = UIVirus(parentView: mainView!, frame:CGRect(x: x, y: y, width: virusSideLength, height: virusSideLength));
                 virusCollection!.append(virus);
                 y += virusSideLength;
             }
             x += virusSideLength;
-            y = 0;
+            y = -virusHeightSpacing * 0.2;
         }
     }
     

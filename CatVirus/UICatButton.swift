@@ -43,7 +43,7 @@ class UICatButton: UIButton {
         self.backgroundCGColor = backgroundColor.cgColor;
         self.backgroundColor = backgroundColor;
         self.layer.cornerRadius = height / 5.0;
-        self.layer.borderWidth = parentView.frame.width * 0.005;
+        self.layer.borderWidth = (sqrt(self.frame.width * 0.01) * 10.0) * 0.35;
         parentView.addSubview(self);
         configureImageContainerButton();
         shrunk();
@@ -253,7 +253,7 @@ class UICatButton: UIButton {
 
     func disperseVertically() {
         displaceBoundsOntoMainView();
-        self.setCat(named: "WavingCat", stage: 1);
+        self.setCat(named: "CheeringCat", stage: 1);
         let angle:CGFloat = CGFloat(Int.random(in: 0..<30));
         let targetPointX:CGFloat = generateElevatedTargetX(parentFrame:self.superview!.frame, childFrame:self.frame, angle:angle);
         let targetPointY:CGFloat = generateElevatedTargetY(parentFrame:self.superview!.frame, childFrame:self.frame, angle:angle);
@@ -268,7 +268,6 @@ class UICatButton: UIButton {
     func pod() {
         SoundController.kittenMeow();
         // New radius and frames
-        
         let newCornerRadius:CGFloat = self.frame.height * 0.5;
         let newCatButtonFrame:CGRect = CGRect(x: self.frame.minX + self.imageContainerButton!.frame.minX, y: self.frame.minY, width: self.imageContainerButton!.frame.width, height: self.frame.height);
         let newImageButtonFrame:CGRect = CGRect(x: 0.0, y: 0.0, width: self.frame.height, height: self.frame.height);
@@ -281,7 +280,7 @@ class UICatButton: UIButton {
         self.imageContainerButton!.layer.cornerRadius = newCornerRadius;
         self.backgroundColor = .clear;
         self.layer.borderWidth = 0.0;
-        self.imageContainerButton!.layer.borderWidth = self.frame.height / 75.0;
+        self.imageContainerButton!.layer.borderWidth = (sqrt(self.frame.width * 0.01) * 10.0) * 0.35;
     }
     
     func generateElevatedTargetX(parentFrame:CGRect, childFrame:CGRect, angle:CGFloat) -> CGFloat{

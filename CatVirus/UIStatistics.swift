@@ -102,7 +102,7 @@ class UIStatistics:UICView {
     func setupLivedCatImage() {
         let livedCatImageButton:UICButton = UICButton(parentView: catsLivedLabel!, frame:CGRect( x: ViewController.staticUnitViewHeight * 0.75, y: 0.0, width: catsLivedLabel!.frame.height * 0.8, height: catsLivedLabel!.frame.height * 0.75), backgroundColor: UIColor.clear);
         livedCatImageButton.layer.borderWidth = 0.0;
-        livedCatImageButton.setImage(UIImage(named: UIStatistics.getCatFileName(named:"WavingCat.png")), for: .normal);
+        livedCatImageButton.setImage(UIImage(named: UIStatistics.getCatFileName(named:"CheeringCat.png")), for: .normal);
         livedCatImageButton.imageView!.contentMode = UIView.ContentMode.scaleAspectFill;
         UICenterKit.center(childView: livedCatImageButton, parentRect: catsLivedLabel!.frame, childRect: livedCatImageButton.frame);
     }

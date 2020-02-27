@@ -74,13 +74,13 @@ class UIBoardGame: UIView {
         recordGridColorsUsed();
         colorOptions!.buildColorOptionButtons(setup: true);
         displayGameStage();
-        if (currentRound > 1) {
-            prepareAttack();
-        }
+//        if (currentRound > 1) {
+//            prepareAttack();
+//        }
     }
     
     func prepareAttack() {
-        setNextAttackInSecondsTenth = 3.0
+        setNextAttackInSecondsTenth = 3.5;
         nextAttackInSecondsTenth = setNextAttackInSecondsTenth;
         currentTimer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true, block: { timer in
             if (!self.gameStatusLabel!.displayingRound) {
@@ -89,11 +89,15 @@ class UIBoardGame: UIView {
                 self.nextAttackInSecondsTenth -= 0.1;
                 if (self.nextAttackInSecondsTenth < 0.0) {
                     print("Attacking!");
-                    self.setNextAttackInSecondsTenth -= 0.3;
+                    self.setNextAttackInSecondsTenth -= 0.2;
                     self.nextAttackInSecondsTenth = self.setNextAttackInSecondsTenth;
                     // Setup the cat to disperse
                     let randomCat:UICatButton = self.cats.getRandomCatThatIsAlive();
-                    self.gridColorsCount[randomCat.backgroundCGColor!]! -= 1;
+                    if (!randomCat.isPodded) {
+                        self.gridColorsCount[randomCat.backgroundCGColor!]! -= 1;
+                        self.colorOptions!.buildColorOptionButtons(setup: false);
+                    }
+                    self.statistics!.catsThatDied -= 1;
                     randomCat.isDead();
                     self.viruses!.translateToCatsAndBack(targetX: randomCat.frame.midX, targetY: randomCat.frame.midY);
                     randomCat.disperseRadially();
@@ -244,8 +248,8 @@ class UIBoardGame: UIView {
             // Correct matching grid button color and selection color
             if (catButton.backgroundCGColor! == colorOptions!.selectedColor.cgColor){
                 // Set attack seconds tenth
-                self.setNextAttackInSecondsTenth += 0.1;
-                nextAttackInSecondsTenth = nextAttackInSecondsTenth + 0.3;
+                self.setNextAttackInSecondsTenth += 0.2;
+                nextAttackInSecondsTenth = nextAttackInSecondsTenth + 0.7;
                 //
                 gridColorsCount[catButton.backgroundCGColor!]! -= 1;
                 catImageButton.fadeBackgroundIn(color: colorOptions!.selectedColor);
@@ -256,19 +260,7 @@ class UIBoardGame: UIView {
                 // Incorrect match
                 verifyThatRemainingCatsArePodded();
             } else {
-                gridColorsCount[catButton.backgroundCGColor!]! -= 1;
-                colorOptions!.buildColorOptionButtons(setup: false);
-                catButton.isDead();
-                self.superview!.sendSubviewToBack(catButton);
-                viruses!.translateToCatsAndBack(targetX: catButton.frame.midX, targetY: catButton.frame.midY);
-                catButton.disperseRadially();
-                displaceArea(ofCatButton: catButton);
-                SoundController.kittenDie();
-                if (cats.areAllCatsDead()){
-                    gameOverTransition();
-                } else {
-                    verifyThatRemainingCatsArePodded();
-                }
+                SoundController.kittenMeow();
             }
         } else {
             if (!colorOptions!.isTransitioned) {
@@ -295,8 +287,10 @@ class UIBoardGame: UIView {
             statistics!.catsThatLived += cats.presentCollection!.count;
             if (cats.didAllSurvive()) {
                 promote();
+                self.setNextAttackInSecondsTenth += 0.7;
             } else {
                 maintain();
+                self.setNextAttackInSecondsTenth -= 1.0;
             }
         }
     }
@@ -381,6 +375,7 @@ class UIBoardGame: UIView {
     }
     
     func restart(){
+        currentTimer?.invalidate();
         currentRound = 1
         configureComponentsAfterBoardGameReset();
     }

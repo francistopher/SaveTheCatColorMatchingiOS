@@ -293,7 +293,7 @@ class UIPlayerAdScrollView:UICScrollView {
     
     func setupInvitationCatButton() {
         invitationCatButton = UICatButton(parentView: invitationView!, x: 0.0, y: self.frame.height * 0.2625, width: self.frame.width * 0.5, height: self.frame.height * 0.145, backgroundColor: UIColor.clear);
-        invitationCatButton!.setCat(named: "WavingCat", stage: 0);
+        invitationCatButton!.setCat(named: "CheeringCat", stage: 0);
         invitationCatButton!.frame = invitationCatButton!.originalFrame!;
         invitationCatButton!.layer.borderWidth = 0.0;
         invitationCatButton!.imageContainerButton!.frame = searchingCatButton!.imageContainerButton!.originalFrame!;

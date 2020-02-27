@@ -67,6 +67,7 @@ class ViewController: UIViewController {
     @objc func appMovedToBackground() {
         self.boardGame!.cats.suspendCatAnimations();
         self.settingsButton!.multiplayer!.activePlayersScrollView!.searchingCatButton!.hideCat();
+        self.viruses!.sway();
         print("App backgrounded");
     }
     

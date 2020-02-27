@@ -27,7 +27,6 @@ class UIBoardGame: UIView {
     
     var viruses:UIViruses?
     
-    var gameStatusLabel:UIGameStatus?
     var livesLeft:Int = 3;
     
     required init?(coder: NSCoder) {
@@ -41,7 +40,7 @@ class UIBoardGame: UIView {
         parentView.addSubview(self);
         self.statistics = UIStatistics(parentView: parentView);
         self.statistics!.continueButton!.addTarget(self, action: #selector(continueSelector), for: .touchUpInside);
-        setupGameStatusLabel();
+
     }
     
     @objc func continueSelector() {
@@ -71,20 +70,6 @@ class UIBoardGame: UIView {
         cats.loadPreviousCats();
         recordGridColorsUsed();
         colorOptions!.buildColorOptionButtons(setup: true);
-        displayGameStage();
-//        if (currentRound > 1) {
-//            prepareAttack();
-//        }
-    }
-    
-    func displayGameStage() {
-        gameStatusLabel!.fadeInAndOut(text: "Round \(currentRound)");
-    }
-    
-    func setupGameStatusLabel() {
-        gameStatusLabel = UIGameStatus(parentView: self.superview!, frame: CGRect(x: 0.0, y: ViewController.staticUnitViewHeight, width: ViewController.staticUnitViewHeight * 4, height: ViewController.staticUnitViewWidth * 2));
-        UICenterKit.centerHorizontally(childView: gameStatusLabel!, parentRect: self.superview!.frame, childRect: gameStatusLabel!.frame);
-        gameStatusLabel!.layer.masksToBounds = true;
     }
     
     func buildGridColors(){
@@ -179,7 +164,6 @@ class UIBoardGame: UIView {
     
     func gameOverTransition() {
         livesLeft = 3;
-        self.gameStatusLabel!.fadeOut();
         statistics!.finalStage = "\(self.currentRound)";
         statistics!.sessionEndTime = CFAbsoluteTimeGetCurrent();
         statistics!.setSessionDuration();
@@ -211,14 +195,15 @@ class UIBoardGame: UIView {
         if (cats.isOneAlive() && colorOptions!.selectedColor.cgColor != UIColor.lightGray.cgColor) {
             // Correct matching grid button color and selection color
             if (catButton.backgroundCGColor! == colorOptions!.selectedColor.cgColor){
-                gridColorsCount[catButton.backgroundCGColor!]! -= 1;
-                catImageButton.fadeBackgroundIn(color: colorOptions!.selectedColor);
-                colorOptions!.buildColorOptionButtons(setup: false);
-                catButton.pod();
-                catButton.isPodded = true;
-                catButton.giveMouseCoin(withNoise: true);
-                // Incorrect match
-                verifyThatRemainingCatsArePodded();
+                if (!catButton.isPodded) {
+                    gridColorsCount[catButton.backgroundCGColor!]! -= 1;
+                    catImageButton.fadeBackgroundIn(color: colorOptions!.selectedColor);
+                    colorOptions!.buildColorOptionButtons(setup: false);
+                    catButton.pod();
+                    catButton.isPodded = true;
+                    catButton.giveMouseCoin(withNoise: true);
+                    verifyThatRemainingCatsArePodded();
+                }
             } else {
                 if (livesLeft > 0) {
                     setCatButtonAsDead(catButton: catButton);

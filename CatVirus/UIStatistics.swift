@@ -37,26 +37,40 @@ class UIStatistics:UICView {
     var sessionDuration:Double = 0.0;
     var finalStage:String = "";
     
+    // Content panel
+    var contentView:UICView?
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
     init(parentView:UIView) {
-        let width:CGFloat = parentView.frame.width * 0.75;
-        super.init(parentView: parentView, x: 0.0, y: 0.0, width: width * 0.75, height: width, backgroundColor: .black);
+        super.init(parentView: parentView, x: 0.0, y: 0.0, width: ViewController.staticUnitViewHeight * 8.0, height: ViewController.staticUnitViewHeight * 9.0, backgroundColor: .black);
         parentView.addSubview(self);
-        self.layer.cornerRadius = width / 7.0;
-        self.layer.borderWidth = width / 50.0;
-        self.unitHeight = width / 6.0;
-        self.setStyle();
+        self.layer.borderWidth = 0.0;
+        self.layer.cornerRadius = ViewController.staticUnitViewHeight * 8.0 / 7.0;
+        roundCorners(radius: self.frame.width * 0.5, [.topLeft, .topRight], lineWidth: 0.0);
+        // Setup contents
+        setupContentView();
+        self.unitHeight = contentView!.frame.height / 8.0;
         setupGameOverLabel();
-        setupWavingCatLabel();
+                setupCheeringCatLabel();
         setupDeadCatLabel();
-        setupStagesLabel();
-        setupDurationLabel();
-        setupContinueButton();
+//        setupStagesLabel();
+//        setupDurationLabel();
+//        setupContinueButton();
+        super.invertColor = true;
+        super.setStyle();
         UICenterKit.center(childView: self, parentRect: superview!.frame, childRect: self.frame);
-        self.alpha = 0.0;
+//        self.alpha = 0.0;
+    }
+    
+    func setupContentView() {
+        contentView = UICView(parentView: self, x: 0.0, y: 0.0, width: self.frame.width, height: self.frame.height, backgroundColor: UIColor.white);
+        contentView!.layer.borderWidth = 0.0;
+        contentView!.transform = contentView!.transform.scaledBy(x: 0.96, y: 0.96);
+        contentView!.layer.cornerRadius = contentView!.frame.width / 7.0;
+        contentView!.roundCorners(radius: contentView!.frame.width * 0.5, [.topLeft, .topRight], lineWidth: 0.0)
     }
     
     static func getCatFileName(named:String) -> String {
@@ -76,31 +90,30 @@ class UIStatistics:UICView {
     }
     
     func setupGameOverLabel() {
-        gameOverLabel = UICLabel(parentView: self, x: 0.0, y: 0.0, width: self.frame.width, height: unitHeight!);
+        gameOverLabel = UICLabel(parentView: contentView!, x: 0.0, y: 0.0, width: contentView!.frame.width + (self.frame.width / 4.0), height: unitHeight! * 2.0);
         gameOverLabel!.font = UIFont.boldSystemFont(ofSize: gameOverLabel!.frame.height * 0.40);
-        gameOverLabel!.isInverted = true;
+        gameOverLabel!.layer.borderWidth = self.layer.borderWidth;
+        gameOverLabel!.layer.borderColor = UIColor.red.cgColor;
         gameOverLabel!.setStyle();
-        gameOverLabel!.layer.cornerRadius = self.layer.cornerRadius;
-        gameOverLabel!.clipsToBounds = true;
-        gameOverLabel!.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner];
-        gameOverLabel!.text = "Game Over";
+        gameOverLabel!.text = "R I P";
+        UICenterKit.centerHorizontally(childView: gameOverLabel!, parentRect: self.frame, childRect: gameOverLabel!.frame);
     }
     
-    func setupWavingCatLabel() {
-        catsLivedLabel = UICLabel(parentView: self, x: 0.0, y: gameOverLabel!.frame.maxY, width: self.frame.width * 0.5, height: unitHeight!);
+    func setupCheeringCatLabel() {
+        catsLivedLabel = UICLabel(parentView: contentView!, x: self.frame.width * 0.03, y: gameOverLabel!.frame.maxY, width: contentView!.frame.width * 0.5, height: unitHeight! * 2.0);
         catsLivedLabel!.backgroundColor = UIColor.clear;
         setupLivedCatImage();
-        setupCatsLivedAmount();
+//        setupCatsLivedAmount();
     }
     
     func setupCatsLivedAmount() {
-        catsLivedAmountLabel = UICLabel(parentView: self, x: self.frame.width * 0.5, y: catsLivedLabel!.frame.minY, width: self.frame.width * 0.5, height: unitHeight!);
+        catsLivedAmountLabel = UICLabel(parentView: contentView!, x: self.frame.width * 0.5, y: catsLivedLabel!.frame.minY, width: self.frame.width * 0.5, height: unitHeight!);
         catsLivedAmountLabel!.font = UIFont.boldSystemFont(ofSize: catsLivedAmountLabel!.frame.height * 0.40);
         catsLivedAmountLabel!.textColor = UIColor.black;
     }
     
     func setupLivedCatImage() {
-        let livedCatImageButton:UICButton = UICButton(parentView: catsLivedLabel!, frame:CGRect( x: ViewController.staticUnitViewHeight * 0.75, y: 0.0, width: catsLivedLabel!.frame.height * 0.8, height: catsLivedLabel!.frame.height * 0.75), backgroundColor: UIColor.clear);
+        let livedCatImageButton:UICButton = UICButton(parentView: catsLivedLabel!, frame:CGRect( x: 0.0, y: 0.0, width: catsLivedLabel!.frame.width, height: catsLivedLabel!.frame.height * 1.30), backgroundColor: UIColor.clear);
         livedCatImageButton.layer.borderWidth = 0.0;
         livedCatImageButton.setImage(UIImage(named: UIStatistics.getCatFileName(named:"CheeringCat.png")), for: .normal);
         livedCatImageButton.imageView!.contentMode = UIView.ContentMode.scaleAspectFill;
@@ -108,21 +121,21 @@ class UIStatistics:UICView {
     }
     
     func setupDeadCatLabel() {
-        catsDiedLabel = UICLabel(parentView: self, x: 0.0, y: catsLivedLabel!.frame.maxY, width: self.frame.width * 0.5, height: unitHeight!);
+        catsDiedLabel = UICLabel(parentView: contentView!, x: contentView!.frame.width * 0.5, y: gameOverLabel!.frame.maxY, width: contentView!.frame.width * 0.5, height: unitHeight! * 2.0);
         catsDiedLabel!.backgroundColor = UIColor.clear;
-        setupCatsDiedAmount();
+//        setupCatsDiedAmount();
         setupDeadCatImage();
     }
     
     func setupCatsDiedAmount() {
-        catsDiedAmountLabel = UICLabel(parentView: self, x: self.frame.width * 0.5, y: catsDiedLabel!.frame.minY, width: self.frame.width * 0.5, height: unitHeight!);
+        catsDiedAmountLabel = UICLabel(parentView: contentView!, x: self.frame.width * 0.5, y: catsDiedLabel!.frame.minY, width: self.frame.width * 0.5, height: unitHeight!);
         catsDiedAmountLabel!.font = UIFont.boldSystemFont(ofSize: catsDiedAmountLabel!.frame.height * 0.40);
         catsDiedAmountLabel!.backgroundColor = UIColor.clear;
         catsDiedAmountLabel!.textColor = UIColor.black;
     }
     
     func setupDeadCatImage() {
-        let deadCatImageButton:UICButton = UICButton(parentView: catsDiedLabel!, frame:CGRect( x: ViewController.staticUnitViewHeight * 0.75, y: 0.0, width: catsDiedLabel!.frame.height * 0.8, height: catsDiedLabel!.frame.height * 0.75), backgroundColor: UIColor.clear);
+        let deadCatImageButton:UICButton = UICButton(parentView: catsDiedLabel!, frame:CGRect( x: 0.0, y: 0.0, width: catsDiedLabel!.frame.width, height: catsDiedLabel!.frame.height * 1.30), backgroundColor: UIColor.clear);
         deadCatImageButton.layer.borderWidth = 0.0;
         deadCatImageButton.setImage(UIImage(named: UIStatistics.getCatFileName(named: "DeadCat.png")), for: .normal);
         deadCatImageButton.imageView!.contentMode = UIView.ContentMode.scaleAspectFill;

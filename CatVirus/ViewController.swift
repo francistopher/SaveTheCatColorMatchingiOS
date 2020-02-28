@@ -76,7 +76,6 @@ class ViewController: UIViewController {
         self.settingsButton!.multiplayer!.activePlayersScrollView!.searchingCatButton!.animate(AgainWithoutDelay: true);
         print("App foregrounded");
     }
-
     
     func setupSounds() {
         SoundController.setupHeaven();

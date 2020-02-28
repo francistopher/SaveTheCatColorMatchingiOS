@@ -39,7 +39,7 @@ class UIBoardGame: UIView {
         self.layer.cornerRadius = width / 5.0;
         parentView.addSubview(self);
         self.statistics = UIStatistics(parentView: parentView);
-        self.statistics!.continueButton!.addTarget(self, action: #selector(continueSelector), for: .touchUpInside);
+//        self.statistics!.continueButton!.addTarget(self, action: #selector(continueSelector), for: .touchUpInside);
         setupLivesMeter();
     }
     

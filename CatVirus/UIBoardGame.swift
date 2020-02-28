@@ -171,7 +171,6 @@ class UIBoardGame: UIView {
     }
     
     func gameOverTransition() {
-        livesMeter!.resetLivesLeftCount();
         statistics!.finalStage = "\(self.currentRound)";
         statistics!.sessionEndTime = CFAbsoluteTimeGetCurrent();
         statistics!.setSessionDuration();
@@ -337,6 +336,8 @@ class UIBoardGame: UIView {
     }
     
     func revertSelections() {
+        livesMeter!.resetLivesLeftCount();
+        print("How many lives left!",livesMeter!.livesLeft);
         colorOptions!.selectedColor = UIColor.lightGray;
         cats.shrink();
         currentRound = 1;
@@ -472,17 +473,17 @@ class UILivesMeter:UICView {
     }
     
     func setupHeartInactiveButtons() {
-            for _ in (heartInactiveButtons.count + 1)...livesLeft {
-                if (heartInactiveButtons.count == 0) {
-                    buildHeartButton(x: heartInactiveButtonXRange[1]);
-                } else if (heartInactiveButtons.count == 1) {
-                    buildHeartButton(x: (heartInactiveButtonXRange[1] * 0.4625) + heartInactiveButtonXRange[0]);
-                } else if (heartInactiveButtons.count == 2) {
-                    buildHeartButton(x: heartInactiveButtonXRange[0]);
-                } else {
-                    buildHeartButton(x: CGFloat.random(in: heartInactiveButtonXRange[0]..<heartInactiveButtonXRange[1] ));
-                }
+        for _ in (heartInactiveButtons.count + 1)...livesLeft {
+            if (heartInactiveButtons.count == 0) {
+                buildHeartButton(x: heartInactiveButtonXRange[1]);
+            } else if (heartInactiveButtons.count == 1) {
+                buildHeartButton(x: (heartInactiveButtonXRange[1] * 0.4625) + heartInactiveButtonXRange[0]);
+            } else if (heartInactiveButtons.count == 2) {
+                buildHeartButton(x: heartInactiveButtonXRange[0]);
+            } else {
+                buildHeartButton(x: CGFloat.random(in: heartInactiveButtonXRange[0]..<heartInactiveButtonXRange[1] ));
             }
+        }
     }
     
     func buildHeartButton(x:CGFloat) {
@@ -491,6 +492,8 @@ class UILivesMeter:UICView {
         currentHeartButton!.setImage(heartImage, for: .normal);
         currentHeartButton!.addTarget(self, action: #selector(heartButtonSelector(sender:)), for: .touchUpInside);
         heartInactiveButtons.append(currentHeartButton!);
+        currentHeartButton!.alpha = 0.0;
+        currentHeartButton!.show();
     }
     
     @objc func heartButtonSelector(sender:UIButton) {
@@ -543,10 +546,8 @@ class UILivesMeter:UICView {
     
     func resetLivesLeftCount() {
         if (heartInactiveButtons.count > 3) {
-            livesLeft = 3;
-            for index in 3..<heartInactiveButtons.count {
-                heartInactiveButtons[index].removeFromSuperview();
-                heartInactiveButtons.remove(at: index);
+            for _ in 3..<heartInactiveButtons.count {
+                decrementLivesLeftCount();
             }
         } else if (heartInactiveButtons.count < 3) {
             livesLeft = 3;

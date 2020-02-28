@@ -52,6 +52,7 @@ class UIBoardGame: UIView {
     
     @objc func continueSelector() {
         print("Continuing?");
+        livesMeter!.resetLivesLeftCount();
         self.statistics!.fadeOut();
         statistics!.catsThatLived = 0;
         statistics!.catsThatDied = 0;

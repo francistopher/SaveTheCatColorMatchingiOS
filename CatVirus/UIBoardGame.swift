@@ -44,9 +44,8 @@ class UIBoardGame: UIView {
     }
     
     func setupLivesMeter() {
-        let livesMeterWidth:CGFloat = (((((ViewController.staticUnitViewWidth * 18.0) * 0.8575) / 8.0) * 1.75) + ViewController.staticUnitViewWidth * 0.5) * 0.95;
-        
-        let livesMeterX:CGFloat = (ViewController.staticUnitViewWidth * 18.0) - livesMeterWidth - ViewController.staticUnitViewWidth;
+        let livesMeterWidth:CGFloat = (((((ViewController.staticUnitViewWidth * 18.0) * 0.8575) / 8.0) * 1.75) + ViewController.staticUnitViewWidth * 0.5) * 0.955;
+        let livesMeterX:CGFloat = ((ViewController.staticUnitViewWidth * 18.0) - (livesMeterWidth * 1.025) - ViewController.staticUnitViewWidth);
         let livesMeterFrame:CGRect = CGRect(x: livesMeterX, y: ViewController.staticUnitViewHeight, width: livesMeterWidth, height: ViewController.staticUnitViewWidth * 2.0);
         livesMeter = UILivesMeter(parentView: self.superview!, frame: livesMeterFrame, backgroundColor: UIColor.white);
     }

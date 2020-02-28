@@ -53,7 +53,7 @@ class UIVirus:UIButton {
         }
     }
     
-    func sway(){
+    func sway(immediately:Bool){
         var xTranslation:CGFloat = self.originalFrame!.width / 7.5;
         var yTranslation:CGFloat = self.originalFrame!.height / 7.5;
         if (Int.random(in: 0...1) == 1) {
@@ -62,11 +62,18 @@ class UIVirus:UIButton {
         if (Int.random(in: 0...1) == 1) {
             yTranslation *= -1;
         }
-        UIView.animate(withDuration: 1.75, delay: 0.125, options:[.curveEaseInOut, .repeat, .autoreverse], animations: {
+        var delay:Double = 0.125;
+        if (immediately) {
+            delay = 0.0;
+        }
+        UIView.animate(withDuration: 1.75, delay: delay, options:[.curveEaseInOut, .repeat, .autoreverse], animations: {
             self.imageView!.transform = self.imageView!.transform.translatedBy(x: xTranslation, y: yTranslation);
         });
+        if (immediately) {
+            self.alpha = 1.0;
+        }
     }
-    
+
     func fadeIn() {
         UIView.animate(withDuration: 0.5, delay: 0.25, options: .curveEaseIn, animations: {
             self.alpha = 1.0;
@@ -88,7 +95,7 @@ class UIVirus:UIButton {
             UIView.animate(withDuration: 1.0, delay:0.125, options: [.curveEaseInOut], animations: {
                 self.frame = self.originalFrame!;
             })
-            self.sway();
+            self.sway(immediately: false);
         })
     }
 }

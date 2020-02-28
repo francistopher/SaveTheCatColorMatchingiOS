@@ -65,10 +65,10 @@ class UIViruses {
         }
     }
     
-    func sway(){
+    func sway(immediately:Bool){
         // Animate each virus
         for virus in self.virusCollection! {
-            virus.sway();
+            virus.sway(immediately: immediately);
         }
     }
     

@@ -522,23 +522,23 @@ class UILivesMeter:UICView {
     func incrementLivesLeftCount(catButton:UICatButton) {
         livesLeft += 1;
         // Get spawn frame
-        let x:CGFloat = catButton.frame.midX + catButton.superview!.frame.minX;
-        let y:CGFloat = catButton.frame.midY + catButton.superview!.frame.minY;
+        let x:CGFloat = catButton.frame.midX * 0.5 + catButton.superview!.frame.minX;
+        let y:CGFloat = catButton.frame.midY * 0.5 + catButton.superview!.frame.minY;
         let newFrame:CGRect = CGRect(x: x, y: y, width: (self.frame.width * 0.5) - (self.layer.borderWidth * 0.5), height: self.frame.height);
         // Setup the heart button
         setupHeartInactiveButtons();
         // Save the target frame and set the new frame
         self.superview!.addSubview(currentHeartButton!);
-        let targetFrame = CGRect(x: self.frame.minX + currentHeartButton!.frame.minX, y: self.frame.minY + currentHeartButton!.frame.minY, width: currentHeartButton!.frame.width, height: currentHeartButton!.frame.height);
+        let targetFrame = CGRect(x: self.frame.minX + currentHeartButton!.frame.minX, y: self.frame.minY + currentHeartButton!.frame.minY, width: (self.frame.width * 0.5) - (self.layer.borderWidth * 0.5), height: self.frame.height);
         currentHeartButton!.frame = newFrame;
+        self.superview!.bringSubviewToFront(currentHeartButton!);
         // Move heart to target frame
         UIView.animate(withDuration: 3.0, delay: 0.125, options: [.curveEaseInOut], animations: {
             self.currentHeartButton!.transform = self.currentHeartButton!.transform.translatedBy(x: targetFrame.minX - newFrame.minX, y: targetFrame.minY - newFrame.minY);
         }, completion: { _ in
             self.addSubview(self.currentHeartButton!);
-            self.currentHeartButton!.frame = CGRect(x: self.currentHeartButton!.frame.minX - self.frame.minX, y: self.currentHeartButton!.frame.minY - self.frame.minY, width: self.currentHeartButton!.frame.width, height: self.currentHeartButton!.frame.height)
+            self.currentHeartButton!.frame = CGRect(x: self.currentHeartButton!.frame.minX - self.frame.minX, y: self.currentHeartButton!.frame.minY - self.frame.minY, width: (self.frame.width * 0.5) - (self.layer.borderWidth * 0.5), height: self.frame.height)
         })
-        
     }
     
     func resetLivesLeftCount() {

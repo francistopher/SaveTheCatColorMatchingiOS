@@ -65,13 +65,14 @@ class ViewController: UIViewController {
     }
     
     @objc func appMovedToBackground() {
+        self.viruses!.hide();
         self.boardGame!.cats.suspendCatAnimations();
         self.settingsButton!.multiplayer!.activePlayersScrollView!.searchingCatButton!.hideCat();
-        self.viruses!.sway();
         print("App backgrounded");
     }
     
     @objc func appMovedToForeground() {
+        self.viruses!.sway(immediately: true);
         self.boardGame!.cats.resumeCatAnimations();
         self.settingsButton!.multiplayer!.activePlayersScrollView!.searchingCatButton!.animate(AgainWithoutDelay: true);
         print("App foregrounded");
@@ -116,7 +117,7 @@ class ViewController: UIViewController {
     
     func setupViruses() {
         viruses = UIViruses(mainView: mainView, unitView: unitViewHeight);
-        viruses!.sway();
+        viruses!.sway(immediately: false);
         viruses!.hide();
     }
     

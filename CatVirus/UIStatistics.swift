@@ -56,9 +56,9 @@ class UIStatistics:UICView {
         setupGameOverLabel();
         setupCheeringCatLabel();
         setupDeadCatLabel();
-//        setupStagesLabel();
-//        setupDurationLabel();
-//        setupContinueButton();
+        setupStagesLabel();
+        setupDurationLabel();
+        setupContinueButton();
         super.invertColor = true;
         super.setStyle();
         UICenterKit.center(childView: self, parentRect: superview!.frame, childRect: self.frame);
@@ -100,14 +100,14 @@ class UIStatistics:UICView {
     }
     
     func setupCheeringCatLabel() {
-        catsLivedLabel = UICLabel(parentView: contentView!, x: self.frame.width * 0.0275, y: gameOverLabel!.frame.maxY, width: contentView!.frame.width * 0.5, height: unitHeight! * 2.0);
+        catsLivedLabel = UICLabel(parentView: contentView!, x: self.frame.width * 0.02875, y: gameOverLabel!.frame.maxY, width: contentView!.frame.width * 0.5, height: unitHeight! * 2.0);
         catsLivedLabel!.backgroundColor = UIColor.clear;
         setupLivedCatImage();
         setupCatsLivedAmount();
     }
     
     func setupCatsLivedAmount() {
-        catsLivedAmountLabel = UICLabel(parentView: contentView!, x: self.frame.width * 0.0275, y: catsLivedLabel!.frame.maxY, width: contentView!.frame.width * 0.5, height: unitHeight!);
+        catsLivedAmountLabel = UICLabel(parentView: contentView!, x: self.frame.width * 0.02875, y: catsLivedLabel!.frame.maxY, width: contentView!.frame.width * 0.5, height: unitHeight!);
         catsLivedAmountLabel!.font = UIFont.boldSystemFont(ofSize: catsLivedAmountLabel!.frame.height * 0.40);
         catsLivedAmountLabel!.backgroundColor = UIColor.clear;
         catsLivedAmountLabel!.textColor = UIColor.black;
@@ -144,54 +144,52 @@ class UIStatistics:UICView {
     }
     
     func setupStagesLabel() {
-        stagesLabel = UICLabel(parentView: self, x: 0.0, y: catsDiedLabel!.frame.maxY, width: self.frame.width * 0.5, height: unitHeight!);
+        stagesLabel = UICLabel(parentView: contentView!, x: self.frame.width * 0.02875, y: catsLivedAmountLabel!.frame.maxY, width: contentView!.frame.width * 0.5, height: unitHeight!);
         stagesLabel!.text = "Stages";
-        stagesLabel!.font = UIFont.boldSystemFont(ofSize: stagesLabel!.frame.height * 0.35);
+        stagesLabel!.font = UIFont.boldSystemFont(ofSize: stagesLabel!.frame.height * 0.40);
         stagesLabel!.backgroundColor = UIColor.clear;
         setupStagesRangeLabel();
     }
     
     func setupStagesRangeLabel() {
-        stagesRangeLabel = UICLabel(parentView: self, x: stagesLabel!.frame.width, y:catsDiedLabel!.frame.maxY, width: self.frame.width * 0.5, height: unitHeight!);
-        stagesRangeLabel!.font = UIFont.boldSystemFont(ofSize: stagesRangeLabel!.frame.height * 0.25);
+        stagesRangeLabel = UICLabel(parentView: contentView!, x: self.frame.width * 0.02875, y:stagesLabel!.frame.maxY, width: contentView!.frame.width * 0.5, height: unitHeight!);
+        stagesRangeLabel!.font = UIFont.boldSystemFont(ofSize: stagesRangeLabel!.frame.height * 0.35);
         stagesRangeLabel!.backgroundColor = UIColor.clear;
     }
     
     func setupDurationLabel() {
-        durationLabel = UICLabel(parentView: self, x: 0.0, y: stagesLabel!.frame.maxY, width: self.frame.width * 0.5, height: unitHeight!);
+        durationLabel = UICLabel(parentView: contentView!, x: contentView!.frame.width * 0.5, y: catsDiedAmountLabel!.frame.maxY, width: contentView!.frame.width * 0.5, height: unitHeight!);
         durationLabel!.text = "Time";
-        durationLabel!.font = UIFont.boldSystemFont(ofSize: durationLabel!.frame.height * 0.35);
+        durationLabel!.font = UIFont.boldSystemFont(ofSize: durationLabel!.frame.height * 0.40);
         durationLabel!.backgroundColor = UIColor.clear;
         setupDurationTimeLabel();
     }
     
     func setupDurationTimeLabel() {
-        durationTimeLabel = UICLabel(parentView: self, x: durationLabel!.frame.width, y: stagesLabel!.frame.maxY, width: self.frame.width * 0.5, height: unitHeight!);
-        durationTimeLabel!.font = UIFont.boldSystemFont(ofSize: durationTimeLabel!.frame.height * 0.25);
+        durationTimeLabel = UICLabel(parentView: contentView!, x: contentView!.frame.width * 0.5, y: durationLabel!.frame.maxY, width: contentView!.frame.width * 0.5, height: unitHeight!);
+        durationTimeLabel!.font = UIFont.boldSystemFont(ofSize: durationTimeLabel!.frame.height * 0.35);
         durationTimeLabel!.backgroundColor = UIColor.clear;
     }
     
     func setupContinueButton() {
-        continueButton = UICButton(parentView: self, frame: CGRect(x: 0.0, y: self.frame.height - (unitHeight!), width: self.frame.width, height: unitHeight!), backgroundColor: .clear);
+        continueButton = UICButton(parentView: contentView!, frame: CGRect(x: 0.0, y: self.frame.height - (unitHeight! * 1.33), width: contentView!.frame.width * 0.35, height: unitHeight!), backgroundColor: .clear);
         continueButton!.titleLabel!.font = UIFont.boldSystemFont(ofSize:continueButton!.frame.height * 0.40);
-        continueButton!.layer.cornerRadius = self.layer.cornerRadius;
-        continueButton!.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner];
-        continueButton!.setTitleColor(UIColor.white, for: .normal);
-        continueButton!.backgroundColor = UIColor.black;
+        continueButton!.layer.cornerRadius = continueButton!.frame.width * 0.1;
         continueButton!.setTitle("Continue", for: .normal);
-        continueButton!.clipsToBounds = true;
+        continueButton!.setTitleColor(UIColor.black, for: .normal);
+        UICenterKit.centerHorizontally(childView: continueButton!, parentRect: contentView!.frame, childRect: continueButton!.frame);
     }
 
     func setSessionDuration() {
         sessionDuration = sessionEndTime - sessionStartTime;
-        sessionDuration = Double(floor(1000 * sessionDuration) / 1000)
+        sessionDuration = Double(floor(10 * sessionDuration) / 10)
     }
     
     func update() {
         catsLivedAmountLabel!.text = String(catsThatLived);
         catsDiedAmountLabel!.text = String(catsThatDied);
-//        stagesRangeLabel!.text = "1 - " + finalStage;
-//        durationTimeLabel!.text = "\(sessionDuration) secs";
+        stagesRangeLabel!.text = "1 - \(finalStage)";
+        durationTimeLabel!.text = "\(sessionDuration) secs";
     }
     
     override func setStyle() {

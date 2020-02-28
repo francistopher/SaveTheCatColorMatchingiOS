@@ -85,7 +85,7 @@ class UIColorOptions: UIView {
                     columnDisplacement += columnGap;
                     var newFrame:CGRect = CGRect(x: columnDisplacement, y: rowGap, width: buttonWidth, height: buttonHeight);
                     if (revisitedButton.isSelected) {
-                        newFrame = CGRect(x: columnDisplacement, y: (rowGap * 1.375) - rowGap, width: buttonWidth, height: buttonHeight * 1.375);
+                        newFrame = CGRect(x: columnDisplacement, y: revisitedButton.frame.minY, width: buttonWidth, height: buttonHeight * 1.375);
                     }
                     revisitedButton.translate(newOriginalFrame: newFrame);
                     if (!revisitedButton.isSelected) {

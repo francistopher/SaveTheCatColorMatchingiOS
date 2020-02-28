@@ -177,6 +177,8 @@ class ViewController: UIViewController {
         introLabel!.setStyle();
         setSuccessGradientLayerStyle();
         settingsButton!.setStyle();
+        settingsButton!.multiplayer!.setStyle();
+        settingsButton!.multiplayer!.activePlayersScrollView!.searchingCatButton!.updateUIStyle();
         boardGame!.cats.updateUIStyle();
         boardGame!.livesMeter!.setStyle();
         boardGame!.statistics!.setCompiledStyle();

@@ -144,8 +144,20 @@ class UIMultiplayer: UIButton {
     func setStyle() {
         if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1){
             setIconImage(imageName: "lightMoreCats.png");
+            multiplayerView!.backgroundColor = UIColor.white;
+            multiplayerView!.layer.borderColor = UIColor.black.cgColor;
+            displayNameTextField!.backgroundColor = UIColor.white;
+            displayNameTextField!.layer.borderColor = UIColor.black.cgColor;
+            updateDisplayNameButton!.layer.borderColor = UIColor.black.cgColor;
+            activePlayersScrollView!.setStyle();
         } else {
             setIconImage(imageName: "darkMoreCats.png");
+            multiplayerView!.backgroundColor = UIColor.black;
+            multiplayerView!.layer.borderColor = UIColor.white.cgColor;
+            displayNameTextField!.backgroundColor = UIColor.black;
+            displayNameTextField!.layer.borderColor = UIColor.white.cgColor;
+            updateDisplayNameButton!.layer.borderColor = UIColor.white.cgColor;
+            activePlayersScrollView!.setStyle();
         }
     }
 }
@@ -224,7 +236,7 @@ class UIPlayerAdScrollView:UICScrollView {
                 playerAdLabel.isPresent = false;
                 // Double height for invitation sent
                 if (playerAdLabel.invitationSent){
-                    height = ((self.unitHeight * 2.0) * 0.8);
+                    height = (self.unitHeight * 2.0) * 0.8;
                     newFrame = CGRect(x: self.frame.width * 0.1, y: y + self.unitHeight * 0.2, width: self.frame.width * 0.8, height: height);
                 }
                 playerAdLabel.transformation(frame: newFrame);
@@ -334,6 +346,7 @@ class UIPlayerAdScrollView:UICScrollView {
     
     func setupSearchingForPlayersView() {
         searchingForPlayersView = UICView(parentView: self, x: 0.0, y: 0.0, width: self.frame.width, height: self.frame.height, backgroundColor: UIColor.clear);
+        searchingForPlayersView!.backgroundColor = UIColor.clear;
         setupSearchingForPlayersLabel();
         setupCatButton();
     }
@@ -341,7 +354,7 @@ class UIPlayerAdScrollView:UICScrollView {
     func setupCatButton() {
         searchingCatButton = UICatButton(parentView: searchingForPlayersView!, x: 0.0, y: self.frame.height * 0.075, width: self.frame.width, height: self.frame.height * 0.5, backgroundColor: UIColor.clear);
         searchingCatButton!.layer.borderWidth = 0.0;
-        searchingCatButton!.setCat(named: "SmilingCat", stage: 0);
+        searchingCatButton!.setCat(named: "SmilingCat", stage: 4);
         searchingCatButton!.frame = searchingCatButton!.originalFrame!;
         searchingCatButton!.imageContainerButton!.frame = searchingCatButton!.imageContainerButton!.originalFrame!;
     }
@@ -352,7 +365,7 @@ class UIPlayerAdScrollView:UICScrollView {
         searchingForPlayersLabel!.layer.borderWidth = 0.0;
         searchingForPlayersLabel!.lineBreakMode = NSLineBreakMode.byWordWrapping;
         searchingForPlayersLabel!.numberOfLines = 2;
-        searchingForPlayersLabel!.text = "Searching for\nPlayers";
+        searchingForPlayersLabel!.text = "Searching for\nNearby Players";
         searchingForPlayersLabel!.textColor = UIColor.black;
         searchingForPlayersLabel!.font! = UIFont.boldSystemFont(ofSize: searchingForPlayersLabel!.frame.height * 0.2);
     }
@@ -366,6 +379,16 @@ class UIPlayerAdScrollView:UICScrollView {
         trailingAnchor.constraint(equalTo: playerAdvertisementLabel.trailingAnchor).isActive = true
         topAnchor.constraint(equalTo: playerAdvertisementLabel.topAnchor).isActive = true
         bottomAnchor.constraint(equalTo: playerAdvertisementLabel.bottomAnchor).isActive = true
+    }
+    
+    func setStyle() {
+        if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1){
+            self.layer.borderColor = UIColor.black.cgColor;
+            self.searchingForPlayersLabel!.textColor = UIColor.black;
+        } else {
+            self.layer.borderColor = UIColor.white.cgColor;
+            self.searchingForPlayersLabel!.textColor = UIColor.white;
+        }
     }
 }
 
@@ -458,6 +481,7 @@ class PlayerAdLabel: UICButton {
         }
     }
     
-    
-    
+    func setCompiledStyle() {
+        
+    }
 }

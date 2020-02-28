@@ -24,10 +24,10 @@ class UIBoardGame: UIView {
     
     var settingsButton:UISettingsButton? = nil;
     var statistics:UIStatistics?
-    
+
     var viruses:UIViruses?
     
-    var livesLeft:Int = 3;
+    var livesMeter:UILivesMeter?
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented");
@@ -40,7 +40,14 @@ class UIBoardGame: UIView {
         parentView.addSubview(self);
         self.statistics = UIStatistics(parentView: parentView);
         self.statistics!.continueButton!.addTarget(self, action: #selector(continueSelector), for: .touchUpInside);
-
+        setupLivesMeter();
+    }
+    
+    func setupLivesMeter() {
+        let livesMeterWidth:CGFloat = ((((ViewController.staticUnitViewWidth * 18.0) * 0.8575) / 8.0) * 1.75) + ViewController.staticUnitViewWidth * 0.5;
+        let livesMeterX:CGFloat = (ViewController.staticUnitViewWidth * 18.0) - livesMeterWidth - ViewController.staticUnitViewWidth;
+        let livesMeterFrame:CGRect = CGRect(x: livesMeterX, y: ViewController.staticUnitViewHeight, width: livesMeterWidth, height: ViewController.staticUnitViewWidth * 2.0);
+        livesMeter = UILivesMeter(parentView: self.superview!, frame: livesMeterFrame, backgroundColor: UIColor.white);
     }
     
     @objc func continueSelector() {
@@ -163,7 +170,7 @@ class UIBoardGame: UIView {
     }
     
     func gameOverTransition() {
-        livesLeft = 3;
+        livesMeter!.resetLivesLeftCount();
         statistics!.finalStage = "\(self.currentRound)";
         statistics!.sessionEndTime = CFAbsoluteTimeGetCurrent();
         statistics!.setSessionDuration();
@@ -205,10 +212,10 @@ class UIBoardGame: UIView {
                     verifyThatRemainingCatsArePodded();
                 }
             } else {
-                if (livesLeft > 0) {
+                if (livesMeter!.livesLeft > 0) {
                     setCatButtonAsDead(catButton: catButton);
-                    livesLeft -= 1;
-                    print("\(livesLeft) lives left.")
+                    livesMeter!.changeLivesLeftCount(increment: false);
+                    print("\(livesMeter!.livesLeft) lives left.")
                 } else {
                     setAllCatButtonsAsDead();
                 }
@@ -261,6 +268,7 @@ class UIBoardGame: UIView {
             statistics!.catsThatLived += cats.presentCollection!.count;
             if (cats.didAllSurvive()) {
                 promote();
+                livesMeter!.changeLivesLeftCount(increment: true);
             } else {
                 maintain();
             }
@@ -442,3 +450,87 @@ class UIGameStatus:UICLabel {
     }
 
 }
+
+class UILivesMeter:UICView {
+    
+    var livesLeft:Int = 3;
+    var heartInactiveButtons:[UICButton] = [];
+    let heartImage:UIImage = UIImage(named: "heart.png")!;
+    var heartInactiveButtonXRange:[CGFloat] = [];
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    init(parentView: UIView, frame:CGRect, backgroundColor: UIColor) {
+        super.init(parentView: parentView, x: frame.minX, y: frame.minY, width: frame.width, height: frame.height, backgroundColor: UIColor.clear);
+        self.layer.cornerRadius = self.frame.height * 0.5;
+        self.layer.borderWidth = self.frame.height / 12.0;
+        heartInactiveButtonXRange = [self.layer.borderWidth * 2.0, self.frame.width * 0.5];
+        setupHeartInactiveButtons();
+        setStyle();
+    }
+    
+    func setupHeartInactiveButtons() {
+        for _ in (heartInactiveButtons.count + 1)...livesLeft {
+            if (heartInactiveButtons.count == 0) {
+                buildHeartButton(x: heartInactiveButtonXRange[0]);
+            } else if (heartInactiveButtons.count == 1) {
+                buildHeartButton(x: (heartInactiveButtonXRange[1] * 0.425) + heartInactiveButtonXRange[0]);
+            } else if (heartInactiveButtons.count == 2) {
+                buildHeartButton(x: heartInactiveButtonXRange[1]);
+            } else {
+                buildHeartButton(x: CGFloat.random(in: heartInactiveButtonXRange[0]..<heartInactiveButtonXRange[1] ));
+            }
+        }
+    }
+    
+    func buildHeartButton(x:CGFloat) {
+        let heartInactiveButton:UICButton = UICButton(parentView: self, frame: CGRect(x: x, y: 0.0, width: self.frame.width * 0.5 - self.layer.borderWidth, height: self.frame.height), backgroundColor: UIColor.clear);
+        heartInactiveButton.layer.borderWidth = 0.0;
+        heartInactiveButton.setImage(heartImage, for: .normal);
+        heartInactiveButtons.append(heartInactiveButton);
+    }
+    
+    func changeLivesLeftCount(increment:Bool) {
+        if (increment) {
+            livesLeft += 1;
+            setupHeartInactiveButtons();
+        } else {
+            if (livesLeft > 0) {
+                livesLeft -= 1;
+                heartInactiveButtons.last!.removeFromSuperview();
+                heartInactiveButtons.removeLast();
+            }
+        }
+    }
+    
+    func resetLivesLeftCount() {
+        if (heartInactiveButtons.count > 3) {
+            livesLeft = 3;
+            for index in 3..<heartInactiveButtons.count {
+                heartInactiveButtons[index].removeFromSuperview();
+                heartInactiveButtons.remove(at: index);
+            }
+        } else if (heartInactiveButtons.count < 3) {
+            livesLeft = 3;
+            setupHeartInactiveButtons();
+        }
+    }
+    
+    override func setStyle() {
+        if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1) {
+            self.layer.borderColor = UIColor.black.cgColor;
+            self.backgroundColor = UIColor.white;
+        } else {
+            self.layer.borderColor = UIColor.white.cgColor;
+            self.backgroundColor = UIColor.black;
+        }
+    }
+    
+    
+    
+    
+    
+}
+

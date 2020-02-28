@@ -62,7 +62,7 @@ class UIColorOptions: UIView {
     func buildColorOptionButtons(setup:Bool){
         let numOfUniqueGridColors:Int = boardGameView!.nonZeroGridColorsCount();
         let columnGap = (self.frame.width * 0.1) / CGFloat(numOfUniqueGridColors + 1);
-        let rowGap = columnGap * 0.5;
+        let rowGap = self.frame.height * 0.1;
         let buttonWidth = (self.frame.width - (columnGap * CGFloat(numOfUniqueGridColors + 1))) / CGFloat(numOfUniqueGridColors);
         let buttonHeight = (self.frame.height - (rowGap * 2.0));
         var button:UICButton? = nil;

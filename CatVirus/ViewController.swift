@@ -177,6 +177,7 @@ class ViewController: UIViewController {
         setSuccessGradientLayerStyle();
         settingsButton!.setStyle();
         boardGame!.cats.updateUIStyle();
+        boardGame!.livesMeter!.setStyle();
         colorOptions!.setStyle();
     }
     

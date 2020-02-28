@@ -155,14 +155,14 @@ class UICatButton: UIButton {
             animationStage = stage;
         }
         // Prepare image view for reveal
-        if (animationStage == 0){
+        if (animationStage == 0 || animationStage == 4){
             self.imageView!.alpha = 0.0;
             self.imageContainerButton!.imageView!.alpha = 0.0;
         }
         // Configure the dispatch time and animation
         var dispatchTime:DispatchTime? = nil;
         if (stage == 4){
-            self.imageView!.layer.removeAllAnimations();
+            self.imageContainerButton!.imageView!.layer.removeAllAnimations();
             dispatchTime = .now();
             self.animationStage = 0;
         } else if (stage == 1 || stage == 0){
@@ -172,9 +172,13 @@ class UICatButton: UIButton {
         }
         // Animate based on animation stage
         DispatchQueue.main.asyncAfter(deadline: dispatchTime!) {
-            UIView.animate(withDuration: 1.0, delay:0.0, options:[.curveEaseInOut], animations: {
+            if (stage == 4) {
                 self.imageContainerButton!.imageView!.alpha = 1.0;
-            });
+            } else {
+                UIView.animate(withDuration: 1.0, delay:0.0, options:[.curveEaseIn], animations: {
+                   self.imageContainerButton!.imageView!.alpha = 1.0;
+                });
+            }
             if (self.animationStage == 0){
                 self.setRandomCatAnimation();
             }
@@ -193,21 +197,21 @@ class UICatButton: UIButton {
         let randomAnimationSelection:Int = Int.random(in: 0...3);
         if (randomAnimationSelection > 2){
             self.imageContainerButton!.imageView!.transform = self.imageContainerButton!.imageView!.transform.rotated(by:-CGFloat.pi / 2.0);
-            UIView.animate(withDuration: 1.75, delay: 0.125, options:[.curveEaseInOut, .repeat, .autoreverse], animations: {
+            UIView.animate(withDuration: 1.75, delay: 0.0, options:[.curveEaseInOut, .repeat, .autoreverse], animations: {
                 self.imageContainerButton!.imageView!.transform = self.imageContainerButton!.imageView!.transform.rotated(by:-CGFloat.pi);
             });
         } else if (randomAnimationSelection > 1) {
             self.imageContainerButton!.imageView!.transform = self.imageContainerButton!.imageView!.transform.rotated(by:CGFloat.pi / 2.0);
-            UIView.animate(withDuration: 1.75, delay: 0.125, options:[.curveEaseInOut, .repeat, .autoreverse], animations: {
+            UIView.animate(withDuration: 1.75, delay: 0.0, options:[.curveEaseInOut, .repeat, .autoreverse], animations: {
                 self.imageContainerButton!.imageView!.transform = self.imageContainerButton!.imageView!.transform.rotated(by:-CGFloat.pi);
             });
         } else if (randomAnimationSelection > 0) {
-            UIView.animate(withDuration: 1.75, delay: 0.125, options:[.curveEaseInOut, .repeat, .autoreverse], animations: {
+            UIView.animate(withDuration: 1.75, delay: 0.0, options:[.curveEaseInOut, .repeat, .autoreverse], animations: {
                 self.imageContainerButton!.imageView!.transform = self.imageContainerButton!.imageView!.transform.rotated(by:-CGFloat.pi);
             });
         } else {
             self.imageContainerButton!.imageView!.transform = self.imageContainerButton!.imageView!.transform.rotated(by:-CGFloat.pi / 2.0);
-            UIView.animate(withDuration: 1.75, delay: 0.125, options:[.curveEaseInOut, .repeat, .autoreverse], animations: {
+            UIView.animate(withDuration: 1.75, delay: 0.0, options:[.curveEaseInOut, .repeat, .autoreverse], animations: {
                 self.imageContainerButton!.imageView!.transform = self.imageContainerButton!.imageView!.transform.rotated(by:CGFloat.pi);
             });
         }
@@ -329,7 +333,7 @@ class UICatButton: UIButton {
     }
     
     func hideCat(){
-        self.imageView!.alpha = 0.0;
+        self.imageContainerButton!.imageView!.alpha = 0.0;
     }
     
     func setStyle() {

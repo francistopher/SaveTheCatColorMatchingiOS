@@ -49,6 +49,7 @@ class ViewController: UIViewController {
         DispatchQueue.main.asyncAfter(deadline: .now() + 4.0) {
             self.viruses!.fadeIn();
             self.boardGame!.fadeIn();
+            self.boardGame!.livesMeter!.fadeIn();
             self.colorOptions!.fadeIn();
             self.boardGame!.buildBoardGame();
             self.settingsButton!.fadeIn();
@@ -159,6 +160,7 @@ class ViewController: UIViewController {
         UICenterKit.centerHorizontally(childView: colorOptions!, parentRect: mainView.frame, childRect: colorOptions!.frame);
         boardGame!.colorOptions = colorOptions!;
         colorOptions!.boardGameView = boardGame!;
+        boardGame!.livesMeter!.alpha = 0.0;
         colorOptions!.alpha = 0.0;
     }
     

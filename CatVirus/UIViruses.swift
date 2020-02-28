@@ -30,7 +30,7 @@ class UIViruses {
         let virusHeightSpacing:CGFloat = totalHeightSpacing / 2.75;
         // Initial starting coordinates
         var x:CGFloat = -virusWidthSpacing * 0.70125;
-        var y:CGFloat = -virusHeightSpacing * 0.5;
+        var y:CGFloat = -virusHeightSpacing * 0.55;
         // Plot and build viruses
         for _ in 0..<3 {
             x += virusWidthSpacing;

@@ -44,7 +44,8 @@ class UIBoardGame: UIView {
     }
     
     func setupLivesMeter() {
-        let livesMeterWidth:CGFloat = ((((ViewController.staticUnitViewWidth * 18.0) * 0.8575) / 8.0) * 1.75) + ViewController.staticUnitViewWidth * 0.5;
+        let livesMeterWidth:CGFloat = (((((ViewController.staticUnitViewWidth * 18.0) * 0.8575) / 8.0) * 1.75) + ViewController.staticUnitViewWidth * 0.5) * 0.95;
+        
         let livesMeterX:CGFloat = (ViewController.staticUnitViewWidth * 18.0) - livesMeterWidth - ViewController.staticUnitViewWidth;
         let livesMeterFrame:CGRect = CGRect(x: livesMeterX, y: ViewController.staticUnitViewHeight, width: livesMeterWidth, height: ViewController.staticUnitViewWidth * 2.0);
         livesMeter = UILivesMeter(parentView: self.superview!, frame: livesMeterFrame, backgroundColor: UIColor.white);
@@ -226,9 +227,7 @@ class UIBoardGame: UIView {
                 }
             }
         } else {
-            if (!colorOptions!.isTransitioned) {
-                SoundController.kittenMeow();
-            }
+            SoundController.kittenMeow();
         }
     }
     
@@ -466,7 +465,7 @@ class UILivesMeter:UICView {
         super.init(parentView: parentView, x: frame.minX, y: frame.minY, width: frame.width, height: frame.height, backgroundColor: UIColor.clear);
         self.layer.cornerRadius = self.frame.height * 0.5;
         self.layer.borderWidth = self.frame.height / 12.0;
-        heartInactiveButtonXRange = [self.layer.borderWidth * 2.0, self.frame.width * 0.5];
+        heartInactiveButtonXRange = [self.layer.borderWidth, self.frame.width * 0.5];
         setupHeartInactiveButtons();
         setStyle();
     }
@@ -474,11 +473,11 @@ class UILivesMeter:UICView {
     func setupHeartInactiveButtons() {
         for _ in (heartInactiveButtons.count + 1)...livesLeft {
             if (heartInactiveButtons.count == 0) {
-                buildHeartButton(x: heartInactiveButtonXRange[0]);
-            } else if (heartInactiveButtons.count == 1) {
-                buildHeartButton(x: (heartInactiveButtonXRange[1] * 0.425) + heartInactiveButtonXRange[0]);
-            } else if (heartInactiveButtons.count == 2) {
                 buildHeartButton(x: heartInactiveButtonXRange[1]);
+            } else if (heartInactiveButtons.count == 1) {
+                buildHeartButton(x: (heartInactiveButtonXRange[1] * 0.4625) + heartInactiveButtonXRange[0]);
+            } else if (heartInactiveButtons.count == 2) {
+                buildHeartButton(x: heartInactiveButtonXRange[0]);
             } else {
                 buildHeartButton(x: CGFloat.random(in: heartInactiveButtonXRange[0]..<heartInactiveButtonXRange[1] ));
             }
@@ -486,10 +485,21 @@ class UILivesMeter:UICView {
     }
     
     func buildHeartButton(x:CGFloat) {
-        let heartInactiveButton:UICButton = UICButton(parentView: self, frame: CGRect(x: x, y: 0.0, width: self.frame.width * 0.5 - self.layer.borderWidth, height: self.frame.height), backgroundColor: UIColor.clear);
+        let heartInactiveButton:UICButton = UICButton(parentView: self, frame: CGRect(x: x, y: 0.0, width: (self.frame.width * 0.5) - (self.layer.borderWidth * 0.5), height: self.frame.height), backgroundColor: UIColor.clear);
         heartInactiveButton.layer.borderWidth = 0.0;
         heartInactiveButton.setImage(heartImage, for: .normal);
+        heartInactiveButton.addTarget(self, action: #selector(heartButtonSelector(sender:)), for: .touchUpInside);
         heartInactiveButtons.append(heartInactiveButton);
+    }
+    
+    @objc func heartButtonSelector(sender:UIButton) {
+        UIView.animate(withDuration: 0.5, delay: 0.125, options: [.curveEaseInOut], animations: {
+            sender.transform = sender.transform.scaledBy(x: 1.25, y: 1.25);
+        }, completion: { _ in
+            UIView.animate(withDuration: 0.5, delay: 0.125, options: [.curveEaseInOut], animations: {
+                sender.transform = sender.transform.scaledBy(x: 0.8, y: 0.8);
+            })
+        })
     }
     
     func changeLivesLeftCount(increment:Bool) {
@@ -499,8 +509,17 @@ class UILivesMeter:UICView {
         } else {
             if (livesLeft > 0) {
                 livesLeft -= 1;
-                heartInactiveButtons.last!.removeFromSuperview();
+                let lastHeartButton:UICButton = heartInactiveButtons.last!;
                 heartInactiveButtons.removeLast();
+                print("Ahhhhhhh")
+                lastHeartButton.frame = CGRect(x: self.frame.minX + lastHeartButton.frame.minX, y: self.frame.minY + lastHeartButton.frame.minY, width: lastHeartButton.frame.width, height: lastHeartButton.frame.height);
+                self.superview!.addSubview(lastHeartButton);
+                UIView.animate(withDuration: 3.0, delay: 0.125, options: [.curveEaseInOut], animations: {
+                    lastHeartButton.transform = lastHeartButton.transform.translatedBy(x: 0.0, y: self.superview!.frame.height);
+                }, completion: { _ in
+                    lastHeartButton.removeFromSuperview();
+                })
+                
             }
         }
     }
@@ -527,10 +546,5 @@ class UILivesMeter:UICView {
             self.backgroundColor = UIColor.black;
         }
     }
-    
-    
-    
-    
-    
 }
 

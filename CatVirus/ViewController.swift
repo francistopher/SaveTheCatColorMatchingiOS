@@ -179,6 +179,7 @@ class ViewController: UIViewController {
         settingsButton!.setStyle();
         boardGame!.cats.updateUIStyle();
         boardGame!.livesMeter!.setStyle();
+        boardGame!.statistics!.setCompiledStyle();
         colorOptions!.setStyle();
     }
     

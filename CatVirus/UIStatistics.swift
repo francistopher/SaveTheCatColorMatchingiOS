@@ -14,15 +14,21 @@ class UIStatistics:UICView {
     static var mouseCoins:Int = 0;
     
     var gameOverLabel:UICLabel?
+    
     var catsLivedLabel:UICLabel?
     var catsDiedLabel:UICLabel?
     var catsLivedAmountLabel:UICLabel?
     var catsDiedAmountLabel:UICLabel?
+    var livedCatImageButton:UICButton?
+    var deadCatImageButton:UICButton?
+    
     var stagesLabel:UICLabel?
     var stagesRangeLabel:UICLabel?
     var durationLabel:UICLabel?
     var durationTimeLabel:UICLabel?
+    
     var continueButton:UICButton?
+    
     var unitHeight:CGFloat?
     
     // Survival and Death Count
@@ -60,13 +66,13 @@ class UIStatistics:UICView {
         setupDurationLabel();
         setupContinueButton();
         super.invertColor = true;
-        super.setStyle();
+        self.setCompiledStyle();
         UICenterKit.center(childView: self, parentRect: superview!.frame, childRect: self.frame);
         self.alpha = 0.0;
     }
     
     func setupContentView() {
-        contentView = UICView(parentView: self, x: 0.0, y: 0.0, width: self.frame.width, height: self.frame.height, backgroundColor: UIColor.white);
+        self.contentView = UICView(parentView: self, x: 0.0, y: 0.0, width: self.frame.width, height: self.frame.height, backgroundColor: UIColor.white);
         contentView!.layer.borderWidth = 0.0;
         contentView!.transform = contentView!.transform.scaledBy(x: 0.96, y: 0.96);
         contentView!.layer.cornerRadius = contentView!.frame.width / 7.0;
@@ -90,61 +96,60 @@ class UIStatistics:UICView {
     }
     
     func setupGameOverLabel() {
-        gameOverLabel = UICLabel(parentView: contentView!, x: 0.0, y: 0.0, width: contentView!.frame.width + (self.frame.width / 4.0), height: unitHeight! * 2.0);
+        self.gameOverLabel = UICLabel(parentView: contentView!, x: 0.0, y: 0.0, width: contentView!.frame.width + (self.frame.width / 4.0), height: unitHeight! * 2.0);
         gameOverLabel!.font = UIFont.boldSystemFont(ofSize: gameOverLabel!.frame.height * 0.40);
         gameOverLabel!.layer.borderWidth = self.layer.borderWidth;
-        gameOverLabel!.layer.borderColor = UIColor.red.cgColor;
         gameOverLabel!.setStyle();
         gameOverLabel!.text = "R I P";
         UICenterKit.centerHorizontally(childView: gameOverLabel!, parentRect: self.frame, childRect: gameOverLabel!.frame);
     }
     
     func setupCheeringCatLabel() {
-        catsLivedLabel = UICLabel(parentView: contentView!, x: self.frame.width * 0.02875, y: gameOverLabel!.frame.maxY, width: contentView!.frame.width * 0.5, height: unitHeight! * 2.0);
+        self.catsLivedLabel = UICLabel(parentView: contentView!, x: self.frame.width * 0.02875, y: gameOverLabel!.frame.maxY, width: contentView!.frame.width * 0.5, height: unitHeight! * 2.0);
         catsLivedLabel!.backgroundColor = UIColor.clear;
         setupLivedCatImage();
         setupCatsLivedAmount();
     }
     
     func setupCatsLivedAmount() {
-        catsLivedAmountLabel = UICLabel(parentView: contentView!, x: self.frame.width * 0.02875, y: catsLivedLabel!.frame.maxY, width: contentView!.frame.width * 0.5, height: unitHeight!);
+        self.catsLivedAmountLabel = UICLabel(parentView: contentView!, x: self.frame.width * 0.02875, y: catsLivedLabel!.frame.maxY, width: contentView!.frame.width * 0.5, height: unitHeight!);
         catsLivedAmountLabel!.font = UIFont.boldSystemFont(ofSize: catsLivedAmountLabel!.frame.height * 0.40);
         catsLivedAmountLabel!.backgroundColor = UIColor.clear;
         catsLivedAmountLabel!.textColor = UIColor.black;
     }
     
     func setupLivedCatImage() {
-        let livedCatImageButton:UICButton = UICButton(parentView: catsLivedLabel!, frame:CGRect( x: 0.0, y: 0.0, width: catsLivedLabel!.frame.width, height: catsLivedLabel!.frame.height * 1.30), backgroundColor: UIColor.clear);
-        livedCatImageButton.layer.borderWidth = 0.0;
-        livedCatImageButton.setImage(UIImage(named: UIStatistics.getCatFileName(named:"CheeringCat.png")), for: .normal);
-        livedCatImageButton.imageView!.contentMode = UIView.ContentMode.scaleAspectFill;
-        UICenterKit.center(childView: livedCatImageButton, parentRect: catsLivedLabel!.frame, childRect: livedCatImageButton.frame);
+        self.livedCatImageButton = UICButton(parentView: catsLivedLabel!, frame:CGRect( x: 0.0, y: 0.0, width: catsLivedLabel!.frame.width, height: catsLivedLabel!.frame.height * 1.30), backgroundColor: UIColor.clear);
+        livedCatImageButton!.layer.borderWidth = 0.0;
+        livedCatImageButton!.setImage(UIImage(named: UIStatistics.getCatFileName(named:"CheeringCat.png")), for: .normal);
+        livedCatImageButton!.imageView!.contentMode = UIView.ContentMode.scaleAspectFill;
+        UICenterKit.center(childView: livedCatImageButton!, parentRect: catsLivedLabel!.frame, childRect: livedCatImageButton!.frame);
     }
     
     func setupDeadCatLabel() {
-        catsDiedLabel = UICLabel(parentView: contentView!, x: contentView!.frame.width * 0.5, y: gameOverLabel!.frame.maxY, width: contentView!.frame.width * 0.5, height: unitHeight! * 2.0);
+        self.catsDiedLabel = UICLabel(parentView: contentView!, x: contentView!.frame.width * 0.5, y: gameOverLabel!.frame.maxY, width: contentView!.frame.width * 0.5, height: unitHeight! * 2.0);
         catsDiedLabel!.backgroundColor = UIColor.clear;
         setupDeadCatImage();
         setupCatsDiedAmount();
     }
     
     func setupCatsDiedAmount() {
-        catsDiedAmountLabel = UICLabel(parentView: contentView!, x: contentView!.frame.width * 0.5, y: catsDiedLabel!.frame.maxY, width: contentView!.frame.width * 0.5, height: unitHeight!);
+        self.catsDiedAmountLabel = UICLabel(parentView: contentView!, x: contentView!.frame.width * 0.5, y: catsDiedLabel!.frame.maxY, width: contentView!.frame.width * 0.5, height: unitHeight!);
         catsDiedAmountLabel!.font = UIFont.boldSystemFont(ofSize: catsDiedAmountLabel!.frame.height * 0.40);
         catsDiedAmountLabel!.backgroundColor = UIColor.clear;
         catsDiedAmountLabel!.textColor = UIColor.black;
     }
     
     func setupDeadCatImage() {
-        let deadCatImageButton:UICButton = UICButton(parentView: catsDiedLabel!, frame:CGRect( x: 0.0, y: 0.0, width: catsDiedLabel!.frame.width, height: catsDiedLabel!.frame.height * 1.30), backgroundColor: UIColor.clear);
-        deadCatImageButton.layer.borderWidth = 0.0;
-        deadCatImageButton.setImage(UIImage(named: UIStatistics.getCatFileName(named: "DeadCat.png")), for: .normal);
-        deadCatImageButton.imageView!.contentMode = UIView.ContentMode.scaleAspectFill;
-        UICenterKit.center(childView: deadCatImageButton, parentRect: catsDiedLabel!.frame, childRect: deadCatImageButton.frame);
+        self.deadCatImageButton = UICButton(parentView: catsDiedLabel!, frame:CGRect( x: 0.0, y: 0.0, width: catsDiedLabel!.frame.width, height: catsDiedLabel!.frame.height * 1.30), backgroundColor: UIColor.clear);
+        deadCatImageButton!.layer.borderWidth = 0.0;
+        deadCatImageButton!.setImage(UIImage(named: UIStatistics.getCatFileName(named: "DeadCat.png")), for: .normal);
+        deadCatImageButton!.imageView!.contentMode = UIView.ContentMode.scaleAspectFill;
+        UICenterKit.center(childView: deadCatImageButton!, parentRect: catsDiedLabel!.frame, childRect: deadCatImageButton!.frame);
     }
     
     func setupStagesLabel() {
-        stagesLabel = UICLabel(parentView: contentView!, x: self.frame.width * 0.02875, y: catsLivedAmountLabel!.frame.maxY, width: contentView!.frame.width * 0.5, height: unitHeight!);
+        self.stagesLabel = UICLabel(parentView: contentView!, x: self.frame.width * 0.02875, y: catsLivedAmountLabel!.frame.maxY, width: contentView!.frame.width * 0.5, height: unitHeight!);
         stagesLabel!.text = "Stages";
         stagesLabel!.font = UIFont.boldSystemFont(ofSize: stagesLabel!.frame.height * 0.40);
         stagesLabel!.backgroundColor = UIColor.clear;
@@ -152,13 +157,13 @@ class UIStatistics:UICView {
     }
     
     func setupStagesRangeLabel() {
-        stagesRangeLabel = UICLabel(parentView: contentView!, x: self.frame.width * 0.02875, y:stagesLabel!.frame.maxY, width: contentView!.frame.width * 0.5, height: unitHeight!);
+        self.stagesRangeLabel = UICLabel(parentView: contentView!, x: self.frame.width * 0.02875, y:stagesLabel!.frame.maxY, width: contentView!.frame.width * 0.5, height: unitHeight!);
         stagesRangeLabel!.font = UIFont.boldSystemFont(ofSize: stagesRangeLabel!.frame.height * 0.35);
         stagesRangeLabel!.backgroundColor = UIColor.clear;
     }
     
     func setupDurationLabel() {
-        durationLabel = UICLabel(parentView: contentView!, x: contentView!.frame.width * 0.5, y: catsDiedAmountLabel!.frame.maxY, width: contentView!.frame.width * 0.5, height: unitHeight!);
+        self.durationLabel = UICLabel(parentView: contentView!, x: contentView!.frame.width * 0.5, y: catsDiedAmountLabel!.frame.maxY, width: contentView!.frame.width * 0.5, height: unitHeight!);
         durationLabel!.text = "Time";
         durationLabel!.font = UIFont.boldSystemFont(ofSize: durationLabel!.frame.height * 0.40);
         durationLabel!.backgroundColor = UIColor.clear;
@@ -166,13 +171,13 @@ class UIStatistics:UICView {
     }
     
     func setupDurationTimeLabel() {
-        durationTimeLabel = UICLabel(parentView: contentView!, x: contentView!.frame.width * 0.5, y: durationLabel!.frame.maxY, width: contentView!.frame.width * 0.5, height: unitHeight!);
+        self.durationTimeLabel = UICLabel(parentView: contentView!, x: contentView!.frame.width * 0.5, y: durationLabel!.frame.maxY, width: contentView!.frame.width * 0.5, height: unitHeight!);
         durationTimeLabel!.font = UIFont.boldSystemFont(ofSize: durationTimeLabel!.frame.height * 0.35);
         durationTimeLabel!.backgroundColor = UIColor.clear;
     }
     
     func setupContinueButton() {
-        continueButton = UICButton(parentView: contentView!, frame: CGRect(x: 0.0, y: self.frame.height - (unitHeight! * 1.33), width: contentView!.frame.width * 0.35, height: unitHeight!), backgroundColor: .clear);
+        self.continueButton = UICButton(parentView: contentView!, frame: CGRect(x: 0.0, y: self.frame.height - (unitHeight! * 1.33), width: contentView!.frame.width * 0.35, height: unitHeight!), backgroundColor: .clear);
         continueButton!.titleLabel!.font = UIFont.boldSystemFont(ofSize:continueButton!.frame.height * 0.40);
         continueButton!.layer.cornerRadius = continueButton!.frame.width * 0.1;
         continueButton!.setTitle("Continue", for: .normal);
@@ -192,13 +197,35 @@ class UIStatistics:UICView {
         durationTimeLabel!.text = "\(sessionDuration) secs";
     }
     
-    override func setStyle() {
+    func setCompiledStyle() {
         if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1) {
-            self.layer.borderColor = UIColor.black.cgColor;
-            self.backgroundColor = UIColor.white;
-        } else {
-            self.layer.borderColor = UIColor.white.cgColor;
             self.backgroundColor = UIColor.black;
+            self.contentView!.backgroundColor = UIColor.white;
+            self.gameOverLabel!.setStyle();
+            self.livedCatImageButton!.setImage(UIImage(named: UIStatistics.getCatFileName(named:"CheeringCat.png")), for: .normal);
+            self.deadCatImageButton!.setImage(UIImage(named: UIStatistics.getCatFileName(named: "DeadCat.png")), for: .normal);
+            self.catsLivedAmountLabel!.textColor = UIColor.black;
+            self.catsDiedAmountLabel!.textColor = UIColor.black;
+            self.stagesLabel!.textColor = UIColor.black;
+            self.stagesRangeLabel!.textColor = UIColor.black;
+            self.durationLabel!.textColor = UIColor.black;
+            self.durationTimeLabel!.textColor = UIColor.black;
+            self.continueButton!.setTitleColor(UIColor.black, for: .normal);
+            self.continueButton!.layer.borderColor = UIColor.black.cgColor;
+        } else {
+            self.backgroundColor = UIColor.white;
+            self.contentView!.backgroundColor = UIColor.black;
+            self.gameOverLabel!.setStyle();
+            self.livedCatImageButton!.setImage(UIImage(named: UIStatistics.getCatFileName(named:"CheeringCat.png")), for: .normal);
+            self.deadCatImageButton!.setImage(UIImage(named: UIStatistics.getCatFileName(named: "DeadCat.png")), for: .normal);
+            self.catsLivedAmountLabel!.textColor = UIColor.white;
+            self.catsDiedAmountLabel!.textColor = UIColor.white;
+            self.stagesLabel!.textColor = UIColor.white;
+            self.stagesRangeLabel!.textColor = UIColor.white;
+            self.durationLabel!.textColor = UIColor.white;
+            self.durationTimeLabel!.textColor = UIColor.white;
+            self.continueButton!.setTitleColor(UIColor.white, for: .normal);
+            self.continueButton!.layer.borderColor = UIColor.white.cgColor;
         }
     }
     

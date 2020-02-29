@@ -129,6 +129,7 @@ class UICButton:UIButton {
     }
     
     func setStyle() {
+        print("UICBUtton styling! ---")
         if (inverted) {
             if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1){
                 self.layer.borderColor = UIColor.white.cgColor;

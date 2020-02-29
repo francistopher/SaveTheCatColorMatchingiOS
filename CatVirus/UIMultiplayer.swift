@@ -74,7 +74,6 @@ class UIMultiplayer: UIButton {
     func setupDisplayNameTextField() {
         displayNameTextField = UICTextField(parentView:self.multiplayerView!, frame: CGRect(x: multiplayerView!.frame.width * 0.15 , y: unitViewHeight * 0.5, width: (multiplayerView!.frame.width * 0.7) - (unitViewHeight * 0.68), height: unitViewHeight * 0.8));
         displayNameTextField!.layer.borderWidth = displayNameTextField!.frame.height * 0.1;
-        displayNameTextField!.layer.borderColor = UIColor.black.cgColor;
         displayNameTextField!.layer.cornerRadius = displayNameTextField!.frame.height * 0.2;
         displayNameTextField!.addTarget(self, action: #selector(displayNameTextFieldSelector), for: .editingChanged);
         displayNameTextField!.layer.maskedCorners = [.layerMinXMinYCorner, .layerMinXMaxYCorner];
@@ -221,6 +220,7 @@ class UIPlayerAdScrollView:UICScrollView {
                     self.playerAdLabels[UUIDString]!.displayName = displayName;
                     self.playerAdLabels[UUIDString]!.setTitle(displayName, for: .normal);
                 }
+                self.playerAdLabels[UUIDString]!.setCompiledStyle();
             }
             y += self.unitHeight;
         }
@@ -290,6 +290,7 @@ class UIPlayerAdScrollView:UICScrollView {
         setupAcceptButton();
         setupRejectButton();
         invitationView!.alpha = 0.0;
+        invitationView!.backgroundColor = UIColor.clear;
     }
     
     func setupInvitationLabel() {
@@ -366,7 +367,6 @@ class UIPlayerAdScrollView:UICScrollView {
         searchingForPlayersLabel!.lineBreakMode = NSLineBreakMode.byWordWrapping;
         searchingForPlayersLabel!.numberOfLines = 2;
         searchingForPlayersLabel!.text = "Searching for\nNearby Players";
-        searchingForPlayersLabel!.textColor = UIColor.black;
         searchingForPlayersLabel!.font! = UIFont.boldSystemFont(ofSize: searchingForPlayersLabel!.frame.height * 0.2);
     }
     
@@ -385,9 +385,24 @@ class UIPlayerAdScrollView:UICScrollView {
         if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1){
             self.layer.borderColor = UIColor.black.cgColor;
             self.searchingForPlayersLabel!.textColor = UIColor.black;
+            self.invitationView!.layer.borderColor = UIColor.black.cgColor;
+            self.invitationLabel!.textColor = UIColor.black;
+            self.acceptButton!.layer.borderColor = UIColor.black.cgColor;
+            self.acceptButton!.setTitleColor(UIColor.black, for: .normal);
+            self.ignoreButton!.layer.borderColor = UIColor.black.cgColor;
+            self.ignoreButton!.setTitleColor(UIColor.black, for: .normal);
         } else {
             self.layer.borderColor = UIColor.white.cgColor;
             self.searchingForPlayersLabel!.textColor = UIColor.white;
+            self.invitationView!.layer.borderColor = UIColor.white.cgColor;
+            self.invitationLabel!.textColor = UIColor.white;
+            self.acceptButton!.layer.borderColor = UIColor.white.cgColor;
+            self.acceptButton!.setTitleColor(UIColor.white, for: .normal);
+            self.ignoreButton!.layer.borderColor = UIColor.white.cgColor;
+            self.ignoreButton!.setTitleColor(UIColor.white, for: .normal);
+        }
+        for playerAdLabel in Array(playerAdLabels.values) {
+            playerAdLabel.setCompiledStyle();
         }
     }
 }
@@ -416,6 +431,7 @@ class PlayerAdLabel: UICButton {
         self.peerID = peerID;
         self.addTarget(self, action: #selector(playerAdLabelSelector), for: .touchUpInside);
         setupCancelInvitationButton();
+        setCompiledStyle();
     }
     
     func setupCancelInvitationButton() {
@@ -437,22 +453,17 @@ class PlayerAdLabel: UICButton {
             cancelInvitationButton!.frame = CGRect(x: self.frame.width * 0.2, y: self.frame.height * 0.475, width: self.frame.width * 0.6, height: self.frame.height * 0.4);
             cancelInvitationButton!.layer.cornerRadius = cancelInvitationButton!.frame.height * 0.2;
             cancelInvitationButton!.layer.borderWidth = cancelInvitationButton!.frame.height * 0.1;
-            cancelInvitationButton!.layer.borderColor = UIColor.black.cgColor;
-            cancelInvitationButton!.setTitleColor(UIColor.white, for: .normal);
             cancelInvitationButton!.setTitle("Cancel Invite", for: .normal);
             cancelInvitationButton!.titleLabel!.font = UIFont.boldSystemFont(ofSize: cancelInvitationButton!.frame.height * 0.4);
             self.bringSubviewToFront(cancelInvitationButton!);
         } else {
             self.layer.cornerRadius = self.frame.height * 0.2;
             self.layer.borderWidth = self.frame.height * 0.1;
-            self.layer.borderColor = UIColor.black.cgColor;
             self.titleLabel!.font = UIFont.boldSystemFont(ofSize: frame.height * 0.4);
             self.setTitle(displayName, for: .normal);
-            self.setTitleColor(UIColor.white, for: .normal);
             self.titleLabel!.numberOfLines = 1;
             // Reset cancel button
             cancelInvitationButton!.frame = CGRect(x: self.frame.midX, y: self.frame.midY, width: 0.0, height: 0.0);
-            
         }
         
     }
@@ -482,6 +493,17 @@ class PlayerAdLabel: UICButton {
     }
     
     func setCompiledStyle() {
-        
+        print("Ad color styling");
+        if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1){
+            self.layer.borderColor = UIColor.black.cgColor;
+            self.setTitleColor(UIColor.black, for: .normal);
+            self.cancelInvitationButton!.setTitleColor(UIColor.black, for: .normal);
+            self.cancelInvitationButton!.layer.borderColor = UIColor.black.cgColor;
+        } else {
+            self.layer.borderColor = UIColor.white.cgColor;
+            self.setTitleColor(UIColor.white, for: .normal);
+            self.cancelInvitationButton!.setTitleColor(UIColor.white, for: .normal);
+            self.cancelInvitationButton!.layer.borderColor = UIColor.white.cgColor;
+        }
     }
 }

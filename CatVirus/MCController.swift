@@ -16,6 +16,7 @@ class MCController: ViewController,MCSessionDelegate, MCNearbyServiceAdvertiserD
     var myUuidDisplayName:String = "";
     var myUUID:UUID = UUID();
     var invitationPeerIDs:[MCPeerID:(Bool, MCSession?) -> Void] = [:];
+    var canceledInvitationPeerIDs:[MCPeerID] = []
     var foundPeerIDs:[MCPeerID] = [];
     var isHosting:Bool = false;
     var hasJoined:Bool = false;
@@ -115,8 +116,14 @@ class MCController: ViewController,MCSessionDelegate, MCNearbyServiceAdvertiserD
     }
     
     func advertiser(_ advertiser: MCNearbyServiceAdvertiser, didReceiveInvitationFromPeer peerID: MCPeerID, withContext context: Data?, invitationHandler: @escaping (Bool, MCSession?) -> Void) {
-        print("Invitation from \(peerID.displayName)");
-        invitationPeerIDs[peerID] = invitationHandler;
+        
+        let stringData:String = (String(decoding: context!, as: UTF8.self));
+        if (stringData == "Sending") {
+            invitationPeerIDs[peerID] = invitationHandler;
+        } else if (stringData == "Canceling") {
+            print("CCCanceling from \(peerID.displayName)")
+            canceledInvitationPeerIDs.append(peerID);
+        }
     }
     
     func session(_ session: MCSession, peer peerID: MCPeerID, didChange state: MCSessionState) {

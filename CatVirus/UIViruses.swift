@@ -23,14 +23,14 @@ class UIViruses {
         // Calculate side and spacing lengths of virus
         let virusSideLength:CGFloat = unitView * 2.0;
         // Total Spacing Available
-        let totalWidthSpacing:CGFloat = mainView!.frame.width - (virusSideLength * 4.0);
-        let totalHeightSpacing:CGFloat = mainView!.frame.height - (virusSideLength * 5.0);
+        let totalWidthSpacing:CGFloat = mainView!.frame.width - (virusSideLength * 3.0);
+        let totalHeightSpacing:CGFloat = mainView!.frame.height - (virusSideLength * 4.0);
         // Virus Spacing Length
-        let virusWidthSpacing:CGFloat = totalWidthSpacing / 1.625;
-        let virusHeightSpacing:CGFloat = totalHeightSpacing / 2.75;
+        let virusWidthSpacing:CGFloat = totalWidthSpacing / 2.625;
+        let virusHeightSpacing:CGFloat = totalHeightSpacing / 4.0;
         // Initial starting coordinates
         var x:CGFloat = -virusWidthSpacing * 0.70125;
-        var y:CGFloat = -virusHeightSpacing * 0.55;
+        var y:CGFloat = -virusHeightSpacing * 0.45;
         // Plot and build viruses
         for _ in 0..<3 {
             x += virusWidthSpacing;
@@ -41,7 +41,7 @@ class UIViruses {
                 y += virusSideLength;
             }
             x += virusSideLength;
-            y = -virusHeightSpacing * 0.5;
+            y = -virusHeightSpacing * 0.45;
         }
     }
     

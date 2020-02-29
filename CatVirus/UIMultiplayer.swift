@@ -230,7 +230,6 @@ class UIPlayerAdScrollView:UICScrollView {
     }
     
     func addModifyInvitationsOfExistingPeers() {
-        print("Number of invitation peers \(self.mcController!.invitationPeerIDs.count)")
         for invitationPeerID in Array(self.mcController!.invitationPeerIDs.keys) {
             let invitationDisplayName:String = String(invitationPeerID.displayName.suffix(invitationPeerID.displayName.count - 36));
             let invitationUUID:String = String(invitationPeerID.displayName.prefix(36));
@@ -251,23 +250,36 @@ class UIPlayerAdScrollView:UICScrollView {
             for foundPeerID in self.mcController!.foundPeerIDs {
                let foundDisplayName:String = String(foundPeerID.displayName.suffix(foundPeerID.displayName.count - 36));
                let foundUUID:String = String(foundPeerID.displayName.prefix(36));
-                print("Invitation and found UUID: \(UUIDString), \(foundUUID)")
                if (UUIDString == foundUUID) {
                     isPresent = true;
                     finalFoundDisplayName = foundDisplayName;
                     break;
                }
             }
-            
-            print(isPresent, "presente!");
+        
+            var canceledInvitationUUID:String = "";
+            // Is the peer who sent the canceling invitation exist
+            for canceledInvitationPeerID in self.mcController!.canceledInvitationPeerIDs {
+                let possibleCanceledInvitationUUID:String = String(canceledInvitationPeerID.displayName.prefix(36));
+                if (UUIDString == possibleCanceledInvitationUUID) {
+                    canceledInvitationUUID = possibleCanceledInvitationUUID;
+                    isPresent = false;
+                    break;
+                }
+            }
             // If present update the name
             if (isPresent) {
-               print(invitationPacks.count);
-               print("Found invitation UUID\(UUIDString)")
-                print("#$%^&*&^%$ Found display name \(finalFoundDisplayName)")
                invitationPack.displayName = finalFoundDisplayName;
                invitationPack.isPresent = isPresent;
             } else {
+                if (canceledInvitationUUID.count > 0) {
+                    // Remove canceled invitation
+                    let peerID:MCPeerID = self.invitationPacks[canceledInvitationUUID]!.peerID!;
+                    let index:Int = self.mcController!.canceledInvitationPeerIDs.firstIndex(of: peerID)!;
+                    self.mcController!.canceledInvitationPeerIDs.remove(at: index);
+                    // Remove the invitation
+                    self.mcController!.invitationPeerIDs[peerID] = nil;
+                }
                // If not remove it completely
                self.invitationPacks[UUIDString] = nil;
             }
@@ -313,21 +325,21 @@ class UIPlayerAdScrollView:UICScrollView {
     
     func searchForFoundAndLostPeers() {
         searchTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
+            print("SEARCH TIMING")
             self.addModifyInvitationsOfExistingPeers();
             self.removeOrModifyNonExistingInvitationPeers();
             if (self.invitationPacks.count > 0) {
-                print(self.invitationPacks.count);
-                print("Should be working?");
+                print("INVITATION PACKS")
                 self.removePlayerAds(forever: false);
                 self.isSearching = false;
-//                let peerID:MCPeerID = Array(self.invitationPacks.values)[0].peerID!;
+//              let peerID:MCPeerID = Array(self.invitationPacks.values)[0].peerID!;
                 self.currentInvitationHandler = Array(self.invitationPacks.values)[0].invitationHandler;
                 let displayName:String = Array(self.invitationPacks.values)[0].displayName;
                 self.invitationLabel!.text = "Invitation from\n\(displayName)";
                 self.invitationView!.fadeIn();
                 self.searchingForPlayersView!.fadeOut();
                 self.acceptButton!.isEnabled = true;
-                self.acceptButton!.isEnabled = true;
+                self.ignoreButton!.isEnabled = true;
             } else {
                 self.isSearching = true;
                 self.acceptButton!.isEnabled = false;
@@ -496,10 +508,15 @@ class PlayerAdLabel: UICButton {
     func setupCancelInvitationButton() {
         cancelInvitationButton = UICButton(parentView: self, frame: CGRect(x: self.frame.midX, y: self.frame.midY, width: 0.0, height: 0.0), backgroundColor: UIColor.red);
         cancelInvitationButton!.addTarget(self, action: #selector(cancelButtonSelector), for: .touchUpInside);
+        
     }
     
     @objc func cancelButtonSelector() {
         print("Canceling invite sent to \(displayName)");
+        let context:Data = "Canceling".data(using: .utf8)!;
+        invitationSent = false;
+        mcController!.browser!.invitePeer(peerID!, to: mcController!.session!, withContext: context, timeout: 30.0);
+        mcController!.session!.cancelConnectPeer(peerID!);
     }
     
     func resetPhysicalStyle() {
@@ -544,9 +561,9 @@ class PlayerAdLabel: UICButton {
     
     @objc func playerAdLabelSelector() {
         if (!self.invitationSent){
-            mcController!.browser!.invitePeer(peerID!, to: mcController!.session!, withContext: nil, timeout: 30.0);
+            let context:Data = "Sending".data(using: .utf8)!;
+            mcController!.browser!.invitePeer(peerID!, to: mcController!.session!, withContext: context, timeout: 30.0);
             self.invitationSent = true;
-            print("Selected \(UUIDString + displayName)")
         }
     }
     

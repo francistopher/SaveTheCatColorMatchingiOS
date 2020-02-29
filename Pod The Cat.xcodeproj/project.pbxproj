@@ -24,6 +24,8 @@
 		B8366D4523F880490043B45F /* mozartSonata.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = B8366D4323F880490043B45F /* mozartSonata.mp3 */; };
 		B8366D4723F8956C0043B45F /* kittenDie.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = B8366D4623F8956C0043B45F /* kittenDie.mp3 */; };
 		B8366D4923F8A1A60043B45F /* coinEarned.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = B8366D4823F8A1A60043B45F /* coinEarned.mp3 */; };
+		B83A157D240B014E0026D9D6 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B83A157C240B014D0026D9D6 /* GoogleService-Info.plist */; };
+		B83A157F240B04640026D9D6 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = B83A157E240B04630026D9D6 /* Podfile */; };
 		B83B2BF02403061100B4C92D /* UICScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B83B2BEF2403061100B4C92D /* UICScrollView.swift */; };
 		B83BC2AB24082485000A3E6C /* darkCheeringCat.png in Resources */ = {isa = PBXBuildFile; fileRef = B83BC2A924082485000A3E6C /* darkCheeringCat.png */; };
 		B83BC2AC24082485000A3E6C /* lightCheeringCat.png in Resources */ = {isa = PBXBuildFile; fileRef = B83BC2AA24082485000A3E6C /* lightCheeringCat.png */; };
@@ -73,7 +75,7 @@
 /* Begin PBXFileReference section */
 		B81C3F7523FDA34400042729 /* CACGradientLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CACGradientLayer.swift; sourceTree = "<group>"; };
 		B81C3F7723FED88E00042729 /* SoundController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundController.swift; sourceTree = "<group>"; };
-		B833544823EC8F0B00835672 /* Cat Virus.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Cat Virus.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B833544823EC8F0B00835672 /* Pod The Cat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Pod The Cat.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B833544B23EC8F0B00835672 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B833545223EC8F0B00835672 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		B833545523EC8F0B00835672 /* bagDatCat.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = bagDatCat.xcdatamodel; sourceTree = "<group>"; };
@@ -90,6 +92,8 @@
 		B8366D4323F880490043B45F /* mozartSonata.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = mozartSonata.mp3; sourceTree = "<group>"; };
 		B8366D4623F8956C0043B45F /* kittenDie.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = kittenDie.mp3; sourceTree = "<group>"; };
 		B8366D4823F8A1A60043B45F /* coinEarned.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = coinEarned.mp3; sourceTree = "<group>"; };
+		B83A157C240B014D0026D9D6 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
+		B83A157E240B04630026D9D6 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; };
 		B83B2BEF2403061100B4C92D /* UICScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UICScrollView.swift; sourceTree = "<group>"; };
 		B83BC2A924082485000A3E6C /* darkCheeringCat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = darkCheeringCat.png; sourceTree = "<group>"; };
 		B83BC2AA24082485000A3E6C /* lightCheeringCat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lightCheeringCat.png; sourceTree = "<group>"; };
@@ -151,6 +155,7 @@
 		B833543F23EC8F0B00835672 = {
 			isa = PBXGroup;
 			children = (
+				B83A157E240B04630026D9D6 /* Podfile */,
 				B833544A23EC8F0B00835672 /* CatVirus */,
 				B88F998B23F39838003ED805 /* Supporting Files */,
 				B833544923EC8F0B00835672 /* Products */,
@@ -161,7 +166,7 @@
 		B833544923EC8F0B00835672 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				B833544823EC8F0B00835672 /* Cat Virus.app */,
+				B833544823EC8F0B00835672 /* Pod The Cat.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -169,6 +174,7 @@
 		B833544A23EC8F0B00835672 /* CatVirus */ = {
 			isa = PBXGroup;
 			children = (
+				B83A157C240B014D0026D9D6 /* GoogleService-Info.plist */,
 				B8948F4D24019A280070F8E6 /* heaven.mp3 */,
 				B88DE8072402E5F80076B8F2 /* MCController.swift */,
 				B88F996823F06801003ED805 /* ViewController.swift */,
@@ -398,9 +404,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		B833544723EC8F0B00835672 /* CatVirus */ = {
+		B833544723EC8F0B00835672 /* Pod The Cat */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = B833545F23EC8F1400835672 /* Build configuration list for PBXNativeTarget "CatVirus" */;
+			buildConfigurationList = B833545F23EC8F1400835672 /* Build configuration list for PBXNativeTarget "Pod The Cat" */;
 			buildPhases = (
 				B833544423EC8F0B00835672 /* Sources */,
 				B833544523EC8F0B00835672 /* Frameworks */,
@@ -411,9 +417,9 @@
 			);
 			dependencies = (
 			);
-			name = CatVirus;
+			name = "Pod The Cat";
 			productName = bagDatCat;
-			productReference = B833544823EC8F0B00835672 /* Cat Virus.app */;
+			productReference = B833544823EC8F0B00835672 /* Pod The Cat.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -431,7 +437,7 @@
 					};
 				};
 			};
-			buildConfigurationList = B833544323EC8F0B00835672 /* Build configuration list for PBXProject "CatVirus" */;
+			buildConfigurationList = B833544323EC8F0B00835672 /* Build configuration list for PBXProject "Pod The Cat" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -444,7 +450,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				B833544723EC8F0B00835672 /* CatVirus */,
+				B833544723EC8F0B00835672 /* Pod The Cat */,
 			);
 		};
 /* End PBXProject section */
@@ -460,6 +466,7 @@
 				B8FBD6AB23F5EEAA00C8B50D /* lightStats.png in Resources */,
 				B8FBD6BA23F6016600C8B50D /* darkNoAds.png in Resources */,
 				B83BC2AB24082485000A3E6C /* darkCheeringCat.png in Resources */,
+				B83A157F240B04640026D9D6 /* Podfile in Resources */,
 				B8948F4E24019A280070F8E6 /* heaven.mp3 in Resources */,
 				B8FBD6BB23F6016600C8B50D /* lightNoAds.png in Resources */,
 				B8FBD6BF23F605B000C8B50D /* darkStats.png in Resources */,
@@ -481,6 +488,7 @@
 				B8361D112405FB9A005EE9C5 /* lightVirus.png in Resources */,
 				B86A7E9A23FC826F00E4C4C4 /* lightDeadCat.png in Resources */,
 				B8FBD6A423F5E65F00C8B50D /* darkRestart1.png in Resources */,
+				B83A157D240B014E0026D9D6 /* GoogleService-Info.plist in Resources */,
 				B8366D4723F8956C0043B45F /* kittenDie.mp3 in Resources */,
 				B8366D4923F8A1A60043B45F /* coinEarned.mp3 in Resources */,
 				B8366D3723F772270043B45F /* kittenMeow.mp3 in Resources */,
@@ -700,7 +708,7 @@
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "ChristopherFrancisco.-CatVirus";
-				PRODUCT_NAME = "Cat Virus";
+				PRODUCT_NAME = "Pod The Cat";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -718,7 +726,7 @@
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "ChristopherFrancisco.-CatVirus";
-				PRODUCT_NAME = "Cat Virus";
+				PRODUCT_NAME = "Pod The Cat";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -727,7 +735,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		B833544323EC8F0B00835672 /* Build configuration list for PBXProject "CatVirus" */ = {
+		B833544323EC8F0B00835672 /* Build configuration list for PBXProject "Pod The Cat" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				B833545D23EC8F1400835672 /* Debug */,
@@ -736,7 +744,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		B833545F23EC8F1400835672 /* Build configuration list for PBXNativeTarget "CatVirus" */ = {
+		B833545F23EC8F1400835672 /* Build configuration list for PBXNativeTarget "Pod The Cat" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				B833546023EC8F1400835672 /* Debug */,

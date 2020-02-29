@@ -8,6 +8,7 @@
 
 import UIKit
 import AVFoundation
+import GameKit
 
 class ViewController: UIViewController {
 
@@ -37,6 +38,25 @@ class ViewController: UIViewController {
     @IBOutlet var mainViewController: UIView!
     override func viewDidLoad() {
         super.viewDidLoad();
+//        authenticateUser();
+        presentGame();
+    }
+    
+    // Game Center Authentication
+    func authenticateUser() {
+        // Get the local player
+        let player:GKLocalPlayer = GKLocalPlayer.local;
+        //
+        player.authenticateHandler = {mainViewController, error in
+            guard  error == nil else {
+                print("Error");
+                return;
+            }
+            self.presentGame();
+        }
+    }
+    
+    func presentGame() {
         ViewController.staticSelf = self;
         setupSounds();
         setupMainViewDimensionProperties();
@@ -123,7 +143,7 @@ class ViewController: UIViewController {
         UICenterKit.center(childView: introLabel!, parentRect: mainView.frame, childRect: introLabel!.frame);
         introLabel!.font = UIFont.boldSystemFont(ofSize: unitViewHeight * 0.75);
         introLabel!.backgroundColor = .clear;
-        introLabel!.text = "Save The Cat";
+        introLabel!.text = "Pod The Cat";
         introLabel!.alpha = 0.0;
         introLabel!.fadeInAndOut();
     }

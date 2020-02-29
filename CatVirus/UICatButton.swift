@@ -89,8 +89,8 @@ class UICatButton: UIButton {
     
     func configureImageContainerButton() {
         imageContainerButton = UICButton(parentView:self, frame: CGRect(x: ((self.originalFrame!.width - self.originalFrame!.height) / 2.0), y: 0.0, width: self.originalFrame!.height, height: self.originalFrame!.height), backgroundColor:self.originalBackgroundColor);
-        self.imageContainerButton!.layer.cornerRadius = self.layer.cornerRadius;
-        imageContainerButton!.frame = imageContainerButton!.originalFrame!;
+        imageContainerButton!.originalFrame = imageContainerButton!.frame;
+        imageContainerButton!.layer.cornerRadius = self.layer.cornerRadius;
         imageContainerButton!.layer.borderWidth = 0.0;
         imageContainerButton!.shrinked();
     }
@@ -107,6 +107,7 @@ class UICatButton: UIButton {
                 self.layer.cornerRadius = frame.height * 0.5;
                 self.imageContainerButton!.layer.cornerRadius = self.layer.cornerRadius;
             }
+            UICenterKit.center(childView: self.imageContainerButton!, parentRect: frame, childRect:self.imageContainerButton!.frame);
         })
     }
     
@@ -172,7 +173,7 @@ class UICatButton: UIButton {
         }
         // Animate based on animation stage
         DispatchQueue.main.asyncAfter(deadline: dispatchTime!) {
-            if (stage == 4) {
+            if (self.animationStage == 4 || stage == 4) {
                 self.imageContainerButton!.imageView!.alpha = 1.0;
             } else {
                 UIView.animate(withDuration: 1.0, delay:0.0, options:[.curveEaseIn], animations: {
@@ -271,19 +272,24 @@ class UICatButton: UIButton {
     func pod() {
         SoundController.kittenMeow();
         // New radius and frames
+
+        self.imageContainerButton!.backgroundColor = UIColor.clear;
         let newCornerRadius:CGFloat = self.frame.height * 0.5;
         let newCatButtonFrame:CGRect = CGRect(x: self.frame.minX + self.imageContainerButton!.frame.minX, y: self.frame.minY, width: self.imageContainerButton!.frame.width, height: self.frame.height);
         let newImageButtonFrame:CGRect = CGRect(x: 0.0, y: 0.0, width: self.frame.height, height: self.frame.height);
-        // Adjust frames if necessary
-        if (self.frame.width > self.frame.height) {
-            self.frame = newCatButtonFrame;
-            self.imageContainerButton!.frame = newImageButtonFrame;
-        }
-        // Apply adjustments
-        self.imageContainerButton!.layer.cornerRadius = newCornerRadius;
-        self.backgroundColor = .clear;
-        self.layer.borderWidth = 0.0;
-        self.imageContainerButton!.layer.borderWidth = (sqrt(self.frame.width * 0.01) * 10.0) * 0.35;
+        UIView.animate(withDuration: 0.5, delay: 0.125, options: [.curveEaseInOut], animations: {
+            // Adjust frames if necessary
+            if (self.frame.width > self.frame.height) {
+                self.frame = newCatButtonFrame;
+                self.imageContainerButton!.frame = newImageButtonFrame;
+            }
+            self.backgroundColor = self.originalBackgroundColor;
+            self.transform = self.transform.scaledBy(x: 1.0, y: 0.85);
+            self.imageContainerButton!.transform = self.imageContainerButton!.transform.scaledBy(x: 0.85, y: 0.85);
+            self.layer.cornerRadius = newCornerRadius;
+            self.imageContainerButton!.layer.borderWidth = 0.0;
+            self.layer.borderWidth = (sqrt(self.frame.width * 0.01) * 10.0) * 0.35;
+        })
     }
     
     func generateElevatedTargetX(parentFrame:CGRect, childFrame:CGRect, angle:CGFloat) -> CGFloat{

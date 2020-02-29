@@ -204,7 +204,6 @@ class UIBoardGame: UIView {
             if (catButton.backgroundCGColor! == colorOptions!.selectedColor.cgColor){
                 if (!catButton.isPodded) {
                     gridColorsCount[catButton.backgroundCGColor!]! -= 1;
-                    catImageButton.fadeBackgroundIn(color: colorOptions!.selectedColor);
                     colorOptions!.buildColorOptionButtons(setup: false);
                     catButton.pod();
                     catButton.isPodded = true;

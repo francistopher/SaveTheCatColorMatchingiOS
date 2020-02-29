@@ -55,7 +55,7 @@ class UIMultiplayer: UIButton {
             fadeBackgroundOut();
             mcController!.advertisingAndBrowsing(start: false);
             mcController!.foundPeerIDs = [];
-            mcController!.receivedInvitationPeerIDs = [:];
+            mcController!.invitationPeerIDs = [:];
             activePlayersScrollView!.removePlayerAds(forever:true);
             activePlayersScrollView!.isSearching = false;
         }
@@ -176,10 +176,13 @@ class UIPlayerAdScrollView:UICScrollView {
     var ignoreButton:UICButton?
     
     var playerAdLabels:[String:PlayerAdLabel] = [:];
+    var invitationPacks:[String:InvitationPack] = [:];
     var contentSizeHeight:CGFloat = 0.0;
     var searchTimer:Timer?
     var unitHeight:CGFloat = 0.0
     var isSearching = false;
+    
+    
     var currentInvitationHandler:((Bool, MCSession?) -> Void)? = nil;
     
     required init?(coder: NSCoder) {
@@ -226,6 +229,51 @@ class UIPlayerAdScrollView:UICScrollView {
         }
     }
     
+    func addModifyInvitationsOfExistingPeers() {
+        print("Number of invitation peers \(self.mcController!.invitationPeerIDs.count)")
+        for invitationPeerID in Array(self.mcController!.invitationPeerIDs.keys) {
+            let invitationDisplayName:String = String(invitationPeerID.displayName.suffix(invitationPeerID.displayName.count - 36));
+            let invitationUUID:String = String(invitationPeerID.displayName.prefix(36));
+            // Add new found invitation
+            if (self.invitationPacks[invitationUUID] == nil) {
+                let invitationPack:InvitationPack = InvitationPack(peerID: invitationPeerID, UUID: invitationUUID, displayName:invitationDisplayName, invitationHandler: self.mcController!.invitationPeerIDs[invitationPeerID]!);
+                self.invitationPacks[invitationUUID] = invitationPack;
+            }
+        }
+    }
+    
+    func removeOrModifyNonExistingInvitationPeers() {
+        for (UUIDString,invitationPack) in invitationPacks {
+            // Verify previous invitations
+            var isPresent:Bool = false;
+            var finalFoundDisplayName:String = "";
+            // Is the peer who sent the invitation exist
+            for foundPeerID in self.mcController!.foundPeerIDs {
+               let foundDisplayName:String = String(foundPeerID.displayName.suffix(foundPeerID.displayName.count - 36));
+               let foundUUID:String = String(foundPeerID.displayName.prefix(36));
+                print("Invitation and found UUID: \(UUIDString), \(foundUUID)")
+               if (UUIDString == foundUUID) {
+                    isPresent = true;
+                    finalFoundDisplayName = foundDisplayName;
+                    break;
+               }
+            }
+            
+            print(isPresent, "presente!");
+            // If present update the name
+            if (isPresent) {
+               print(invitationPacks.count);
+               print("Found invitation UUID\(UUIDString)")
+                print("#$%^&*&^%$ Found display name \(finalFoundDisplayName)")
+               invitationPack.displayName = finalFoundDisplayName;
+               invitationPack.isPresent = isPresent;
+            } else {
+               // If not remove it completely
+               self.invitationPacks[UUIDString] = nil;
+            }
+        }
+    }
+    
     func growExistingOrDisposePlayerAds() {
         // Iterate through player ad labels
         var y:CGFloat = 0.0;
@@ -265,17 +313,28 @@ class UIPlayerAdScrollView:UICScrollView {
     
     func searchForFoundAndLostPeers() {
         searchTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
-            if (self.mcController!.receivedInvitationPeerIDs.count > 0) {
+            self.addModifyInvitationsOfExistingPeers();
+            self.removeOrModifyNonExistingInvitationPeers();
+            if (self.invitationPacks.count > 0) {
+                print(self.invitationPacks.count);
+                print("Should be working?");
                 self.removePlayerAds(forever: false);
                 self.isSearching = false;
-                let peerID:MCPeerID = Array(self.mcController!.receivedInvitationPeerIDs.keys)[0];
-                self.currentInvitationHandler = self.mcController!.receivedInvitationPeerIDs[peerID];
-                let displayName:String = String(peerID.displayName.suffix(peerID.displayName.count - 36));
+//                let peerID:MCPeerID = Array(self.invitationPacks.values)[0].peerID!;
+                self.currentInvitationHandler = Array(self.invitationPacks.values)[0].invitationHandler;
+                let displayName:String = Array(self.invitationPacks.values)[0].displayName;
                 self.invitationLabel!.text = "Invitation from\n\(displayName)";
                 self.invitationView!.fadeIn();
                 self.searchingForPlayersView!.fadeOut();
+                self.acceptButton!.isEnabled = true;
+                self.acceptButton!.isEnabled = true;
+            } else {
+                self.isSearching = true;
+                self.acceptButton!.isEnabled = false;
+                self.ignoreButton!.isEnabled = false;
             }
             if (self.isSearching) {
+                self.invitationView!.fadeOut();
                 self.addOrModifyExistingPlayerAds();
                 self.hideOrShowView();
                 self.growExistingOrDisposePlayerAds();
@@ -299,7 +358,7 @@ class UIPlayerAdScrollView:UICScrollView {
         invitationLabel!.layer.borderWidth = 0.0;
         invitationLabel!.lineBreakMode = NSLineBreakMode.byWordWrapping;
         invitationLabel!.numberOfLines = 2;
-        invitationLabel!.text = "Invited by\nijnjkhvjgvgjvhbjh";
+        invitationLabel!.text = "Invited by";
         invitationLabel!.textColor = UIColor.black;
         invitationLabel!.font! = UIFont.boldSystemFont(ofSize: searchingForPlayersLabel!.frame.height * 0.15);
     }
@@ -465,7 +524,6 @@ class PlayerAdLabel: UICButton {
             // Reset cancel button
             cancelInvitationButton!.frame = CGRect(x: self.frame.midX, y: self.frame.midY, width: 0.0, height: 0.0);
         }
-        
     }
     
     func transformation(frame:CGRect) {
@@ -493,7 +551,6 @@ class PlayerAdLabel: UICButton {
     }
     
     func setCompiledStyle() {
-        print("Ad color styling");
         if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1){
             self.layer.borderColor = UIColor.black.cgColor;
             self.setTitleColor(UIColor.black, for: .normal);
@@ -505,5 +562,19 @@ class PlayerAdLabel: UICButton {
             self.cancelInvitationButton!.setTitleColor(UIColor.white, for: .normal);
             self.cancelInvitationButton!.layer.borderColor = UIColor.white.cgColor;
         }
+    }
+}
+
+class InvitationPack {
+    var UUID:String = "";
+    var peerID:MCPeerID?
+    var displayName:String = "";
+    var isPresent:Bool = false;
+    var invitationHandler:((Bool, MCSession?) -> Void)?;
+    
+    init(peerID:MCPeerID, UUID:String, displayName:String, invitationHandler:@escaping (Bool, MCSession?) -> Void) {
+        self.peerID = peerID;
+        self.UUID = UUID;
+        self.invitationHandler = invitationHandler;
     }
 }

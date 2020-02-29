@@ -18,6 +18,7 @@ class MCController: ViewController,MCSessionDelegate, MCNearbyServiceAdvertiserD
     var invitationPeerIDs:[MCPeerID:(Bool, MCSession?) -> Void] = [:];
     var canceledInvitationPeerIDs:[MCPeerID] = []
     var foundPeerIDs:[MCPeerID] = [];
+    var ignoredPeerIDS:[MCPeerID] = [];
     var isHosting:Bool = false;
     var hasJoined:Bool = false;
     
@@ -123,6 +124,9 @@ class MCController: ViewController,MCSessionDelegate, MCNearbyServiceAdvertiserD
         } else if (stringData == "Canceling") {
             print("CCCanceling from \(peerID.displayName)")
             canceledInvitationPeerIDs.append(peerID);
+        } else if (stringData == "Ignoring") {
+            print("IIIgnoring from \(peerID.displayName)")
+            ignoredPeerIDS.append(peerID);
         }
     }
     

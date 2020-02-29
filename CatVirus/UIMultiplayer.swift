@@ -177,6 +177,7 @@ class UIPlayerAdScrollView:UICScrollView {
     
     var playerAdLabels:[String:PlayerAdLabel] = [:];
     var invitationPacks:[String:InvitationPack] = [:];
+    var currentInvitationPack:InvitationPack?
     var contentSizeHeight:CGFloat = 0.0;
     var searchTimer:Timer?
     var unitHeight:CGFloat = 0.0
@@ -294,8 +295,23 @@ class UIPlayerAdScrollView:UICScrollView {
         for (displayName, playerAdLabel) in self.playerAdLabels.reversed() {
             if (playerAdLabel.isPresent && self.searchingForPlayersView!.isFadedOut) {
                 playerAdLabel.isPresent = false;
+                // Check if invitation was ignored
+                var wasNotIgnored:Bool = true;
+                var ignoredPeerID:MCPeerID?;
+                for currentIgnoredPeerID in mcController!.ignoredPeerIDS {
+                    let ignoredUUIDString:String = String(currentIgnoredPeerID.displayName.prefix(36));
+                    if (playerAdLabel.UUIDString == ignoredUUIDString) {
+                        playerAdLabel.invitationSent = false;
+                        ignoredPeerID = currentIgnoredPeerID;
+                        wasNotIgnored = false;
+                    }
+                }
+                if (!wasNotIgnored) {
+                    let index:Int = mcController!.ignoredPeerIDS.firstIndex(of: ignoredPeerID!)!;
+                    mcController!.ignoredPeerIDS.remove(at: index);
+                }
                 // Double height for invitation sent
-                if (playerAdLabel.invitationSent){
+                if (playerAdLabel.invitationSent && wasNotIgnored){
                     height = (self.unitHeight * 2.0) * 0.8;
                     newFrame = CGRect(x: self.frame.width * 0.1, y: y + self.unitHeight * 0.2, width: self.frame.width * 0.8, height: height);
                 }
@@ -332,9 +348,9 @@ class UIPlayerAdScrollView:UICScrollView {
                 print("INVITATION PACKS")
                 self.removePlayerAds(forever: false);
                 self.isSearching = false;
-//              let peerID:MCPeerID = Array(self.invitationPacks.values)[0].peerID!;
-                self.currentInvitationHandler = Array(self.invitationPacks.values)[0].invitationHandler;
-                let displayName:String = Array(self.invitationPacks.values)[0].displayName;
+                self.currentInvitationPack = Array(self.invitationPacks.values)[0];
+                self.currentInvitationHandler = self.currentInvitationPack!.invitationHandler;
+                let displayName:String = self.currentInvitationPack!.displayName;
                 self.invitationLabel!.text = "Invitation from\n\(displayName)";
                 self.invitationView!.fadeIn();
                 self.searchingForPlayersView!.fadeOut();
@@ -359,7 +375,7 @@ class UIPlayerAdScrollView:UICScrollView {
         setupInvitationLabel();
         setupInvitationCatButton();
         setupAcceptButton();
-        setupRejectButton();
+        setupIgnoreButton();
         invitationView!.alpha = 0.0;
         invitationView!.backgroundColor = UIColor.clear;
     }
@@ -400,7 +416,7 @@ class UIPlayerAdScrollView:UICScrollView {
         currentInvitationHandler!(true, self.mcController!.session);
     }
     
-    func setupRejectButton() {
+    func setupIgnoreButton() {
         ignoreButton = UICButton(parentView: invitationView!, frame: CGRect(x: self.frame.width * 0.55, y: self.frame.height * 0.775, width: self.frame.width * 0.35, height: self.frame.height * 0.16), backgroundColor: UIColor.systemRed);
         ignoreButton!.layer.cornerRadius = ignoreButton!.frame.width * 0.1;
         ignoreButton!.layer.borderWidth = ignoreButton!.frame.width * 0.03;
@@ -413,6 +429,14 @@ class UIPlayerAdScrollView:UICScrollView {
     
     @objc func ignoreButtonSelector() {
         print("Invitation Ignored!");
+        // Remove message
+        invitationPacks[currentInvitationPack!.UUID] = nil;
+        mcController!.invitationPeerIDs[currentInvitationPack!.peerID!] = nil;
+        // Send ignored message
+        print("Ignoring invite sent from \(currentInvitationPack!.displayName)");
+        let context:Data = "Ignoring".data(using: .utf8)!;
+        mcController!.browser!.invitePeer(currentInvitationPack!.peerID!, to: mcController!.session!, withContext: context, timeout: 30.0);
+        
         currentInvitationHandler!(false, self.mcController!.session);
     }
     

@@ -38,7 +38,6 @@ class ViewController: UIViewController {
     @IBOutlet var mainViewController: UIView!
     override func viewDidLoad() {
         super.viewDidLoad();
-//        authenticateUser();
         presentGame();
     }
     
@@ -88,6 +87,7 @@ class ViewController: UIViewController {
         self.boardGame!.cats.suspendCatAnimations();
         self.settingsButton!.multiplayer!.activePlayersScrollView!.searchingCatButton!.hideCat();
         self.settingsButton!.multiplayer!.activePlayersScrollView!.invitationCatButton!.hideCat();
+        self.boardGame!.attackMeter!.cat!.hideCat();
         print("App backgrounded");
     }
     
@@ -96,6 +96,7 @@ class ViewController: UIViewController {
         self.boardGame!.cats.resumeCatAnimations();
         self.settingsButton!.multiplayer!.activePlayersScrollView!.searchingCatButton!.animate(AgainWithoutDelay: true);
         self.settingsButton!.multiplayer!.activePlayersScrollView!.invitationCatButton!.animate(AgainWithoutDelay: true);
+        self.boardGame!.attackMeter!.cat!.animate(AgainWithoutDelay: true);
         print("App foregrounded");
     }
     
@@ -205,6 +206,7 @@ class ViewController: UIViewController {
         boardGame!.cats.updateUIStyle();
         boardGame!.livesMeter!.setStyle();
         boardGame!.statistics!.setCompiledStyle();
+        boardGame!.attackMeter!.setCompiledStyle();
         colorOptions!.setStyle();
     }
     

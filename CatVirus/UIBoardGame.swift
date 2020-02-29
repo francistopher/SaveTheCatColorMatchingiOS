@@ -49,6 +49,7 @@ class UIBoardGame: UIView {
         UICenterKit.centerHorizontally(childView: attackMeter!, parentRect: attackMeter!.superview!.frame, childRect: attackMeter!.frame);
         attackMeter!.setVirus();
         attackMeter!.setCat();
+        attackMeter!.setCompiledStyle();
     }
 
     func setupLivesMeter() {
@@ -586,7 +587,6 @@ class UIAttackMeter:UICView {
         super.init(parentView: parentView, x: frame.minX, y: frame.minY, width: frame.width, height: frame.height, backgroundColor: UIColor.clear);
         self.layer.cornerRadius = self.frame.height * 0.5;
         self.layer.borderWidth = self.frame.height / 12.0;
-        setStyle();
     }
     
     func setVirus() {
@@ -602,6 +602,13 @@ class UIAttackMeter:UICView {
         cat!.grow();
         cat!.imageContainerButton!.grow();
         cat!.setCat(named: "SmilingCat", stage:0);
+    }
+    
+    func setCompiledStyle() {
+        setStyle();
+        virus!.setVirusImage();
+        cat!.setCat(named: "SmilingCat", stage: 5);
+        cat!.animate(AgainWithoutDelay: true);
     }
     
 }

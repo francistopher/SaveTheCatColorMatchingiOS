@@ -107,7 +107,6 @@ class UICatButton: UIButton {
                 self.layer.cornerRadius = frame.height * 0.5;
                 self.imageContainerButton!.layer.cornerRadius = self.layer.cornerRadius;
             }
-            UICenterKit.center(childView: self.imageContainerButton!, parentRect: frame, childRect:self.imageContainerButton!.frame);
         })
     }
     
@@ -272,8 +271,6 @@ class UICatButton: UIButton {
     func pod() {
         SoundController.kittenMeow();
         // New radius and frames
-
-        self.imageContainerButton!.backgroundColor = UIColor.clear;
         let newCornerRadius:CGFloat = self.frame.height * 0.5;
         let newCatButtonFrame:CGRect = CGRect(x: self.frame.minX + self.imageContainerButton!.frame.minX, y: self.frame.minY, width: self.imageContainerButton!.frame.width, height: self.frame.height);
         let newImageButtonFrame:CGRect = CGRect(x: 0.0, y: 0.0, width: self.frame.height, height: self.frame.height);
@@ -284,8 +281,6 @@ class UICatButton: UIButton {
                 self.imageContainerButton!.frame = newImageButtonFrame;
             }
             self.backgroundColor = self.originalBackgroundColor;
-            self.transform = self.transform.scaledBy(x: 1.0, y: 0.85);
-            self.imageContainerButton!.transform = self.imageContainerButton!.transform.scaledBy(x: 0.85, y: 0.85);
             self.layer.cornerRadius = newCornerRadius;
             self.imageContainerButton!.layer.borderWidth = 0.0;
             self.layer.borderWidth = (sqrt(self.frame.width * 0.01) * 10.0) * 0.35;

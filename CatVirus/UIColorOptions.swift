@@ -134,9 +134,8 @@ class UIColorOptions: UIView {
         if (colorOption.backgroundColor!.cgColor == selectedColor.cgColor){
             return;
         }
-        
         selectedColor = colorOption.backgroundColor!;
-        boardGameView!.transitionBackgroundColorOfButtonsToLightGray();
+        boardGameView!.transitionBackgroundColorOfButtonsToClear();
         for selectionButton in selectionButtons{
             if (selectionButton.isEqual(colorOption)){
                 colorOption.select();

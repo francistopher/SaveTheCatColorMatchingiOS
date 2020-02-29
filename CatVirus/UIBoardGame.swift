@@ -248,9 +248,9 @@ class UIBoardGame: UIView {
         SoundController.kittenDie();
     }
     
-    @objc func transitionBackgroundColorOfButtonsToLightGray(){
+    @objc func transitionBackgroundColorOfButtonsToClear(){
         if (!colorOptions!.isTransitioned){
-            cats.transitionCatButtonBackgroundToLightgrey();
+            cats.transitionCatButtonBackgroundToClear();
             colorOptions!.isTransitioned = true;
         }
     }

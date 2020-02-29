@@ -166,10 +166,10 @@ class UICatButtons {
         }
     }
     
-    func transitionCatButtonBackgroundToLightgrey() {
+    func transitionCatButtonBackgroundToClear() {
         for catButton in presentCollection! {
-            catButton.imageContainerButton!.fadeBackgroundIn(color:UIColor.lightGray);
-            catButton.fadeBackgroundIn(color: UIColor.lightGray);
+            catButton.imageContainerButton!.backgroundColor = UIColor.clear;
+            catButton.fadeBackgroundIn(color: UIColor.clear);
         }
     }
     

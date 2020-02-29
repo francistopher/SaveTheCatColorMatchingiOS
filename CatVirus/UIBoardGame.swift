@@ -23,11 +23,10 @@ class UIBoardGame: UIView {
     var successGradientLayer:CAGradientLayer? = nil;
     
     var settingsButton:UISettingsButton? = nil;
-    var statistics:UIStatistics?
-
-    var viruses:UIViruses?
-    
     var livesMeter:UILivesMeter?
+    var statistics:UIStatistics?
+    var attackMeter:UIAttackMeter?
+    var viruses:UIViruses?
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented");
@@ -41,8 +40,17 @@ class UIBoardGame: UIView {
         self.statistics = UIStatistics(parentView: parentView);
         self.statistics!.continueButton!.addTarget(self, action: #selector(continueSelector), for: .touchUpInside);
         setupLivesMeter();
+        setupAttackMeter();
     }
     
+    func setupAttackMeter() {
+        let attackMeterFrame:CGRect = CGRect(x: 0.0, y: livesMeter!.frame.minY, width: ViewController.staticUnitViewWidth * 7, height: livesMeter!.frame.height);
+        attackMeter = UIAttackMeter(parentView:self.superview!, frame: attackMeterFrame);
+        UICenterKit.centerHorizontally(childView: attackMeter!, parentRect: attackMeter!.superview!.frame, childRect: attackMeter!.frame);
+        attackMeter!.setVirus();
+        attackMeter!.setCat();
+    }
+
     func setupLivesMeter() {
         let livesMeterWidth:CGFloat = (((((ViewController.staticUnitViewWidth * 18.0) * 0.8575) / 8.0) * 1.75) + ViewController.staticUnitViewWidth * 0.5) * 0.955;
         let livesMeterX:CGFloat = ((ViewController.staticUnitViewWidth * 18.0) - (livesMeterWidth * 1.025) - ViewController.staticUnitViewWidth);
@@ -563,5 +571,38 @@ class UILivesMeter:UICView {
             self.backgroundColor = UIColor.black;
         }
     }
+}
+
+class UIAttackMeter:UICView {
+    
+    var virus:UIVirus?
+    var cat:UICatButton?
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    init(parentView:UIView, frame:CGRect) {
+        super.init(parentView: parentView, x: frame.minX, y: frame.minY, width: frame.width, height: frame.height, backgroundColor: UIColor.clear);
+        self.layer.cornerRadius = self.frame.height * 0.5;
+        self.layer.borderWidth = self.frame.height / 12.0;
+        setStyle();
+    }
+    
+    func setVirus() {
+        virus = UIVirus(parentView: self, frame: CGRect(x: -self.layer.borderWidth * 0.8, y: 0.0, width: self.frame.height, height: self.frame.height));
+        let newVirusFrame:CGRect = CGRect(x: self.frame.minX + virus!.frame.minX, y: self.frame.minY + virus!.frame.minY, width: virus!.frame.width, height: virus!.frame.height);
+        virus!.frame = newVirusFrame;
+        self.superview!.addSubview(virus!);
+    }
+    
+    func setCat() {
+        cat = UICatButton(parentView: self, x: self.frame.width - self.frame.height, y: 0.0, width: self.frame.height, height: self.frame.height, backgroundColor: UIColor.clear);
+        cat!.layer.borderWidth = 0.0;
+        cat!.grow();
+        cat!.imageContainerButton!.grow();
+        cat!.setCat(named: "SmilingCat", stage:0);
+    }
+    
 }
 

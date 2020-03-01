@@ -128,6 +128,11 @@ class UICatButton: UIButton {
         });
     }
     
+    func grown() {
+        self.frame = self.originalFrame!;
+        self.imageContainerButton!.frame = self.imageContainerButton!.originalFrame!;
+    }
+    
     func setCat(named:String, stage:Int){
         // Save non empty strings only
         if (named != "" && named != "updateStyle") {

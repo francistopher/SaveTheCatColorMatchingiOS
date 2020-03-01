@@ -48,8 +48,8 @@ class UIBoardGame: UIView {
         let attackMeterFrame:CGRect = CGRect(x: 0.0, y: livesMeter!.frame.minY, width: ViewController.staticUnitViewWidth * 7, height: livesMeter!.frame.height);
         attackMeter = UIAttackMeter(parentView:self.superview!, frame: attackMeterFrame, attackCatButtonFunction: attackCatButton, cats: cats);
         UICenterKit.centerHorizontally(childView: attackMeter!, parentRect: attackMeter!.superview!.frame, childRect: attackMeter!.frame);
-        attackMeter!.setVirus();
         attackMeter!.setCat();
+        attackMeter!.setVirus();
         attackMeter!.setCompiledStyle();
     }
 
@@ -88,21 +88,19 @@ class UIBoardGame: UIView {
         cats.loadPreviousCats();
         recordGridColorsUsed();
         colorOptions!.buildColorOptionButtons(setup: true);
-        if (self.currentRound > 1) {
+        if (currentRound > 1) {
+            self.attackMeter!.onlyTransitionVirusAwayFromCat = false;
             if (timer == nil) {
-                self.attackMeter!.attackIntent = true;
-                self.attackMeter!.attackControlled = true;
-            }
-            timer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { timer in
-                if (self.attackMeter!.attackIntent && !self.attackMeter!.attackControlled) {
-                    let randomCat:UICatButton = self.cats.getRandomCatThatIsAlive();
-                    self.attackCatButton(catButton: randomCat);
-                    self.attackMeter!.attackControlled = true;
-                    self.attackMeter!.attackIntent = false;
-                } else if (self.attackMeter!.attackIntent) {
-                    print("Lets go to attack!");
-                    self.attackMeter!.startVirusTransitionToCat();
-                    self.attackMeter!.attackIntent = false;
+                timer = Timer.scheduledTimer(withTimeInterval: 0.01, repeats: true) { timer in
+                    self.attackMeter!.transitionVirusCloserToCat();
+                    self.attackMeter!.jumpCat();
+                    self.attackMeter!.transitionVirusFurtherFromCat();
+                    if (self.attackMeter!.attack) {
+                        let randomCat:UICatButton = self.cats.getRandomCatThatIsAlive();
+                        self.attackCatButton(catButton: randomCat);
+                        self.attackMeter!.attack = false;
+                    }
+                    
                 }
             }
         }
@@ -199,8 +197,7 @@ class UIBoardGame: UIView {
     }
     
     func gameOverTransition() {
-        attackMeter!.blockTransitionToCat();
-        timer!.invalidate();
+        self.attackMeter!.onlyTransitionVirusAwayFromCat = true;
         statistics!.finalStage = "\(self.currentRound)";
         statistics!.sessionEndTime = CFAbsoluteTimeGetCurrent();
         statistics!.setSessionDuration();
@@ -233,6 +230,7 @@ class UIBoardGame: UIView {
             // Correct matching grid button color and selection color
             if (catButton.backgroundCGColor! == colorOptions!.selectedColor.cgColor){
                 if (!catButton.isPodded) {
+                    self.attackMeter!.skipJumpingTheCat();
                     gridColorsCount[catButton.backgroundCGColor!]! -= 1;
                     colorOptions!.buildColorOptionButtons(setup: false);
                     catButton.pod();
@@ -291,9 +289,8 @@ class UIBoardGame: UIView {
     
     func verifyThatRemainingCatsArePodded(catButton:UICatButton) {
         // Check if all the cats have been podded
-        self.attackMeter!.blockTransitionToCat();
         if (cats.aliveCatsArePodded()) {
-            timer?.invalidate();
+            self.attackMeter!.onlyTransitionVirusAwayFromCat = true;
             SoundController.heaven();
             colorOptions!.selectedColor = UIColor.lightGray;
             colorOptions!.isTransitioned = false;
@@ -606,13 +603,20 @@ class UILivesMeter:UICView {
 class UIAttackMeter:UICView {
     
     var virus:UIVirus?
-    var virusXDistanceFromCat:CGFloat = 0.0;
+    var virusX:CGFloat = 0.0;
     var cat:UICatButton?
-    var attackCatButtonFunction:((UICatButton) -> Void)?
-    var cats:[UICatButton]?
-    var attackIntent:Bool = true;
-    var attackDuration:Double = 3.0;
-    var attackControlled:Bool = true;
+    
+    var attackDuration:CGFloat = 5.0 * 100.0;
+    var virusDistanceFromCat:CGFloat = 0.0;
+    var virusChangeInDistanceFromCat:CGFloat = 0.0;
+    
+    var transitionVirusToCat:Bool = true;
+    var transitionVirusAwayFromCat:Bool = false;
+    var onlyTransitionVirusAwayFromCat:Bool = false;
+    
+    var attackStarted:Bool = false;
+    var startAttack:Bool = false;
+    var attack:Bool = false;
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -622,46 +626,87 @@ class UIAttackMeter:UICView {
         super.init(parentView: parentView, x: frame.minX, y: frame.minY, width: frame.width, height: frame.height, backgroundColor: UIColor.clear);
         self.layer.cornerRadius = self.frame.height * 0.5;
         self.layer.borderWidth = self.frame.height / 12.0;
-        virusXDistanceFromCat = self.frame.width - self.frame.height;
+        
     }
     
-    func revertVirusTransitionToCat() {
-        UIView.animate(withDuration: 1.0, delay: 0.0, options: [.curveEaseInOut], animations: {
-            self.virus!.frame = self.virus!.originalFrame!;
-        }, completion: { _ in
-            self.attackIntent = true;
-            self.attackControlled = true;
-        })
-    }
+//    func revertVirusTransitionToCat() {
+//        UIView.animate(withDuration: 1.0, delay: 0.0, options: [.curveEaseInOut], animations: {
+//            self.virus!.frame = self.virus!.originalFrame!;
+//        }, completion: { _ in
+//            self.attackIntent = true;
+//            self.attackControlled = true;
+//        })
+//    }
+//
     
-    func startVirusTransitionToCat() {
-        UIView.animate(withDuration: attackDuration, delay: 0.125, options: [.curveEaseInOut], animations: {
-            self.virus!.transform = self.virus!.transform.translatedBy(x: self.virusXDistanceFromCat, y: 0.0);
-        }, completion: { _ in
-            if (!self.attackIntent && !self.attackControlled) {
-                self.revertVirusTransitionToCat();
-                return;
+    func transitionVirusCloserToCat() {
+        if (transitionVirusToCat) {
+            print("Why not closer?")
+            if (self.virus!.frame.minX < self.cat!.frame.minX) {
+                virusX +=  virusChangeInDistanceFromCat;
+                self.virus!.frame = CGRect(x: virusX, y: virus!.frame.minY, width: self.frame.height, height: self.frame.height);
+            } else {
+//                startAttack = true;
+                transitionVirusToCat = false;
+                startAttack = true;
             }
-            UIView.animate(withDuration: 1.0, delay: 0.0, options: [.curveEaseIn, .autoreverse], animations: {
-                self.virus!.transform = self.virus!.transform.scaledBy(x: 1.25, y: 1.25);
-            }, completion: { _ in
-                if (!self.attackIntent && !self.attackControlled) {
-                    self.revertVirusTransitionToCat();
-                    return;
-                }
-                self.attackIntent = true;
-                self.attackControlled = false;
-                print("Continuing!")
-                self.virus!.transform = self.virus!.transform.scaledBy(x: 0.8, y: 0.8);
-                self.revertVirusTransitionToCat();
-            })
-        })
+        }
     }
     
-    func blockTransitionToCat() {
-        virus!.layer.removeAllAnimations();
-        self.attackIntent = false;
-        self.attackControlled = false;
+    func jumpCat() {
+        if (startAttack) {
+            attackStarted = true;
+            startAttack = false;
+            UIView.animate(withDuration: 0.5, delay: 0.0, options: [.curveEaseIn], animations: {
+                self.virus!.transform = self.virus!.transform.scaledBy(x: 1.5, y: 1.5);
+            }, completion: { _ in
+                self.attack = true;
+                UIView.animate(withDuration: 0.5, delay: 0.0, options: [.curveEaseOut], animations: {
+                    self.virus!.transform = self.virus!.transform.scaledBy(x: 1.0/1.5, y: 1.0/1.5);
+                }, completion: { _ in
+                    self.transitionVirusAwayFromCat = true;
+                    self.attackStarted = false;
+                })
+            })
+        }
+    }
+    
+    func skipJumpingTheCat() {
+        if (!attackStarted) {
+            transitionVirusAwayFromCat = true;
+            transitionVirusToCat = false;
+        }
+    }
+    
+    func transitionVirusFurtherFromCat() {
+        if (self.transitionVirusAwayFromCat) {
+            print("Why not away?")
+            if (self.virus!.frame.minX > (-self.layer.borderWidth * 0.8 + self.frame.minX)) {
+                virusX -=  virusChangeInDistanceFromCat;
+                self.virus!.frame = CGRect(x: virusX, y: virus!.frame.minY, width: self.frame.height, height: self.frame.height);
+            } else {
+                if (!onlyTransitionVirusAwayFromCat) {
+                    transitionVirusAwayFromCat = false;
+                    transitionVirusToCat = true;
+                }
+            }
+    }
+        
+        //            self.transitionVirusAwayFromCat = false;
+        //            UIView.animate(withDuration: 3.0, delay: 0.0, options: [.curveEaseInOut], animations: {
+        //                self.virus!.frame = CGRect(x: , y: self.frame.minY, width: self.frame.height, height: self.frame.height)
+        //            }, completion: { _ in
+        //                UIView.animate(withDuration: 0.5, delay: 0.0, options: [.curveEaseIn], animations: {
+        //                    self.virus!.transform = self.virus!.transform.rotated(by: -CGFloat.pi);
+        //                }, completion: { _ in
+        //                    UIView.animate(withDuration: 0.5, delay: 0.0, options: [.curveEaseOut], animations: {
+        //                        self.virus!.transform = self.virus!.transform.rotated(by: -CGFloat.pi);
+        //                    }, completion: { _ in
+        //                        self.virusX = self.virus!.frame.minX;
+        //                        self.transitionVirusToCat = true;
+        //                    })
+        //                })
+        //            })
     }
     
     func setVirus() {
@@ -670,13 +715,20 @@ class UIAttackMeter:UICView {
         virus!.frame = newVirusFrame;
         virus!.originalFrame = virus!.frame;
         self.superview!.addSubview(virus!);
+        virusX = self.virus!.frame.minX;
+        virusDistanceFromCat = self.cat!.frame.minX - self.virus!.frame.minX;
+        virusChangeInDistanceFromCat = self.virusDistanceFromCat / self.attackDuration;
+        
     }
     
     func setCat() {
         cat = UICatButton(parentView: self, x: self.frame.width - self.frame.height, y: 0.0, width: self.frame.height, height: self.frame.height, backgroundColor: UIColor.clear);
+        cat!.grown();
+        let newCatFrame:CGRect = CGRect(x: self.frame.minX + cat!.frame.minX, y: self.frame.minY + cat!.frame.minY, width: self.frame.height, height: self.frame.height);
+        cat!.frame = newCatFrame;
+        cat!.originalFrame = cat!.frame;
+        self.superview!.addSubview(cat!);
         cat!.layer.borderWidth = 0.0;
-        cat!.grow();
-        cat!.imageContainerButton!.grow();
         cat!.setCat(named: "SmilingCat", stage:0);
     }
     

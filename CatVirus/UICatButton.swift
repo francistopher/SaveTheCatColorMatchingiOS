@@ -98,13 +98,26 @@ class UICatButton: UIButton {
     func transformTo(frame:CGRect) {
         UIView.animate(withDuration: 0.5, delay: 0.125, options: .curveEaseIn, animations: {
             self.frame = frame;
-            self.imageContainerButton!.frame = CGRect(x: self.imageContainerButton!.frame.minX, y: self.imageContainerButton!.frame.minY, width: frame.height, height: frame.height);
+            if (self.frame.height > self.frame.width) {
+                 self.imageContainerButton!.frame = CGRect(x: self.imageContainerButton!.frame.minX, y: self.imageContainerButton!.frame.minY, width: frame.width, height: frame.width);
+            } else {
+                self.imageContainerButton!.frame = CGRect(x: self.imageContainerButton!.frame.minX, y: self.imageContainerButton!.frame.minY, width: frame.height, height: frame.height);
+            }
+           
             UICenterKit.center(childView: self.imageContainerButton!, parentRect: frame, childRect: self.imageContainerButton!.frame);
             if (!self.isPodded) {
-                self.layer.cornerRadius = frame.height * 0.2;
+                if (self.frame.height > self.frame.width) {
+                    self.layer.cornerRadius = frame.width * 0.2;
+                } else {
+                    self.layer.cornerRadius = frame.height * 0.2;
+                }
                 self.imageContainerButton!.layer.cornerRadius = self.layer.cornerRadius;
             } else {
-                self.layer.cornerRadius = frame.height * 0.5;
+                if (self.frame.height > self.frame.width) {
+                    self.layer.cornerRadius = frame.width * 0.5;
+                } else {
+                    self.layer.cornerRadius = frame.height * 0.5;
+                }
                 self.imageContainerButton!.layer.cornerRadius = self.layer.cornerRadius;
             }
         })

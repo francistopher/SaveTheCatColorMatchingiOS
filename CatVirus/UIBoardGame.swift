@@ -112,6 +112,7 @@ class UIBoardGame: UIView {
         while (rowIndex < gridColors!.count) {
             var columnIndex:Int = 0;
             while (columnIndex < gridColors![0].count) {
+                let randomInt:Int = Int.random(in: 0...2);
                 let randomColor:UIColor = colorOptions!.selectionColors.randomElement()!;
                 if (rowIndex > 0) {
                     let previousColumnColor:UIColor = gridColors![rowIndex - 1][columnIndex];
@@ -121,7 +122,7 @@ class UIBoardGame: UIView {
                 }
                 if (columnIndex > 0) {
                     let previousRowColor:UIColor = gridColors![rowIndex][columnIndex - 1];
-                    if (previousRowColor.cgColor == randomColor.cgColor){
+                    if (previousRowColor.cgColor == randomColor.cgColor && randomInt > 1){
                         columnIndex -= 1;
                     }
                 }
@@ -247,7 +248,11 @@ class UIBoardGame: UIView {
                     verifyThatRemainingCatsArePodded(catButton:catButton);
                 }
             } else {
-                attackCatButton(catButton: catButton);
+                if (!catButton.isPodded) {
+                    attackCatButton(catButton: catButton);
+                } else {
+                    SoundController.kittenMeow();
+                }
             }
         } else {
             SoundController.kittenMeow();
@@ -497,7 +502,7 @@ class UIGameStatus:UICLabel {
 
 class UILivesMeter:UICView {
     
-    var livesLeft:Int = 3;
+    var livesLeft:Int = 9;
     var heartInactiveButtons:[UICButton] = [];
     let heartImage:UIImage = UIImage(named: "heart.png")!;
     var heartInactiveButtonXRange:[CGFloat] = [];

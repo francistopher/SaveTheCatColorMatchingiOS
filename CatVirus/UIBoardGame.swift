@@ -27,6 +27,7 @@ class UIBoardGame: UIView {
     var statistics:UIStatistics?
     var attackMeter:UIAttackMeter?
     var viruses:UIViruses?
+    var timer:Timer?
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented");
@@ -45,7 +46,7 @@ class UIBoardGame: UIView {
     
     func setupAttackMeter() {
         let attackMeterFrame:CGRect = CGRect(x: 0.0, y: livesMeter!.frame.minY, width: ViewController.staticUnitViewWidth * 7, height: livesMeter!.frame.height);
-        attackMeter = UIAttackMeter(parentView:self.superview!, frame: attackMeterFrame);
+        attackMeter = UIAttackMeter(parentView:self.superview!, frame: attackMeterFrame, attackCatButtonFunction: attackCatButton, cats: cats);
         UICenterKit.centerHorizontally(childView: attackMeter!, parentRect: attackMeter!.superview!.frame, childRect: attackMeter!.frame);
         attackMeter!.setVirus();
         attackMeter!.setCat();
@@ -87,6 +88,24 @@ class UIBoardGame: UIView {
         cats.loadPreviousCats();
         recordGridColorsUsed();
         colorOptions!.buildColorOptionButtons(setup: true);
+        if (self.currentRound > 1) {
+            if (timer == nil) {
+                self.attackMeter!.attackIntent = true;
+                self.attackMeter!.attackControlled = true;
+            }
+            timer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { timer in
+                if (self.attackMeter!.attackIntent && !self.attackMeter!.attackControlled) {
+                    let randomCat:UICatButton = self.cats.getRandomCatThatIsAlive();
+                    self.attackCatButton(catButton: randomCat);
+                    self.attackMeter!.attackControlled = true;
+                    self.attackMeter!.attackIntent = false;
+                } else if (self.attackMeter!.attackIntent) {
+                    print("Lets go to attack!");
+                    self.attackMeter!.startVirusTransitionToCat();
+                    self.attackMeter!.attackIntent = false;
+                }
+            }
+        }
     }
     
     func buildGridColors(){
@@ -180,6 +199,8 @@ class UIBoardGame: UIView {
     }
     
     func gameOverTransition() {
+        attackMeter!.blockTransitionToCat();
+        timer!.invalidate();
         statistics!.finalStage = "\(self.currentRound)";
         statistics!.sessionEndTime = CFAbsoluteTimeGetCurrent();
         statistics!.setSessionDuration();
@@ -220,18 +241,7 @@ class UIBoardGame: UIView {
                     verifyThatRemainingCatsArePodded(catButton:catButton);
                 }
             } else {
-                if (livesMeter!.livesLeft > 0) {
-                    setCatButtonAsDead(catButton: catButton);
-                    livesMeter!.decrementLivesLeftCount();
-                    print("\(livesMeter!.livesLeft) lives left.")
-                } else {
-                    setAllCatButtonsAsDead();
-                }
-                if (cats.areAllCatsDead()){
-                    gameOverTransition();
-                } else {
-                    verifyThatRemainingCatsArePodded(catButton:catButton);
-                }
+                attackCatButton(catButton: catButton);
             }
         } else {
             SoundController.kittenMeow();
@@ -243,6 +253,21 @@ class UIBoardGame: UIView {
             if (catButton.isAlive) {
                 setCatButtonAsDead(catButton: catButton);
             }
+        }
+    }
+    
+    func attackCatButton(catButton:UICatButton) {
+        if (livesMeter!.livesLeft > 0) {
+            setCatButtonAsDead(catButton: catButton);
+            livesMeter!.decrementLivesLeftCount();
+            print("\(livesMeter!.livesLeft) lives left.")
+        } else {
+            setAllCatButtonsAsDead();
+        }
+        if (cats.areAllCatsDead()){
+            gameOverTransition();
+        } else {
+            verifyThatRemainingCatsArePodded(catButton:catButton);
         }
     }
     
@@ -266,7 +291,9 @@ class UIBoardGame: UIView {
     
     func verifyThatRemainingCatsArePodded(catButton:UICatButton) {
         // Check if all the cats have been podded
+        self.attackMeter!.blockTransitionToCat();
         if (cats.aliveCatsArePodded()) {
+            timer?.invalidate();
             SoundController.heaven();
             colorOptions!.selectedColor = UIColor.lightGray;
             colorOptions!.isTransitioned = false;
@@ -275,8 +302,10 @@ class UIBoardGame: UIView {
             if (cats.didAllSurvive()) {
                 livesMeter!.incrementLivesLeftCount(catButton: catButton);
                 promote();
+                return;
             } else {
                 maintain();
+                return;
             }
         }
     }
@@ -577,22 +606,69 @@ class UILivesMeter:UICView {
 class UIAttackMeter:UICView {
     
     var virus:UIVirus?
+    var virusXDistanceFromCat:CGFloat = 0.0;
     var cat:UICatButton?
+    var attackCatButtonFunction:((UICatButton) -> Void)?
+    var cats:[UICatButton]?
+    var attackIntent:Bool = true;
+    var attackDuration:Double = 3.0;
+    var attackControlled:Bool = true;
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    init(parentView:UIView, frame:CGRect) {
+    init(parentView:UIView, frame:CGRect, attackCatButtonFunction:((UICatButton) -> Void), cats:UICatButtons) {
         super.init(parentView: parentView, x: frame.minX, y: frame.minY, width: frame.width, height: frame.height, backgroundColor: UIColor.clear);
         self.layer.cornerRadius = self.frame.height * 0.5;
         self.layer.borderWidth = self.frame.height / 12.0;
+        virusXDistanceFromCat = self.frame.width - self.frame.height;
+    }
+    
+    func revertVirusTransitionToCat() {
+        UIView.animate(withDuration: 1.0, delay: 0.0, options: [.curveEaseInOut], animations: {
+            self.virus!.frame = self.virus!.originalFrame!;
+        }, completion: { _ in
+            self.attackIntent = true;
+            self.attackControlled = true;
+        })
+    }
+    
+    func startVirusTransitionToCat() {
+        UIView.animate(withDuration: attackDuration, delay: 0.125, options: [.curveEaseInOut], animations: {
+            self.virus!.transform = self.virus!.transform.translatedBy(x: self.virusXDistanceFromCat, y: 0.0);
+        }, completion: { _ in
+            if (!self.attackIntent && !self.attackControlled) {
+                self.revertVirusTransitionToCat();
+                return;
+            }
+            UIView.animate(withDuration: 1.0, delay: 0.0, options: [.curveEaseIn, .autoreverse], animations: {
+                self.virus!.transform = self.virus!.transform.scaledBy(x: 1.25, y: 1.25);
+            }, completion: { _ in
+                if (!self.attackIntent && !self.attackControlled) {
+                    self.revertVirusTransitionToCat();
+                    return;
+                }
+                self.attackIntent = true;
+                self.attackControlled = false;
+                print("Continuing!")
+                self.virus!.transform = self.virus!.transform.scaledBy(x: 0.8, y: 0.8);
+                self.revertVirusTransitionToCat();
+            })
+        })
+    }
+    
+    func blockTransitionToCat() {
+        virus!.layer.removeAllAnimations();
+        self.attackIntent = false;
+        self.attackControlled = false;
     }
     
     func setVirus() {
         virus = UIVirus(parentView: self, frame: CGRect(x: -self.layer.borderWidth * 0.8, y: 0.0, width: self.frame.height, height: self.frame.height));
         let newVirusFrame:CGRect = CGRect(x: self.frame.minX + virus!.frame.minX, y: self.frame.minY + virus!.frame.minY, width: virus!.frame.width, height: virus!.frame.height);
         virus!.frame = newVirusFrame;
+        virus!.originalFrame = virus!.frame;
         self.superview!.addSubview(virus!);
     }
     

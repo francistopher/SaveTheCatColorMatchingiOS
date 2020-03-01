@@ -342,6 +342,12 @@ class UICatButton: UIButton {
         self.imageContainerButton!.imageView!.alpha = 0.0;
     }
     
+    func fadeIn() {
+        UIView.animate(withDuration: 0.5, delay: 0.25, options: .curveEaseIn, animations: {
+            self.alpha = 1.0;
+        });
+    }
+    
     func setStyle() {
         if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1){
             self.layer.borderColor = UIColor.black.cgColor;

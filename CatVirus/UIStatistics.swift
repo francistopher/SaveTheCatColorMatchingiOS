@@ -177,7 +177,7 @@ class UIStatistics:UICView {
     }
     
     func setupContinueButton() {
-        self.continueButton = UICButton(parentView: contentView!, frame: CGRect(x: 0.0, y: self.frame.height - (unitHeight! * 1.33), width: contentView!.frame.width * 0.35, height: unitHeight!), backgroundColor: .clear);
+        self.continueButton = UICButton(parentView: contentView!, frame: CGRect(x: 0.0, y: self.frame.height - (unitHeight! * 1.125), width: contentView!.frame.width * 0.35, height: unitHeight! * 0.8), backgroundColor: .clear);
         continueButton!.titleLabel!.font = UIFont.boldSystemFont(ofSize:continueButton!.frame.height * 0.40);
         continueButton!.layer.cornerRadius = continueButton!.frame.width * 0.1;
         continueButton!.setTitle("Continue", for: .normal);

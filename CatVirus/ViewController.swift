@@ -69,6 +69,7 @@ class ViewController: UIViewController {
             self.viruses!.fadeIn();
             self.boardGame!.fadeIn();
             self.boardGame!.livesMeter!.fadeIn();
+            self.boardGame!.attackMeter!.compiledShow();
             self.colorOptions!.fadeIn();
             self.boardGame!.buildBoardGame();
             self.settingsButton!.fadeIn();
@@ -87,7 +88,6 @@ class ViewController: UIViewController {
         self.boardGame!.cats.suspendCatAnimations();
         self.settingsButton!.multiplayer!.activePlayersScrollView!.searchingCatButton!.hideCat();
         self.settingsButton!.multiplayer!.activePlayersScrollView!.invitationCatButton!.hideCat();
-        self.boardGame!.attackMeter!.cat!.hideCat();
         print("App backgrounded");
     }
     
@@ -96,7 +96,6 @@ class ViewController: UIViewController {
         self.boardGame!.cats.resumeCatAnimations();
         self.settingsButton!.multiplayer!.activePlayersScrollView!.searchingCatButton!.animate(AgainWithoutDelay: true);
         self.settingsButton!.multiplayer!.activePlayersScrollView!.invitationCatButton!.animate(AgainWithoutDelay: true);
-        self.boardGame!.attackMeter!.cat!.animate(AgainWithoutDelay: true);
         print("App foregrounded");
     }
     
@@ -175,6 +174,7 @@ class ViewController: UIViewController {
         boardGame!.successGradientLayer = successGradientLayer!;
         boardGame!.alpha = 0.0;
         boardGame!.viruses = viruses!;
+        boardGame!.attackMeter!.comiledHide();
     }
 
     func setupColorOptionsView(){

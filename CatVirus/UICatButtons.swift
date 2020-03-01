@@ -176,7 +176,7 @@ class UICatButtons {
     func getRandomCatThatIsAlive() -> UICatButton {
         while (true) {
             let randomCatButton:UICatButton = presentCollection!.randomElement()!;
-            if (randomCatButton.isAlive) {
+            if (randomCatButton.isAlive && !randomCatButton.isPodded) {
                 return randomCatButton;
             }
         }

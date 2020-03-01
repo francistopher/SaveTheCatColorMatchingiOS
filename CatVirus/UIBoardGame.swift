@@ -198,6 +198,8 @@ class UIBoardGame: UIView {
     }
     
     func gameOverTransition() {
+        self.attackMeter!.attack = false;
+        self.attackMeter!.attackStarted = false;
         self.attackMeter!.sendVirusToStart(withHoldVirusAtStart: true);
         self.attackMeter!.virusToCatDuration = 5.0
         statistics!.finalStage = "\(self.currentRound)";
@@ -244,7 +246,7 @@ class UIBoardGame: UIView {
                     catButton.pod();
                     catButton.isPodded = true;
                     catButton.giveMouseCoin(withNoise: true);
-                    self.attackMeter!.virusToCatDuration += 0.1;
+                    self.attackMeter!.updateDuration(change: 0.1);
                     verifyThatRemainingCatsArePodded(catButton:catButton);
                 }
             } else {
@@ -268,7 +270,7 @@ class UIBoardGame: UIView {
     }
     
     func attackCatButton(catButton:UICatButton) {
-        self.attackMeter!.virusToCatDuration -= 1.0;
+        self.attackMeter!.updateDuration(change: -1.0);
         if (livesMeter!.livesLeft > 0) {
             setCatButtonAsDead(catButton: catButton);
             livesMeter!.decrementLivesLeftCount();
@@ -312,7 +314,7 @@ class UIBoardGame: UIView {
             statistics!.catsThatLived += cats.presentCollection!.count;
             if (cats.didAllSurvive()) {
                 livesMeter!.incrementLivesLeftCount(catButton: catButton);
-                self.attackMeter!.virusToCatDuration += 0.5;
+                self.attackMeter!.updateDuration(change: 0.5);
                 promote();
                 return;
             } else {
@@ -502,7 +504,7 @@ class UIGameStatus:UICLabel {
 
 class UILivesMeter:UICView {
     
-    var livesLeft:Int = 9;
+    var livesLeft:Int = 3;
     var heartInactiveButtons:[UICButton] = [];
     let heartImage:UIImage = UIImage(named: "heart.png")!;
     var heartInactiveButtonXRange:[CGFloat] = [];
@@ -661,6 +663,15 @@ class UIAttackMeter:UICView {
         self.virusToCatDistance = cat!.originalFrame!.minX - virus!.originalFrame!.minX;
     }
     
+    func updateDuration(change:Double) {
+        if (change > 0) {
+            virusToCatDuration += change;
+        }
+        else if (virusToCatDuration - change > 1) {
+            virusToCatDuration -= change;
+        }
+    }
+    
     func setupVirusRotatingAnimation() {
         if (startVirusRotatingAnimation) {
             self.virusRotatingAnimation = UIViewPropertyAnimator(duration: 0.5, curve: .easeIn, animations: {
@@ -676,8 +687,6 @@ class UIAttackMeter:UICView {
                 self.virusRotatingAnimation!.startAnimation();
             })
         }
-        
-        
     }
     
     func setupVirusToCatAnimation() {

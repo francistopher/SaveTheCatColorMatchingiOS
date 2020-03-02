@@ -12,6 +12,7 @@ import AVFoundation
 enum Cat {
     case fat
     case standard
+    case ninja
 }
 
 class UICatButton: UIButton {

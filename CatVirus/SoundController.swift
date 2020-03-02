@@ -120,6 +120,7 @@ class SoundController {
         kittenMeowUrl = URL(fileURLWithPath: kittenMeowPath!);
         do {
             kittenMeowSoundEffect = try AVAudioPlayer(contentsOf: kittenMeowUrl!);
+            kittenMeowSoundEffect!.setVolume(0.50, fadeDuration: 0.0);
         } catch {
             print("Unable to play kitten meow");
         }
@@ -130,6 +131,7 @@ class SoundController {
         kittenMeowUrl2 = URL(fileURLWithPath: kittenMeowPath2!);
         do {
             kittenMeowSoundEffect2 = try AVAudioPlayer(contentsOf: SoundController.kittenMeowUrl2!);
+            kittenMeowSoundEffect2!.setVolume(0.50, fadeDuration: 0.0);
         } catch {
             print("Unable to play kitten meow");
         }
@@ -140,6 +142,7 @@ class SoundController {
         kittenMeowUrl3 = URL(fileURLWithPath: kittenMeowPath3!);
         do {
             kittenMeowSoundEffect3 = try AVAudioPlayer(contentsOf: kittenMeowUrl3!);
+            kittenMeowSoundEffect3!.setVolume(0.50, fadeDuration: 0.0);
         } catch {
             print("Unable to play kitten meow");
         }

@@ -10,7 +10,7 @@ import SwiftUI
 
 class UIStatistics:UICView {
     
-    static var selectedCat:Cat = .standard;
+    static var selectedCat:Cat = .ninja;
     static var mouseCoins:Int = 0;
     
     var gameOverLabel:UICLabel?
@@ -41,7 +41,7 @@ class UIStatistics:UICView {
     var sessionStartTime:Double = 0.0;
     var sessionEndTime:Double = 0.0;
     var sessionDuration:Double = 0.0;
-    var finalStage:String = "";
+    var maxStage:Int = 0;
     
     // Content panel
     var contentView:UICView?
@@ -90,6 +90,8 @@ class UIStatistics:UICView {
         switch (UIStatistics.selectedCat) {
         case Cat.fat:
             return namedCatImage + "fat" + named;
+        case Cat.ninja:
+            return namedCatImage + "Ninja" + named;
         case Cat.standard:
             return namedCatImage + named;
         }
@@ -150,7 +152,7 @@ class UIStatistics:UICView {
     
     func setupStagesLabel() {
         self.stagesLabel = UICLabel(parentView: contentView!, x: self.frame.width * 0.02875, y: catsLivedAmountLabel!.frame.maxY, width: contentView!.frame.width * 0.5, height: unitHeight!);
-        stagesLabel!.text = "Stages";
+        stagesLabel!.text = "Max Stage";
         stagesLabel!.font = UIFont.boldSystemFont(ofSize: stagesLabel!.frame.height * 0.40);
         stagesLabel!.backgroundColor = UIColor.clear;
         setupStagesRangeLabel();
@@ -193,8 +195,8 @@ class UIStatistics:UICView {
     func update() {
         catsLivedAmountLabel!.text = String(catsThatLived);
         catsDiedAmountLabel!.text = String(catsThatDied);
-        stagesRangeLabel!.text = "1 - \(finalStage)";
-        durationTimeLabel!.text = "\(sessionDuration) secs";
+        stagesRangeLabel!.text = "\(maxStage - 1)";
+        durationTimeLabel!.text = "\( Int(floor(sessionDuration))) secs";
     }
     
     func setCompiledStyle() {

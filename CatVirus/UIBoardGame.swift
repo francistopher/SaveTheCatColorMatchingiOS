@@ -272,7 +272,8 @@ class UIBoardGame: UIView {
     
     func attackCatButton(catButton:UICatButton) {
         self.attackMeter!.sendVirusToStart(withHoldVirusAtStart: false);
-        self.attackMeter!.updateDuration(change: -0.75);
+        self.attackMeter!.updateDuration(change: -0.80);
+        print("-0.75 duration, single loss ", self.attackMeter!.previousDisplacementDuration);
         if (livesMeter!.livesLeft > 0) {
             setCatButtonAsDead(catButton: catButton);
             livesMeter!.decrementLivesLeftCount();
@@ -317,6 +318,7 @@ class UIBoardGame: UIView {
             if (cats.didAllSurvive()) {
                 livesMeter!.incrementLivesLeftCount(catButton: catButton);
                 self.attackMeter!.updateDuration(change: 0.2);
+                print("+0.2 duration, promotion ", self.attackMeter!.previousDisplacementDuration);
                 promote();
                 return;
             } else {
@@ -669,6 +671,15 @@ class UIAttackMeter:UICView {
     func getVirusToStartDistance() -> CGFloat {
         return (virus!.frame.minX - virus!.originalFrame!.minX);
     }
+    
+    func getVirusToStartDuration() -> Double {
+        return previousDisplacementDuration * Double(getVirusToStartDistance()) / Double(virusToCatDistance);
+    }
+    
+    func getVirusToCatDuration() -> Double {
+        return previousDisplacementDuration * Double(getVirusToCatDistance()) / Double(virusToCatDistance);
+    }
+    
     func setupComponents() {
         setupCat();
         setupVirus();
@@ -681,12 +692,12 @@ class UIAttackMeter:UICView {
             previousDisplacementDuration += change;
         }
         else if (change < 0.0) {
-            if (previousDisplacementDuration + change >= 3.0) {
+            if (previousDisplacementDuration + change >= 3.5) {
                 displacementDuration += change;
                 previousDisplacementDuration += change;
             } else {
-                displacementDuration = 3.0;
-                previousDisplacementDuration = 3.0;
+                displacementDuration = 3.5;
+                previousDisplacementDuration = 3.5;
             }
         }
     }
@@ -695,33 +706,54 @@ class UIAttackMeter:UICView {
         if (self.virusIsRotatingFirstHalf || self.virusIsRotatingSecondHalf){
             if (self.virusIsRotatingFirstHalf) {
                 virusFirstRotationAnimation!.stopAnimation(true);
-                print("First half rotation stopped")
             }
             if (self.virusIsRotatingSecondHalf) {
                 virusSecondRotationAnimation!.stopAnimation(true);
-                print("Second half rotation stopped")
             }
             let radians:CGFloat = atan2(virus!.transform.b, virus!.transform.a)
             let degrees:CGFloat = radians * 180 / .pi;
             self.degreeCheckpoint = degrees;
         }
+        
+        if (self.virusIsDisplacingToCat) {
+            self.virusToCatAnimation!.stopAnimation(true);
+        }
+        
+        if (self.virusIsDisplacingToStart) {
+            self.virusToStartAnimation!.stopAnimation(true);
+        }
+        
     }
     
     func restartVirusMovement() {
-//      print("Virus to cat animation ", virusToCatAnimation!.isRunning);
-//      print("Virus to start animation ", virusToStartAnimation!.isRunning)
-//      self.setupVirusRotatingAnimation(withCheckpoint: true);
-//      self.virusRotatingAnimation!.startAnimation(afterDelay: 5.0);
-        if (self.virusIsRotatingFirstHalf) {
-            self.setupFirstVirusRotationAnimation();
-            self.virusFirstRotationAnimation!.startAnimation();
-            print("Restarting first half rotation")
-        }
-        if (self.virusIsRotatingSecondHalf) {
-            self.setupSecondVirusRotationAnimation();
-            virusSecondRotationAnimation!.startAnimation();
-            print("Restarting second half rotation")
-        }
+        Timer.scheduledTimer(withTimeInterval: 0.75, repeats: false, block: { _ in
+            if (self.virusIsRotatingFirstHalf) {
+                self.setupFirstVirusRotationAnimation();
+                self.virusFirstRotationAnimation!.startAnimation();
+            }
+            if (self.virusIsRotatingSecondHalf) {
+                self.setupSecondVirusRotationAnimation();
+                self.virusSecondRotationAnimation!.startAnimation();
+            }
+        })
+        
+        let virusToCatDuration:Double = Double(0.75 * getVirusToStartDistance() / virusToCatDistance);
+        Timer.scheduledTimer(withTimeInterval: virusToCatDuration, repeats: false, block: { _ in
+            if (self.virusIsDisplacingToCat) {
+                self.setupVirusToCatAnimation();
+                self.virusToCatAnimation!.startAnimation();
+            }
+        })
+        
+        let virusToStartDuration:Double = Double(0.75 * getVirusToCatDistance() / virusToCatDistance);
+        Timer.scheduledTimer(withTimeInterval: virusToStartDuration, repeats: false, block: { _ in
+            if (self.virusIsDisplacingToStart) {
+                self.setupVirusToStartAnimation();
+                self.virusToStartAnimation!.startAnimation();
+            }
+        })
+        
+        
     }
     
     func setupFirstVirusRotationAnimation() {
@@ -763,7 +795,7 @@ class UIAttackMeter:UICView {
     }
     
     func setupVirusToCatAnimation() {
-        self.virusToCatAnimation = UIViewPropertyAnimator(duration: self.displacementDuration, curve: .easeIn, animations: {
+        self.virusToCatAnimation = UIViewPropertyAnimator(duration: getVirusToCatDuration(), curve: .easeIn, animations: {
             self.virus!.transform = self.virus!.transform.translatedBy(x: self.getVirusToCatDistance(), y: 0.0);
         })
         self.virusToCatAnimation!.addCompletion({ _ in
@@ -783,8 +815,7 @@ class UIAttackMeter:UICView {
     }
     
     func setupVirusToStartAnimation() {
-        let duration = (CGFloat(displacementDuration) * getVirusToStartDistance()) / virusToCatDistance;
-        virusToStartAnimation = UIViewPropertyAnimator(duration: Double(duration) , curve: .linear, animations: {
+        virusToStartAnimation = UIViewPropertyAnimator(duration: getVirusToCatDuration() , curve: .linear, animations: {
             self.virus!.transform = self.virus!.transform.translatedBy(x: -self.getVirusToStartDistance(), y: 0.0);
         })
         virusToStartAnimation!.addCompletion({ _ in

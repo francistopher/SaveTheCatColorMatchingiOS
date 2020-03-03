@@ -152,7 +152,9 @@ class UIStatistics:UICView {
     
     func setupStagesLabel() {
         self.stagesLabel = UICLabel(parentView: contentView!, x: self.frame.width * 0.02875, y: catsLivedAmountLabel!.frame.maxY, width: contentView!.frame.width * 0.5, height: unitHeight!);
-        stagesLabel!.text = "Max Stage";
+        stagesLabel!.lineBreakMode = NSLineBreakMode.byWordWrapping;
+        stagesLabel!.numberOfLines = 2;
+        stagesLabel!.text = "Final\nStage";
         stagesLabel!.font = UIFont.boldSystemFont(ofSize: stagesLabel!.frame.height * 0.40);
         stagesLabel!.backgroundColor = UIColor.clear;
         setupStagesRangeLabel();
@@ -166,7 +168,9 @@ class UIStatistics:UICView {
     
     func setupDurationLabel() {
         self.durationLabel = UICLabel(parentView: contentView!, x: contentView!.frame.width * 0.5, y: catsDiedAmountLabel!.frame.maxY, width: contentView!.frame.width * 0.5, height: unitHeight!);
-        durationLabel!.text = "Time";
+        durationLabel!.lineBreakMode = NSLineBreakMode.byWordWrapping;
+        durationLabel!.numberOfLines = 2;
+        durationLabel!.text = "Time\n(Seconds)";
         durationLabel!.font = UIFont.boldSystemFont(ofSize: durationLabel!.frame.height * 0.40);
         durationLabel!.backgroundColor = UIColor.clear;
         setupDurationTimeLabel();
@@ -196,7 +200,7 @@ class UIStatistics:UICView {
         catsLivedAmountLabel!.text = String(catsThatLived);
         catsDiedAmountLabel!.text = String(catsThatDied);
         stagesRangeLabel!.text = "\(maxStage - 1)";
-        durationTimeLabel!.text = "\( Int(floor(sessionDuration))) secs";
+        durationTimeLabel!.text = "\( Int(floor(sessionDuration)))";
     }
     
     func setCompiledStyle() {

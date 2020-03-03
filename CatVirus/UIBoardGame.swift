@@ -564,7 +564,6 @@ class UILivesMeter:UICView {
             livesLeft -= 1;
             let lastHeartButton:UICButton = heartInactiveButtons.last!;
             heartInactiveButtons.removeLast();
-            print("Ahhhhhhh")
             lastHeartButton.frame = CGRect(x: self.frame.minX + lastHeartButton.frame.minX, y: self.frame.minY + lastHeartButton.frame.minY, width: lastHeartButton.frame.width, height: lastHeartButton.frame.height);
             self.superview!.addSubview(lastHeartButton);
             UIView.animate(withDuration: 3.0, delay: 0.125, options: [.curveEaseInOut], animations: {
@@ -646,11 +645,13 @@ class UIAttackMeter:UICView {
     var attackStarted:Bool = false;
     var attack:Bool = false;
     
-    var virusIsRotating:Bool = false;
-    var degreeCheckpoint:CGFloat = 0.0;
+    var virusIsRotatingSecondHalf:Bool = false;
+    var virusIsRotatingFirstHalf:Bool = false;
     var virusIsDisplacingToCat:Bool = false;
     var virusIsDisplacingToStart:Bool = false;
     var virusIsDialating:Bool = false;
+    
+    var degreeCheckpoint:CGFloat = 0.0;
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -691,43 +692,71 @@ class UIAttackMeter:UICView {
     }
     
     func stopVirusMovement() {
-        if (self.virusIsRotating) {
-            virusFirstRotationAnimation!.stopAnimation(true);
-            virusSecondRotationAnimation!.stopAnimation(true);
+        if (self.virusIsRotatingFirstHalf || self.virusIsRotatingSecondHalf){
+            if (self.virusIsRotatingFirstHalf) {
+                virusFirstRotationAnimation!.stopAnimation(true);
+                print("First half rotation stopped")
+            }
+            if (self.virusIsRotatingSecondHalf) {
+                virusSecondRotationAnimation!.stopAnimation(true);
+                print("Second half rotation stopped")
+            }
             let radians:CGFloat = atan2(virus!.transform.b, virus!.transform.a)
             let degrees:CGFloat = radians * 180 / .pi;
-            self.degreeCheckpoint = 360.0 - degrees;
+            self.degreeCheckpoint = degrees;
         }
     }
     
     func restartVirusMovement() {
-            if (self.virusIsRotating){
-//                print("Virus to cat animation ", virusToCatAnimation!.isRunning);
-//                print("Virus to start animation ", virusToStartAnimation!.isRunning)
-//                self.setupVirusRotatingAnimation(withCheckpoint: true);
-//                self.virusRotatingAnimation!.startAnimation(afterDelay: 5.0);
-            }
+//      print("Virus to cat animation ", virusToCatAnimation!.isRunning);
+//      print("Virus to start animation ", virusToStartAnimation!.isRunning)
+//      self.setupVirusRotatingAnimation(withCheckpoint: true);
+//      self.virusRotatingAnimation!.startAnimation(afterDelay: 5.0);
+        if (self.virusIsRotatingFirstHalf) {
+            self.setupFirstVirusRotationAnimation();
+            self.virusFirstRotationAnimation!.startAnimation();
+            print("Restarting first half rotation")
+        }
+        if (self.virusIsRotatingSecondHalf) {
+            self.setupSecondVirusRotationAnimation();
+            virusSecondRotationAnimation!.startAnimation();
+            print("Restarting second half rotation")
+        }
     }
     
     func setupFirstVirusRotationAnimation() {
         var firstDuration:Double = 0.5;
         var firstRadian:CGFloat = -CGFloat.pi;
+        if (degreeCheckpoint > 0.0){
+            let remainingPercentage:CGFloat = (180.0 - degreeCheckpoint) / 180.0;
+            firstDuration *= Double(remainingPercentage);
+            firstRadian *= -remainingPercentage;
+            self.degreeCheckpoint = 0.0;
+        }
         self.virusFirstRotationAnimation = UIViewPropertyAnimator(duration: firstDuration, curve: .easeIn, animations: {
             self.virus!.transform = self.virus!.transform.rotated(by: firstRadian);
         });
         self.virusFirstRotationAnimation!.addCompletion({ _ in
             self.startVirusSecondRotation = true;
+            self.virusIsRotatingFirstHalf = false;
+            self.virusIsRotatingSecondHalf = true;
         })
     }
     
     func setupSecondVirusRotationAnimation() {
         var secondDuration:Double = 0.5;
         var secondRadian:CGFloat = -CGFloat.pi;
+        if (-degreeCheckpoint > 0.0) {
+            let remainingPercentage:CGFloat = -degreeCheckpoint / 180.0;
+            secondDuration *= Double(remainingPercentage);
+            secondRadian *= -remainingPercentage;
+            self.degreeCheckpoint = 0.0;
+        }
         self.virusSecondRotationAnimation = UIViewPropertyAnimator(duration: secondDuration, curve: .easeOut, animations: {
             self.virus!.transform = self.virus!.transform.rotated(by: secondRadian);
         })
         self.virusSecondRotationAnimation!.addCompletion({ _ in
-            self.virusIsRotating = false;
+            self.virusIsRotatingSecondHalf = false;
             self.startVirusToCat = true;
             self.virusIsDisplacingToCat = true;
         })
@@ -761,7 +790,7 @@ class UIAttackMeter:UICView {
         virusToStartAnimation!.addCompletion({ _ in
             self.virusIsDisplacingToStart = false;
             self.startVirusFirstRotation = true;
-            self.virusIsRotating = true;
+            self.virusIsRotatingFirstHalf = true;
         })
     }
     

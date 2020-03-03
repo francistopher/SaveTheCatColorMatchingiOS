@@ -143,7 +143,7 @@ class ViewController: UIViewController {
         UICenterKit.center(childView: introLabel!, parentRect: mainView.frame, childRect: introLabel!.frame);
         introLabel!.font = UIFont.boldSystemFont(ofSize: unitViewHeight * 0.75);
         introLabel!.backgroundColor = .clear;
-        introLabel!.text = "Save The Cat!";
+        introLabel!.text = "Save Da Cat!";
         introLabel!.alpha = 0.0;
         introLabel!.fadeInAndOut();
     }

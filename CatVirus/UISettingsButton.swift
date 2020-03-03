@@ -148,6 +148,7 @@ class UISettingsButton:UIButton {
             settingsMenuShow();
         }else{
             settingsMenuHide();
+            boardGame!.attackMeter!.restartVirusMovement();
         }
     }
     

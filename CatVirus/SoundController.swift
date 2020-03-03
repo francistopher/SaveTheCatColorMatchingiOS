@@ -193,6 +193,7 @@ class SoundController {
     static func chopinPrelude(play:Bool) {
         if (play) {
             chopinPreludeSoundEffect!.play();
+            chopinPreludeSoundEffect!.numberOfLoops = -1;
         } else {
             let timeInterval:TimeInterval = TimeInterval(0.5);
             chopinPreludeSoundEffect!.setVolume(0.0, fadeDuration: timeInterval);

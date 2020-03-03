@@ -197,11 +197,8 @@ class UIBoardGame: UIView {
     }
     
     func gameOverTransition() {
-        self.attackMeter!.sendVirusToStart(withHoldVirusAtStart: true);
         self.attackMeter!.attack = false;
         self.attackMeter!.attackStarted = false;
-        print("Attack displacement duration \(self.attackMeter!.displacementDuration)")
-        self.attackMeter!.displacementDuration = 5.0
         statistics!.maxStage = self.currentRound;
         statistics!.sessionEndTime = CFAbsoluteTimeGetCurrent();
         statistics!.setSessionDuration();
@@ -209,6 +206,9 @@ class UIBoardGame: UIView {
         SoundController.mozartSonata(play: false);
         SoundController.chopinPrelude(play: true);
         colorOptions!.removeBorderOfSelectionButtons();
+        self.attackMeter!.displacementDuration = 3.5;
+        self.attackMeter!.previousDisplacementDuration = 3.5;
+        self.attackMeter!.sendVirusToStart(withHoldVirusAtStart: true);
         // App data of dead cats
         Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false) { timer in
             self.settingsButton!.disable();

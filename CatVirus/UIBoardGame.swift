@@ -46,7 +46,7 @@ class UIBoardGame: UIView {
     
     func setupAttackMeter() {
         let attackMeterFrame:CGRect = CGRect(x: 0.0, y: livesMeter!.frame.minY, width: ViewController.staticUnitViewWidth * 7, height: livesMeter!.frame.height);
-        attackMeter = UIAttackMeter(parentView:self.superview!, frame: attackMeterFrame, attackCatButtonFunction: attackCatButton, cats: cats);
+        attackMeter = UIAttackMeter(parentView:self.superview!, frame: attackMeterFrame, cats: cats);
         UICenterKit.centerHorizontally(childView: attackMeter!, parentRect: attackMeter!.superview!.frame, childRect: attackMeter!.frame);
         attackMeter!.setupComponents();
         attackMeter!.setCompiledStyle();
@@ -643,11 +643,16 @@ class UIAttackMeter:UICView {
     var attackStarted:Bool = false;
     var attack:Bool = false;
     
+    var virusIsRotating:Bool = false;
+    var virusIsDisplacingToCat:Bool = false;
+    var virusIsDisplacingToStart:Bool = false;
+    var virusIsDialating:Bool = false;
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    init(parentView:UIView, frame:CGRect, attackCatButtonFunction:((UICatButton) -> Void), cats:UICatButtons) {
+    init(parentView:UIView, frame:CGRect, cats:UICatButtons) {
         super.init(parentView: parentView, x: frame.minX, y: frame.minY, width: frame.width, height: frame.height, backgroundColor: UIColor.clear);
         self.layer.cornerRadius = self.frame.height * 0.5;
         self.layer.borderWidth = self.frame.height / 12.0
@@ -681,6 +686,15 @@ class UIAttackMeter:UICView {
         }
     }
     
+    func stopVirusMovement() {
+        if (self.virusIsRotating) {
+            virusRotatingAnimation!.stopAnimation(true);
+        }
+        let radians = atan2(virus!.transform.b, virus!.transform.a)
+        let degrees = radians * 180 / .pi
+        print("Degree checkpoint \(degrees)");
+    }
+    
     func setupVirusRotatingAnimation() {
         self.resetHoldVirusAtStart();
         print("Reset virus duration at rotation \(self.displacementDuration)")
@@ -693,7 +707,9 @@ class UIAttackMeter:UICView {
                         self.virus!.transform = self.virus!.transform.rotated(by: -CGFloat.pi);
                 })
                 self.virusRotatingAnimation!.addCompletion({ _ in
+                    self.virusIsRotating = false;
                     self.startVirusToCatAnimation = true;
+                    self.virusIsDisplacingToCat = true;
                 })
                 self.virusRotatingAnimation!.startAnimation();
             })
@@ -705,6 +721,7 @@ class UIAttackMeter:UICView {
             self.virus!.transform = self.virus!.transform.translatedBy(x: self.getVirusToCatDistance(), y: 0.0);
         })
         self.virusToCatAnimation!.addCompletion({ _ in
+            self.virusIsDisplacingToCat = false;
             self.startVirusJumpingCatAnimation = true;
         })
     }
@@ -715,6 +732,7 @@ class UIAttackMeter:UICView {
         })
         virusUnJumpingCatAnimation!.addCompletion({ _ in
             self.startVirusToStartAnimation = true;
+            self.virusIsDisplacingToStart = true;
         })
     }
     
@@ -724,7 +742,9 @@ class UIAttackMeter:UICView {
             self.virus!.transform = self.virus!.transform.translatedBy(x: -self.getVirusToStartDistance(), y: 0.0);
         })
         virusToStartAnimation!.addCompletion({ _ in
+            self.virusIsDisplacingToStart = false;
             self.startVirusRotatingAnimation = true;
+            self.virusIsRotating = true;
         })
     }
     
@@ -788,9 +808,7 @@ class UIAttackMeter:UICView {
             holdVirusAtStart = true;
             attackStarted = false;
         }
-        if (attackStarted && !withHoldVirusAtStart) {
-            return;
-        }
+        
         func virusToStart() {
             if (virusToCatAnimation != nil && virusToCatAnimation!.isRunning) {
                 previousDisplacementDuration = displacementDuration;

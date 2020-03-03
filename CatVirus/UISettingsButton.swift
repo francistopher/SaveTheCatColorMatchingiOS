@@ -22,7 +22,7 @@ class UISettingsButton:UIButton {
     var settingsMenu:UICView? = nil;
     
     var colorOptionsView:UIColorOptions? = nil;
-    var boardGameView:UIBoardGame? = nil;
+    var boardGame:UIBoardGame? = nil;
     var cellFrame:CGRect? = nil;
     
     var mouseCoin:UIMouseCoin? = nil;
@@ -144,6 +144,7 @@ class UISettingsButton:UIButton {
     @objc func settingsMenuSelector(){
         gearSpinning();
         if(!isPressed){
+            boardGame!.attackMeter!.stopVirusMovement();
             settingsMenuShow();
         }else{
             settingsMenuHide();
@@ -170,7 +171,7 @@ class UISettingsButton:UIButton {
             self.noAds!.frame = self.noAds!.originalFrame!;
         })
         colorOptionsView!.isUserInteractionEnabled = false;
-        boardGameView!.isUserInteractionEnabled = false;
+        boardGame!.isUserInteractionEnabled = false;
     }
     
     @objc func settingsMenuHide(){
@@ -193,7 +194,7 @@ class UISettingsButton:UIButton {
             self.noAds!.frame = self.noAds!.reducedFrame!;
         })
         colorOptionsView!.isUserInteractionEnabled = true;
-        boardGameView!.isUserInteractionEnabled = true;
+        boardGame!.isUserInteractionEnabled = true;
     }
     
     func setStyle(){
@@ -224,7 +225,7 @@ class UISettingsButton:UIButton {
     }
     
     func setBoardGameAndColorOptionsView(boardGameView:UIBoardGame, colorOptionsView:UIColorOptions) {
-        self.boardGameView = boardGameView;
+        self.boardGame = boardGameView;
         self.colorOptionsView = colorOptionsView;
         self.restart1!.setTargetResources(boardGameView: boardGameView, settingsButton: self);
     }

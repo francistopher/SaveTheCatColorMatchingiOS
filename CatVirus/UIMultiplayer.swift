@@ -51,7 +51,9 @@ class UIMultiplayer: UIButton {
             fadeBackgroundIn();
             mcController!.advertisingAndBrowsing(start: true);
             activePlayersScrollView!.isSearching = true;
+            self.activePlayersScrollView!.searchForFoundAndLostPeers();
         } else {
+            self.activePlayersScrollView!.searchTimer!.invalidate();
             fadeBackgroundOut();
             mcController!.advertisingAndBrowsing(start: false);
             mcController!.foundPeerIDs = [];
@@ -118,7 +120,6 @@ class UIMultiplayer: UIButton {
                 updateDisplayNameButton!.backgroundColor = UIColor.systemGreen;
                 updateDisplayNameButton!.setTitle( "^.^", for: .normal);
             }
-            
         }
     }
     
@@ -196,7 +197,6 @@ class UIPlayerAdScrollView:UICScrollView {
         self.unitHeight = unitHeight;
         setupSearchingForPlayersView();
         setupInvitationView();
-        searchForFoundAndLostPeers();
     }
     
     func removePlayerAds(forever:Bool) {

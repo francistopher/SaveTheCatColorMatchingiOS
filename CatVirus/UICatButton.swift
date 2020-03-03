@@ -10,7 +10,7 @@ import SwiftUI
 import AVFoundation
 
 enum Cat {
-    case fat
+    case fancy
     case standard
     case ninja
 }

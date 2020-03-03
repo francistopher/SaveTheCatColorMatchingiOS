@@ -10,7 +10,7 @@ import SwiftUI
 
 class UIStatistics:UICView {
     
-    static var selectedCat:Cat = .ninja;
+    static var selectedCat:Cat = .fancy;
     static var mouseCoins:Int = 0;
     
     var gameOverLabel:UICLabel?
@@ -88,8 +88,8 @@ class UIStatistics:UICView {
             namedCatImage += "dark";
         }
         switch (UIStatistics.selectedCat) {
-        case Cat.fat:
-            return namedCatImage + "fat" + named;
+        case Cat.fancy:
+            return namedCatImage + "Fancy" + named;
         case Cat.ninja:
             return namedCatImage + "Ninja" + named;
         case Cat.standard:

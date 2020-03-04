@@ -651,9 +651,12 @@ class UIAttackMeter:UICView {
     var virusIsRotatingFirstHalf:Bool = false;
     var virusIsDisplacingToCat:Bool = false;
     var virusIsDisplacingToStart:Bool = false;
-    var virusIsDialating:Bool = false;
+    var virusIsJumpingCat:Bool = false;
+    var virusIsUnJumpingCat:Bool = false;
     
     var degreeCheckpoint:CGFloat = 0.0;
+    var virusXBeforeJump:CGFloat = 0.0;
+    var virusXBeforeUnJump:CGFloat = 0.0;
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -723,37 +726,96 @@ class UIAttackMeter:UICView {
             self.virusToStartAnimation!.stopAnimation(true);
         }
         
+        if (self.virusIsJumpingCat) {
+            self.virusJumpingCatAnimation!.stopAnimation(true);
+            let grownVirusX:CGFloat = virusXBeforeJump + (virus!.originalFrame!.width * 0.5) - (virus!.frame.width * 0.5);
+            virus!.frame = CGRect(x: grownVirusX, y: virus!.frame.minY, width: virus!.frame.width, height: virus!.frame.height);
+
+        }
+        
+        if (self.virusIsUnJumpingCat) {
+            self.virusUnJumpingCatAnimation!.stopAnimation(true);
+            let shrunkVirusX:CGFloat = virusXBeforeUnJump + (virus!.originalFrame!.width * 0.75) - (virus!.frame.width * 0.5);
+            virus!.frame = CGRect(x: shrunkVirusX, y: virus!.frame.minY, width: virus!.frame.width, height: virus!.frame.height)
+        }
     }
     
     func restartVirusMovement() {
-        Timer.scheduledTimer(withTimeInterval: 0.75, repeats: false, block: { _ in
-            if (self.virusIsRotatingFirstHalf) {
-                self.setupFirstVirusRotationAnimation();
-                self.virusFirstRotationAnimation!.startAnimation();
-            }
-            if (self.virusIsRotatingSecondHalf) {
-                self.setupSecondVirusRotationAnimation();
-                self.virusSecondRotationAnimation!.startAnimation();
-            }
+        
+        if (self.virusIsRotatingFirstHalf) {
+            self.setupFirstVirusRotationAnimation();
+            self.virusFirstRotationAnimation!.startAnimation(afterDelay: 0.75);
+        }
+        if (self.virusIsRotatingSecondHalf) {
+            self.setupSecondVirusRotationAnimation();
+            self.virusSecondRotationAnimation!.startAnimation(afterDelay: 0.75);
+        }
+        
+        if (self.virusIsDisplacingToCat) {
+            let virusToCatDelay:Double = Double(0.75 * getVirusToStartDistance() / virusToCatDistance);
+            self.setupVirusToCatAnimation();
+            self.virusToCatAnimation!.startAnimation(afterDelay: virusToCatDelay);
+        }
+        
+        if (self.virusIsDisplacingToStart) {
+            let virusToStartDelay:Double = Double(0.75 * getVirusToCatDistance() / virusToCatDistance);
+            self.setupVirusToStartAnimation();
+            self.virusToStartAnimation!.startAnimation(afterDelay: virusToStartDelay);
+        }
+        
+        if (self.virusIsJumpingCat) {
+            self.setupVirusJumpingCatAnimation();
+            self.virusJumpingCatAnimation!.startAnimation(afterDelay: 0.125);
+        }
+
+        if (self.virusIsUnJumpingCat) {
+            self.setupVirusUnJumpingCatAnimation();
+            self.virusUnJumpingCatAnimation!.startAnimation(afterDelay: 0.125);
+        }
+    
+    }
+    
+    func setupVirusJumpingCatAnimation() {
+        var factor:CGFloat = 1.5;
+        var duration:Double = 0.5;
+        if (self.attackStarted) {
+            factor = (virus!.originalFrame!.height * 1.5) / (virus!.frame.height);
+            duration *= 1.5 - Double(factor);
+            virusXBeforeJump = 0.0;
+        } else {
+            virusXBeforeJump = virus!.frame.minX;
+        }
+        self.attackStarted = true;
+        virusJumpingCatAnimation = UIViewPropertyAnimator(duration: duration, curve: .linear, animations: {
+           self.virus!.transform = self.virus!.transform.scaledBy(x: factor, y: factor);
         })
-        
-        let virusToCatDuration:Double = Double(0.75 * getVirusToStartDistance() / virusToCatDistance);
-        Timer.scheduledTimer(withTimeInterval: virusToCatDuration, repeats: false, block: { _ in
-            if (self.virusIsDisplacingToCat) {
-                self.setupVirusToCatAnimation();
-                self.virusToCatAnimation!.startAnimation();
-            }
+        virusJumpingCatAnimation!.addCompletion({ _ in
+           self.virusIsJumpingCat = false;
+           self.attack = true;
+           self.startVirusUnJumpingCat = true;
+           self.virusIsUnJumpingCat = true;
         })
-        
-        let virusToStartDuration:Double = Double(0.75 * getVirusToCatDistance() / virusToCatDistance);
-        Timer.scheduledTimer(withTimeInterval: virusToStartDuration, repeats: false, block: { _ in
-            if (self.virusIsDisplacingToStart) {
-                self.setupVirusToStartAnimation();
-                self.virusToStartAnimation!.startAnimation();
-            }
+    }
+       
+    func setupVirusUnJumpingCatAnimation() {
+        var factor:CGFloat = 1.0 / 1.5;
+        var duration:Double = 0.5;
+        if (!self.attackStarted) {
+            factor = (virus!.originalFrame!.width) / (virus!.frame.width);
+            duration *= (1.0 / Double(factor));
+            virusXBeforeUnJump = 0.0;
+        } else {
+            virusXBeforeUnJump = virus!.frame.minX;
+        }
+        self.attackStarted = false;
+        virusUnJumpingCatAnimation = UIViewPropertyAnimator(duration: duration, curve: .linear, animations: {
+           self.virus!.transform = self.virus!.transform.scaledBy(x: factor, y: factor);
         })
-        
-        
+        virusUnJumpingCatAnimation!.addCompletion({ _ in
+           self.virusIsUnJumpingCat = false;
+           self.startVirusToStart = true;
+           self.virusIsDisplacingToStart = true;
+        })
     }
     
     func setupFirstVirusRotationAnimation() {
@@ -764,13 +826,16 @@ class UIAttackMeter:UICView {
             firstDuration *= Double(remainingPercentage);
             firstRadian *= -remainingPercentage;
             self.degreeCheckpoint = 0.0;
+        } else {
+            self.virus!.transform = .identity;
+            self.virus!.frame = self.virus!.originalFrame!;
         }
         self.virusFirstRotationAnimation = UIViewPropertyAnimator(duration: firstDuration, curve: .easeIn, animations: {
             self.virus!.transform = self.virus!.transform.rotated(by: firstRadian);
         });
         self.virusFirstRotationAnimation!.addCompletion({ _ in
-            self.startVirusSecondRotation = true;
             self.virusIsRotatingFirstHalf = false;
+            self.startVirusSecondRotation = true;
             self.virusIsRotatingSecondHalf = true;
         })
     }
@@ -793,7 +858,7 @@ class UIAttackMeter:UICView {
             self.virusIsDisplacingToCat = true;
         })
     }
-    
+
     func setupVirusToCatAnimation() {
         self.virusToCatAnimation = UIViewPropertyAnimator(duration: getVirusToCatDuration(), curve: .easeIn, animations: {
             self.virus!.transform = self.virus!.transform.translatedBy(x: self.getVirusToCatDistance(), y: 0.0);
@@ -801,18 +866,11 @@ class UIAttackMeter:UICView {
         self.virusToCatAnimation!.addCompletion({ _ in
             self.virusIsDisplacingToCat = false;
             self.startVirusJumpingCat = true;
+            self.virusIsJumpingCat = true;
         })
     }
     
-    func setupVirusUnJumpingCatAnimation() {
-        virusUnJumpingCatAnimation = UIViewPropertyAnimator(duration: 0.5, curve: .linear, animations: {
-            self.virus!.transform = self.virus!.transform.scaledBy(x: 1.0/1.5, y: 1.0/1.5);
-        })
-        virusUnJumpingCatAnimation!.addCompletion({ _ in
-            self.startVirusToStart = true;
-            self.virusIsDisplacingToStart = true;
-        })
-    }
+    
     
     func setupVirusToStartAnimation() {
         virusToStartAnimation = UIViewPropertyAnimator(duration: getVirusToCatDuration() , curve: .linear, animations: {
@@ -822,18 +880,6 @@ class UIAttackMeter:UICView {
             self.virusIsDisplacingToStart = false;
             self.startVirusFirstRotation = true;
             self.virusIsRotatingFirstHalf = true;
-        })
-    }
-    
-    func setupVirusJumpingCatAnimation() {
-        self.attackStarted = true;
-        virusJumpingCatAnimation = UIViewPropertyAnimator(duration: 0.5, curve: .easeIn, animations: {
-            self.virus!.transform = self.virus!.transform.scaledBy(x: 1.5, y: 1.5);
-        })
-        virusJumpingCatAnimation!.addCompletion({ _ in
-            self.attack = true;
-            self.attackStarted = false;
-            self.startVirusUnJumpingCat = true;
         })
     }
     
@@ -903,6 +949,7 @@ class UIAttackMeter:UICView {
             }
         }
         virusToStart();
+        
     }
     
     func resetHoldVirusAtStart() {

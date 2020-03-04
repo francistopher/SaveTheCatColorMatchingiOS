@@ -154,7 +154,7 @@ class UIStatistics:UICView {
         self.stagesLabel = UICLabel(parentView: contentView!, x: self.frame.width * 0.02875, y: catsLivedAmountLabel!.frame.maxY, width: contentView!.frame.width * 0.5, height: unitHeight!);
         stagesLabel!.lineBreakMode = NSLineBreakMode.byWordWrapping;
         stagesLabel!.numberOfLines = 2;
-        stagesLabel!.text = "Final\nStage";
+        stagesLabel!.text = "Reached\nStage";
         stagesLabel!.font = UIFont.boldSystemFont(ofSize: stagesLabel!.frame.height * 0.40);
         stagesLabel!.backgroundColor = UIColor.clear;
         setupStagesRangeLabel();
@@ -170,7 +170,7 @@ class UIStatistics:UICView {
         self.durationLabel = UICLabel(parentView: contentView!, x: contentView!.frame.width * 0.5, y: catsDiedAmountLabel!.frame.maxY, width: contentView!.frame.width * 0.5, height: unitHeight!);
         durationLabel!.lineBreakMode = NSLineBreakMode.byWordWrapping;
         durationLabel!.numberOfLines = 2;
-        durationLabel!.text = "Time\n(Seconds)";
+        durationLabel!.text = "Seconds\nTime";
         durationLabel!.font = UIFont.boldSystemFont(ofSize: durationLabel!.frame.height * 0.40);
         durationLabel!.backgroundColor = UIColor.clear;
         setupDurationTimeLabel();

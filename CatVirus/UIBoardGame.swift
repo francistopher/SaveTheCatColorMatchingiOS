@@ -69,6 +69,7 @@ class UIBoardGame: UIView {
         SoundController.mozartSonata(play: true);
         colorOptions!.isTransitioned = false;
         colorOptions!.selectedColor = UIColor.lightGray;
+        attackMeter!.resetCat();
         restart();
     }
     
@@ -995,6 +996,12 @@ class UIAttackMeter:UICView {
         virus!.frame = newVirusFrame;
         virus!.originalFrame = virus!.frame;
         self.superview!.addSubview(virus!);
+    }
+    
+    func resetCat() {
+        setupCat();
+        cat!.setCat(named: "SmilingCat", stage: 5);
+        self.sendSubviewToBack(cat!);
     }
     
     func setupCat() {

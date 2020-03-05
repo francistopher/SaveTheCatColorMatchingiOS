@@ -196,6 +196,8 @@ class UIBoardGame: UIView {
         self.livesMeter!.removeAllHeartLives();
         self.attackMeter!.disperseCatButton();
         self.attackMeter!.sendVirusToStartAndHold();
+        self.attackMeter!.displacementDuration = 3.5;
+        self.attackMeter!.previousDisplacementDuration = 3.5;
         // App data of dead cats
         Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false) { timer in
             self.reset(catsSurvived: false);
@@ -377,6 +379,7 @@ class UIBoardGame: UIView {
     }
     
     func revertSelections() {
+        attackMeter!.sendVirusToStartAndHold();
         livesMeter!.resetLivesLeftCount();
         print("How many lives left!",livesMeter!.livesLeft);
         colorOptions!.selectedColor = UIColor.lightGray;
@@ -668,7 +671,6 @@ class UIAttackMeter:UICView {
                 return;
             }
         }
-        displacementDuration = previousDisplacementDuration;
         setupFirstRotationAnimation();
         firstRotationAnimation!.startAnimation(afterDelay: afterDelay);
         currentVirusPhase = .FirstRotation;
@@ -857,6 +859,7 @@ class UIAttackMeter:UICView {
             self.virus!.frame = self.virus!.originalFrame!;
         })
         translationToStartAnimation!.addCompletion({ _ in
+            self.displacementDuration = self.previousDisplacementDuration;
             self.dismantleTranslationToStart();
             if (!self.holdVirusAtStart) {
                 self.startFirstRotation(afterDelay: 0.125);
@@ -897,14 +900,16 @@ class UIAttackMeter:UICView {
             previousDisplacementDuration += change;
         }
         else if (change < 0.0) {
-            if (previousDisplacementDuration + change >= 3.5) {
+            if (previousDisplacementDuration + change >= 3.0) {
                 displacementDuration += change;
                 previousDisplacementDuration += change;
             } else {
-                displacementDuration = 3.5;
-                previousDisplacementDuration = 3.5;
+                displacementDuration = 3.0;
+                previousDisplacementDuration = 3.0;
             }
         }
+        print(displacementDuration, "Displacement duration")
+        print(previousDisplacementDuration, "Previous Displacement duration")
     }
     
     func pauseVirusMovement() {

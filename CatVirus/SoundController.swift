@@ -171,6 +171,7 @@ class SoundController {
                 let timeInterval:TimeInterval = TimeInterval(0.5);
                 mozartSonataSoundEffect!.setVolume(1.0, fadeDuration: timeInterval);
             } else {
+                setupMozartSonata();
                 mozartSonataSoundEffect!.play();
             }
         } else {

@@ -194,7 +194,7 @@ class UIBoardGame: UIView {
         SoundController.chopinPrelude(play: true);
         colorOptions!.removeBorderOfSelectionButtons();
         self.attackMeter!.disperseCatButton();
-        self.attackMeter!.holdVirusOnceAtStart();
+        self.attackMeter!.sendVirusToStartAndHold();
         // App data of dead cats
         Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false) { timer in
             self.reset(catsSurvived: false);
@@ -999,9 +999,12 @@ class UIAttackMeter:UICView {
     }
     
     func resetCat() {
+        cat!.setCat(named: "DeadCat", stage: 5);
         setupCat();
         cat!.setCat(named: "SmilingCat", stage: 5);
-        self.sendSubviewToBack(cat!);
+        virus!.superview!.bringSubviewToFront(virus!);
+        virus!.superview!.bringSubviewToFront(boardGame!.settingsButton!.settingsMenu!);
+        virus!.superview!.bringSubviewToFront(boardGame!.settingsButton!);
     }
     
     func setupCat() {

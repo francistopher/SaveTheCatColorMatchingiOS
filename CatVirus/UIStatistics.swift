@@ -10,7 +10,7 @@ import SwiftUI
 
 class UIStatistics:UICView {
     
-    static var selectedCat:Cat = .ninja;
+    static var selectedCat:Cat = .fancy;
     static var mouseCoins:Int = 0;
     
     var gameOverLabel:UICLabel?

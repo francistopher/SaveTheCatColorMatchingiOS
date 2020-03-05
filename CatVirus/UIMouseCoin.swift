@@ -34,7 +34,6 @@ class UIMouseCoin: UIButton {
     }
     
     @objc func mouseCoinSelector() {
-        self.mouseCoinView!.backgroundColor = self.superview!.backgroundColor;
         let mouseCoins:Int = UIStatistics.mouseCoins;
         self.amountLabel!.text = "\(mouseCoins)";
         if (UIStatistics.mouseCoins > 0) {
@@ -58,7 +57,7 @@ class UIMouseCoin: UIButton {
     }
     
     func setupMouseCoinView() {
-        self.mouseCoinView = UICView(parentView: self.superview!.superview!, x: 0.0, y: self.superview!.frame.minY, width: ViewController.staticUnitViewWidth * 6, height: self.superview!.frame.height, backgroundColor: UIColor.white);
+        self.mouseCoinView = UICView(parentView: self.superview!.superview!, x: 0.0, y: self.superview!.frame.minY, width: ViewController.staticUnitViewWidth * 7, height: self.superview!.frame.height, backgroundColor: UIColor.white);
         UICenterKit.centerHorizontally(childView: mouseCoinView!, parentRect: mouseCoinView!.superview!.frame, childRect: mouseCoinView!.frame);
         mouseCoinView!.layer.cornerRadius = self.superview!.layer.cornerRadius;
         mouseCoinView!.layer.borderWidth = self.superview!.layer.borderWidth;

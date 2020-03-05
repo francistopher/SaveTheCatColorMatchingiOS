@@ -79,23 +79,25 @@
 		B83B03D224115CDD00EC4BAD /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B83B03D124115CDD00EC4BAD /* Default-568h@2x.png */; };
 		B83B03D524115D2E00EC4BAD /* SaveTheCat.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = B83B03D324115D2E00EC4BAD /* SaveTheCat.xcdatamodeld */; };
 		B83B03D724115F7600EC4BAD /* CenterController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B83B03D624115F7600EC4BAD /* CenterController.swift */; };
+		B83B03DE241160FD00EC4BAD /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B83B03DA241160D600EC4BAD /* GameKit.framework */; };
+		B83B03EF2411877E00EC4BAD /* Icon-40@1x.png in Resources */ = {isa = PBXBuildFile; fileRef = B83B03E02411877D00EC4BAD /* Icon-40@1x.png */; };
+		B83B03F02411877E00EC4BAD /* Icon-87@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = B83B03E12411877D00EC4BAD /* Icon-87@3x.png */; };
+		B83B03F12411877E00EC4BAD /* Icon-152@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B83B03E22411877D00EC4BAD /* Icon-152@2x.png */; };
+		B83B03F22411877E00EC4BAD /* Icon-120@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B83B03E32411877D00EC4BAD /* Icon-120@2x.png */; };
+		B83B03F32411877E00EC4BAD /* Icon-29@1x.png in Resources */ = {isa = PBXBuildFile; fileRef = B83B03E42411877D00EC4BAD /* Icon-29@1x.png */; };
+		B83B03F42411877E00EC4BAD /* Icon-80@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B83B03E52411877D00EC4BAD /* Icon-80@2x.png */; };
+		B83B03F52411877E00EC4BAD /* Icon-120@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = B83B03E62411877D00EC4BAD /* Icon-120@3x.png */; };
+		B83B03F62411877E00EC4BAD /* Icon-76@1x.png in Resources */ = {isa = PBXBuildFile; fileRef = B83B03E72411877D00EC4BAD /* Icon-76@1x.png */; };
+		B83B03F72411877E00EC4BAD /* Icon-40@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B83B03E82411877D00EC4BAD /* Icon-40@2x.png */; };
+		B83B03F82411877E00EC4BAD /* Icon-180@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = B83B03E92411877D00EC4BAD /* Icon-180@3x.png */; };
+		B83B03F92411877E00EC4BAD /* Icon-58@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B83B03EA2411877E00EC4BAD /* Icon-58@2x.png */; };
+		B83B03FA2411877E00EC4BAD /* Icon-20@1x.png in Resources */ = {isa = PBXBuildFile; fileRef = B83B03EB2411877E00EC4BAD /* Icon-20@1x.png */; };
+		B83B03FB2411877E00EC4BAD /* Icon-60@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = B83B03EC2411877E00EC4BAD /* Icon-60@3x.png */; };
+		B83B03FC2411877E00EC4BAD /* Icon-167@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B83B03ED2411877E00EC4BAD /* Icon-167@2x.png */; };
+		B83B03FD2411877E00EC4BAD /* Icon-1024@1x.png in Resources */ = {isa = PBXBuildFile; fileRef = B83B03EE2411877E00EC4BAD /* Icon-1024@1x.png */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXCopyFilesBuildPhase section */
-		B844F8D92410C8B9008CFB5D /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
-
 /* Begin PBXFileReference section */
-		B83B03042411514400EC4BAD /* Save The Cat!.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = "Save The Cat!.app"; path = "/Users/franciscochristopher/dev/SaveTheCats/build/Debug-iphoneos/Save The Cat!.app"; sourceTree = "<absolute>"; };
 		B83B0326241153E800EC4BAD /* UINoAds.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UINoAds.swift; path = SaveTheCat/UINoAds.swift; sourceTree = "<group>"; };
 		B83B0327241153E800EC4BAD /* UIRestart1.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UIRestart1.swift; path = SaveTheCat/UIRestart1.swift; sourceTree = "<group>"; };
 		B83B0328241153E800EC4BAD /* UIStats.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UIStats.swift; path = SaveTheCat/UIStats.swift; sourceTree = "<group>"; };
@@ -169,6 +171,23 @@
 		B83B03D124115CDD00EC4BAD /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-568h@2x.png"; path = "SaveTheCat/Default-568h@2x.png"; sourceTree = "<group>"; };
 		B83B03D424115D2E00EC4BAD /* bagDatCat.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = bagDatCat.xcdatamodel; sourceTree = "<group>"; };
 		B83B03D624115F7600EC4BAD /* CenterController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CenterController.swift; path = SaveTheCat/CenterController.swift; sourceTree = "<group>"; };
+		B83B03D8241160AA00EC4BAD /* Save The Cat!.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Save The Cat!.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B83B03DA241160D600EC4BAD /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = System/Library/Frameworks/GameKit.framework; sourceTree = SDKROOT; };
+		B83B03E02411877D00EC4BAD /* Icon-40@1x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-40@1x.png"; path = "SaveTheCat/Icon-40@1x.png"; sourceTree = "<group>"; };
+		B83B03E12411877D00EC4BAD /* Icon-87@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-87@3x.png"; path = "SaveTheCat/Icon-87@3x.png"; sourceTree = "<group>"; };
+		B83B03E22411877D00EC4BAD /* Icon-152@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-152@2x.png"; path = "SaveTheCat/Icon-152@2x.png"; sourceTree = "<group>"; };
+		B83B03E32411877D00EC4BAD /* Icon-120@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-120@2x.png"; path = "SaveTheCat/Icon-120@2x.png"; sourceTree = "<group>"; };
+		B83B03E42411877D00EC4BAD /* Icon-29@1x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-29@1x.png"; path = "SaveTheCat/Icon-29@1x.png"; sourceTree = "<group>"; };
+		B83B03E52411877D00EC4BAD /* Icon-80@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-80@2x.png"; path = "SaveTheCat/Icon-80@2x.png"; sourceTree = "<group>"; };
+		B83B03E62411877D00EC4BAD /* Icon-120@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-120@3x.png"; path = "SaveTheCat/Icon-120@3x.png"; sourceTree = "<group>"; };
+		B83B03E72411877D00EC4BAD /* Icon-76@1x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-76@1x.png"; path = "SaveTheCat/Icon-76@1x.png"; sourceTree = "<group>"; };
+		B83B03E82411877D00EC4BAD /* Icon-40@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-40@2x.png"; path = "SaveTheCat/Icon-40@2x.png"; sourceTree = "<group>"; };
+		B83B03E92411877D00EC4BAD /* Icon-180@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-180@3x.png"; path = "SaveTheCat/Icon-180@3x.png"; sourceTree = "<group>"; };
+		B83B03EA2411877E00EC4BAD /* Icon-58@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-58@2x.png"; path = "SaveTheCat/Icon-58@2x.png"; sourceTree = "<group>"; };
+		B83B03EB2411877E00EC4BAD /* Icon-20@1x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-20@1x.png"; path = "SaveTheCat/Icon-20@1x.png"; sourceTree = "<group>"; };
+		B83B03EC2411877E00EC4BAD /* Icon-60@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-60@3x.png"; path = "SaveTheCat/Icon-60@3x.png"; sourceTree = "<group>"; };
+		B83B03ED2411877E00EC4BAD /* Icon-167@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-167@2x.png"; path = "SaveTheCat/Icon-167@2x.png"; sourceTree = "<group>"; };
+		B83B03EE2411877E00EC4BAD /* Icon-1024@1x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-1024@1x.png"; path = "SaveTheCat/Icon-1024@1x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -176,6 +195,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B83B03DE241160FD00EC4BAD /* GameKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -196,6 +216,8 @@
 				B83B03CE24115C9500EC4BAD /* Assets.xcassets */,
 				B83B03B524115AA900EC4BAD /* Info.plist */,
 				B83B03D324115D2E00EC4BAD /* SaveTheCat.xcdatamodeld */,
+				B83B03D8241160AA00EC4BAD /* Save The Cat!.app */,
+				B83B03D9241160D600EC4BAD /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -225,10 +247,11 @@
 		B83B0342241154C000EC4BAD /* Images */ = {
 			isa = PBXGroup;
 			children = (
-				B83B03D124115CDD00EC4BAD /* Default-568h@2x.png */,
+				B83B03DF2411875200EC4BAD /* Icon */,
 				B83B0390241156EC00EC4BAD /* Virus */,
 				B83B038F241156A100EC4BAD /* Settings Menu */,
 				B83B038B241155AF00EC4BAD /* Cats */,
+				B83B03D124115CDD00EC4BAD /* Default-568h@2x.png */,
 				B83B036E2411551200EC4BAD /* heart.png */,
 			);
 			name = Images;
@@ -405,6 +428,36 @@
 			name = Delegates;
 			sourceTree = "<group>";
 		};
+		B83B03D9241160D600EC4BAD /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				B83B03DA241160D600EC4BAD /* GameKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		B83B03DF2411875200EC4BAD /* Icon */ = {
+			isa = PBXGroup;
+			children = (
+				B83B03EB2411877E00EC4BAD /* Icon-20@1x.png */,
+				B83B03E42411877D00EC4BAD /* Icon-29@1x.png */,
+				B83B03E02411877D00EC4BAD /* Icon-40@1x.png */,
+				B83B03E82411877D00EC4BAD /* Icon-40@2x.png */,
+				B83B03EA2411877E00EC4BAD /* Icon-58@2x.png */,
+				B83B03EC2411877E00EC4BAD /* Icon-60@3x.png */,
+				B83B03E72411877D00EC4BAD /* Icon-76@1x.png */,
+				B83B03E52411877D00EC4BAD /* Icon-80@2x.png */,
+				B83B03E12411877D00EC4BAD /* Icon-87@3x.png */,
+				B83B03E32411877D00EC4BAD /* Icon-120@2x.png */,
+				B83B03E62411877D00EC4BAD /* Icon-120@3x.png */,
+				B83B03E22411877D00EC4BAD /* Icon-152@2x.png */,
+				B83B03ED2411877E00EC4BAD /* Icon-167@2x.png */,
+				B83B03E92411877D00EC4BAD /* Icon-180@3x.png */,
+				B83B03EE2411877E00EC4BAD /* Icon-1024@1x.png */,
+			);
+			name = Icon;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -416,7 +469,6 @@
 				B833544523EC8F0B00835672 /* Frameworks */,
 				B833544623EC8F0B00835672 /* Resources */,
 				B8BBAA6323FD967300614F95 /* ShellScript */,
-				B844F8D92410C8B9008CFB5D /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -424,7 +476,7 @@
 			);
 			name = SaveTheCat;
 			productName = bagDatCat;
-			productReference = B83B03042411514400EC4BAD /* Save The Cat!.app */;
+			productReference = B83B03D8241160AA00EC4BAD /* Save The Cat!.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -466,27 +518,38 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B83B03F42411877E00EC4BAD /* Icon-80@2x.png in Resources */,
 				B83B03962411577200EC4BAD /* mozartSonata.mp3 in Resources */,
 				B83B034B241154D700EC4BAD /* darkCheeringCat.png in Resources */,
 				B83B037E2411551300EC4BAD /* lightDeadCat.png in Resources */,
+				B83B03FB2411877E00EC4BAD /* Icon-60@3x.png in Resources */,
+				B83B03F32411877E00EC4BAD /* Icon-29@1x.png in Resources */,
+				B83B03F02411877E00EC4BAD /* Icon-87@3x.png in Resources */,
 				B83B033C241154B500EC4BAD /* kittenMeow.mp3 in Resources */,
 				B83B037D2411551300EC4BAD /* lightVirus.png in Resources */,
 				B83B037B2411551300EC4BAD /* lightNinjaSmilingCat.png in Resources */,
 				B83B03782411551300EC4BAD /* lightNoAds.png in Resources */,
 				B83B033E241154B500EC4BAD /* coinEarned.mp3 in Resources */,
 				B83B03752411551300EC4BAD /* lightFancyCheeringCat.png in Resources */,
+				B83B03F12411877E00EC4BAD /* Icon-152@2x.png in Resources */,
 				B83B03BC24115AA900EC4BAD /* LaunchScreen.storyboard in Resources */,
+				B83B03F92411877E00EC4BAD /* Icon-58@2x.png in Resources */,
+				B83B03EF2411877E00EC4BAD /* Icon-40@1x.png in Resources */,
 				B83B035F241154EB00EC4BAD /* darkRestart1.png in Resources */,
 				B83B035B241154EB00EC4BAD /* darkNinjaSmilingCat.png in Resources */,
 				B83B035A241154EB00EC4BAD /* darkNinjaDeadCat.png in Resources */,
 				B83B0359241154EB00EC4BAD /* darkStats.png in Resources */,
 				B83B03BB24115AA900EC4BAD /* Main.storyboard in Resources */,
 				B83B034A241154D700EC4BAD /* darkDeadCat.png in Resources */,
+				B83B03F72411877E00EC4BAD /* Icon-40@2x.png in Resources */,
 				B83B037A2411551300EC4BAD /* lightMoreCats.png in Resources */,
+				B83B03FD2411877E00EC4BAD /* Icon-1024@1x.png in Resources */,
 				B83B03D224115CDD00EC4BAD /* Default-568h@2x.png in Resources */,
 				B83B03802411551300EC4BAD /* heart.png in Resources */,
+				B83B03F62411877E00EC4BAD /* Icon-76@1x.png in Resources */,
 				B83B03862411551300EC4BAD /* lightFancyDeadCat.png in Resources */,
 				B83B034C241154D700EC4BAD /* darkFancyDeadCat.png in Resources */,
+				B83B03FC2411877E00EC4BAD /* Icon-167@2x.png in Resources */,
 				B83B03812411551300EC4BAD /* lightRestart.png in Resources */,
 				B83B037F2411551300EC4BAD /* lightStats.png in Resources */,
 				B83B0341241154B500EC4BAD /* kittenDie.mp3 in Resources */,
@@ -499,18 +562,22 @@
 				B83B03762411551300EC4BAD /* lightFancySmilingCat.png in Resources */,
 				B83B03832411551300EC4BAD /* lightSmilingCat.png in Resources */,
 				B83B035D241154EB00EC4BAD /* darkSmilingCat.png in Resources */,
+				B83B03F52411877E00EC4BAD /* Icon-120@3x.png in Resources */,
 				B83B0361241154EB00EC4BAD /* darkNinjaCheeringCat.png in Resources */,
 				B83B03D024115C9500EC4BAD /* Assets.xcassets in Resources */,
 				B83B034E241154D700EC4BAD /* darkFancySmilingCat.png in Resources */,
+				B83B03F22411877E00EC4BAD /* Icon-120@2x.png in Resources */,
 				B83B03792411551300EC4BAD /* lightRestart1.png in Resources */,
 				B83B03822411551300EC4BAD /* lightNinjaCheeringCat.png in Resources */,
 				B83B03852411551300EC4BAD /* mouseCoin.png in Resources */,
 				B83B0360241154EB00EC4BAD /* darkVirus.png in Resources */,
 				B83B03772411551300EC4BAD /* lightGear.png in Resources */,
+				B83B03FA2411877E00EC4BAD /* Icon-20@1x.png in Resources */,
 				B83B034D241154D700EC4BAD /* darkGear.png in Resources */,
 				B83B035E241154EB00EC4BAD /* darkNoAds.png in Resources */,
 				B83B033F241154B500EC4BAD /* gearSpinning.mp3 in Resources */,
 				B83B0349241154D700EC4BAD /* darkFancyCheeringCat.png in Resources */,
+				B83B03F82411877E00EC4BAD /* Icon-180@3x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -723,7 +790,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.ChristopherFrancisco.-SaveTheCats";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.ChristopherFrancisco.-SaveTheCat";
 				PRODUCT_NAME = "Save The Cat!";
 				SWIFT_OBJC_BRIDGING_HEADER = "SaveTheCat-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -744,7 +811,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.ChristopherFrancisco.-SaveTheCats";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.ChristopherFrancisco.-SaveTheCat";
 				PRODUCT_NAME = "Save The Cat!";
 				SWIFT_OBJC_BRIDGING_HEADER = "SaveTheCat-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;

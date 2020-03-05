@@ -38,7 +38,7 @@ class ViewController: UIViewController {
     @IBOutlet var mainViewController: UIView!
     override func viewDidLoad() {
         super.viewDidLoad();
-        authenticateUser();
+        presentGame();
     }
     
     // Game Center Authentication
@@ -146,7 +146,7 @@ class ViewController: UIViewController {
         CenterController.center(childView: introLabel!, parentRect: mainView.frame, childRect: introLabel!.frame);
         introLabel!.font = UIFont.boldSystemFont(ofSize: unitViewHeight * 0.75);
         introLabel!.backgroundColor = .clear;
-        introLabel!.text = "Save Da Cat!";
+        introLabel!.text = "Save The Cat";
         introLabel!.alpha = 0.0;
         introLabel!.fadeInAndOut();
     }

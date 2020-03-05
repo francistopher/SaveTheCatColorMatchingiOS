@@ -193,6 +193,7 @@ class UIBoardGame: UIView {
         SoundController.mozartSonata(play: false);
         SoundController.chopinPrelude(play: true);
         colorOptions!.removeBorderOfSelectionButtons();
+        self.livesMeter!.removeAllHeartLives();
         self.attackMeter!.disperseCatButton();
         self.attackMeter!.sendVirusToStartAndHold();
         // App data of dead cats
@@ -549,8 +550,9 @@ class UILivesMeter:UICView {
             heartInactiveButtons.removeLast();
             lastHeartButton.frame = CGRect(x: self.frame.minX + lastHeartButton.frame.minX, y: self.frame.minY + lastHeartButton.frame.minY, width: lastHeartButton.frame.width, height: lastHeartButton.frame.height);
             self.superview!.addSubview(lastHeartButton);
+            let randomTargetY:CGFloat = CGFloat.random(in: self.superview!.frame.height...(self.superview!.frame.height * 1.5))
             UIView.animate(withDuration: 3.0, delay: 0.125, options: [.curveEaseInOut], animations: {
-                lastHeartButton.transform = lastHeartButton.transform.translatedBy(x: 0.0, y: self.superview!.frame.height);
+                lastHeartButton.transform = lastHeartButton.transform.translatedBy(x: 0.0, y: randomTargetY);
             }, completion: { _ in
                 lastHeartButton.removeFromSuperview();
             })
@@ -577,6 +579,12 @@ class UILivesMeter:UICView {
             self.addSubview(self.currentHeartButton!);
             self.currentHeartButton!.frame = CGRect(x: self.currentHeartButton!.frame.minX - self.frame.minX, y: self.currentHeartButton!.frame.minY - self.frame.minY, width: (self.frame.width * 0.5) - (self.layer.borderWidth * 0.5), height: self.frame.height)
         })
+    }
+    
+    func removeAllHeartLives() {
+        for _ in 0..<heartInactiveButtons.count {
+            decrementLivesLeftCount();
+        }
     }
     
     func resetLivesLeftCount() {

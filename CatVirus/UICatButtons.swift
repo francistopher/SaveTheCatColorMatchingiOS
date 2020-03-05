@@ -181,4 +181,24 @@ class UICatButtons {
             }
         }
     }
+    
+    func clearCatButtons() {
+        print(presentCollection!.count);
+        for catButton in presentCollection! {
+            if (!catButton.isPodded) {
+                catButton.fadeBackgroundIn(color: UIColor.clear);
+                catButton.imageContainerButton!.fadeBackgroundIn(color: UIColor.clear);
+            }
+        }
+    }
+    
+    func unClearCatButtons() {
+        for catButton in presentCollection! {
+            if (!catButton.isPodded) {
+                catButton.imageContainerButton!.fadeBackgroundIn(color: catButton.originalBackgroundColor);
+                catButton.fadeBackgroundIn(color: catButton.originalBackgroundColor);
+            }
+            
+        }
+    }
 }

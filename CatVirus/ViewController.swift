@@ -66,6 +66,7 @@ class ViewController: UIViewController {
         setupColorOptionsView();
         setupSettingsButton();
         DispatchQueue.main.asyncAfter(deadline: .now() + 4.0) {
+            self.boardGame!.attackMeter!.boardGame = self.boardGame;
             self.viruses!.fadeIn();
             self.boardGame!.fadeIn();
             self.boardGame!.livesMeter!.fadeIn();

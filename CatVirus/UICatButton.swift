@@ -17,21 +17,19 @@ enum Cat {
 
 class UICatButton: UIButton {
     
-    var originalFrame:CGRect? = nil;
+    var originalFrame:CGRect?;
     var previousFileName:String = "";
     var animationStage:Int = 0;
     
-    
     var backgroundCGColor:CGColor?
-    
     var originalBackgroundColor:UIColor = .clear;
-    var imageContainerButton:UICButton? = nil;
+    var imageContainerButton:UICButton?
     var isAlive:Bool = true;
     var isPodded:Bool = false;
     var isFadedOut = false;
-    
     var rowIndex:Int = 0;
     var columnIndex:Int = 0;
+    var clearedOutToSolve:Bool = false;
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented");

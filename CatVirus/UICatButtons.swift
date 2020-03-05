@@ -170,6 +170,7 @@ class UICatButtons {
         for catButton in presentCollection! {
             catButton.imageContainerButton!.backgroundColor = UIColor.clear;
             catButton.fadeBackgroundIn(color: UIColor.clear);
+            catButton.clearedOutToSolve = true;
         }
     }
     
@@ -185,7 +186,7 @@ class UICatButtons {
     func clearCatButtons() {
         print(presentCollection!.count);
         for catButton in presentCollection! {
-            if (!catButton.isPodded) {
+            if (!catButton.isPodded && !catButton.clearedOutToSolve) {
                 catButton.imageContainerButton!.backgroundColor = UIColor.clear;
                 catButton.fadeBackgroundIn(color: UIColor.clear);
             }
@@ -194,9 +195,8 @@ class UICatButtons {
     
     func unClearCatButtons() {
         for catButton in presentCollection! {
-            if (!catButton.isPodded) {
-                catButton.backgroundColor = catButton.originalBackgroundColor;
-                catButton.imageContainerButton!.fadeBackgroundIn(color: catButton.originalBackgroundColor);
+            if (!catButton.isPodded && !catButton.clearedOutToSolve) {
+                catButton.fadeBackgroundIn(color: catButton.originalBackgroundColor);
             }
             
         }

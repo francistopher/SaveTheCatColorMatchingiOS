@@ -154,7 +154,7 @@ class UIStatistics:UICView {
         self.stagesLabel = UICLabel(parentView: contentView!, x: self.frame.width * 0.02875, y: catsLivedAmountLabel!.frame.maxY, width: contentView!.frame.width * 0.5, height: unitHeight!);
         stagesLabel!.lineBreakMode = NSLineBreakMode.byWordWrapping;
         stagesLabel!.numberOfLines = 2;
-        stagesLabel!.text = "Reached\nStage";
+        stagesLabel!.text = "Stage\nReached";
         stagesLabel!.font = UIFont.boldSystemFont(ofSize: stagesLabel!.frame.height * 0.40);
         stagesLabel!.backgroundColor = UIColor.clear;
         setupStagesRangeLabel();

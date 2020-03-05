@@ -89,6 +89,7 @@ class ViewController: UIViewController {
         self.boardGame!.cats.suspendCatAnimations();
         self.settingsButton!.multiplayer!.activePlayersScrollView!.searchingCatButton!.hideCat();
         self.settingsButton!.multiplayer!.activePlayersScrollView!.invitationCatButton!.hideCat();
+        self.boardGame!.attackMeter!.pauseVirusMovement();
         print("App backgrounded");
     }
     
@@ -97,6 +98,7 @@ class ViewController: UIViewController {
         self.boardGame!.cats.resumeCatAnimations();
         self.settingsButton!.multiplayer!.activePlayersScrollView!.searchingCatButton!.animate(AgainWithoutDelay: true);
         self.settingsButton!.multiplayer!.activePlayersScrollView!.invitationCatButton!.animate(AgainWithoutDelay: true);
+        self.boardGame!.attackMeter!.unPauseVirusMovement();
         print("App foregrounded");
     }
     

@@ -54,7 +54,7 @@ class UICatButton: UIButton {
         // Generate mouse coin
         let mouseCoin:UIMouseCoin = UIMouseCoin(parentView: self.imageContainerButton!, x: 0.0, y: 0.0, width: self.imageContainerButton!.frame.width / 4.0, height: self.imageContainerButton!.frame.height / 4.0);
         mouseCoin.removeTarget(self, action: #selector(mouseCoin.mouseCoinSelector), for: .touchUpInside);
-        UICenterKit.center(childView: mouseCoin, parentRect: imageContainerButton!.frame, childRect: mouseCoin.frame);
+        CenterController.center(childView: mouseCoin, parentRect: imageContainerButton!.frame, childRect: mouseCoin.frame);
         self.imageContainerButton!.addSubview(mouseCoin);
         // Create new frame for mouse coin on main view
         let mainView:UIView = self.superview!.superview!;
@@ -103,7 +103,7 @@ class UICatButton: UIButton {
                 self.imageContainerButton!.frame = CGRect(x: self.imageContainerButton!.frame.minX, y: self.imageContainerButton!.frame.minY, width: frame.height, height: frame.height);
             }
            
-            UICenterKit.center(childView: self.imageContainerButton!, parentRect: frame, childRect: self.imageContainerButton!.frame);
+            CenterController.center(childView: self.imageContainerButton!, parentRect: frame, childRect: self.imageContainerButton!.frame);
             if (!self.isPodded) {
                 if (self.frame.height > self.frame.width) {
                     self.layer.cornerRadius = frame.width * 0.2;

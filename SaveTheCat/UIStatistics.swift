@@ -1,6 +1,6 @@
 //
 //  UIStatistics.swift
-//  CatVirus
+//  SaveTheCat
 //
 //  Created by Christopher Francisco on 2/20/20.
 //  Copyright © 2020 Christopher Francisco. All rights reserved.
@@ -67,7 +67,7 @@ class UIStatistics:UICView {
         setupContinueButton();
         super.invertColor = true;
         self.setCompiledStyle();
-        UICenterKit.center(childView: self, parentRect: superview!.frame, childRect: self.frame);
+        CenterController.center(childView: self, parentRect: superview!.frame, childRect: self.frame);
         self.alpha = 0.0;
     }
     
@@ -103,7 +103,7 @@ class UIStatistics:UICView {
         gameOverLabel!.layer.borderWidth = self.layer.borderWidth;
         gameOverLabel!.setStyle();
         gameOverLabel!.text = "R I P";
-        UICenterKit.centerHorizontally(childView: gameOverLabel!, parentRect: self.frame, childRect: gameOverLabel!.frame);
+        CenterController.centerHorizontally(childView: gameOverLabel!, parentRect: self.frame, childRect: gameOverLabel!.frame);
     }
     
     func setupCheeringCatLabel() {
@@ -125,7 +125,7 @@ class UIStatistics:UICView {
         livedCatImageButton!.layer.borderWidth = 0.0;
         livedCatImageButton!.setImage(UIImage(named: UIStatistics.getCatFileName(named:"CheeringCat.png")), for: .normal);
         livedCatImageButton!.imageView!.contentMode = UIView.ContentMode.scaleAspectFill;
-        UICenterKit.center(childView: livedCatImageButton!, parentRect: catsLivedLabel!.frame, childRect: livedCatImageButton!.frame);
+        CenterController.center(childView: livedCatImageButton!, parentRect: catsLivedLabel!.frame, childRect: livedCatImageButton!.frame);
     }
     
     func setupDeadCatLabel() {
@@ -147,7 +147,7 @@ class UIStatistics:UICView {
         deadCatImageButton!.layer.borderWidth = 0.0;
         deadCatImageButton!.setImage(UIImage(named: UIStatistics.getCatFileName(named: "DeadCat.png")), for: .normal);
         deadCatImageButton!.imageView!.contentMode = UIView.ContentMode.scaleAspectFill;
-        UICenterKit.center(childView: deadCatImageButton!, parentRect: catsDiedLabel!.frame, childRect: deadCatImageButton!.frame);
+        CenterController.center(childView: deadCatImageButton!, parentRect: catsDiedLabel!.frame, childRect: deadCatImageButton!.frame);
     }
     
     func setupStagesLabel() {
@@ -188,7 +188,7 @@ class UIStatistics:UICView {
         continueButton!.layer.cornerRadius = continueButton!.frame.width * 0.1;
         continueButton!.setTitle("Continue", for: .normal);
         continueButton!.setTitleColor(UIColor.black, for: .normal);
-        UICenterKit.centerHorizontally(childView: continueButton!, parentRect: contentView!.frame, childRect: continueButton!.frame);
+        CenterController.centerHorizontally(childView: continueButton!, parentRect: contentView!.frame, childRect: continueButton!.frame);
     }
 
     func setSessionDuration() {

@@ -38,7 +38,7 @@ class ViewController: UIViewController {
     @IBOutlet var mainViewController: UIView!
     override func viewDidLoad() {
         super.viewDidLoad();
-        presentGame();
+        authenticateUser();
     }
     
     // Game Center Authentication
@@ -143,7 +143,7 @@ class ViewController: UIViewController {
     
     func setupIntroLabel(){
         introLabel = UICLabel(parentView: mainView, x: 0.0, y: 0.0, width: unitViewWidth * 10, height: unitViewHeight);
-        UICenterKit.center(childView: introLabel!, parentRect: mainView.frame, childRect: introLabel!.frame);
+        CenterController.center(childView: introLabel!, parentRect: mainView.frame, childRect: introLabel!.frame);
         introLabel!.font = UIFont.boldSystemFont(ofSize: unitViewHeight * 0.75);
         introLabel!.backgroundColor = .clear;
         introLabel!.text = "Save Da Cat!";
@@ -173,7 +173,7 @@ class ViewController: UIViewController {
     func setupBoardMainView(){
         let boardGameWidth:CGFloat = unitViewHeight * 8;
         boardGame = UIBoardGame(parentView: mainView, x: 0.0, y: 0.0, width: boardGameWidth, height:boardGameWidth);
-        UICenterKit.center(childView: boardGame!, parentRect: mainView.frame, childRect: boardGame!.frame);
+        CenterController.center(childView: boardGame!, parentRect: mainView.frame, childRect: boardGame!.frame);
         boardGame!.successGradientLayer = successGradientLayer!;
         boardGame!.alpha = 0.0;
         boardGame!.viruses = viruses!;
@@ -182,7 +182,7 @@ class ViewController: UIViewController {
 
     func setupColorOptionsView(){
         colorOptions = UIColorOptions(parentView: mainView, x: boardGame!.frame.minX, y: boardGame!.frame.maxY, width: boardGame!.frame.width, height: unitViewHeight * 1.5);
-        UICenterKit.centerHorizontally(childView: colorOptions!, parentRect: mainView.frame, childRect: colorOptions!.frame);
+        CenterController.centerHorizontally(childView: colorOptions!, parentRect: mainView.frame, childRect: colorOptions!.frame);
         boardGame!.colorOptions = colorOptions!;
         colorOptions!.boardGameView = boardGame!;
         boardGame!.livesMeter!.alpha = 0.0;

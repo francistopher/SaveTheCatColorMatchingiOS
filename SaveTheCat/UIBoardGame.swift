@@ -47,7 +47,7 @@ class UIBoardGame: UIView {
     func setupAttackMeter() {
         let attackMeterFrame:CGRect = CGRect(x: 0.0, y: livesMeter!.frame.minY, width: ViewController.staticUnitViewWidth * 7, height: livesMeter!.frame.height);
         attackMeter = UIAttackMeter(parentView:self.superview!, frame: attackMeterFrame, cats: cats);
-        UICenterKit.centerHorizontally(childView: attackMeter!, parentRect: attackMeter!.superview!.frame, childRect: attackMeter!.frame);
+        CenterController.centerHorizontally(childView: attackMeter!, parentRect: attackMeter!.superview!.frame, childRect: attackMeter!.frame);
         attackMeter!.setupComponents();
         attackMeter!.setCompiledStyle();
     }

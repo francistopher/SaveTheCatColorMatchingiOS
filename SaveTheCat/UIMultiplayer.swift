@@ -65,7 +65,7 @@ class UIMultiplayer: UIButton {
     
     func setupMultiplayerView() {
         multiplayerView = UICView(parentView: self.superview!.superview!, x: 0.0, y: 0.0, width: ViewController.staticUnitViewHeight * 8, height: ViewController.staticUnitViewHeight * 8, backgroundColor: UIColor.white);
-        UICenterKit.centerWithVerticalDisplacement(childView: multiplayerView!, parentRect: self.multiplayerView!.superview!.frame, childRect: multiplayerView!.frame, verticalDisplacement: -ViewController.staticUnitViewHeight * 0.25);
+        CenterController.centerWithVerticalDisplacement(childView: multiplayerView!, parentRect: self.multiplayerView!.superview!.frame, childRect: multiplayerView!.frame, verticalDisplacement: -ViewController.staticUnitViewHeight * 0.25);
         multiplayerView!.layer.cornerRadius = multiplayerView!.frame.height * 0.2;
         multiplayerView!.layer.borderWidth = self.multiplayerView!.frame.height * 0.015;
         multiplayerView!.layer.borderColor = UIColor.black.cgColor;

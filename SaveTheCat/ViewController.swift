@@ -38,7 +38,7 @@ class ViewController: UIViewController {
     @IBOutlet var mainViewController: UIView!
     override func viewDidLoad() {
         super.viewDidLoad();
-        presentGame();
+        authenticateUser();
     }
     
     // Game Center Authentication

@@ -53,10 +53,8 @@ class ViewController: UIViewController {
                 if (ViewController.gameCenterAuthentificationOver) {
                     return;
                 }
+                self.boardGame!.attackMeter!.invokeAttackImpulse(delay: 5.75);
                 self.presentSaveTheCat();
-                print(self.boardGame!.attackMeter!.firstRotationAnimation == nil);
-                self.boardGame!.attackMeter!.startFirstRotation(afterDelay: 5.75);
-                print(self.boardGame!.attackMeter!.firstRotationAnimation!.delay);
                 ViewController.gameCenterAuthentificationOver = true;
                 print("Errored out!")
                 return;

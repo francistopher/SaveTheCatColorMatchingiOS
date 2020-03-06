@@ -642,7 +642,7 @@ class UIAttackMeter:UICView {
     var sizeReductionAnimation:UIViewPropertyAnimator?
     var translationToStartAnimation:UIViewPropertyAnimator?
     
-    
+    var didNotInvokeAttackImpulse:Bool = true;
     var holdVirusAtStart:Bool = false;
     var attackStarted:Bool = false;
     var attack:Bool = false;
@@ -671,12 +671,19 @@ class UIAttackMeter:UICView {
     }
     
     func startFirstRotation(afterDelay:Double) {
-        if (currentVirusPhase != nil) {
+        if (currentVirusPhase != nil || didNotInvokeAttackImpulse) {
             return;
         }
         setupFirstRotationAnimation();
         firstRotationAnimation!.startAnimation(afterDelay: afterDelay);
         currentVirusPhase = .FirstRotation;
+    }
+    
+    func invokeAttackImpulse(delay:Double) {
+        Timer.scheduledTimer(withTimeInterval: delay, repeats: false, block: { _ in
+            self.didNotInvokeAttackImpulse = false;
+            self.startFirstRotation(afterDelay: 0.0);
+        })
     }
     
     func setupFirstRotationAnimation() {
@@ -765,8 +772,6 @@ class UIAttackMeter:UICView {
         if (isVirusInAPhase()) {
             return;
         }
-        
-        print("Whyyy", boardGame as Any);
         self.setupSizeExpansionAnimation();
         self.sizeExpansionAnimation!.startAnimation(afterDelay: afterDelay);
         self.currentVirusPhase = .SizeExpansion;

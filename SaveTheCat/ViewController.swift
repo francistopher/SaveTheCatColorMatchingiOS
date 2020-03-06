@@ -46,20 +46,22 @@ class ViewController: UIViewController {
     
     // Game Center Authentication
     func authenticateLocalPlayerForGamePlay() {
-        
         let player:GKLocalPlayer = GKLocalPlayer.local;
         player.authenticateHandler = {vc,error in
             guard error == nil else {
                 if (self.gameCenterAuthentificationOver) {
                     return;
                 }
+                print("DISABLE MULTIPLAYER")
                 self.gameCenterAuthentificationOver = true;
                 self.boardGame!.attackMeter!.invokeAttackImpulse(delay: 5.75);
                 self.presentSaveTheCat();
-                print("Errored out!")
                 return;
             }
             if let vc = vc {
+                if (self.gameCenterAuthentificationOver) {
+                    return;
+                }
                 self.present(vc, animated: true, completion: {
                     print("Game center view was presented for sign in");
                 })
@@ -68,10 +70,11 @@ class ViewController: UIViewController {
                     if (self.gameCenterAuthentificationOver) {
                         return;
                     }
+                    
+                    print("ENABLE MULTIPLAYER")
                     self.gameCenterAuthentificationOver = true;
                     self.boardGame!.attackMeter!.invokeAttackImpulse(delay: 5.5);
                     self.presentSaveTheCat();
-                    print("Player was authenticated!!!")
                 }
             }
         }

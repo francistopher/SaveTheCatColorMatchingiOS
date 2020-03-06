@@ -67,7 +67,7 @@ class UICButton:UIButton {
         });
     }
     
-    func shrink() {
+    func shrink(colorOptionButton:Bool) {
         willBeShrunk = true;
         var x:CGFloat = 0.0;
         var duration:Double = 0;
@@ -85,7 +85,9 @@ class UICButton:UIButton {
         UIView.animate(withDuration: duration, delay: 0.0, options: .curveEaseIn, animations: {
             self.frame = CGRect(x: x, y: self.frame.minY, width: 0.0, height: self.frame.height);
         }, completion: { _ in
-            self.removeFromSuperview();
+            if (!colorOptionButton) {
+                self.removeFromSuperview();
+            }
         });
     }
     

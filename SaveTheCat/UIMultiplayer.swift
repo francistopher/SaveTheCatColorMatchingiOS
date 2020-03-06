@@ -324,7 +324,7 @@ class UIPlayerAdScrollView:UICScrollView {
                 height = self.unitHeight * 0.8;
                 newFrame = CGRect(x: self.frame.width * 0.1, y: y + self.unitHeight * 0.4, width: self.frame.width * 0.8, height: self.unitHeight * 0.8);
             } else {
-                playerAdLabel.shrink();
+                playerAdLabel.shrink(colorOptionButton: false);
                 self.playerAdLabels[displayName] = nil;
             }
         }

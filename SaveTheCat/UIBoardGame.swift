@@ -302,12 +302,10 @@ class UIBoardGame: UIView {
                 livesMeter!.incrementLivesLeftCount(catButton: catButton);
                 self.attackMeter!.updateDuration(change: 0.2);
                 self.attackMeter!.sendVirusToStart();
-                self.attackMeter!.startFirstRotation(afterDelay: 1.25);
                 promote();
                 return;
             } else {
                 self.attackMeter!.sendVirusToStart();
-                self.attackMeter!.startFirstRotation(afterDelay: 1.25);
                 maintain();
                 return;
                
@@ -409,18 +407,21 @@ class UIBoardGame: UIView {
     func maintain() {
         successGradientLayer!.isHidden = false;
         reset(catsSurvived: true);
+
+        self.colorOptions!.shrinkColorOptions();
         configureComponentsAfterBoardGameReset();
     }
     
     func promote(){
         successGradientLayer!.isHidden = false;
         reset(catsSurvived: true);
-        colorOptions!.loadSelectionButtonsToSelectedButtons();
+        colorOptions!.shrinkColorOptions();
+        self.colorOptions!.loadSelectionButtonsToSelectedButtons();
         // Build board game
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.75) {
             self.currentRound += 1;
             self.buildBoardGame();
-            self.attackMeter!.startFirstRotation(afterDelay: 1.25);
+            self.attackMeter!.startFirstRotation(afterDelay: 1.50);
         }
         // Remove selected buttons after they've shrunk
         DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
@@ -435,7 +436,7 @@ class UIBoardGame: UIView {
         // Build board game
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.75) {
             self.buildBoardGame();
-            self.attackMeter!.startFirstRotation(afterDelay: 1.25);
+            self.attackMeter!.startFirstRotation(afterDelay: 1.50);
         }
         // Remove dispersed buttons after they've dispersed
         DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
@@ -682,7 +683,7 @@ class UIAttackMeter:UICView {
     func invokeAttackImpulse(delay:Double) {
         Timer.scheduledTimer(withTimeInterval: delay, repeats: false, block: { _ in
             self.didNotInvokeAttackImpulse = false;
-            self.startFirstRotation(afterDelay: 0.0);
+            self.startFirstRotation(afterDelay: 0.25);
         })
     }
     
@@ -988,7 +989,6 @@ class UIAttackMeter:UICView {
     func holdVirusOnceAtStart() {
         holdVirusAtStart = true;
         displacementDuration = 1.0;
-        previousDisplacementDuration = 3.5;
         Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false, block: { _ in
            self.displacementDuration = self.previousDisplacementDuration;
         })
@@ -1006,7 +1006,6 @@ class UIAttackMeter:UICView {
     func sendVirusToStart() {
         if (currentVirusPhase != nil && currentVirusPhase! != .TranslationToStart) {
             displacementDuration = 1.0;
-            previousDisplacementDuration = 3.5;
             Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false, block: { _ in
                self.displacementDuration = self.previousDisplacementDuration;
             })

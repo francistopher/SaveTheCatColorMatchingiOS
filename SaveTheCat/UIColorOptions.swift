@@ -38,7 +38,7 @@ class UIColorOptions: UIView {
     func shrinkColorOptions() {
         for selectionButton in selectionButtons {
             selectionButton.shrinkType = .mid;
-            selectionButton.shrink();
+            selectionButton.shrink(colorOptionButton: true);
         }
     }
     
@@ -120,7 +120,7 @@ class UIColorOptions: UIView {
                             revisitedButton.shrinkType = .mid;
                         }
                     }
-                    revisitedButton.shrink();
+                    revisitedButton.shrink(colorOptionButton: true);
                 }
                 index += 1;
             }
@@ -150,7 +150,7 @@ class UIColorOptions: UIView {
         for selectionButtons in selectionButtons{
             selectedButtons.append(selectionButtons);
             selectionButtons.shrinkType = .mid;
-            selectionButtons.shrink();
+            selectionButtons.shrink(colorOptionButton: true);
         }
         selectionButtons = [UICButton]();
     }

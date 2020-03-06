@@ -32,7 +32,6 @@ class ViewController: UIViewController {
     
     var viruses:UIViruses?
     
-    static var gameCenterAuthentificationOver:Bool = false;
     static var appInBackgroundBeforeFirstAttackImpulse:Bool = false;
     
     static var staticSelf:ViewController?
@@ -46,16 +45,16 @@ class ViewController: UIViewController {
     
     // Game Center Authentication
     func authenticateLocalPlayerForGamePlay() {
-        // Get the local player
+        var gameCenterAuthentificationOver:Bool = false;
         let player:GKLocalPlayer = GKLocalPlayer.local;
         player.authenticateHandler = {vc,error in
             guard error == nil else {
-                if (ViewController.gameCenterAuthentificationOver) {
+                if (gameCenterAuthentificationOver) {
                     return;
                 }
+                gameCenterAuthentificationOver = true;
                 self.boardGame!.attackMeter!.invokeAttackImpulse(delay: 5.75);
                 self.presentSaveTheCat();
-                ViewController.gameCenterAuthentificationOver = true;
                 print("Errored out!")
                 return;
             }
@@ -63,16 +62,15 @@ class ViewController: UIViewController {
                 self.present(vc, animated: true, completion: {
                     print("Game center view was presented for sign in");
                 })
-                if (player.isAuthenticated) {
-                    print("1Player got authenticated!");
-                } else {
-                    print("1Player was not authenticated!");
-                }
             } else {
                 if (player.isAuthenticated) {
-                    print("Player got authenticated!");
-                } else {
-                    print("Player was not authenticated!");
+                    if (gameCenterAuthentificationOver) {
+                        return;
+                    }
+                    gameCenterAuthentificationOver = true;
+                    self.boardGame!.attackMeter!.invokeAttackImpulse(delay: 5.5);
+                    self.presentSaveTheCat();
+                    print("Player was authenticated!!!")
                 }
             }
         }
@@ -90,12 +88,11 @@ class ViewController: UIViewController {
         setupSettingsButton();
         self.setupNotificationCenter();
         SoundController.mozartSonata(play: true);
-        introLabel!.fadeInAndOut();
         self.viruses!.fadeIn();
-
     }
     
     func presentSaveTheCat() {
+        self.introLabel!.fadeInAndOut();
         DispatchQueue.main.asyncAfter(deadline: .now() + 4.0) {
             self.boardGame!.fadeIn();
             self.boardGame!.livesMeter!.fadeIn();

@@ -75,7 +75,7 @@ class UIVirus:UIButton {
     }
 
     func fadeIn() {
-        UIView.animate(withDuration: 0.5, delay: 0.25, options: .curveEaseIn, animations: {
+        UIView.animate(withDuration: 2.0, delay: 0.25, options: .curveEaseIn, animations: {
             self.alpha = 1.0;
         });
     }

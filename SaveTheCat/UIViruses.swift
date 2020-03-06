@@ -47,7 +47,7 @@ class UIViruses {
     
     func setStyle() {
         for virus in virusCollection! {
-            virus.setVirusImage();
+            virus.setupVirusImage();
         }
     }
     

@@ -15,8 +15,8 @@ enum Virus{
 
 class UIVirus:UIButton {
     
-     var originalFrame:CGRect? = nil;
-        var selectedVirus:Virus = .standard;
+    var originalFrame:CGRect? = nil;
+    var selectedVirus:Virus = .standard;
         
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -26,8 +26,7 @@ class UIVirus:UIButton {
         super.init(frame: frame);
         self.backgroundColor = .clear;
         self.originalFrame = frame;
-        self.setVirusImage();
-//        self.addTarget(self, action: #selector(virusAudio), for: .touchUpInside);
+        self.setupVirusImage();
         parentView.addSubview(self);
     }
     
@@ -36,7 +35,7 @@ class UIVirus:UIButton {
         alpha = 0.0;
     }
     
-    func setVirusImage() {
+    func setupVirusImage() {
         let iconImage:UIImage? = UIImage(named: getVirusFileName());
         self.setImage(iconImage, for: .normal);
         self.imageView!.contentMode = UIView.ContentMode.scaleAspectFit;
@@ -66,6 +65,7 @@ class UIVirus:UIButton {
         if (immediately) {
             delay = 0.0;
         }
+        
         UIView.animate(withDuration: 1.75, delay: delay, options:[.curveEaseInOut, .repeat, .autoreverse], animations: {
             self.imageView!.transform = self.imageView!.transform.translatedBy(x: xTranslation, y: yTranslation);
         });

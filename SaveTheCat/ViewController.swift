@@ -35,6 +35,7 @@ class ViewController: UIViewController {
     static var appInBackgroundBeforeFirstAttackImpulse:Bool = false;
     
     static var staticSelf:ViewController?
+    var gameCenterAuthentificationOver:Bool = false;
     
     @IBOutlet var mainViewController: UIView!
     override func viewDidLoad() {
@@ -45,14 +46,14 @@ class ViewController: UIViewController {
     
     // Game Center Authentication
     func authenticateLocalPlayerForGamePlay() {
-        var gameCenterAuthentificationOver:Bool = false;
+        
         let player:GKLocalPlayer = GKLocalPlayer.local;
         player.authenticateHandler = {vc,error in
             guard error == nil else {
-                if (gameCenterAuthentificationOver) {
+                if (self.gameCenterAuthentificationOver) {
                     return;
                 }
-                gameCenterAuthentificationOver = true;
+                self.gameCenterAuthentificationOver = true;
                 self.boardGame!.attackMeter!.invokeAttackImpulse(delay: 5.75);
                 self.presentSaveTheCat();
                 print("Errored out!")
@@ -64,10 +65,10 @@ class ViewController: UIViewController {
                 })
             } else {
                 if (player.isAuthenticated) {
-                    if (gameCenterAuthentificationOver) {
+                    if (self.gameCenterAuthentificationOver) {
                         return;
                     }
-                    gameCenterAuthentificationOver = true;
+                    self.gameCenterAuthentificationOver = true;
                     self.boardGame!.attackMeter!.invokeAttackImpulse(delay: 5.5);
                     self.presentSaveTheCat();
                     print("Player was authenticated!!!")
@@ -88,12 +89,13 @@ class ViewController: UIViewController {
         setupSettingsButton();
         self.setupNotificationCenter();
         SoundController.mozartSonata(play: true);
-        self.viruses!.fadeIn();
     }
     
     func presentSaveTheCat() {
         self.introLabel!.fadeInAndOut();
         DispatchQueue.main.asyncAfter(deadline: .now() + 4.0) {
+            self.viruses!.sway(immediately: false);
+            self.viruses!.fadeIn();
             self.boardGame!.fadeIn();
             self.boardGame!.livesMeter!.fadeIn();
             self.boardGame!.attackMeter!.compiledShow();
@@ -119,7 +121,9 @@ class ViewController: UIViewController {
     }
     
     @objc func appMovedToForeground() {
-        self.viruses!.sway(immediately: true);
+        if (self.gameCenterAuthentificationOver){
+            self.viruses!.sway(immediately: true);
+        }
         self.boardGame!.cats.resumeCatAnimations();
         self.settingsButton!.multiplayer!.activePlayersScrollView!.searchingCatButton!.animate(AgainWithoutDelay: true);
         self.settingsButton!.multiplayer!.activePlayersScrollView!.invitationCatButton!.animate(AgainWithoutDelay: true);
@@ -162,7 +166,6 @@ class ViewController: UIViewController {
     
     func setupViruses() {
         viruses = UIViruses(mainView: mainView, unitView: unitViewHeight);
-        viruses!.sway(immediately: false);
         viruses!.hide();
     }
     

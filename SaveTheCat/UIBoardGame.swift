@@ -792,7 +792,6 @@ class UIAttackMeter:UICView {
            self.virus!.transform = self.virus!.transform.scaledBy(x: factor, y: factor);
         })
         sizeExpansionAnimation!.addCompletion({ _ in
-            self.attackRandomCatButton();
             self.dismantleSizeExpansion();
             self.startSizeReductionAnimation(afterDelay: 0.0);
         })
@@ -833,6 +832,7 @@ class UIAttackMeter:UICView {
            self.virus!.transform = self.virus!.transform.scaledBy(x: factor, y: factor);
         })
         sizeReductionAnimation!.addCompletion({ _ in
+            self.attackRandomCatButton();
             self.dismantleSizeReduction();
             self.startTranslationToStartAnimation(afterDelay: 0.125);
         })
@@ -914,6 +914,9 @@ class UIAttackMeter:UICView {
     
     func pauseVirusMovement() {
         switch currentVirusPhase {
+        case .TranslationToStart:
+            translationToStartAnimation!.stopAnimation(true);
+            print("Stopped translation to start animation");
         case .FirstRotation:
             firstRotationAnimation!.stopAnimation(true);
             let radians:CGFloat = atan2(virus!.transform.b, virus!.transform.a)
@@ -939,9 +942,6 @@ class UIAttackMeter:UICView {
             let shrunkVirusX:CGFloat = virusXBeforeUnJump + (virus!.originalFrame!.width * 0.75) - (virus!.frame.width * 0.5);
             virus!.frame = CGRect(x: shrunkVirusX, y: virus!.frame.minY, width: virus!.frame.width, height: virus!.frame.height)
             print("Stopped size reduction animation")
-        case .TranslationToStart:
-            translationToStartAnimation!.stopAnimation(true);
-            print("Stopped translation to start animation");
         default:
             print("Something went wrong?");
         }
@@ -949,6 +949,9 @@ class UIAttackMeter:UICView {
     
     func unPauseVirusMovement() {
         switch currentVirusPhase {
+        case .TranslationToStart:
+            let delay:Double = Double(0.5 * getVirusToCatDistance() / virusToCatDistance);
+            startTranslationToStartAnimation(afterDelay: delay);
         case .FirstRotation:
             startFirstRotation(afterDelay: 0.25);
             print("Started first rotation again.")
@@ -965,10 +968,9 @@ class UIAttackMeter:UICView {
         case .SizeReduction:
             startSizeReductionAnimation(afterDelay: 0.125);
             print("Started size reduction again.");
-        case .TranslationToStart:
-            let delay:Double = Double(0.5 * getVirusToCatDistance() / virusToCatDistance);
-            startTranslationToStartAnimation(afterDelay: delay);
+        
         default:
+            print("Unpausing");
             currentVirusPhase = .TranslationToStart;
             unPauseVirusMovement();
         }
@@ -1046,7 +1048,7 @@ class UIAttackMeter:UICView {
     
     func setCompiledStyle() {
         setStyle();
-        virus!.setVirusImage();
+        virus!.setupVirusImage();
         cat!.setCat(named: "SmilingCat", stage: 5);
     }
     

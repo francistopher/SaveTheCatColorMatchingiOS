@@ -77,7 +77,6 @@
 		B83B03C824115B6F00EC4BAD /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B83B03C624115B6F00EC4BAD /* SceneDelegate.swift */; };
 		B83B03D024115C9500EC4BAD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B83B03CE24115C9500EC4BAD /* Assets.xcassets */; };
 		B83B03D224115CDD00EC4BAD /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B83B03D124115CDD00EC4BAD /* Default-568h@2x.png */; };
-		B83B03D524115D2E00EC4BAD /* SaveTheCat.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = B83B03D324115D2E00EC4BAD /* SaveTheCat.xcdatamodeld */; };
 		B83B03D724115F7600EC4BAD /* CenterController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B83B03D624115F7600EC4BAD /* CenterController.swift */; };
 		B83B03DE241160FD00EC4BAD /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B83B03DA241160D600EC4BAD /* GameKit.framework */; };
 		B83B03EF2411877E00EC4BAD /* Icon-40@1x.png in Resources */ = {isa = PBXBuildFile; fileRef = B83B03E02411877D00EC4BAD /* Icon-40@1x.png */; };
@@ -95,6 +94,7 @@
 		B83B03FB2411877E00EC4BAD /* Icon-60@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = B83B03EC2411877E00EC4BAD /* Icon-60@3x.png */; };
 		B83B03FC2411877E00EC4BAD /* Icon-167@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B83B03ED2411877E00EC4BAD /* Icon-167@2x.png */; };
 		B83B03FD2411877E00EC4BAD /* Icon-1024@1x.png in Resources */ = {isa = PBXBuildFile; fileRef = B83B03EE2411877E00EC4BAD /* Icon-1024@1x.png */; };
+		B83B03FE2411BD6C00EC4BAD /* SaveTheCat.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = B83B03D324115D2E00EC4BAD /* SaveTheCat.xcdatamodeld */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -621,8 +621,8 @@
 				B83B032E241153E900EC4BAD /* UIRestart1.swift in Sources */,
 				B83B032F241153E900EC4BAD /* UIStats.swift in Sources */,
 				B83B03AC241159F900EC4BAD /* UIColorOptions.swift in Sources */,
-				B83B03D524115D2E00EC4BAD /* SaveTheCat.xcdatamodeld in Sources */,
 				B83B03B2241159F900EC4BAD /* UICatButton.swift in Sources */,
+				B83B03FE2411BD6C00EC4BAD /* SaveTheCat.xcdatamodeld in Sources */,
 				B83B03B0241159F900EC4BAD /* CACGradientLayer.swift in Sources */,
 				B83B03A4241159CB00EC4BAD /* UIVirus.swift in Sources */,
 				B83B03D724115F7600EC4BAD /* CenterController.swift in Sources */,

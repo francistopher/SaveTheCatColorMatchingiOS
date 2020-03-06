@@ -22,7 +22,6 @@ class ViewController: UIViewController {
     static var staticUnitViewWidth:CGFloat = 0.0;
     
     var introLabel:UICLabel?;
-    
     var settingsButton:UISettingsButton?
     static var settingsButton:UISettingsButton?
     var boardGame:UIBoardGame?
@@ -33,29 +32,55 @@ class ViewController: UIViewController {
     
     var viruses:UIViruses?
     
+    static var gameCenterAuthentificationOver:Bool = false;
+    static var appInBackgroundBeforeFirstAttackImpulse:Bool = false;
+    
     static var staticSelf:ViewController?
     
     @IBOutlet var mainViewController: UIView!
     override func viewDidLoad() {
         super.viewDidLoad();
-        authenticateUser();
+        setupSaveTheCat();
+        authenticateLocalPlayerForGamePlay();
     }
     
     // Game Center Authentication
-    func authenticateUser() {
+    func authenticateLocalPlayerForGamePlay() {
         // Get the local player
         let player:GKLocalPlayer = GKLocalPlayer.local;
-        //
-        player.authenticateHandler = {mainViewController, error in
-            guard  error == nil else {
-                print("Error");
+        player.authenticateHandler = {vc,error in
+            guard error == nil else {
+                if (ViewController.gameCenterAuthentificationOver) {
+                    return;
+                }
+                self.presentSaveTheCat();
+                print(self.boardGame!.attackMeter!.firstRotationAnimation == nil);
+                self.boardGame!.attackMeter!.startFirstRotation(afterDelay: 5.75);
+                print(self.boardGame!.attackMeter!.firstRotationAnimation!.delay);
+                ViewController.gameCenterAuthentificationOver = true;
+                print("Errored out!")
                 return;
             }
-            self.presentGame();
+            if let vc = vc {
+                self.present(vc, animated: true, completion: {
+                    print("Game center view was presented for sign in");
+                })
+                if (player.isAuthenticated) {
+                    print("1Player got authenticated!");
+                } else {
+                    print("1Player was not authenticated!");
+                }
+            } else {
+                if (player.isAuthenticated) {
+                    print("Player got authenticated!");
+                } else {
+                    print("Player was not authenticated!");
+                }
+            }
         }
     }
     
-    func presentGame() {
+    func setupSaveTheCat() {
         ViewController.staticSelf = self;
         setupSounds();
         setupMainViewDimensionProperties();
@@ -65,16 +90,21 @@ class ViewController: UIViewController {
         setupBoardMainView();
         setupColorOptionsView();
         setupSettingsButton();
+        self.setupNotificationCenter();
+        SoundController.mozartSonata(play: true);
+        introLabel!.fadeInAndOut();
+        self.viruses!.fadeIn();
+
+    }
+    
+    func presentSaveTheCat() {
         DispatchQueue.main.asyncAfter(deadline: .now() + 4.0) {
-            self.boardGame!.attackMeter!.boardGame = self.boardGame;
-            self.viruses!.fadeIn();
             self.boardGame!.fadeIn();
             self.boardGame!.livesMeter!.fadeIn();
             self.boardGame!.attackMeter!.compiledShow();
             self.colorOptions!.fadeIn();
             self.boardGame!.buildBoardGame();
             self.settingsButton!.fadeIn();
-            self.setupNotificationCenter();
         }
     }
     
@@ -148,7 +178,6 @@ class ViewController: UIViewController {
         introLabel!.backgroundColor = .clear;
         introLabel!.text = "Save The Cat";
         introLabel!.alpha = 0.0;
-        introLabel!.fadeInAndOut();
     }
     
     func setupSuccessGradientLayer() {
@@ -177,6 +206,7 @@ class ViewController: UIViewController {
         boardGame!.successGradientLayer = successGradientLayer!;
         boardGame!.alpha = 0.0;
         boardGame!.viruses = viruses!;
+        boardGame!.attackMeter!.boardGame = boardGame;
         boardGame!.attackMeter!.comiledHide();
     }
 

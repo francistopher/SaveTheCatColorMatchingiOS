@@ -1,6 +1,6 @@
 //
 //  UIBoardGameView.swift
-//  suitDatCat
+//  SaveTheCat
 //
 //  Created by Christopher Francisco on 2/6/20.
 //  Copyright © 2020 Christopher Francisco. All rights reserved.
@@ -71,6 +71,7 @@ class UIBoardGame: UIView {
         colorOptions!.selectedColor = UIColor.lightGray;
         attackMeter!.resetCat();
         restart();
+        self.attackMeter!.startFirstRotation(afterDelay: 1.25);
     }
     
     func fadeIn(){
@@ -89,7 +90,6 @@ class UIBoardGame: UIView {
         recordGridColorsUsed();
         colorOptions!.buildColorOptionButtons(setup: true);
         attackMeter!.holdVirusAtStart = false;
-        attackMeter!.startFirstRotation(afterDelay:1.5);
     }
     
     func buildGridColors(){
@@ -196,7 +196,6 @@ class UIBoardGame: UIView {
         self.livesMeter!.removeAllHeartLives();
         self.attackMeter!.disperseCatButton();
         self.attackMeter!.sendVirusToStartAndHold();
-        self.attackMeter!.displacementDuration = 3.5;
         self.attackMeter!.previousDisplacementDuration = 3.5;
         // App data of dead cats
         Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false) { timer in
@@ -269,6 +268,7 @@ class UIBoardGame: UIView {
             gameOverTransition();
         } else {
             verifyThatRemainingCatsArePodded(catButton:catButton);
+
         }
     }
     
@@ -301,11 +301,13 @@ class UIBoardGame: UIView {
             if (cats.didAllSurvive()) {
                 livesMeter!.incrementLivesLeftCount(catButton: catButton);
                 self.attackMeter!.updateDuration(change: 0.2);
-                self.attackMeter!.sendVirusToStartAndHold();
+                self.attackMeter!.sendVirusToStart();
+                self.attackMeter!.startFirstRotation(afterDelay: 1.25);
                 promote();
                 return;
             } else {
-                self.attackMeter!.sendVirusToStartAndHold();
+                self.attackMeter!.sendVirusToStart();
+                self.attackMeter!.startFirstRotation(afterDelay: 1.25);
                 maintain();
                 return;
                
@@ -313,6 +315,7 @@ class UIBoardGame: UIView {
         } else {
             self.attackMeter!.updateDuration(change: 0.1);
             self.attackMeter!.sendVirusToStart();
+            self.attackMeter!.startFirstRotation(afterDelay: 1.0);
         }
     }
     
@@ -417,6 +420,7 @@ class UIBoardGame: UIView {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.75) {
             self.currentRound += 1;
             self.buildBoardGame();
+            self.attackMeter!.startFirstRotation(afterDelay: 1.25);
         }
         // Remove selected buttons after they've shrunk
         DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
@@ -431,6 +435,7 @@ class UIBoardGame: UIView {
         // Build board game
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.75) {
             self.buildBoardGame();
+            self.attackMeter!.startFirstRotation(afterDelay: 1.25);
         }
         // Remove dispersed buttons after they've dispersed
         DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
@@ -666,10 +671,8 @@ class UIAttackMeter:UICView {
     }
     
     func startFirstRotation(afterDelay:Double) {
-        if (firstRotationAnimation != nil) {
-            if (firstRotationAnimation!.isRunning){
-                return;
-            }
+        if (currentVirusPhase != nil) {
+            return;
         }
         setupFirstRotationAnimation();
         firstRotationAnimation!.startAnimation(afterDelay: afterDelay);
@@ -701,10 +704,8 @@ class UIAttackMeter:UICView {
     }
     
     func startSecondRotation(afterDelay:Double) {
-        if (secondRotationAnimation != nil) {
-            if (secondRotationAnimation!.isRunning){
-                return;
-            }
+        if (isVirusInAPhase()) {
+            return;
         }
         self.setupSecondRotationAnimation();
         self.secondRotationAnimation!.startAnimation(afterDelay: afterDelay);
@@ -736,10 +737,8 @@ class UIAttackMeter:UICView {
     }
     
     func startTranslationToCat(afterDelay:Double) {
-        if (translationToCatAnimation != nil) {
-            if (translationToCatAnimation!.isRunning){
-                return;
-            }
+        if (isVirusInAPhase()) {
+            return;
         }
         self.setupTranslationToCatAnimation();
         self.translationToCatAnimation!.startAnimation(afterDelay: 0.125);
@@ -763,11 +762,11 @@ class UIAttackMeter:UICView {
     }
     
     func startSizeExpansionAnimation(afterDelay:Double) {
-        if (sizeExpansionAnimation != nil) {
-            if (sizeExpansionAnimation!.isRunning){
-                return;
-            }
+        if (isVirusInAPhase()) {
+            return;
         }
+        
+        print("Whyyy", boardGame as Any);
         self.setupSizeExpansionAnimation();
         self.sizeExpansionAnimation!.startAnimation(afterDelay: afterDelay);
         self.currentVirusPhase = .SizeExpansion;
@@ -806,10 +805,8 @@ class UIAttackMeter:UICView {
     }
     
     func startSizeReductionAnimation(afterDelay:Double) {
-        if (sizeReductionAnimation != nil) {
-            if (sizeReductionAnimation!.isRunning){
-                return;
-            }
+        if (isVirusInAPhase()) {
+            return;
         }
         self.setupSizeReductionAnimation();
         self.sizeReductionAnimation!.startAnimation(afterDelay: afterDelay);
@@ -843,10 +840,8 @@ class UIAttackMeter:UICView {
     }
     
     func startTranslationToStartAnimation(afterDelay:Double) {
-        if (translationToStartAnimation != nil) {
-            if (translationToStartAnimation!.isRunning){
-                return;
-            }
+        if (isVirusInAPhase()) {
+            return;
         }
         self.setupTranslationToStartAnimation();
         self.translationToStartAnimation!.startAnimation(afterDelay: afterDelay);
@@ -974,14 +969,22 @@ class UIAttackMeter:UICView {
         }
     }
     
+    func isVirusInAPhase() -> Bool {
+        let isVirusInAPhase:Bool = ((firstRotationAnimation != nil && firstRotationAnimation!.isRunning) || (secondRotationAnimation != nil && secondRotationAnimation!.isRunning) || (secondRotationAnimation != nil && secondRotationAnimation!.isRunning) || (translationToCatAnimation != nil && translationToCatAnimation!.isRunning) || (sizeExpansionAnimation != nil && sizeExpansionAnimation!.isRunning) || (sizeReductionAnimation != nil && sizeReductionAnimation!.isRunning) || (translationToStartAnimation != nil && translationToStartAnimation!.isRunning));
+        return isVirusInAPhase;
+    }
+    
     func disperseCatButton() {
         cat!.disperseRadially();
     }
     
     func holdVirusOnceAtStart() {
         holdVirusAtStart = true;
-        displacementDuration = 0.5;
+        displacementDuration = 1.0;
         previousDisplacementDuration = 3.5;
+        Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false, block: { _ in
+           self.displacementDuration = self.previousDisplacementDuration;
+        })
     }
     
     func sendVirusToStartAndHold() {
@@ -994,7 +997,12 @@ class UIAttackMeter:UICView {
     }
     
     func sendVirusToStart() {
-        if (currentVirusPhase! != .TranslationToStart && currentVirusPhase! == .TranslationToCat) {
+        if (currentVirusPhase != nil && currentVirusPhase! != .TranslationToStart) {
+            displacementDuration = 1.0;
+            previousDisplacementDuration = 3.5;
+            Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false, block: { _ in
+               self.displacementDuration = self.previousDisplacementDuration;
+            })
             pauseVirusMovement();
             self.firstRotationDegreeCheckpoint = 0.0;
             self.secondRotationDegreeCheckpoint = 0.0;

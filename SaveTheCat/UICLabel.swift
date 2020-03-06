@@ -37,7 +37,6 @@ class UICLabel:UILabel {
             super.alpha = 1.0;
         }) { (_) in
             SoundController.kittenMeow();
-            SoundController.mozartSonata(play: true);
             UIView.animate(withDuration: 2, delay: 0.5, options: .curveEaseOut, animations: {
                 super.alpha = 0.0;
             })

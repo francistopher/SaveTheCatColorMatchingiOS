@@ -76,6 +76,7 @@ class UIViruses {
         // Hide each virus
         for virus in self.virusCollection! {
             virus.alpha = 0.0;
+            virus.layer.removeAllAnimations();
         }
     }
     

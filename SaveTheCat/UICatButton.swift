@@ -335,6 +335,9 @@ class UICatButton: UIButton {
         let angle:CGFloat = CGFloat.random(in: 45.0...90.0);
         var targetY:CGFloat = parentFrame.height + childFrame.height;
         targetY *= sin((CGFloat.pi * angle) / 180.0);
+        if (Int.random(in: 0...1) == 1) {
+            targetY *= -1;
+        }
         return targetY;
     }
     

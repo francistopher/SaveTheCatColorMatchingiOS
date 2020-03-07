@@ -39,6 +39,7 @@ class ViewController: UIViewController {
     
     // Game center message
     var gameCenterMessage:GameCenterMessage?
+    var gameCenterMessageWidthHeightY:(CGFloat, CGFloat, CGFloat)?;
     
     @IBOutlet var mainViewController: UIView!
     override func viewDidLoad() {
@@ -85,8 +86,8 @@ class ViewController: UIViewController {
     }
     
     func setupGameCenterMessage() {
-        let gameCenterMessageX:CGFloat = (mainView.frame.width - unitViewWidth * 8.45) * 0.5;
-        gameCenterMessage = GameCenterMessage(parentView: mainView, frame: CGRect(x: gameCenterMessageX, y: unitViewHeight * 0.53, width: unitViewWidth * 8.45, height: unitViewHeight * 0.95));
+        let gameCenterMessageX:CGFloat = (mainView.frame.width - gameCenterMessageWidthHeightY!.0) * 0.5;
+        gameCenterMessage = GameCenterMessage(parentView: mainView, frame: CGRect(x: gameCenterMessageX, y: gameCenterMessageWidthHeightY!.2, width: gameCenterMessageWidthHeightY!.0, height: gameCenterMessageWidthHeightY!.1));
         CenterController.centerHorizontally(childView: gameCenterMessage!, parentRect: mainView.frame, childRect: gameCenterMessage!.frame);
     }
     
@@ -158,23 +159,42 @@ class ViewController: UIViewController {
     }
     
     func setupMainViewDimensionProperties() {
+        
         let decimalRatio:CGFloat = mainView.frame.height / mainView.frame.width;
         var mainViewHeight:CGFloat = mainView.frame.height;
         var mainViewWidth:CGFloat =  mainView.frame.width;
+        
+        func setupUnitViewDimension() {
+            unitViewHeight = mainViewHeight / 18.0;
+            unitViewWidth = mainViewWidth / 18.0;
+        }
+        
+        func setupStaticUnitViewDimension() {
+            ViewController.staticUnitViewHeight = unitViewHeight;
+            ViewController.staticUnitViewWidth = unitViewWidth;
+        }
+        
         if (decimalRatio > 2.1) {
             mainViewWidth = mainView.frame.width;
             mainViewHeight = mainView.frame.height * 3.0 / 4.0;
-        } else if (decimalRatio > 3.7) {
+            setupUnitViewDimension();
+            setupStaticUnitViewDimension();
+            gameCenterMessageWidthHeightY = (unitViewWidth * 8.45, unitViewHeight * 0.95, unitViewHeight * 0.53);
+            print("21:9?")
+        } else if (decimalRatio > 1.7) {
             mainViewWidth = mainView.frame.width;
-            mainViewHeight = mainView.frame.height * 3.0 / 4.0;
+            mainViewHeight = mainView.frame.height * 1.2;
+            setupUnitViewDimension();
+            setupStaticUnitViewDimension()
+            gameCenterMessageWidthHeightY = (unitViewWidth * 16.5, unitViewHeight * 1.43, unitViewHeight * 0.6225);
+            print("Did it even work?")
         } else {
             mainViewWidth = mainView.frame.width;
             mainViewHeight = mainView.frame.height * 1.2;
+            setupUnitViewDimension();
+            setupStaticUnitViewDimension();
+            gameCenterMessageWidthHeightY = (unitViewWidth * 8.45, unitViewHeight * 0.95, unitViewHeight * 0.53);
         }
-        unitViewHeight = mainViewHeight / 18.0;
-        unitViewWidth = mainViewWidth / 18.0;
-        ViewController.staticUnitViewHeight = unitViewHeight;
-        ViewController.staticUnitViewWidth = unitViewWidth;
     }
     
     func setupViruses() {
@@ -232,6 +252,7 @@ class ViewController: UIViewController {
     
     func setupSettingsButton() {
         settingsButton = UISettingsButton(parentView: mainView, x: unitViewWidth, y: unitViewHeight, width: unitViewWidth * 2, height: unitViewWidth * 2);
+        print((unitViewWidth * 2) / (unitViewHeight))
         settingsButton!.setBoardGameAndColorOptionsView(boardGameView:boardGame!, colorOptionsView: colorOptions!);
         ViewController.settingsButton = settingsButton!;
         boardGame!.settingsButton = settingsButton!;

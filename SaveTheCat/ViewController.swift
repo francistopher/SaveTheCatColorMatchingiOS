@@ -34,7 +34,7 @@ class ViewController: UIViewController {
     
     static var appInBackgroundBeforeFirstAttackImpulse:Bool = false;
     
-    static var staticSelf:ViewController?
+    static var staticMainView:UIView?
     var gameCenterAuthentificationOver:Bool = false;
     
     // Game center message
@@ -92,7 +92,7 @@ class ViewController: UIViewController {
     }
     
     func setupSaveTheCat() {
-        ViewController.staticSelf = self;
+        ViewController.staticMainView = mainView;
         setupSounds();
         setupMainViewDimensionProperties();
         setupIntroLabel();
@@ -128,8 +128,8 @@ class ViewController: UIViewController {
     @objc func appMovedToBackground() {
         self.viruses!.hide();
         self.boardGame!.cats.suspendCatAnimations();
-        self.settingsButton!.multiplayer!.activePlayersScrollView!.searchingCatButton!.hideCat();
-        self.settingsButton!.multiplayer!.activePlayersScrollView!.invitationCatButton!.hideCat();
+//        self.settingsButton!.multiplayer!.activePlayersScrollView!.searchingCatButton!.hideCat();
+//        self.settingsButton!.multiplayer!.activePlayersScrollView!.invitationCatButton!.hideCat();
         self.boardGame!.attackMeter!.pauseVirusMovement();
         print("App backgrounded");
     }
@@ -139,13 +139,14 @@ class ViewController: UIViewController {
             self.viruses!.sway(immediately: true);
         }
         self.boardGame!.cats.resumeCatAnimations();
-        self.settingsButton!.multiplayer!.activePlayersScrollView!.searchingCatButton!.animate(AgainWithoutDelay: true);
-        self.settingsButton!.multiplayer!.activePlayersScrollView!.invitationCatButton!.animate(AgainWithoutDelay: true);
+//        self.settingsButton!.multiplayer!.activePlayersScrollView!.searchingCatButton!.animate(AgainWithoutDelay: true);
+//        self.settingsButton!.multiplayer!.activePlayersScrollView!.invitationCatButton!.animate(AgainWithoutDelay: true);
         self.boardGame!.attackMeter!.unPauseVirusMovement();
         print("App foregrounded");
     }
     
     func setupSounds() {
+        SoundController.setupGearSpinning();
         SoundController.setupHeaven();
         SoundController.setupCoinEarned();
         SoundController.setupCoinEarned2();
@@ -251,8 +252,8 @@ class ViewController: UIViewController {
     }
     
     func setupSettingsButton() {
-        settingsButton = UISettingsButton(parentView: mainView, x: unitViewWidth, y: unitViewHeight, width: unitViewWidth * 2, height: unitViewWidth * 2);
-        print((unitViewWidth * 2) / (unitViewHeight))
+        let sideLength:CGFloat = (mainView.frame.height * ((1.0/300.0) + 0.08));
+        settingsButton = UISettingsButton(parentView: mainView, x: unitViewWidth, y: unitViewHeight, width: sideLength, height: sideLength);
         settingsButton!.setBoardGameAndColorOptionsView(boardGameView:boardGame!, colorOptionsView: colorOptions!);
         ViewController.settingsButton = settingsButton!;
         boardGame!.settingsButton = settingsButton!;
@@ -266,9 +267,9 @@ class ViewController: UIViewController {
         introLabel!.setStyle();
         setSuccessGradientLayerStyle();
         settingsButton!.setStyle();
-        settingsButton!.multiplayer!.setStyle();
-        settingsButton!.multiplayer!.activePlayersScrollView!.searchingCatButton!.updateUIStyle();
-        settingsButton!.multiplayer!.activePlayersScrollView!.invitationCatButton!.updateUIStyle();
+//        settingsButton!.multiplayer!.setStyle();
+//        settingsButton!.multiplayer!.activePlayersScrollView!.searchingCatButton!.updateUIStyle();
+//        settingsButton!.multiplayer!.activePlayersScrollView!.invitationCatButton!.updateUIStyle();
         boardGame!.cats.updateUIStyle();
         boardGame!.livesMeter!.setStyle();
         boardGame!.statistics!.setCompiledStyle();

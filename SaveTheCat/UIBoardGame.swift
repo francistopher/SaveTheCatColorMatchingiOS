@@ -54,8 +54,9 @@ class UIBoardGame: UIView {
 
     func setupLivesMeter() {
         let livesMeterWidth:CGFloat = (((((ViewController.staticUnitViewWidth * 18.0) * 0.8575) / 8.0) * 1.75) + ViewController.staticUnitViewWidth * 0.5) * 0.955;
+        let height:CGFloat = (ViewController.staticMainView!.frame.height * ((1.0/300.0) + 0.08))
         let livesMeterX:CGFloat = ((ViewController.staticUnitViewWidth * 18.0) - (livesMeterWidth * 1.025) - ViewController.staticUnitViewWidth);
-        let livesMeterFrame:CGRect = CGRect(x: livesMeterX, y: ViewController.staticUnitViewHeight, width: livesMeterWidth, height: ViewController.staticUnitViewWidth * 2.0);
+        let livesMeterFrame:CGRect = CGRect(x: livesMeterX, y: ViewController.staticUnitViewHeight, width: livesMeterWidth, height: height);
         livesMeter = UILivesMeter(parentView: self.superview!, frame: livesMeterFrame, backgroundColor: UIColor.white);
     }
     
@@ -231,7 +232,7 @@ class UIBoardGame: UIView {
                     colorOptions!.buildColorOptionButtons(setup: false);
                     catButton.pod();
                     catButton.isPodded = true;
-                    catButton.giveMouseCoin(withNoise: true);
+//                    catButton.giveMouseCoin(withNoise: true);
                     verifyThatRemainingCatsArePodded(catButton:catButton);
                 }
             } else {

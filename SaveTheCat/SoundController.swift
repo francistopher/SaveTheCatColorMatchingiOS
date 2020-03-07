@@ -11,6 +11,11 @@ import AVFoundation
 
 class SoundController {
     
+    
+    static var gearSpinningPath:String?
+    static var gearSpinningURL:URL?
+    static var gearSpinningSoundEffect:AVAudioPlayer?
+    
     static var heavenPath:String?
     static var heavenUrl:URL?
     static var heavenSoundEffect:AVAudioPlayer?
@@ -50,6 +55,22 @@ class SoundController {
     static var chopinPreludePath:String?
     static var chopinPreludeUrl:URL?
     static var chopinPreludeSoundEffect:AVAudioPlayer?
+    
+    static func gearSpinning() {
+        gearSpinningSoundEffect!.stop();
+        gearSpinningSoundEffect!.play();
+    }
+    
+    static func setupGearSpinning() {
+        gearSpinningPath = Bundle.main.path(forResource: "gearSpinning.mp3", ofType: nil);
+        gearSpinningURL = URL(fileURLWithPath: gearSpinningPath!);
+        do {
+            gearSpinningSoundEffect = try AVAudioPlayer(contentsOf: gearSpinningURL!);
+        gearSpinningSoundEffect!.volume = 0.5;
+       } catch {
+           print("Unable to play gearSpinning sound effect.");
+       }
+    }
     
     static func heaven() {
         heavenSoundEffect!.play();

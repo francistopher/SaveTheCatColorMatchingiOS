@@ -73,5 +73,9 @@ class UIMouseCoin: UIButton {
         self.amountLabel!.font = UIFont.boldSystemFont(ofSize: amountLabel!.frame.height * 0.5);
         CenterController.center(childView: self.amountLabel!, parentRect: mouseCoinView!.frame, childRect: self.amountLabel!.frame);
     }
+    
+    func setSyle() {
+        
+    }
 
 }

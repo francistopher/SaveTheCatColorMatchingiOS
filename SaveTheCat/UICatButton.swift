@@ -49,42 +49,41 @@ class UICatButton: UIButton {
         self.setStyle();
     }
     
-    func giveMouseCoin(withNoise:Bool) {
-        UIStatistics.mouseCoins += 1;
-        // Generate mouse coin
-        let mouseCoin:UIMouseCoin = UIMouseCoin(parentView: self.imageContainerButton!, x: 0.0, y: 0.0, width: self.imageContainerButton!.frame.width / 4.0, height: self.imageContainerButton!.frame.height / 4.0);
-        mouseCoin.removeTarget(self, action: #selector(mouseCoin.mouseCoinSelector), for: .touchUpInside);
-        CenterController.center(childView: mouseCoin, parentRect: imageContainerButton!.frame, childRect: mouseCoin.frame);
-        self.imageContainerButton!.addSubview(mouseCoin);
-        // Create new frame for mouse coin on main view
-        let mainView:UIView = self.superview!.superview!;
-        var mouseCoinX = mouseCoin.frame.minX;
-        var mouseCoinY = mouseCoin.frame.minY;
-        mouseCoinX += self.frame.minX;
-        mouseCoinY += self.frame.minY;
-        mouseCoinX += self.superview!.frame.minX;
-        mouseCoinY += self.superview!.frame.minY;
-        // Reposition mouse coin
-        mainView.addSubview(mouseCoin);
-        mouseCoin.frame = CGRect(x: mouseCoinX, y: mouseCoinY, width: mouseCoin.frame.width, height: mouseCoin.frame.height);
-        // Calculate time for translation
-        let boardGameFrame:CGRect = self.superview!.frame;
-        let time:Double = Double(mouseCoin.frame.minX / (boardGameFrame.minX + boardGameFrame.width));
-        DispatchQueue.main.asyncAfter(deadline: .now() + time) {
-            mainView.bringSubviewToFront(mouseCoin);
-            UIView.animate(withDuration: 1.0, delay: 0.125, options: [.curveEaseInOut], animations: {
-                let settingsButton:UISettingsButton = ViewController.settingsButton!;
-                let settingsMenuFrame:CGRect = settingsButton.settingsMenu!.frame;
-                let settingsMouseCoinFrame:CGRect = settingsButton.mouseCoin!.frame;
-                let newMouseCoinFrame:CGRect = CGRect(x: settingsMenuFrame.minX + settingsMouseCoinFrame.minX, y: settingsMenuFrame.minY + settingsMouseCoinFrame.minY, width: settingsMouseCoinFrame.width, height: settingsMouseCoinFrame.height);
-                mouseCoin.frame = newMouseCoinFrame;
-            }, completion: { _ in
-                SoundController.coinEarned();
-                mouseCoin.removeFromSuperview();
-            })
-        }
-        
-    }
+//    func giveMouseCoin(withNoise:Bool) {
+//        UIStatistics.mouseCoins += 1;
+//        // Generate mouse coin
+//        let mouseCoin:UIMouseCoin = UIMouseCoin(parentView: self.imageContainerButton!, x: 0.0, y: 0.0, width: self.imageContainerButton!.frame.width / 4.0, height: self.imageContainerButton!.frame.height / 4.0);
+//        mouseCoin.removeTarget(self, action: #selector(mouseCoin.mouseCoinSelector), for: .touchUpInside);
+//        CenterController.center(childView: mouseCoin, parentRect: imageContainerButton!.frame, childRect: mouseCoin.frame);
+//        self.imageContainerButton!.addSubview(mouseCoin);
+//        // Create new frame for mouse coin on main view
+//        let mainView:UIView = self.superview!.superview!;
+//        var mouseCoinX = mouseCoin.frame.minX;
+//        var mouseCoinY = mouseCoin.frame.minY;
+//        mouseCoinX += self.frame.minX;
+//        mouseCoinY += self.frame.minY;
+//        mouseCoinX += self.superview!.frame.minX;
+//        mouseCoinY += self.superview!.frame.minY;
+//        // Reposition mouse coin
+//        mainView.addSubview(mouseCoin);
+//        mouseCoin.frame = CGRect(x: mouseCoinX, y: mouseCoinY, width: mouseCoin.frame.width, height: mouseCoin.frame.height);
+//        // Calculate time for translation
+//        let boardGameFrame:CGRect = self.superview!.frame;
+//        let time:Double = Double(mouseCoin.frame.minX / (boardGameFrame.minX + boardGameFrame.width));
+//        DispatchQueue.main.asyncAfter(deadline: .now() + time) {
+//            mainView.bringSubviewToFront(mouseCoin);
+//            UIView.animate(withDuration: 1.0, delay: 0.125, options: [.curveEaseInOut], animations: {
+//                let settingsButton:UISettingsButton = ViewController.settingsButton!;
+//                let settingsMenuFrame:CGRect = settingsButton.settingsMenu!.frame;
+//                letsettingsMouseCoinFrame:CGRect = settingsButton.mouseCoin!.frame;
+//                let newMouseCoinFrame:CGRect = CGRect(x: settingsMenuFrame.minX + settingsMouseCoinFrame.minX, y: settingsMenuFrame.minY + settingsMouseCoinFrame.minY, width: settingsMouseCoinFrame.width, height: settingsMouseCoinFrame.height);
+//                mouseCoin.frame = newMouseCoinFrame;
+//            }, completion: { _ in
+//                SoundController.coinEarned();
+//                mouseCoin.removeFromSuperview();
+//            })
+//        }
+//    }
     
     func configureImageContainerButton() {
         imageContainerButton = UICButton(parentView:self, frame: CGRect(x: ((self.originalFrame!.width - self.originalFrame!.height) / 2.0), y: 0.0, width: self.originalFrame!.height, height: self.originalFrame!.height), backgroundColor:self.originalBackgroundColor);

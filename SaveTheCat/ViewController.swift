@@ -37,10 +37,14 @@ class ViewController: UIViewController {
     static var staticSelf:ViewController?
     var gameCenterAuthentificationOver:Bool = false;
     
+    // Game center message
+    var gameCenterMessage:GameCenterMessage?
+    
     @IBOutlet var mainViewController: UIView!
     override func viewDidLoad() {
         super.viewDidLoad();
         setupSaveTheCat();
+        setupGameCenterMessage();
         authenticateLocalPlayerForGamePlay();
     }
     
@@ -56,6 +60,7 @@ class ViewController: UIViewController {
                 self.gameCenterAuthentificationOver = true;
                 self.boardGame!.attackMeter!.invokeAttackImpulse(delay: 5.75);
                 self.presentSaveTheCat();
+                self.gameCenterMessage!.showAndHideMessage();
                 return;
             }
             if let vc = vc {
@@ -70,7 +75,6 @@ class ViewController: UIViewController {
                     if (self.gameCenterAuthentificationOver) {
                         return;
                     }
-                    
                     print("ENABLE MULTIPLAYER")
                     self.gameCenterAuthentificationOver = true;
                     self.boardGame!.attackMeter!.invokeAttackImpulse(delay: 5.5);
@@ -78,6 +82,12 @@ class ViewController: UIViewController {
                 }
             }
         }
+    }
+    
+    func setupGameCenterMessage() {
+        let gameCenterMessageX:CGFloat = (mainView.frame.width - unitViewWidth * 8.45) * 0.5;
+        gameCenterMessage = GameCenterMessage(parentView: mainView, frame: CGRect(x: gameCenterMessageX, y: unitViewHeight * 0.53, width: unitViewWidth * 8.45, height: unitViewHeight * 0.95));
+        CenterController.centerHorizontally(childView: gameCenterMessage!, parentRect: mainView.frame, childRect: gameCenterMessage!.frame);
     }
     
     func setupSaveTheCat() {
@@ -230,6 +240,7 @@ class ViewController: UIViewController {
     }
     
     func setStyle() {
+        gameCenterMessage!.setStyle();
         viruses!.setStyle();
         introLabel!.setStyle();
         setSuccessGradientLayerStyle();
@@ -247,6 +258,88 @@ class ViewController: UIViewController {
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         setStyle();
+    }
+}
+
+class GameCenterMessage:UIView {
+    
+    var blurEffect:UIBlurEffect?
+    var blurView:UIVisualEffectView?
+    var imageButton:UIButton?
+    var messageLabel:UICLabel?
+    
+    var targetFrame:CGRect?
+    var defaultFrame:CGRect?
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    init(parentView:UIView, frame:CGRect) {
+        targetFrame = frame;
+        defaultFrame = CGRect(x: frame.minX, y: -(frame.minY * 2.0 + frame.height), width: frame.width, height: frame.height);
+        super.init(frame: defaultFrame!);
+        self.backgroundColor = UIColor.clear;
+        self.layer.cornerRadius = self.frame.width * 0.07;
+        self.clipsToBounds = true;
+        setupBlurEffect();
+        setupVisualEffectView();
+        setupImageButton();
+        setupLabel();
+        parentView.addSubview(self);
+    }
+    
+    func setupBlurEffect() {
+        if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1) {
+            blurEffect = UIBlurEffect(style: .systemThinMaterialDark);
+        } else {
+            blurEffect = UIBlurEffect(style: .systemThickMaterialDark);
+        }
+    }
+    
+    func setupVisualEffectView() {
+        blurView = UIVisualEffectView(effect: blurEffect);
+        blurView!.frame = self.bounds;
+        self.addSubview(blurView!);
+    }
+    
+    func setupImageButton() {
+        imageButton = UIButton(frame: CGRect(x: self.frame.width * 0.0839, y: 0.0, width: self.frame.height * 0.65, height: self.frame.height));
+        imageButton!.backgroundColor = UIColor.clear;
+        setupGameCenterButton();
+        self.addSubview(imageButton!);
+    }
+    
+    func setupGameCenterButton() {
+        let image:UIImage = UIImage(named: "gameCenter.png")!;
+        imageButton!.setImage(image, for: .normal);
+        imageButton!.imageView!.contentMode = UIView.ContentMode.scaleAspectFit;
+    }
+    
+    func setupLabel() {
+        let messageLabelWidth:CGFloat = self.imageButton!.frame.minX + self.imageButton!.frame.width * 1.05;
+        messageLabel = UICLabel(parentView: self, x:  messageLabelWidth, y: 0.0, width: self.frame.width * 0.75, height: self.frame.height);
+        messageLabel!.backgroundColor = UIColor.clear;
+        messageLabel!.textColor = UIColor.white;
+        messageLabel!.lineBreakMode = NSLineBreakMode.byWordWrapping;
+        messageLabel!.numberOfLines = 2;
+        messageLabel!.font = UIFont.boldSystemFont(ofSize: messageLabel!.frame.height * 0.25);
+        messageLabel!.text = "Go to Settings and sign into\nGame Center for Multiplayer!";
+    }
+    
+    func setStyle() {
+        setupBlurEffect();
+        blurView!.effect = blurEffect;
+    }
+    
+    func showAndHideMessage() {
+        UIView.animate(withDuration: 0.415, delay: 0.25, options: .curveLinear, animations: {
+            self.frame = self.targetFrame!;
+        })
+        Timer.scheduledTimer(withTimeInterval: 4.1, repeats: false, block: { _ in
+            UIView.animate(withDuration: 0.415, delay: 0.0, options: .curveLinear, animations: {
+                self.frame = self.defaultFrame!;
+            })
+        })
     }
 }
 

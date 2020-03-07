@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-class UIRestart1: UIButton {
+class UIRestart: UIButton {
     
     var originalFrame:CGRect? = nil;
     var reducedFrame:CGRect? = nil;
@@ -25,7 +25,7 @@ class UIRestart1: UIButton {
         self.backgroundColor = .clear;
         self.layer.cornerRadius = height / 2.0;
         setStyle();
-        self.addTarget(self, action: #selector(restart1Selector), for: .touchUpInside);
+        self.addTarget(self, action: #selector(restartSelector), for: .touchUpInside);
         parentView.addSubview(self);
     }
 
@@ -37,19 +37,19 @@ class UIRestart1: UIButton {
     
     func setStyle() {
         if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1){
-            setIconImage(imageName: "lightRestart1.png");
+            setIconImage(imageName: "lightRestart.png");
         } else {
-            setIconImage(imageName: "darkRestart1.png");
+            setIconImage(imageName: "darkRestart.png");
         }
     }
     
     func setTargetResources(boardGameView:UIBoardGame, settingsButton:UISettingsButton) {
         self.boardGameView = boardGameView;
         self.settingsButton = settingsButton;
-        self.addTarget(self, action: #selector(restart1Selector), for: .touchUpInside);
+        self.addTarget(self, action: #selector(restartSelector), for: .touchUpInside);
     }
     
-    @objc func restart1Selector() {
+    @objc func restartSelector() {
         self.settingsButton!.sendActions(for: .touchUpInside);
         self.boardGameView!.revertSelections();
     }

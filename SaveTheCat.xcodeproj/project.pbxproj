@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		B83B032D241153E900EC4BAD /* UINoAds.swift in Sources */ = {isa = PBXBuildFile; fileRef = B83B0326241153E800EC4BAD /* UINoAds.swift */; };
-		B83B032E241153E900EC4BAD /* UIRestart1.swift in Sources */ = {isa = PBXBuildFile; fileRef = B83B0327241153E800EC4BAD /* UIRestart1.swift */; };
+		B83B032E241153E900EC4BAD /* UIRestart.swift in Sources */ = {isa = PBXBuildFile; fileRef = B83B0327241153E800EC4BAD /* UIRestart.swift */; };
 		B83B032F241153E900EC4BAD /* UIStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = B83B0328241153E800EC4BAD /* UIStats.swift */; };
 		B83B0330241153E900EC4BAD /* UIMoreCats.swift in Sources */ = {isa = PBXBuildFile; fileRef = B83B0329241153E800EC4BAD /* UIMoreCats.swift */; };
 		B83B0331241153E900EC4BAD /* UIMouseCoin.swift in Sources */ = {isa = PBXBuildFile; fileRef = B83B032A241153E800EC4BAD /* UIMouseCoin.swift */; };
@@ -100,7 +100,7 @@
 
 /* Begin PBXFileReference section */
 		B83B0326241153E800EC4BAD /* UINoAds.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UINoAds.swift; path = SaveTheCat/UINoAds.swift; sourceTree = "<group>"; };
-		B83B0327241153E800EC4BAD /* UIRestart1.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UIRestart1.swift; path = SaveTheCat/UIRestart1.swift; sourceTree = "<group>"; };
+		B83B0327241153E800EC4BAD /* UIRestart.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UIRestart.swift; path = SaveTheCat/UIRestart.swift; sourceTree = "<group>"; };
 		B83B0328241153E800EC4BAD /* UIStats.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UIStats.swift; path = SaveTheCat/UIStats.swift; sourceTree = "<group>"; };
 		B83B0329241153E800EC4BAD /* UIMoreCats.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UIMoreCats.swift; path = SaveTheCat/UIMoreCats.swift; sourceTree = "<group>"; };
 		B83B032A241153E800EC4BAD /* UIMouseCoin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UIMouseCoin.swift; path = SaveTheCat/UIMouseCoin.swift; sourceTree = "<group>"; };
@@ -230,7 +230,7 @@
 				B83B032A241153E800EC4BAD /* UIMouseCoin.swift */,
 				B83B032B241153E800EC4BAD /* UIMultiplayer.swift */,
 				B83B0326241153E800EC4BAD /* UINoAds.swift */,
-				B83B0327241153E800EC4BAD /* UIRestart1.swift */,
+				B83B0327241153E800EC4BAD /* UIRestart.swift */,
 				B83B032C241153E800EC4BAD /* UISettingsButton.swift */,
 				B83B0328241153E800EC4BAD /* UIStats.swift */,
 			);
@@ -622,7 +622,7 @@
 				B83B039D241158FC00EC4BAD /* UICScrollView.swift in Sources */,
 				B83B03C324115B3200EC4BAD /* ViewController.swift in Sources */,
 				B83B032D241153E900EC4BAD /* UINoAds.swift in Sources */,
-				B83B032E241153E900EC4BAD /* UIRestart1.swift in Sources */,
+				B83B032E241153E900EC4BAD /* UIRestart.swift in Sources */,
 				B83B032F241153E900EC4BAD /* UIStats.swift in Sources */,
 				B83B03AC241159F900EC4BAD /* UIColorOptions.swift in Sources */,
 				B83B03B2241159F900EC4BAD /* UICatButton.swift in Sources */,

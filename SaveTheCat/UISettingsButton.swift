@@ -29,7 +29,7 @@ class UISettingsButton:UIButton {
     var mouseCoin:UIMouseCoin? = nil;
     var moreCats:UIMoreCats? = nil;
     var multiplayer:UIMultiplayer? = nil;
-    var restart1:UIRestart1? = nil;
+    var restart1:UIRestart? = nil;
     var stats:UIStats? = nil;
     var noAds:UINoAds? = nil;
     
@@ -99,7 +99,7 @@ class UISettingsButton:UIButton {
     }
     
     func setupRestart1Button(parentView:UICView) {
-        restart1 = UIRestart1(parentView: parentView, x: cellFrame!.width * 2.25, y: 0.0, width: cellFrame!.width, height: cellFrame!.height);
+        restart1 = UIRestart(parentView: parentView, x: cellFrame!.width * 2.25, y: 0.0, width: cellFrame!.width, height: cellFrame!.height);
         restart1!.frame = CGRect(x: -cellFrame!.width * 0.25, y: restart1!.frame.minY, width: restart1!.frame.width, height: restart1!.frame.height);
         restart1!.reducedFrame = restart1!.frame;
     }

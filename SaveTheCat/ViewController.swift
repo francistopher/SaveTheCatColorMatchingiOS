@@ -176,10 +176,10 @@ class ViewController: UIViewController {
         
         if (decimalRatio > 2.1) {
             mainViewWidth = mainView.frame.width;
-            mainViewHeight = mainView.frame.height * 3.0 / 4.0;
+            mainViewHeight = mainView.frame.height;
             setupUnitViewDimension();
             setupStaticUnitViewDimension();
-            gameCenterMessageWidthHeightY = (unitViewWidth * 8.45, unitViewHeight * 0.95, unitViewHeight * 0.53);
+            gameCenterMessageWidthHeightY = (unitViewWidth * 15.85, unitViewHeight * 1.35, unitViewHeight * 1.00);
             print("21:9?")
         } else if (decimalRatio > 1.7) {
             mainViewWidth = mainView.frame.width;
@@ -344,7 +344,7 @@ class GameCenterMessage:UIView {
         messageLabel!.lineBreakMode = NSLineBreakMode.byWordWrapping;
         messageLabel!.numberOfLines = 2;
         messageLabel!.font = UIFont.boldSystemFont(ofSize: messageLabel!.frame.height * 0.25);
-        messageLabel!.text = "Go to Settings and sign into\nGame Center for Multiplayer!";
+        messageLabel!.text = "Go to Settings and sign into\nGame Center for more fun!";
     }
     
     func setStyle() {

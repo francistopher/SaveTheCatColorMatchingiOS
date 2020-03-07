@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-class UIStats: UIButton {
+class UILeadBoard: UIButton {
     
     var originalFrame:CGRect? = nil;
     var reducedFrame:CGRect? = nil;
@@ -39,9 +39,9 @@ class UIStats: UIButton {
     
     func setStyle() {
         if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1){
-            setIconImage(imageName: "lightStats.png");
+            setIconImage(imageName: "lightLeaderBoard.png");
         } else {
-            setIconImage(imageName: "darkStats.png");
+            setIconImage(imageName: "darkLeaderBoard.png");
         }
     }
     

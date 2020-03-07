@@ -143,7 +143,7 @@ class UIMultiplayer: UIButton {
     
     func setStyle() {
         if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1){
-            setIconImage(imageName: "lightMoreCats.png");
+            setIconImage(imageName: "multiPlayer.png");
             multiplayerView!.backgroundColor = UIColor.white;
             multiplayerView!.layer.borderColor = UIColor.black.cgColor;
             displayNameTextField!.backgroundColor = UIColor.white;
@@ -151,7 +151,7 @@ class UIMultiplayer: UIButton {
             updateDisplayNameButton!.layer.borderColor = UIColor.black.cgColor;
             activePlayersScrollView!.setStyle();
         } else {
-            setIconImage(imageName: "darkMoreCats.png");
+            setIconImage(imageName: "multiPlayer.png");
             multiplayerView!.backgroundColor = UIColor.black;
             multiplayerView!.layer.borderColor = UIColor.white.cgColor;
             displayNameTextField!.backgroundColor = UIColor.black;

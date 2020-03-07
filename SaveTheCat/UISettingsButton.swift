@@ -13,19 +13,18 @@ import AVFoundation
 
 class UISettingsButton:UIButton {
     
-    static var settingsButton:UISettingsButton? = nil;
+    static var settingsButton:UISettingsButton?;
+    
+    var settingsMenu:UISettingsMenu?
     
     var originalFrame:CGRect? = nil;
     var shrunkFrame:CGRect? = nil;
     var originalBackgroundColor:UIColor? = nil;
     var isPressed:Bool = false;
     var isPressable:Bool = true;
-    var settingsMenu:UICView? = nil;
     
     var colorOptionsView:UIColorOptions? = nil;
     var boardGame:UIBoardGame? = nil;
-    var cellFrame:CGRect? = nil;
-    
     
     var showContentAnimation:UIViewPropertyAnimator?
     var hideContentAnimation:UIViewPropertyAnimator?
@@ -41,9 +40,6 @@ class UISettingsButton:UIButton {
         self.layer.borderWidth = self.frame.height / 12.0;
         parentView.addSubview(self);
         setupSettingsMenu(parentView:parentView);
-        setupCellFrame();
-        settingsMenu!.frame = CGRect(x: self.frame.midX * 0.7, y: self.frame.minY, width: cellFrame!.width * 1.75, height: settingsMenu!.frame.height);
-        settingsMenu!.reducedFrame = settingsMenu!.frame;
         setStyle();
         self.addTarget(self, action: #selector(settingsMenuSelector), for: .touchUpInside);
     }
@@ -55,15 +51,9 @@ class UISettingsButton:UIButton {
     }
     
     func setupSettingsMenu(parentView:UIView) {
-        settingsMenu = UICView(parentView: parentView, x: self.frame.minX, y: self.frame.minY, width: parentView.frame.width * 0.8575, height: self.frame.height, backgroundColor: .clear);
-        settingsMenu!.layer.cornerRadius = settingsMenu!.frame.height / 2.0;
-        settingsMenu!.layer.borderWidth = self.frame.height / 12.0;
+        let width:CGFloat = ViewController.staticMainView!.frame.width - (self.frame.minX * 2.0)
+        settingsMenu = UISettingsMenu(parentView: parentView, frame: CGRect(x: self.frame.minX, y: self.frame.minY, width: width, height: self.frame.height));
         parentView.bringSubviewToFront(self);
-    }
-    
-    func setupCellFrame(){
-        cellFrame = CGRect(x: 0.0, y: 0.0, width: (settingsMenu!.frame.width / 7.0), height: settingsMenu!.frame.height);
-        cellFrame = CGRect(x: cellFrame!.width / 7.0, y: 0.0, width: settingsMenu!.frame.width / 8.0, height: settingsMenu!.frame.height);
     }
     
     @objc func settingsMenuSelector(){

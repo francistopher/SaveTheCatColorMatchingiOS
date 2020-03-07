@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-class UINoAds: UIButton {
+class UIAds: UIButton {
     
     var originalFrame:CGRect? = nil;
     var reducedFrame:CGRect? = nil;

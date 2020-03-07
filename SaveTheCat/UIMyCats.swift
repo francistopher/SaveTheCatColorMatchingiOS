@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-class UIMoreCats: UIButton {
+class UIMyCats: UIButton {
    
     var originalFrame:CGRect? = nil;
     var reducedFrame:CGRect? = nil;
@@ -32,7 +32,7 @@ class UIMoreCats: UIButton {
     }
        
     func setIconImage() {
-        let iconImage:UIImage? = UIImage(named: UIStatistics.getCatFileName(named: "SmilingCat.png"));
+        let iconImage:UIImage? = UIImage(named: "myCats.png");
         self.setImage(iconImage, for: .normal);
         self.imageView!.contentMode = UIView.ContentMode.scaleAspectFit;
     }

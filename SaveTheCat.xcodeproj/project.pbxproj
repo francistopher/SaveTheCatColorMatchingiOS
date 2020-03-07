@@ -7,9 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		B83B032D241153E900EC4BAD /* UINoAds.swift in Sources */ = {isa = PBXBuildFile; fileRef = B83B0326241153E800EC4BAD /* UINoAds.swift */; };
-		B83B032F241153E900EC4BAD /* UIStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = B83B0328241153E800EC4BAD /* UIStats.swift */; };
-		B83B0330241153E900EC4BAD /* UIMoreCats.swift in Sources */ = {isa = PBXBuildFile; fileRef = B83B0329241153E800EC4BAD /* UIMoreCats.swift */; };
 		B83B0331241153E900EC4BAD /* UIMouseCoin.swift in Sources */ = {isa = PBXBuildFile; fileRef = B83B032A241153E800EC4BAD /* UIMouseCoin.swift */; };
 		B83B0332241153E900EC4BAD /* UIMultiplayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B83B032B241153E800EC4BAD /* UIMultiplayer.swift */; };
 		B83B0333241153E900EC4BAD /* UISettingsButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B83B032C241153E800EC4BAD /* UISettingsButton.swift */; };
@@ -25,29 +22,21 @@
 		B83B034C241154D700EC4BAD /* darkFancyDeadCat.png in Resources */ = {isa = PBXBuildFile; fileRef = B83B0346241154D700EC4BAD /* darkFancyDeadCat.png */; };
 		B83B034D241154D700EC4BAD /* darkGear.png in Resources */ = {isa = PBXBuildFile; fileRef = B83B0347241154D700EC4BAD /* darkGear.png */; };
 		B83B034E241154D700EC4BAD /* darkFancySmilingCat.png in Resources */ = {isa = PBXBuildFile; fileRef = B83B0348241154D700EC4BAD /* darkFancySmilingCat.png */; };
-		B83B0359241154EB00EC4BAD /* darkStats.png in Resources */ = {isa = PBXBuildFile; fileRef = B83B034F241154EB00EC4BAD /* darkStats.png */; };
 		B83B035A241154EB00EC4BAD /* darkNinjaDeadCat.png in Resources */ = {isa = PBXBuildFile; fileRef = B83B0350241154EB00EC4BAD /* darkNinjaDeadCat.png */; };
 		B83B035B241154EB00EC4BAD /* darkNinjaSmilingCat.png in Resources */ = {isa = PBXBuildFile; fileRef = B83B0351241154EB00EC4BAD /* darkNinjaSmilingCat.png */; };
-		B83B035C241154EB00EC4BAD /* darkRestart.png in Resources */ = {isa = PBXBuildFile; fileRef = B83B0352241154EB00EC4BAD /* darkRestart.png */; };
 		B83B035D241154EB00EC4BAD /* darkSmilingCat.png in Resources */ = {isa = PBXBuildFile; fileRef = B83B0353241154EB00EC4BAD /* darkSmilingCat.png */; };
 		B83B035E241154EB00EC4BAD /* darkNoAds.png in Resources */ = {isa = PBXBuildFile; fileRef = B83B0354241154EB00EC4BAD /* darkNoAds.png */; };
-		B83B035F241154EB00EC4BAD /* darkRestart1.png in Resources */ = {isa = PBXBuildFile; fileRef = B83B0355241154EB00EC4BAD /* darkRestart1.png */; };
 		B83B0360241154EB00EC4BAD /* darkVirus.png in Resources */ = {isa = PBXBuildFile; fileRef = B83B0356241154EB00EC4BAD /* darkVirus.png */; };
 		B83B0361241154EB00EC4BAD /* darkNinjaCheeringCat.png in Resources */ = {isa = PBXBuildFile; fileRef = B83B0357241154EB00EC4BAD /* darkNinjaCheeringCat.png */; };
-		B83B0362241154EB00EC4BAD /* darkMoreCats.png in Resources */ = {isa = PBXBuildFile; fileRef = B83B0358241154EB00EC4BAD /* darkMoreCats.png */; };
 		B83B03752411551300EC4BAD /* lightFancyCheeringCat.png in Resources */ = {isa = PBXBuildFile; fileRef = B83B03632411551200EC4BAD /* lightFancyCheeringCat.png */; };
 		B83B03762411551300EC4BAD /* lightFancySmilingCat.png in Resources */ = {isa = PBXBuildFile; fileRef = B83B03642411551200EC4BAD /* lightFancySmilingCat.png */; };
 		B83B03772411551300EC4BAD /* lightGear.png in Resources */ = {isa = PBXBuildFile; fileRef = B83B03652411551200EC4BAD /* lightGear.png */; };
 		B83B03782411551300EC4BAD /* lightNoAds.png in Resources */ = {isa = PBXBuildFile; fileRef = B83B03662411551200EC4BAD /* lightNoAds.png */; };
-		B83B03792411551300EC4BAD /* lightRestart1.png in Resources */ = {isa = PBXBuildFile; fileRef = B83B03672411551200EC4BAD /* lightRestart1.png */; };
-		B83B037A2411551300EC4BAD /* lightMoreCats.png in Resources */ = {isa = PBXBuildFile; fileRef = B83B03682411551200EC4BAD /* lightMoreCats.png */; };
 		B83B037B2411551300EC4BAD /* lightNinjaSmilingCat.png in Resources */ = {isa = PBXBuildFile; fileRef = B83B03692411551200EC4BAD /* lightNinjaSmilingCat.png */; };
 		B83B037C2411551300EC4BAD /* lightCheeringCat.png in Resources */ = {isa = PBXBuildFile; fileRef = B83B036A2411551200EC4BAD /* lightCheeringCat.png */; };
 		B83B037D2411551300EC4BAD /* lightVirus.png in Resources */ = {isa = PBXBuildFile; fileRef = B83B036B2411551200EC4BAD /* lightVirus.png */; };
 		B83B037E2411551300EC4BAD /* lightDeadCat.png in Resources */ = {isa = PBXBuildFile; fileRef = B83B036C2411551200EC4BAD /* lightDeadCat.png */; };
-		B83B037F2411551300EC4BAD /* lightStats.png in Resources */ = {isa = PBXBuildFile; fileRef = B83B036D2411551200EC4BAD /* lightStats.png */; };
 		B83B03802411551300EC4BAD /* heart.png in Resources */ = {isa = PBXBuildFile; fileRef = B83B036E2411551200EC4BAD /* heart.png */; };
-		B83B03812411551300EC4BAD /* lightRestart.png in Resources */ = {isa = PBXBuildFile; fileRef = B83B036F2411551200EC4BAD /* lightRestart.png */; };
 		B83B03822411551300EC4BAD /* lightNinjaCheeringCat.png in Resources */ = {isa = PBXBuildFile; fileRef = B83B03702411551300EC4BAD /* lightNinjaCheeringCat.png */; };
 		B83B03832411551300EC4BAD /* lightSmilingCat.png in Resources */ = {isa = PBXBuildFile; fileRef = B83B03712411551300EC4BAD /* lightSmilingCat.png */; };
 		B83B03842411551300EC4BAD /* lightNinjaDeadCat.png in Resources */ = {isa = PBXBuildFile; fileRef = B83B03722411551300EC4BAD /* lightNinjaDeadCat.png */; };
@@ -95,13 +84,17 @@
 		B83B03FD2411877E00EC4BAD /* Icon-1024@1x.png in Resources */ = {isa = PBXBuildFile; fileRef = B83B03EE2411877E00EC4BAD /* Icon-1024@1x.png */; };
 		B83B03FE2411BD6C00EC4BAD /* SaveTheCat.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = B83B03D324115D2E00EC4BAD /* SaveTheCat.xcdatamodeld */; };
 		B83B04022413221E00EC4BAD /* gameCenter.png in Resources */ = {isa = PBXBuildFile; fileRef = B83B04012413221E00EC4BAD /* gameCenter.png */; };
-		B84032362414139B0020D9EA /* UISettingsMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = B84032352414139B0020D9EA /* UISettingsMenu.swift */; };
+		B84032382414150D0020D9EA /* UISettingsMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = B84032372414150D0020D9EA /* UISettingsMenu.swift */; };
+		B840323C241437C30020D9EA /* UIAds.swift in Sources */ = {isa = PBXBuildFile; fileRef = B840323B241437C30020D9EA /* UIAds.swift */; };
+		B840323F241438780020D9EA /* UILeadBoard.swift in Sources */ = {isa = PBXBuildFile; fileRef = B840323D241438780020D9EA /* UILeadBoard.swift */; };
+		B8403240241438780020D9EA /* UIMyCats.swift in Sources */ = {isa = PBXBuildFile; fileRef = B840323E241438780020D9EA /* UIMyCats.swift */; };
+		B8403244241439210020D9EA /* multiPlayer.png in Resources */ = {isa = PBXBuildFile; fileRef = B8403242241439210020D9EA /* multiPlayer.png */; };
+		B840324724143B540020D9EA /* darkLeaderBoard.png in Resources */ = {isa = PBXBuildFile; fileRef = B840324524143B540020D9EA /* darkLeaderBoard.png */; };
+		B840324824143B540020D9EA /* lightLeaderBoard.png in Resources */ = {isa = PBXBuildFile; fileRef = B840324624143B540020D9EA /* lightLeaderBoard.png */; };
+		B840324A241440900020D9EA /* myCats.png in Resources */ = {isa = PBXBuildFile; fileRef = B8403249241440900020D9EA /* myCats.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		B83B0326241153E800EC4BAD /* UINoAds.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UINoAds.swift; path = SaveTheCat/UINoAds.swift; sourceTree = "<group>"; };
-		B83B0328241153E800EC4BAD /* UIStats.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UIStats.swift; path = SaveTheCat/UIStats.swift; sourceTree = "<group>"; };
-		B83B0329241153E800EC4BAD /* UIMoreCats.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UIMoreCats.swift; path = SaveTheCat/UIMoreCats.swift; sourceTree = "<group>"; };
 		B83B032A241153E800EC4BAD /* UIMouseCoin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UIMouseCoin.swift; path = SaveTheCat/UIMouseCoin.swift; sourceTree = "<group>"; };
 		B83B032B241153E800EC4BAD /* UIMultiplayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UIMultiplayer.swift; path = SaveTheCat/UIMultiplayer.swift; sourceTree = "<group>"; };
 		B83B032C241153E800EC4BAD /* UISettingsButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UISettingsButton.swift; path = SaveTheCat/UISettingsButton.swift; sourceTree = "<group>"; };
@@ -117,29 +110,21 @@
 		B83B0346241154D700EC4BAD /* darkFancyDeadCat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = darkFancyDeadCat.png; path = SaveTheCat/darkFancyDeadCat.png; sourceTree = "<group>"; };
 		B83B0347241154D700EC4BAD /* darkGear.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = darkGear.png; path = SaveTheCat/darkGear.png; sourceTree = "<group>"; };
 		B83B0348241154D700EC4BAD /* darkFancySmilingCat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = darkFancySmilingCat.png; path = SaveTheCat/darkFancySmilingCat.png; sourceTree = "<group>"; };
-		B83B034F241154EB00EC4BAD /* darkStats.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = darkStats.png; path = SaveTheCat/darkStats.png; sourceTree = "<group>"; };
 		B83B0350241154EB00EC4BAD /* darkNinjaDeadCat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = darkNinjaDeadCat.png; path = SaveTheCat/darkNinjaDeadCat.png; sourceTree = "<group>"; };
 		B83B0351241154EB00EC4BAD /* darkNinjaSmilingCat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = darkNinjaSmilingCat.png; path = SaveTheCat/darkNinjaSmilingCat.png; sourceTree = "<group>"; };
-		B83B0352241154EB00EC4BAD /* darkRestart.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = darkRestart.png; path = SaveTheCat/darkRestart.png; sourceTree = "<group>"; };
 		B83B0353241154EB00EC4BAD /* darkSmilingCat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = darkSmilingCat.png; path = SaveTheCat/darkSmilingCat.png; sourceTree = "<group>"; };
 		B83B0354241154EB00EC4BAD /* darkNoAds.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = darkNoAds.png; path = SaveTheCat/darkNoAds.png; sourceTree = "<group>"; };
-		B83B0355241154EB00EC4BAD /* darkRestart1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = darkRestart1.png; path = SaveTheCat/darkRestart1.png; sourceTree = "<group>"; };
 		B83B0356241154EB00EC4BAD /* darkVirus.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = darkVirus.png; path = SaveTheCat/darkVirus.png; sourceTree = "<group>"; };
 		B83B0357241154EB00EC4BAD /* darkNinjaCheeringCat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = darkNinjaCheeringCat.png; path = SaveTheCat/darkNinjaCheeringCat.png; sourceTree = "<group>"; };
-		B83B0358241154EB00EC4BAD /* darkMoreCats.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = darkMoreCats.png; path = SaveTheCat/darkMoreCats.png; sourceTree = "<group>"; };
 		B83B03632411551200EC4BAD /* lightFancyCheeringCat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = lightFancyCheeringCat.png; path = SaveTheCat/lightFancyCheeringCat.png; sourceTree = "<group>"; };
 		B83B03642411551200EC4BAD /* lightFancySmilingCat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = lightFancySmilingCat.png; path = SaveTheCat/lightFancySmilingCat.png; sourceTree = "<group>"; };
 		B83B03652411551200EC4BAD /* lightGear.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = lightGear.png; path = SaveTheCat/lightGear.png; sourceTree = "<group>"; };
 		B83B03662411551200EC4BAD /* lightNoAds.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = lightNoAds.png; path = SaveTheCat/lightNoAds.png; sourceTree = "<group>"; };
-		B83B03672411551200EC4BAD /* lightRestart1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = lightRestart1.png; path = SaveTheCat/lightRestart1.png; sourceTree = "<group>"; };
-		B83B03682411551200EC4BAD /* lightMoreCats.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = lightMoreCats.png; path = SaveTheCat/lightMoreCats.png; sourceTree = "<group>"; };
 		B83B03692411551200EC4BAD /* lightNinjaSmilingCat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = lightNinjaSmilingCat.png; path = SaveTheCat/lightNinjaSmilingCat.png; sourceTree = "<group>"; };
 		B83B036A2411551200EC4BAD /* lightCheeringCat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = lightCheeringCat.png; path = SaveTheCat/lightCheeringCat.png; sourceTree = "<group>"; };
 		B83B036B2411551200EC4BAD /* lightVirus.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = lightVirus.png; path = SaveTheCat/lightVirus.png; sourceTree = "<group>"; };
 		B83B036C2411551200EC4BAD /* lightDeadCat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = lightDeadCat.png; path = SaveTheCat/lightDeadCat.png; sourceTree = "<group>"; };
-		B83B036D2411551200EC4BAD /* lightStats.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = lightStats.png; path = SaveTheCat/lightStats.png; sourceTree = "<group>"; };
 		B83B036E2411551200EC4BAD /* heart.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = heart.png; path = SaveTheCat/heart.png; sourceTree = "<group>"; };
-		B83B036F2411551200EC4BAD /* lightRestart.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = lightRestart.png; path = SaveTheCat/lightRestart.png; sourceTree = "<group>"; };
 		B83B03702411551300EC4BAD /* lightNinjaCheeringCat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = lightNinjaCheeringCat.png; path = SaveTheCat/lightNinjaCheeringCat.png; sourceTree = "<group>"; };
 		B83B03712411551300EC4BAD /* lightSmilingCat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = lightSmilingCat.png; path = SaveTheCat/lightSmilingCat.png; sourceTree = "<group>"; };
 		B83B03722411551300EC4BAD /* lightNinjaDeadCat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = lightNinjaDeadCat.png; path = SaveTheCat/lightNinjaDeadCat.png; sourceTree = "<group>"; };
@@ -189,7 +174,14 @@
 		B83B03ED2411877E00EC4BAD /* Icon-167@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-167@2x.png"; path = "SaveTheCat/Icon-167@2x.png"; sourceTree = "<group>"; };
 		B83B03EE2411877E00EC4BAD /* Icon-1024@1x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-1024@1x.png"; path = "SaveTheCat/Icon-1024@1x.png"; sourceTree = "<group>"; };
 		B83B04012413221E00EC4BAD /* gameCenter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = gameCenter.png; path = SaveTheCat/gameCenter.png; sourceTree = "<group>"; };
-		B84032352414139B0020D9EA /* UISettingsMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UISettingsMenu.swift; sourceTree = "<group>"; };
+		B84032372414150D0020D9EA /* UISettingsMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UISettingsMenu.swift; path = SaveTheCat/UISettingsMenu.swift; sourceTree = "<group>"; };
+		B840323B241437C30020D9EA /* UIAds.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UIAds.swift; path = SaveTheCat/UIAds.swift; sourceTree = "<group>"; };
+		B840323D241438780020D9EA /* UILeadBoard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UILeadBoard.swift; path = SaveTheCat/UILeadBoard.swift; sourceTree = "<group>"; };
+		B840323E241438780020D9EA /* UIMyCats.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UIMyCats.swift; path = SaveTheCat/UIMyCats.swift; sourceTree = "<group>"; };
+		B8403242241439210020D9EA /* multiPlayer.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = multiPlayer.png; path = SaveTheCat/multiPlayer.png; sourceTree = "<group>"; };
+		B840324524143B540020D9EA /* darkLeaderBoard.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = darkLeaderBoard.png; path = SaveTheCat/darkLeaderBoard.png; sourceTree = "<group>"; };
+		B840324624143B540020D9EA /* lightLeaderBoard.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = lightLeaderBoard.png; path = SaveTheCat/lightLeaderBoard.png; sourceTree = "<group>"; };
+		B8403249241440900020D9EA /* myCats.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = myCats.png; path = SaveTheCat/myCats.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -211,7 +203,7 @@
 				B83B0342241154C000EC4BAD /* Images */,
 				B83B03C424115B4F00EC4BAD /* Delegates */,
 				B83B03BD24115B1100EC4BAD /* Controllers */,
-				B83B03212411535700EC4BAD /* Game Settings */,
+				B83B03212411535700EC4BAD /* Settings View Controllers */,
 				B83B03972411579E00EC4BAD /* Custom View Controllers */,
 				B83B03A2241159AB00EC4BAD /* Particular View Controllers */,
 				B83B03B424115A7800EC4BAD /* Supporting Files */,
@@ -223,18 +215,18 @@
 			);
 			sourceTree = "<group>";
 		};
-		B83B03212411535700EC4BAD /* Game Settings */ = {
+		B83B03212411535700EC4BAD /* Settings View Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				B84032352414139B0020D9EA /* UISettingsMenu.swift */,
-				B83B0329241153E800EC4BAD /* UIMoreCats.swift */,
+				B83B032C241153E800EC4BAD /* UISettingsButton.swift */,
+				B84032372414150D0020D9EA /* UISettingsMenu.swift */,
+				B840323D241438780020D9EA /* UILeadBoard.swift */,
+				B840323E241438780020D9EA /* UIMyCats.swift */,
+				B840323B241437C30020D9EA /* UIAds.swift */,
 				B83B032A241153E800EC4BAD /* UIMouseCoin.swift */,
 				B83B032B241153E800EC4BAD /* UIMultiplayer.swift */,
-				B83B0326241153E800EC4BAD /* UINoAds.swift */,
-				B83B032C241153E800EC4BAD /* UISettingsButton.swift */,
-				B83B0328241153E800EC4BAD /* UIStats.swift */,
 			);
-			name = "Game Settings";
+			name = "Settings View Controllers";
 			sourceTree = "<group>";
 		};
 		B83B03352411541D00EC4BAD /* Audio */ = {
@@ -312,18 +304,14 @@
 		B83B038F241156A100EC4BAD /* Settings Menu */ = {
 			isa = PBXGroup;
 			children = (
+				B840324524143B540020D9EA /* darkLeaderBoard.png */,
+				B840324624143B540020D9EA /* lightLeaderBoard.png */,
+				B8403242241439210020D9EA /* multiPlayer.png */,
 				B83B03652411551200EC4BAD /* lightGear.png */,
-				B83B03682411551200EC4BAD /* lightMoreCats.png */,
 				B83B03662411551200EC4BAD /* lightNoAds.png */,
-				B83B036F2411551200EC4BAD /* lightRestart.png */,
-				B83B03672411551200EC4BAD /* lightRestart1.png */,
-				B83B036D2411551200EC4BAD /* lightStats.png */,
 				B83B03732411551300EC4BAD /* mouseCoin.png */,
-				B83B0358241154EB00EC4BAD /* darkMoreCats.png */,
+				B8403249241440900020D9EA /* myCats.png */,
 				B83B0354241154EB00EC4BAD /* darkNoAds.png */,
-				B83B0352241154EB00EC4BAD /* darkRestart.png */,
-				B83B0355241154EB00EC4BAD /* darkRestart1.png */,
-				B83B034F241154EB00EC4BAD /* darkStats.png */,
 				B83B0347241154D700EC4BAD /* darkGear.png */,
 			);
 			name = "Settings Menu";
@@ -531,37 +519,34 @@
 				B83B033C241154B500EC4BAD /* kittenMeow.mp3 in Resources */,
 				B83B037D2411551300EC4BAD /* lightVirus.png in Resources */,
 				B83B037B2411551300EC4BAD /* lightNinjaSmilingCat.png in Resources */,
+				B840324A241440900020D9EA /* myCats.png in Resources */,
 				B83B03782411551300EC4BAD /* lightNoAds.png in Resources */,
 				B83B033E241154B500EC4BAD /* coinEarned.mp3 in Resources */,
 				B83B03752411551300EC4BAD /* lightFancyCheeringCat.png in Resources */,
 				B83B03F12411877E00EC4BAD /* Icon-152@2x.png in Resources */,
 				B83B03BC24115AA900EC4BAD /* LaunchScreen.storyboard in Resources */,
 				B83B03F92411877E00EC4BAD /* Icon-58@2x.png in Resources */,
+				B8403244241439210020D9EA /* multiPlayer.png in Resources */,
 				B83B04022413221E00EC4BAD /* gameCenter.png in Resources */,
 				B83B03EF2411877E00EC4BAD /* Icon-40@1x.png in Resources */,
-				B83B035F241154EB00EC4BAD /* darkRestart1.png in Resources */,
 				B83B035B241154EB00EC4BAD /* darkNinjaSmilingCat.png in Resources */,
 				B83B035A241154EB00EC4BAD /* darkNinjaDeadCat.png in Resources */,
-				B83B0359241154EB00EC4BAD /* darkStats.png in Resources */,
 				B83B03BB24115AA900EC4BAD /* Main.storyboard in Resources */,
 				B83B034A241154D700EC4BAD /* darkDeadCat.png in Resources */,
 				B83B03F72411877E00EC4BAD /* Icon-40@2x.png in Resources */,
-				B83B037A2411551300EC4BAD /* lightMoreCats.png in Resources */,
 				B83B03FD2411877E00EC4BAD /* Icon-1024@1x.png in Resources */,
 				B83B03D224115CDD00EC4BAD /* Default-568h@2x.png in Resources */,
 				B83B03802411551300EC4BAD /* heart.png in Resources */,
 				B83B03F62411877E00EC4BAD /* Icon-76@1x.png in Resources */,
 				B83B03862411551300EC4BAD /* lightFancyDeadCat.png in Resources */,
 				B83B034C241154D700EC4BAD /* darkFancyDeadCat.png in Resources */,
+				B840324724143B540020D9EA /* darkLeaderBoard.png in Resources */,
 				B83B03FC2411877E00EC4BAD /* Icon-167@2x.png in Resources */,
-				B83B03812411551300EC4BAD /* lightRestart.png in Resources */,
-				B83B037F2411551300EC4BAD /* lightStats.png in Resources */,
 				B83B0341241154B500EC4BAD /* kittenDie.mp3 in Resources */,
 				B83B037C2411551300EC4BAD /* lightCheeringCat.png in Resources */,
-				B83B035C241154EB00EC4BAD /* darkRestart.png in Resources */,
 				B83B033D241154B500EC4BAD /* chopinPrelude.mp3 in Resources */,
 				B83B0340241154B500EC4BAD /* heaven.mp3 in Resources */,
-				B83B0362241154EB00EC4BAD /* darkMoreCats.png in Resources */,
+				B840324824143B540020D9EA /* lightLeaderBoard.png in Resources */,
 				B83B03842411551300EC4BAD /* lightNinjaDeadCat.png in Resources */,
 				B83B03762411551300EC4BAD /* lightFancySmilingCat.png in Resources */,
 				B83B03832411551300EC4BAD /* lightSmilingCat.png in Resources */,
@@ -571,7 +556,6 @@
 				B83B03D024115C9500EC4BAD /* Assets.xcassets in Resources */,
 				B83B034E241154D700EC4BAD /* darkFancySmilingCat.png in Resources */,
 				B83B03F22411877E00EC4BAD /* Icon-120@2x.png in Resources */,
-				B83B03792411551300EC4BAD /* lightRestart1.png in Resources */,
 				B83B03822411551300EC4BAD /* lightNinjaCheeringCat.png in Resources */,
 				B83B03852411551300EC4BAD /* mouseCoin.png in Resources */,
 				B83B0360241154EB00EC4BAD /* darkVirus.png in Resources */,
@@ -612,7 +596,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B840323F241438780020D9EA /* UILeadBoard.swift in Sources */,
 				B83B03C724115B6F00EC4BAD /* AppDelegate.swift in Sources */,
+				B840323C241437C30020D9EA /* UIAds.swift in Sources */,
 				B83B0332241153E900EC4BAD /* UIMultiplayer.swift in Sources */,
 				B83B03AD241159F900EC4BAD /* UICatButtons.swift in Sources */,
 				B83B03AF241159F900EC4BAD /* UIStatistics.swift in Sources */,
@@ -621,18 +607,16 @@
 				B83B03A0241158FC00EC4BAD /* UICLabel.swift in Sources */,
 				B83B039D241158FC00EC4BAD /* UICScrollView.swift in Sources */,
 				B83B03C324115B3200EC4BAD /* ViewController.swift in Sources */,
-				B84032362414139B0020D9EA /* UISettingsMenu.swift in Sources */,
-				B83B032D241153E900EC4BAD /* UINoAds.swift in Sources */,
-				B83B032F241153E900EC4BAD /* UIStats.swift in Sources */,
 				B83B03AC241159F900EC4BAD /* UIColorOptions.swift in Sources */,
 				B83B03B2241159F900EC4BAD /* UICatButton.swift in Sources */,
 				B83B03FE2411BD6C00EC4BAD /* SaveTheCat.xcdatamodeld in Sources */,
 				B83B03B0241159F900EC4BAD /* CACGradientLayer.swift in Sources */,
 				B83B03A4241159CB00EC4BAD /* UIVirus.swift in Sources */,
 				B83B03D724115F7600EC4BAD /* CenterController.swift in Sources */,
+				B8403240241438780020D9EA /* UIMyCats.swift in Sources */,
 				B83B03AE241159F900EC4BAD /* UIViruses.swift in Sources */,
 				B83B039F241158FC00EC4BAD /* UICButton.swift in Sources */,
-				B83B0330241153E900EC4BAD /* UIMoreCats.swift in Sources */,
+				B84032382414150D0020D9EA /* UISettingsMenu.swift in Sources */,
 				B83B03C124115B3200EC4BAD /* MCController.swift in Sources */,
 				B83B03C824115B6F00EC4BAD /* SceneDelegate.swift in Sources */,
 				B83B039E241158FC00EC4BAD /* UICView.swift in Sources */,

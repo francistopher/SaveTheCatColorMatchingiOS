@@ -34,36 +34,36 @@ class UISettingsMenu:UICView {
         setupLeaderBoardButton();
         setupMultiPlayerButton();
         setupMoreCatsButton();
-        let unAvailableSpace:CGFloat = self.advertisement!.frame.maxX + (self.frame.width - self.mouseCoin!.frame.minX) + (self.leaderBoard!.frame.width * 3.0);
+        let unAvailableSpace:CGFloat = (self.frame.width - self.mouseCoin!.frame.minX) + (self.advertisement!.frame.width * 4.0) + (self.frame.height);
         let availableSpace:CGFloat = self.frame.width - unAvailableSpace;
-        spaceBetween = availableSpace / 4.0;
-        setupMiddleButtonsPosition();
+        spaceBetween = availableSpace / 5.0;
+        setupButtonsPosition();
     }
     
     func setupAdsButton() {
-        advertisement = UIAds(parentView: self, x: self.frame.height - (self.layer.borderWidth * 1.25), y: 0.0, width: self.frame.height, height: self.frame.height);
-        advertisement!.transform = advertisement!.transform.scaledBy(x: 0.6, y: 0.6);
+        advertisement = UIAds(parentView: self, x: 0.0, y: 0.0, width: self.frame.height, height: self.frame.height);
+        advertisement!.transform = advertisement!.transform.scaledBy(x: 0.5, y: 0.5);
         advertisement!.originalFrame = advertisement!.frame;
         advertisement!.reducedFrame = CGRect(x: self.frame.height * 0.5, y: self.frame.height * 0.5, width: 0.1, height: 0.1);
     }
     
     func setupLeaderBoardButton() {
         leaderBoard = UILeadBoard(parentView: self, x: 0.0, y: 0.0, width: self.frame.height, height: self.frame.height);
-        leaderBoard!.transform = leaderBoard!.transform.scaledBy(x: 0.6, y: 0.6);
+        leaderBoard!.transform = leaderBoard!.transform.scaledBy(x: 0.5, y: 0.5);
         leaderBoard!.originalFrame = leaderBoard!.frame;
         leaderBoard!.reducedFrame = CGRect(x: self.frame.height * 0.5, y: self.frame.height * 0.5, width: 0.1, height: 0.1);
     }
 
     func setupMultiPlayerButton() {
         multiplayer = UIMultiplayer(parentView: self, x: 0.0, y: 0.0, width: self.frame.height, height: self.frame.height);
-        multiplayer!.transform = multiplayer!.transform.scaledBy(x: 0.6, y: 0.6);
+        multiplayer!.transform = multiplayer!.transform.scaledBy(x: 0.5, y: 0.5);
         multiplayer!.originalFrame = multiplayer!.frame;
         multiplayer!.reducedFrame = CGRect(x: self.frame.height * 0.5, y: self.frame.height * 0.5, width: 0.1, height: 0.1);
     }
 
     func setupMoreCatsButton() {
         myCats = UIMyCats(parentView: self, x: 0.0, y: 0.0, width: self.frame.height, height: self.frame.height);
-        myCats!.transform = myCats!.transform.scaledBy(x: 0.6, y: 0.6);
+        myCats!.transform = myCats!.transform.scaledBy(x: 0.5, y: 0.5);
         myCats!.originalFrame = myCats!.frame;
         myCats!.reducedFrame = CGRect(x: self.frame.height * 0.5, y: self.frame.height * 0.5, width: 0.1, height: 0.1);
     }
@@ -93,8 +93,10 @@ class UISettingsMenu:UICView {
         self.mouseCoin!.frame = self.mouseCoin!.originalFrame!;
     }
     
-    func setupMiddleButtonsPosition() {
-        leaderBoard!.frame = CGRect(x: self.advertisement!.frame.maxX + spaceBetween, y: self.leaderBoard!.frame.minY, width: self.leaderBoard!.frame.width, height: self.leaderBoard!.frame.height);
+    func setupButtonsPosition() {
+        advertisement!.frame = CGRect(x: self.frame.height + spaceBetween, y: self.advertisement!.frame.minY, width: self.advertisement!.frame.width, height: self.advertisement!.frame.height);
+        advertisement!.originalFrame = advertisement!.frame;
+        leaderBoard!.frame = CGRect(x: self.advertisement!.frame.maxX + (spaceBetween), y: self.leaderBoard!.frame.minY, width: self.leaderBoard!.frame.width, height: self.leaderBoard!.frame.height);
         leaderBoard!.originalFrame = leaderBoard!.frame;
         multiplayer!.frame = CGRect(x: self.advertisement!.frame.maxX + self.multiplayer!.frame.width + (spaceBetween * 2.0), y: self.multiplayer!.frame.minY, width: self.multiplayer!.frame.width, height: self.multiplayer!.frame.height);
         multiplayer!.originalFrame = multiplayer!.frame;

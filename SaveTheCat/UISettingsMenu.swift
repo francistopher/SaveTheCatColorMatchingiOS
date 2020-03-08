@@ -128,6 +128,10 @@ class UISettingsMenu:UICView {
         myCats!.frame = CGRect(x: self.advertisement!.frame.maxX + (self.multiplayer!.frame.width * 2.0) + (spaceBetween * 3.0) - (self.layer.borderWidth * 0.5), y: self.myCats!.frame.minY, width: self.myCats!.frame.width, height: self.myCats!.frame.height);
         myCats!.originalFrame = myCats!.frame;
     }
-
     
+    func setStyleAndElementsStyle() {
+        self.setStyle();
+        advertisement!.setStyle();
+        leaderBoard!.setStyle();
+    }
 }

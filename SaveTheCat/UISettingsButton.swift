@@ -119,23 +119,15 @@ class UISettingsButton:UIButton {
     
     func setStyle(){
         if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1){
-            // Settings button colors
-            self.setTitleColor(UIColor.black, for: .normal);
             self.layer.borderColor = UIColor.black.cgColor;
             self.backgroundColor = UIColor.white;
             setIconImage(imageName: "darkGear.png");
-            // Settings menu colors
-            self.settingsMenu!.layer.borderColor = UIColor.black.cgColor;
-            self.settingsMenu!.backgroundColor = UIColor.white;
+            settingsMenu!.setStyleAndElementsStyle();
         } else {
-            // Setting button colors
-            self.setTitleColor(UIColor.white, for: .normal);
             self.layer.borderColor = UIColor.white.cgColor;
             self.backgroundColor = UIColor.black;
             setIconImage(imageName: "lightGear.png");
-            // Setting menu colors
-            self.settingsMenu!.layer.borderColor = UIColor.white.cgColor;
-            self.settingsMenu!.backgroundColor = UIColor.black;
+            settingsMenu!.setStyleAndElementsStyle();
         }
     }
     

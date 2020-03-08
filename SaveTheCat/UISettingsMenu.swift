@@ -119,13 +119,13 @@ class UISettingsMenu:UICView {
     }
     
     func setupButtonsPosition() {
-        advertisement!.frame = CGRect(x: self.frame.height + spaceBetween, y: self.advertisement!.frame.minY, width: self.advertisement!.frame.width, height: self.advertisement!.frame.height);
+        advertisement!.frame = CGRect(x: self.frame.height + spaceBetween - (self.layer.borderWidth * 0.5), y: self.advertisement!.frame.minY, width: self.advertisement!.frame.width, height: self.advertisement!.frame.height);
         advertisement!.originalFrame = advertisement!.frame;
-        leaderBoard!.frame = CGRect(x: self.advertisement!.frame.maxX + (spaceBetween), y: self.leaderBoard!.frame.minY, width: self.leaderBoard!.frame.width, height: self.leaderBoard!.frame.height);
+        leaderBoard!.frame = CGRect(x: self.advertisement!.frame.maxX + spaceBetween - (self.layer.borderWidth * 0.5), y: self.leaderBoard!.frame.minY, width: self.leaderBoard!.frame.width, height: self.leaderBoard!.frame.height);
         leaderBoard!.originalFrame = leaderBoard!.frame;
-        multiplayer!.frame = CGRect(x: self.advertisement!.frame.maxX + self.multiplayer!.frame.width + (spaceBetween * 2.0), y: self.multiplayer!.frame.minY, width: self.multiplayer!.frame.width, height: self.multiplayer!.frame.height);
+        multiplayer!.frame = CGRect(x: self.advertisement!.frame.maxX + self.multiplayer!.frame.width + (spaceBetween * 2.0) - (self.layer.borderWidth * 0.5), y: self.multiplayer!.frame.minY, width: self.multiplayer!.frame.width, height: self.multiplayer!.frame.height);
         multiplayer!.originalFrame = multiplayer!.frame;
-        myCats!.frame = CGRect(x: self.advertisement!.frame.maxX + (self.multiplayer!.frame.width * 2.0) + (spaceBetween * 3.0), y: self.myCats!.frame.minY, width: self.myCats!.frame.width, height: self.myCats!.frame.height);
+        myCats!.frame = CGRect(x: self.advertisement!.frame.maxX + (self.multiplayer!.frame.width * 2.0) + (spaceBetween * 3.0) - (self.layer.borderWidth * 0.5), y: self.myCats!.frame.minY, width: self.myCats!.frame.width, height: self.myCats!.frame.height);
         myCats!.originalFrame = myCats!.frame;
     }
 

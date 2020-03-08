@@ -371,10 +371,10 @@
 			isa = PBXGroup;
 			children = (
 				B83B03B324115A0C00EC4BAD /* Character */,
-				B83B03A9241159F900EC4BAD /* CACGradientLayer.swift */,
 				B83B03AA241159F900EC4BAD /* UIBoardGame.swift */,
 				B83B03A5241159F900EC4BAD /* UIColorOptions.swift */,
 				B83B03A8241159F900EC4BAD /* UIStatistics.swift */,
+				B83B03A9241159F900EC4BAD /* CACGradientLayer.swift */,
 			);
 			name = "Particular View Controllers";
 			sourceTree = "<group>";

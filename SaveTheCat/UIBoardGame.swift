@@ -46,7 +46,7 @@ class UIBoardGame: UIView {
     
     func setupAttackMeter() {
         let height:CGFloat = ViewController.staticMainView!.frame.height * ((1.0/300.0) + 0.08);
-        let attackMeterFrame:CGRect = CGRect(x: 0.0, y: ViewController.staticUnitViewHeight, width: ViewController.staticUnitViewWidth * 7, height: height);
+        let attackMeterFrame:CGRect = CGRect(x: 0.0, y: ViewController.staticUnitViewHeight, width: ViewController.staticUnitViewWidth * 6.5, height: height);
         attackMeter = UIAttackMeter(parentView:self.superview!, frame: attackMeterFrame, cats: cats);
         CenterController.centerHorizontally(childView: attackMeter!, parentRect: attackMeter!.superview!.frame, childRect: attackMeter!.frame);
         attackMeter!.setupComponents();
@@ -233,7 +233,7 @@ class UIBoardGame: UIView {
                     colorOptions!.buildColorOptionButtons(setup: false);
                     catButton.pod();
                     catButton.isPodded = true;
-//                    catButton.giveMouseCoin(withNoise: true);
+                    catButton.giveMouseCoin(withNoise: true);
                     verifyThatRemainingCatsArePodded(catButton:catButton);
                 }
             } else {
@@ -305,6 +305,7 @@ class UIBoardGame: UIView {
                 self.attackMeter!.updateDuration(change: 0.2);
                 self.attackMeter!.sendVirusToStart();
                 promote();
+                print("Promoted!");
                 return;
             } else {
                 self.attackMeter!.sendVirusToStart();
@@ -515,7 +516,7 @@ class UILivesMeter:UICView {
         super.init(parentView: parentView, x: frame.minX, y: frame.minY, width: frame.width, height: frame.height, backgroundColor: UIColor.clear);
         self.layer.cornerRadius = self.frame.height * 0.5;
         self.layer.borderWidth = self.frame.height / 12.0;
-        heartInactiveButtonXRange = [self.layer.borderWidth, self.frame.width * 0.5];
+        heartInactiveButtonXRange = [ 0.0, self.frame.width - (self.frame.height * 1.5), self.frame.width - self.frame.height];
         setupHeartInactiveButtons();
         setStyle();
     }
@@ -525,17 +526,17 @@ class UILivesMeter:UICView {
             if (heartInactiveButtons.count == 0) {
                 buildHeartButton(x: heartInactiveButtonXRange[1]);
             } else if (heartInactiveButtons.count == 1) {
-                buildHeartButton(x: (heartInactiveButtonXRange[1] * 0.4625) + heartInactiveButtonXRange[0]);
-            } else if (heartInactiveButtons.count == 2) {
                 buildHeartButton(x: heartInactiveButtonXRange[0]);
+            } else if (heartInactiveButtons.count == 2) {
+                buildHeartButton(x: heartInactiveButtonXRange[2]);
             } else {
-                buildHeartButton(x: CGFloat.random(in: heartInactiveButtonXRange[0]..<heartInactiveButtonXRange[1] ));
+                buildHeartButton(x: CGFloat.random(in: heartInactiveButtonXRange[0]..<heartInactiveButtonXRange[2]));
             }
         }
     }
     
     func buildHeartButton(x:CGFloat) {
-        currentHeartButton = UICButton(parentView: self, frame: CGRect(x: x, y: 0.0, width: (self.frame.width * 0.5) - (self.layer.borderWidth * 0.5), height: self.frame.height), backgroundColor: UIColor.clear);
+        currentHeartButton = UICButton(parentView: self, frame: CGRect(x: x, y: 0.0, width: self.frame.height, height: self.frame.height), backgroundColor: UIColor.clear);
         currentHeartButton!.layer.borderWidth = 0.0;
         currentHeartButton!.setImage(heartImage, for: .normal);
         currentHeartButton!.addTarget(self, action: #selector(heartButtonSelector(sender:)), for: .touchUpInside);

@@ -11,6 +11,7 @@ import SwiftUI
 
 class UISettingsMenu:UICView {
     
+    
     var advertisement:UIAds?
     var leaderBoard:UILeadBoard?
     var multiplayer:UIMultiplayer?

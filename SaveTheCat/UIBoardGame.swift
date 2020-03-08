@@ -45,7 +45,7 @@ class UIBoardGame: UIView {
     }
     
     func setupAttackMeter() {
-        var height:CGFloat = ViewController.staticMainView!.frame.height * ((1.0/300.0) + 0.08);
+        let height:CGFloat = ViewController.staticMainView!.frame.height * ((1.0/300.0) + 0.08);
         var width:CGFloat = ViewController.staticUnitViewWidth * 6.5;
         var y:CGFloat = ViewController.staticUnitViewHeight;
         var x:CGFloat = 0.0;

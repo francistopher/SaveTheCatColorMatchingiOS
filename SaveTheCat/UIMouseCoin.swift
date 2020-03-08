@@ -10,6 +10,8 @@ import SwiftUI
 
 class UIMouseCoin: UIButton {
     
+    var boardGame:UIBoardGame?
+    
     var originalFrame:CGRect? = nil;
     var reducedFrame:CGRect? = nil;
     var isSelectable:Bool = false;
@@ -59,11 +61,15 @@ class UIMouseCoin: UIButton {
     func setupMouseCoinView() {
         self.mouseCoinView = UICView(parentView: self.superview!.superview!, x: 0.0, y: self.superview!.frame.minY, width: ViewController.staticUnitViewWidth * 6.5, height: self.superview!.frame.height, backgroundColor: UIColor.white);
         CenterController.centerHorizontally(childView: mouseCoinView!, parentRect: mouseCoinView!.superview!.frame, childRect: mouseCoinView!.frame);
+        self.mouseCoinView!.originalFrame! = self.mouseCoinView!.frame;
         mouseCoinView!.layer.cornerRadius = self.superview!.layer.cornerRadius;
         mouseCoinView!.layer.borderWidth = self.superview!.layer.borderWidth;
         mouseCoinView!.layer.borderColor = UIColor.systemYellow.cgColor;
         mouseCoinView!.backgroundColor = UIColor.clear;
         setupAmountLabel();
+        if (ViewController.aspectRatio! == .ar19point5by9) {
+            CenterController.center(childView: self.amountLabel!, parentRect: self.mouseCoinView!.frame, childRect: self.amountLabel!.frame);
+        }
     }
     
     func setupAmountLabel() {
@@ -71,10 +77,13 @@ class UIMouseCoin: UIButton {
         self.amountLabel!.textColor = UIColor.systemYellow;
         self.amountLabel!.backgroundColor = UIColor.clear;
         self.amountLabel!.font = UIFont.boldSystemFont(ofSize: amountLabel!.frame.height * 0.5);
-        CenterController.center(childView: self.amountLabel!, parentRect: mouseCoinView!.frame, childRect: self.amountLabel!.frame);
     }
     
     func setStyle() {
+        if (ViewController.aspectRatio! == .ar19point5by9) {
+            self.mouseCoinView!.backgroundColor = UIColor.clear;
+            return;
+        }
         if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1) {
             self.mouseCoinView!.backgroundColor = UIColor.white;
         } else {

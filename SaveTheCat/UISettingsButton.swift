@@ -64,12 +64,19 @@ class UISettingsButton:UIButton {
             if(!isPressed){
                 ViewController.staticMainView!.bringSubviewToFront(settingsMenu!);
                 ViewController.staticMainView!.bringSubviewToFront(self);
+                ViewController.staticMainView!.bringSubviewToFront(settingsMenu!.mouseCoin!.mouseCoinView!);
+                if (ViewController.aspectRatio! != .ar19point5by9) {
+                    settingsMenu!.mouseCoin!.mouseCoinView!.transform(frame: settingsMenu!.mouseCoin!.mouseCoinView!.originalFrame!);
+                }
                 settingsMenu!.mouseCoin!.setStyle();
                 boardGame!.cats.clearCatButtons();
                 boardGame!.attackMeter!.pauseVirusMovement();
                 settingsMenuShow();
             } else {
                 // Settings button unpressed
+                if (ViewController.aspectRatio! != .ar19point5by9) {
+                    settingsMenu!.mouseCoin!.mouseCoinView!.transform(frame: settingsMenu!.mouseCoin!.mouseCoinView!.reducedFrame!);
+                }
                 settingsMenu!.mouseCoin!.mouseCoinView!.backgroundColor = UIColor.clear;
                 boardGame!.cats.unClearCatButtons();
                 boardGame!.attackMeter!.unPauseVirusMovement();
@@ -134,6 +141,9 @@ class UISettingsButton:UIButton {
     func setBoardGameAndColorOptionsView(boardGameView:UIBoardGame, colorOptionsView:UIColorOptions) {
         self.boardGame = boardGameView;
         self.colorOptionsView = colorOptionsView;
+        self.settingsMenu!.mouseCoin!.mouseCoinView!.frame = boardGame!.attackMeter!.frame;
+        CenterController.center(childView: self.settingsMenu!.mouseCoin!.amountLabel!, parentRect: self.settingsMenu!.mouseCoin!.mouseCoinView!.frame, childRect: self.settingsMenu!.mouseCoin!.amountLabel!.frame);
+        self.settingsMenu!.mouseCoin!.mouseCoinView!.reducedFrame = boardGame!.attackMeter!.frame;
     }
     
     func fadeIn(){

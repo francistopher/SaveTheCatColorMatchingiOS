@@ -10,6 +10,12 @@ import UIKit
 import AVFoundation
 import GameKit
 
+enum AspectRatio {
+    case ar19point5by9
+    case ar16by9
+    case ar4by3
+}
+
 class ViewController: UIViewController {
 
     @IBOutlet var mainView: UIView!
@@ -31,9 +37,7 @@ class ViewController: UIViewController {
     let mellowYellow:UIColor = UIColor(red: 252.0/255.0, green: 212.0/255.0, blue: 64.0/255.0, alpha: 1.0);
     
     var viruses:UIViruses?
-    
     static var appInBackgroundBeforeFirstAttackImpulse:Bool = false;
-    
     static var staticMainView:UIView?
     var gameCenterAuthentificationOver:Bool = false;
     
@@ -41,12 +45,27 @@ class ViewController: UIViewController {
     var gameCenterMessage:GameCenterMessage?
     var gameCenterMessageWidthHeightY:(CGFloat, CGFloat, CGFloat)?;
     
+    // Aspect ratio
+    static var aspectRatio:AspectRatio?
+    
     @IBOutlet var mainViewController: UIView!
     override func viewDidLoad() {
         super.viewDidLoad();
+        setupAspectRatio();
         setupSaveTheCat();
         setupGameCenterMessage();
         authenticateLocalPlayerForGamePlay();
+    }
+    
+    func setupAspectRatio() {
+        let screenDecimalRatio:CGFloat = mainView.frame.height / mainView.frame.width;
+        if (screenDecimalRatio > 2.1) {
+            ViewController.aspectRatio = .ar19point5by9;
+        } else if (screenDecimalRatio > 1.7) {
+            ViewController.aspectRatio = .ar16by9;
+        } else {
+            ViewController.aspectRatio = .ar4by3;
+        }
     }
     
     // Game Center Authentication
@@ -160,35 +179,28 @@ class ViewController: UIViewController {
     }
     
     func setupMainViewDimensionProperties() {
-        
-        let decimalRatio:CGFloat = mainView.frame.height / mainView.frame.width;
         var mainViewHeight:CGFloat = mainView.frame.height;
         var mainViewWidth:CGFloat =  mainView.frame.width;
-        
         func setupUnitViewDimension() {
             unitViewHeight = mainViewHeight / 18.0;
             unitViewWidth = mainViewWidth / 18.0;
         }
-        
         func setupStaticUnitViewDimension() {
             ViewController.staticUnitViewHeight = unitViewHeight;
             ViewController.staticUnitViewWidth = unitViewWidth;
         }
-        
-        if (decimalRatio > 2.1) {
+        if (ViewController.aspectRatio! == .ar19point5by9) {
             mainViewWidth = mainView.frame.width;
             mainViewHeight = mainView.frame.height;
             setupUnitViewDimension();
             setupStaticUnitViewDimension();
             gameCenterMessageWidthHeightY = (unitViewWidth * 15.85, unitViewHeight * 1.35, unitViewHeight * 1.00);
-            print("21:9?")
-        } else if (decimalRatio > 1.7) {
+        } else if (ViewController.aspectRatio! == .ar16by9) {
             mainViewWidth = mainView.frame.width;
             mainViewHeight = mainView.frame.height * 1.2;
             setupUnitViewDimension();
             setupStaticUnitViewDimension()
             gameCenterMessageWidthHeightY = (unitViewWidth * 16.5, unitViewHeight * 1.43, unitViewHeight * 0.6225);
-            print("Did it even work?")
         } else {
             mainViewWidth = mainView.frame.width;
             mainViewHeight = mainView.frame.height * 1.2;

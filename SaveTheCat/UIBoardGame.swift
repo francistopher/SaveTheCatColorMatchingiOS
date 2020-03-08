@@ -673,6 +673,7 @@ class UIAttackMeter:UICView {
     }
     
     func startFirstRotation(afterDelay:Double) {
+        
         if (currentVirusPhase != nil || didNotInvokeAttackImpulse) {
             return;
         }
@@ -915,7 +916,6 @@ class UIAttackMeter:UICView {
     }
     
     func pauseVirusMovement() {
-        
         switch currentVirusPhase {
         case .TranslationToStart:
             translationToStartAnimation!.stopAnimation(true);
@@ -956,6 +956,7 @@ class UIAttackMeter:UICView {
             let delay:Double = Double(0.5 * getVirusToCatDistance() / virusToCatDistance);
             startTranslationToStartAnimation(afterDelay: delay);
         case .FirstRotation:
+            currentVirusPhase = nil;
             startFirstRotation(afterDelay: 0.25);
             print("Started first rotation again.")
         case .SecondRotation:
@@ -971,7 +972,6 @@ class UIAttackMeter:UICView {
         case .SizeReduction:
             startSizeReductionAnimation(afterDelay: 0.125);
             print("Started size reduction again.");
-        
         default:
             print("Unpausing");
             currentVirusPhase = .TranslationToStart;

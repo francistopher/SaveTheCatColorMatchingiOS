@@ -42,28 +42,52 @@ class UISettingsMenu:UICView {
     
     func setupAdsButton() {
         advertisement = UIAds(parentView: self, x: 0.0, y: 0.0, width: self.frame.height, height: self.frame.height);
-        advertisement!.transform = advertisement!.transform.scaledBy(x: 0.5, y: 0.5);
+        if (ViewController.aspectRatio! == .ar19point5by9) {
+            advertisement!.transform = advertisement!.transform.scaledBy(x: 0.5, y: 0.5);
+        } else if (ViewController.aspectRatio! == .ar16by9) {
+            advertisement!.transform = advertisement!.transform.scaledBy(x: 0.55, y: 0.55);
+        } else {
+            advertisement!.transform = advertisement!.transform.scaledBy(x: 0.75, y: 0.75);
+        }
         advertisement!.originalFrame = advertisement!.frame;
         advertisement!.reducedFrame = CGRect(x: self.frame.height * 0.5, y: self.frame.height * 0.5, width: 0.1, height: 0.1);
     }
     
     func setupLeaderBoardButton() {
         leaderBoard = UILeadBoard(parentView: self, x: 0.0, y: 0.0, width: self.frame.height, height: self.frame.height);
-        leaderBoard!.transform = leaderBoard!.transform.scaledBy(x: 0.5, y: 0.5);
+        if (ViewController.aspectRatio! == .ar19point5by9) {
+            leaderBoard!.transform = leaderBoard!.transform.scaledBy(x: 0.5, y: 0.5);
+        } else if (ViewController.aspectRatio! == .ar16by9) {
+            leaderBoard!.transform = leaderBoard!.transform.scaledBy(x: 0.55, y: 0.55);
+        } else {
+            leaderBoard!.transform = leaderBoard!.transform.scaledBy(x: 0.75, y: 0.75);
+        }
         leaderBoard!.originalFrame = leaderBoard!.frame;
         leaderBoard!.reducedFrame = CGRect(x: self.frame.height * 0.5, y: self.frame.height * 0.5, width: 0.1, height: 0.1);
     }
 
     func setupMultiPlayerButton() {
         multiplayer = UIMultiplayer(parentView: self, x: 0.0, y: 0.0, width: self.frame.height, height: self.frame.height);
-        multiplayer!.transform = multiplayer!.transform.scaledBy(x: 0.5, y: 0.5);
+        if (ViewController.aspectRatio! == .ar19point5by9) {
+            multiplayer!.transform = multiplayer!.transform.scaledBy(x: 0.5, y: 0.5);
+        } else if (ViewController.aspectRatio! == .ar16by9) {
+            multiplayer!.transform = multiplayer!.transform.scaledBy(x: 0.55, y: 0.55);
+        } else {
+            multiplayer!.transform = multiplayer!.transform.scaledBy(x: 0.75, y: 0.75);
+        }
         multiplayer!.originalFrame = multiplayer!.frame;
         multiplayer!.reducedFrame = CGRect(x: self.frame.height * 0.5, y: self.frame.height * 0.5, width: 0.1, height: 0.1);
     }
 
     func setupMoreCatsButton() {
         myCats = UIMyCats(parentView: self, x: 0.0, y: 0.0, width: self.frame.height, height: self.frame.height);
-        myCats!.transform = myCats!.transform.scaledBy(x: 0.5, y: 0.5);
+        if (ViewController.aspectRatio! == .ar19point5by9) {
+            myCats!.transform = myCats!.transform.scaledBy(x: 0.5, y: 0.5);
+        } else if (ViewController.aspectRatio! == .ar16by9) {
+            myCats!.transform = myCats!.transform.scaledBy(x: 0.55, y: 0.55);
+        } else {
+            myCats!.transform = myCats!.transform.scaledBy(x: 0.75, y: 0.75);
+        }
         myCats!.originalFrame = myCats!.frame;
         myCats!.reducedFrame = CGRect(x: self.frame.height * 0.5, y: self.frame.height * 0.5, width: 0.1, height: 0.1);
     }

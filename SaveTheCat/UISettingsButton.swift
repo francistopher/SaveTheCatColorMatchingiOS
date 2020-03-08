@@ -42,7 +42,6 @@ class UISettingsButton:UIButton {
         setupSettingsMenu(parentView:parentView);
         setStyle();
         self.addTarget(self, action: #selector(settingsMenuSelector), for: .touchUpInside);
-        settingsMenu!.reduceSettingsMenuAndContents();
     }
     
     func setIconImage(imageName:String) {
@@ -55,6 +54,7 @@ class UISettingsButton:UIButton {
         let width:CGFloat = ViewController.staticMainView!.frame.width - (self.frame.minX * 2.0)
         settingsMenu = UISettingsMenu(parentView: parentView, frame: CGRect(x: self.frame.minX, y: self.frame.minY, width: width, height: self.frame.height));
         parentView.bringSubviewToFront(self);
+        settingsMenu!.reduceSettingsMenuAndContents();
     }
     
     @objc func settingsMenuSelector(){

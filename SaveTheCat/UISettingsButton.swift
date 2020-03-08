@@ -20,6 +20,7 @@ class UISettingsButton:UIButton {
     var originalFrame:CGRect? = nil;
     var shrunkFrame:CGRect? = nil;
     var originalBackgroundColor:UIColor? = nil;
+    static var staticIsPressed:Bool = false;
     var isPressed:Bool = false;
     var isPressable:Bool = true;
     
@@ -98,6 +99,7 @@ class UISettingsButton:UIButton {
     
     @objc func settingsMenuShow(){
         isPressed = true;
+        UISettingsButton.staticIsPressed = true;
         print("Selected");
         colorOptionsView!.isUserInteractionEnabled = false;
         boardGame!.isUserInteractionEnabled = false;
@@ -120,6 +122,7 @@ class UISettingsButton:UIButton {
     @objc func settingsMenuHide(){
         print("Unselected");
         isPressed = false;
+        UISettingsButton.staticIsPressed = false;
         setupHideContentAnimation();
         hideContentAnimation!.startAnimation();
     }

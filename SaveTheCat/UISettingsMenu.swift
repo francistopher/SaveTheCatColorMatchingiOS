@@ -133,5 +133,8 @@ class UISettingsMenu:UICView {
         self.setStyle();
         advertisement!.setStyle();
         leaderBoard!.setStyle();
+        if (UISettingsButton.staticIsPressed) {
+            mouseCoin!.setStyle();
+        }
     }
 }

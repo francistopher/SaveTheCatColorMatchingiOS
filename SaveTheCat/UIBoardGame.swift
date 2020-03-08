@@ -261,7 +261,6 @@ class UIBoardGame: UIView {
         if (livesMeter!.livesLeft > 0) {
             setCatButtonAsDead(catButton: catButton);
             livesMeter!.decrementLivesLeftCount();
-            print("\(livesMeter!.livesLeft) lives left.")
         } else {
             setAllCatButtonsAsDead();
         }
@@ -391,7 +390,6 @@ class UIBoardGame: UIView {
     func revertSelections() {
         attackMeter!.sendVirusToStartAndHold();
         livesMeter!.resetLivesLeftCount();
-        print("How many lives left!",livesMeter!.livesLeft);
         colorOptions!.selectedColor = UIColor.lightGray;
         cats.shrink();
         currentRound = 1;

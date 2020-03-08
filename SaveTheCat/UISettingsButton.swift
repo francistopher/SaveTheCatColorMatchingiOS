@@ -62,11 +62,13 @@ class UISettingsButton:UIButton {
             isPressable = false;
             // Settings button pressed
             if(!isPressed){
+                ViewController.staticMainView!.bringSubviewToFront(settingsMenu!);
+                ViewController.staticMainView!.bringSubviewToFront(self);
                 settingsMenu!.mouseCoin!.setStyle();
                 boardGame!.cats.clearCatButtons();
                 boardGame!.attackMeter!.pauseVirusMovement();
                 settingsMenuShow();
-            }else{
+            } else {
                 // Settings button unpressed
                 settingsMenu!.mouseCoin!.mouseCoinView!.backgroundColor = UIColor.clear;
                 boardGame!.cats.unClearCatButtons();

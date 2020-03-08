@@ -91,7 +91,7 @@
 		B8403244241439210020D9EA /* multiPlayer.png in Resources */ = {isa = PBXBuildFile; fileRef = B8403242241439210020D9EA /* multiPlayer.png */; };
 		B840324724143B540020D9EA /* darkLeaderBoard.png in Resources */ = {isa = PBXBuildFile; fileRef = B840324524143B540020D9EA /* darkLeaderBoard.png */; };
 		B840324824143B540020D9EA /* lightLeaderBoard.png in Resources */ = {isa = PBXBuildFile; fileRef = B840324624143B540020D9EA /* lightLeaderBoard.png */; };
-		B840324A241440900020D9EA /* myCats.png in Resources */ = {isa = PBXBuildFile; fileRef = B8403249241440900020D9EA /* myCats.png */; };
+		B840324C241588FB0020D9EA /* myCats.png in Resources */ = {isa = PBXBuildFile; fileRef = B840324B241588FB0020D9EA /* myCats.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -181,7 +181,7 @@
 		B8403242241439210020D9EA /* multiPlayer.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = multiPlayer.png; path = SaveTheCat/multiPlayer.png; sourceTree = "<group>"; };
 		B840324524143B540020D9EA /* darkLeaderBoard.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = darkLeaderBoard.png; path = SaveTheCat/darkLeaderBoard.png; sourceTree = "<group>"; };
 		B840324624143B540020D9EA /* lightLeaderBoard.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = lightLeaderBoard.png; path = SaveTheCat/lightLeaderBoard.png; sourceTree = "<group>"; };
-		B8403249241440900020D9EA /* myCats.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = myCats.png; path = SaveTheCat/myCats.png; sourceTree = "<group>"; };
+		B840324B241588FB0020D9EA /* myCats.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = myCats.png; path = SaveTheCat/myCats.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -304,13 +304,13 @@
 		B83B038F241156A100EC4BAD /* Settings Menu */ = {
 			isa = PBXGroup;
 			children = (
+				B840324B241588FB0020D9EA /* myCats.png */,
 				B840324524143B540020D9EA /* darkLeaderBoard.png */,
 				B840324624143B540020D9EA /* lightLeaderBoard.png */,
 				B8403242241439210020D9EA /* multiPlayer.png */,
 				B83B03652411551200EC4BAD /* lightGear.png */,
 				B83B03662411551200EC4BAD /* lightNoAds.png */,
 				B83B03732411551300EC4BAD /* mouseCoin.png */,
-				B8403249241440900020D9EA /* myCats.png */,
 				B83B0354241154EB00EC4BAD /* darkNoAds.png */,
 				B83B0347241154D700EC4BAD /* darkGear.png */,
 			);
@@ -519,7 +519,7 @@
 				B83B033C241154B500EC4BAD /* kittenMeow.mp3 in Resources */,
 				B83B037D2411551300EC4BAD /* lightVirus.png in Resources */,
 				B83B037B2411551300EC4BAD /* lightNinjaSmilingCat.png in Resources */,
-				B840324A241440900020D9EA /* myCats.png in Resources */,
+				B840324C241588FB0020D9EA /* myCats.png in Resources */,
 				B83B03782411551300EC4BAD /* lightNoAds.png in Resources */,
 				B83B033E241154B500EC4BAD /* coinEarned.mp3 in Resources */,
 				B83B03752411551300EC4BAD /* lightFancyCheeringCat.png in Resources */,

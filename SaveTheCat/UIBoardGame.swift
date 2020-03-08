@@ -320,8 +320,12 @@ class UIBoardGame: UIView {
             statistics!.catsThatLived += cats.presentCollection!.count;
             if (cats.didAllSurvive()) {
                 let rowsAndColumns:[Int] = getRowsAndColumns(currentStage: currentRound + 1);
+                let count:Int = (rowsAndColumns[0] * rowsAndColumns[1]);
                 var index:Int = 0;
-                while (livesMeter!.livesLeft < (rowsAndColumns[0] * rowsAndColumns[1])) {
+                while (livesMeter!.livesLeft < count) {
+                    if (cats.presentCollection!.count == index) {
+                        index = 0;
+                    }
                     let catButton:UICatButton = cats.presentCollection![index];
                     livesMeter!.incrementLivesLeftCount(catButton: catButton);
                     index += 1;

@@ -18,6 +18,8 @@ class UIColorOptions: UIView {
     var boardGameView:UIBoardGame? = nil;
     var isTransitioned:Bool = false;
     
+    var catPawPrint:CatPawPrint?
+    
     required init?(coder: NSCoder) {
        fatalError("init(coder:) has not been implemented");
     }
@@ -26,7 +28,13 @@ class UIColorOptions: UIView {
         super.init(frame:CGRect(x: x, y: y, width: width, height: height));
         self.layer.cornerRadius = height / 5.0;
         parentView.addSubview(self);
+        setupCatPawPrint();
         setStyle();
+    }
+    
+    func setupCatPawPrint() {
+        catPawPrint = CatPawPrint(parentView: self, frame: CGRect(x: 0.0, y: 0.0, width: self.frame.height, height: self.frame.height));
+        CenterController.center(childView: catPawPrint!, parentRect: self.frame, childRect: catPawPrint!.frame);
     }
 
     func fadeIn(){
@@ -170,5 +178,26 @@ class UIColorOptions: UIView {
             selectedButton.setStyle();
         }
     }
+}
+
+class CatPawPrint:UICButton {
+    
+    init(parentView:UIView, frame:CGRect) {
+        super.init(parentView: parentView, frame: frame, backgroundColor: UIColor.clear);
+        self.layer.borderWidth = 0.0;
+        self.transform = self.transform.scaledBy(x: 0.75, y: 0.75);
+        setIconImage(imageName: "myCats.png");
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    func setIconImage(imageName:String) {
+        let iconImage:UIImage? = UIImage(named:imageName);
+        self.setImage(iconImage, for: .normal);
+        self.imageView!.contentMode = UIView.ContentMode.scaleAspectFit;
+    }
+    
 }
 

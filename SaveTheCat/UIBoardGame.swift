@@ -40,12 +40,13 @@ class UIBoardGame: UIView {
         parentView.addSubview(self);
         self.statistics = UIStatistics(parentView: parentView);
         self.statistics!.continueButton!.addTarget(self, action: #selector(continueSelector), for: .touchUpInside);
-        setupLivesMeter();
         setupAttackMeter();
+        setupLivesMeter();
     }
     
     func setupAttackMeter() {
-        let attackMeterFrame:CGRect = CGRect(x: 0.0, y: livesMeter!.frame.minY, width: ViewController.staticUnitViewWidth * 7, height: livesMeter!.frame.height);
+        let height:CGFloat = ViewController.staticMainView!.frame.height * ((1.0/300.0) + 0.08);
+        let attackMeterFrame:CGRect = CGRect(x: 0.0, y: ViewController.staticUnitViewHeight, width: ViewController.staticUnitViewWidth * 7, height: height);
         attackMeter = UIAttackMeter(parentView:self.superview!, frame: attackMeterFrame, cats: cats);
         CenterController.centerHorizontally(childView: attackMeter!, parentRect: attackMeter!.superview!.frame, childRect: attackMeter!.frame);
         attackMeter!.setupComponents();
@@ -53,10 +54,10 @@ class UIBoardGame: UIView {
     }
 
     func setupLivesMeter() {
-        let livesMeterWidth:CGFloat = (((((ViewController.staticUnitViewWidth * 18.0) * 0.8575) / 8.0) * 1.75) + ViewController.staticUnitViewWidth * 0.5) * 0.955;
-        let height:CGFloat = (ViewController.staticMainView!.frame.height * ((1.0/300.0) + 0.08))
-        let livesMeterX:CGFloat = ((ViewController.staticUnitViewWidth * 18.0) - (livesMeterWidth * 1.025) - ViewController.staticUnitViewWidth);
-        let livesMeterFrame:CGRect = CGRect(x: livesMeterX, y: ViewController.staticUnitViewHeight, width: livesMeterWidth, height: height);
+        let height:CGFloat = ViewController.staticMainView!.frame.height * ((1.0/300.0) + 0.08);
+        let width:CGFloat = ViewController.staticUnitViewWidth * ((19.0 / 5.0) + (1.0 / 30.0));
+        let livesMeterX:CGFloat = ViewController.staticMainView!.frame.width - width - ViewController.staticUnitViewWidth;
+        let livesMeterFrame:CGRect = CGRect(x: livesMeterX, y: ViewController.staticUnitViewHeight, width: width, height: height);
         livesMeter = UILivesMeter(parentView: self.superview!, frame: livesMeterFrame, backgroundColor: UIColor.white);
     }
     

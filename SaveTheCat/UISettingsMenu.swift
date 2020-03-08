@@ -28,7 +28,6 @@ class UISettingsMenu:UICView {
         self.layer.cornerRadius = self.frame.height / 2.0;
         self.layer.borderWidth = self.frame.height / 12.0;
         super.originalFrame = frame;
-        print(self.layer.borderWidth / ViewController.staticUnitViewWidth, "fsd");
         self.reducedFrame = CGRect(x: self.frame.minX, y: self.frame.minY, width: (self.frame.height * 2.0) - self.layer.borderWidth, height: self.frame.height);
         setupAdsButton();
         setupMouseCoinButton();

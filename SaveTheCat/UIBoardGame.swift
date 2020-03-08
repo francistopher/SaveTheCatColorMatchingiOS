@@ -45,19 +45,36 @@ class UIBoardGame: UIView {
     }
     
     func setupAttackMeter() {
-        let height:CGFloat = ViewController.staticMainView!.frame.height * ((1.0/300.0) + 0.08);
-        let attackMeterFrame:CGRect = CGRect(x: 0.0, y: ViewController.staticUnitViewHeight, width: ViewController.staticUnitViewWidth * 6.5, height: height);
+        var height:CGFloat = ViewController.staticMainView!.frame.height * ((1.0/300.0) + 0.08);
+        var width:CGFloat = ViewController.staticUnitViewWidth * 6.5;
+        var y:CGFloat = ViewController.staticUnitViewHeight;
+        var x:CGFloat = 0.0;
+        if (ViewController.aspectRatio! == .ar19point5by9){
+            
+        } else if (ViewController.aspectRatio! == .ar16by9) {
+            x = (self.superview!.frame.width - width) * 0.5;
+            x += ViewController.staticUnitViewWidth;
+            width += ViewController.staticUnitViewWidth * 0.5;
+        } else {
+            x = (self.superview!.frame.width - width) * 0.5;
+        }
+        let attackMeterFrame:CGRect = CGRect(x: x, y: y, width: width, height: height);
         attackMeter = UIAttackMeter(parentView:self.superview!, frame: attackMeterFrame, cats: cats);
-        CenterController.centerHorizontally(childView: attackMeter!, parentRect: attackMeter!.superview!.frame, childRect: attackMeter!.frame);
         attackMeter!.setupComponents();
         attackMeter!.setCompiledStyle();
     }
 
     func setupLivesMeter() {
         let height:CGFloat = ViewController.staticMainView!.frame.height * ((1.0/300.0) + 0.08);
-        let width:CGFloat = ViewController.staticUnitViewWidth * ((19.0 / 5.0) + (1.0 / 30.0));
-        let livesMeterX:CGFloat = ViewController.staticMainView!.frame.width - width - ViewController.staticUnitViewWidth;
-        let livesMeterFrame:CGRect = CGRect(x: livesMeterX, y: ViewController.staticUnitViewHeight, width: width, height: height);
+        var width:CGFloat = ViewController.staticUnitViewHeight * (2.3958 + (1.0 / 3000));
+        var x:CGFloat = ViewController.staticMainView!.frame.width - width - ViewController.staticUnitViewWidth;
+        if (ViewController.aspectRatio! == .ar19point5by9){
+            
+        } else if (ViewController.aspectRatio! == .ar16by9) {
+            width = height;
+            x = ViewController.staticMainView!.frame.width - width - ViewController.staticUnitViewWidth;
+        }
+        let livesMeterFrame:CGRect = CGRect(x: x, y: ViewController.staticUnitViewHeight, width: width, height: height);
         livesMeter = UILivesMeter(parentView: self.superview!, frame: livesMeterFrame, backgroundColor: UIColor.white);
     }
     
@@ -541,6 +558,9 @@ class UILivesMeter:UICView {
     
     func buildHeartButton(x:CGFloat) {
         currentHeartButton = UICButton(parentView: self, frame: CGRect(x: x, y: 0.0, width: self.frame.height, height: self.frame.height), backgroundColor: UIColor.clear);
+        if (ViewController.aspectRatio! == .ar19point5by9 || ViewController.aspectRatio! == .ar16by9) {
+            CenterController.center(childView: currentHeartButton!, parentRect: self.frame, childRect: currentHeartButton!.frame);
+        }
         currentHeartButton!.layer.borderWidth = 0.0;
         currentHeartButton!.setImage(heartImage, for: .normal);
         currentHeartButton!.addTarget(self, action: #selector(heartButtonSelector(sender:)), for: .touchUpInside);
@@ -579,7 +599,7 @@ class UILivesMeter:UICView {
             // Get spawn frame
             let x:CGFloat = catButton.frame.midX * 0.5 + catButton.superview!.frame.minX;
             let y:CGFloat = catButton.frame.midY * 0.5 + catButton.superview!.frame.minY;
-            let newFrame:CGRect = CGRect(x: x, y: y, width: (self.frame.width * 0.5) - (self.layer.borderWidth * 0.5), height: self.frame.height);
+        let newFrame:CGRect = CGRect(x: x, y: y, width: self.frame.height, height: self.frame.height);
             // Setup the heart button
             setupHeartInactiveButtons();
             // Save the target frame and set the new frame

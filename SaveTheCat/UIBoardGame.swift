@@ -50,7 +50,9 @@ class UIBoardGame: UIView {
         var y:CGFloat = ViewController.staticUnitViewHeight;
         var x:CGFloat = 0.0;
         if (ViewController.aspectRatio! == .ar19point5by9){
-            
+            width *= 1.5;
+            x = (self.superview!.frame.width - width) * 0.5;
+            y += height * 1.15;
         } else if (ViewController.aspectRatio! == .ar16by9) {
             x = (self.superview!.frame.width - width) * 0.5;
             x += ViewController.staticUnitViewWidth;
@@ -66,7 +68,7 @@ class UIBoardGame: UIView {
 
     func setupLivesMeter() {
         let height:CGFloat = ViewController.staticMainView!.frame.height * ((1.0/300.0) + 0.08);
-        var width:CGFloat = ViewController.staticUnitViewHeight * (2.3958 + (1.0 / 3000));
+        var width:CGFloat = height * (1.0 / 60.0 + 1.9)
         var x:CGFloat = ViewController.staticMainView!.frame.width - width - ViewController.staticUnitViewWidth;
         if (ViewController.aspectRatio! == .ar19point5by9){
             
@@ -558,7 +560,7 @@ class UILivesMeter:UICView {
     
     func buildHeartButton(x:CGFloat) {
         currentHeartButton = UICButton(parentView: self, frame: CGRect(x: x, y: 0.0, width: self.frame.height, height: self.frame.height), backgroundColor: UIColor.clear);
-        if (ViewController.aspectRatio! == .ar19point5by9 || ViewController.aspectRatio! == .ar16by9) {
+        if (ViewController.aspectRatio! == .ar16by9) {
             CenterController.center(childView: currentHeartButton!, parentRect: self.frame, childRect: currentHeartButton!.frame);
         }
         currentHeartButton!.layer.borderWidth = 0.0;

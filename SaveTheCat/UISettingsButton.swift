@@ -51,7 +51,7 @@ class UISettingsButton:UIButton {
     }
     
     func setupSettingsMenu(parentView:UIView) {
-        let width:CGFloat = ViewController.staticMainView!.frame.width - (self.frame.minX * 2.0)
+        let width:CGFloat = ViewController.staticMainView!.frame.width - (self.frame.minX * 2.0);
         settingsMenu = UISettingsMenu(parentView: parentView, frame: CGRect(x: self.frame.minX, y: self.frame.minY, width: width, height: self.frame.height));
         parentView.bringSubviewToFront(self);
         settingsMenu!.reduceSettingsMenuAndContents();

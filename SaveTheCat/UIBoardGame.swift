@@ -915,6 +915,7 @@ class UIAttackMeter:UICView {
     }
     
     func pauseVirusMovement() {
+        
         switch currentVirusPhase {
         case .TranslationToStart:
             translationToStartAnimation!.stopAnimation(true);

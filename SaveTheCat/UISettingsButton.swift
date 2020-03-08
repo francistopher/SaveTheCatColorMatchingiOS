@@ -54,6 +54,7 @@ class UISettingsButton:UIButton {
         let width:CGFloat = ViewController.staticMainView!.frame.width - (self.frame.minX * 2.0)
         settingsMenu = UISettingsMenu(parentView: parentView, frame: CGRect(x: self.frame.minX, y: self.frame.minY, width: width, height: self.frame.height));
         parentView.bringSubviewToFront(self);
+        settingsMenu!.reduceSettingsMenuAndContents();
     }
     
     @objc func settingsMenuSelector(){
@@ -77,7 +78,7 @@ class UISettingsButton:UIButton {
     func setupShowContentAnimation() {
         showContentAnimation = UIViewPropertyAnimator.init(duration: 1.0, curve: .easeInOut, animations: {
             self.imageView!.transform = self.imageView!.transform.rotated(by: CGFloat.pi);
-            self.settingsMenu!.frame = self.settingsMenu!.originalFrame!;
+            self.settingsMenu!.enlargeSettingsMenuAndContents();
         })
         showContentAnimation!.addCompletion({ _ in
             self.isPressable = true;
@@ -96,7 +97,7 @@ class UISettingsButton:UIButton {
     func setupHideContentAnimation() {
         hideContentAnimation = UIViewPropertyAnimator.init(duration: 1.0, curve: .easeInOut, animations: {
             self.imageView!.transform = self.imageView!.transform.rotated(by: CGFloat.pi);
-            self.settingsMenu!.frame = self.settingsMenu!.reducedFrame!;
+            self.settingsMenu!.reduceSettingsMenuAndContents();
         })
         hideContentAnimation!.addCompletion({ _ in
             self.isPressable = true;

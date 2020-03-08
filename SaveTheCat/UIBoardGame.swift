@@ -301,7 +301,13 @@ class UIBoardGame: UIView {
             // Add data of survived cats
             statistics!.catsThatLived += cats.presentCollection!.count;
             if (cats.didAllSurvive()) {
-                livesMeter!.incrementLivesLeftCount(catButton: catButton);
+                let rowsAndColumns:[Int] = getRowsAndColumns(currentStage: currentRound + 1);
+                var index:Int = 0;
+                while (livesMeter!.livesLeft < (rowsAndColumns[0] * rowsAndColumns[1])) {
+                    let catButton:UICatButton = cats.presentCollection![index];
+                    livesMeter!.incrementLivesLeftCount(catButton: catButton);
+                    index += 1;
+                }
                 self.attackMeter!.updateDuration(change: 0.2);
                 self.attackMeter!.sendVirusToStart();
                 promote();
@@ -502,7 +508,7 @@ class UIGameStatus:UICLabel {
 
 class UILivesMeter:UICView {
     
-    var livesLeft:Int = 3;
+    var livesLeft:Int = 1;
     var heartInactiveButtons:[UICButton] = [];
     let heartImage:UIImage = UIImage(named: "heart.png")!;
     var heartInactiveButtonXRange:[CGFloat] = [];
@@ -516,7 +522,7 @@ class UILivesMeter:UICView {
         super.init(parentView: parentView, x: frame.minX, y: frame.minY, width: frame.width, height: frame.height, backgroundColor: UIColor.clear);
         self.layer.cornerRadius = self.frame.height * 0.5;
         self.layer.borderWidth = self.frame.height / 12.0;
-        heartInactiveButtonXRange = [ 0.0, self.frame.width - (self.frame.height * 1.5), self.frame.width - self.frame.height];
+        heartInactiveButtonXRange = [ 0.0, self.frame.width - (self.frame.height * 1.45), self.frame.width - self.frame.height + (self.layer.borderWidth * 0.8)];
         setupHeartInactiveButtons();
         setStyle();
     }
@@ -560,9 +566,8 @@ class UILivesMeter:UICView {
             livesLeft -= 1;
             let lastHeartButton:UICButton = heartInactiveButtons.last!;
             heartInactiveButtons.removeLast();
-            lastHeartButton.frame = CGRect(x: self.frame.minX + lastHeartButton.frame.minX, y: self.frame.minY + lastHeartButton.frame.minY, width: lastHeartButton.frame.width, height: lastHeartButton.frame.height);
-            self.superview!.addSubview(lastHeartButton);
-            let randomTargetY:CGFloat = CGFloat.random(in: self.superview!.frame.height...(self.superview!.frame.height * 1.5))
+            lastHeartButton.frame = CGRect(x: lastHeartButton.frame.minX, y: lastHeartButton.frame.minY, width: lastHeartButton.frame.width, height: lastHeartButton.frame.height);
+            let randomTargetY:CGFloat = CGFloat.random(in: self.superview!.frame.height...(self.superview!.frame.height + lastHeartButton.frame.height))
             UIView.animate(withDuration: 3.0, delay: 0.125, options: [.curveEaseInOut], animations: {
                 lastHeartButton.transform = lastHeartButton.transform.translatedBy(x: 0.0, y: randomTargetY);
             }, completion: { _ in
@@ -572,25 +577,22 @@ class UILivesMeter:UICView {
     }
     
     func incrementLivesLeftCount(catButton:UICatButton) {
-        livesLeft += 1;
-        // Get spawn frame
-        let x:CGFloat = catButton.frame.midX * 0.5 + catButton.superview!.frame.minX;
-        let y:CGFloat = catButton.frame.midY * 0.5 + catButton.superview!.frame.minY;
-        let newFrame:CGRect = CGRect(x: x, y: y, width: (self.frame.width * 0.5) - (self.layer.borderWidth * 0.5), height: self.frame.height);
-        // Setup the heart button
-        setupHeartInactiveButtons();
-        // Save the target frame and set the new frame
-        self.superview!.addSubview(currentHeartButton!);
-        let targetFrame = CGRect(x: self.frame.minX + currentHeartButton!.frame.minX, y: self.frame.minY + currentHeartButton!.frame.minY, width: (self.frame.width * 0.5) - (self.layer.borderWidth * 0.5), height: self.frame.height);
-        currentHeartButton!.frame = newFrame;
-        self.superview!.bringSubviewToFront(currentHeartButton!);
-        // Move heart to target frame
-        UIView.animate(withDuration: 3.0, delay: 0.125, options: [.curveEaseInOut], animations: {
-            self.currentHeartButton!.transform = self.currentHeartButton!.transform.translatedBy(x: targetFrame.minX - newFrame.minX, y: targetFrame.minY - newFrame.minY);
-        }, completion: { _ in
-            self.addSubview(self.currentHeartButton!);
-            self.currentHeartButton!.frame = CGRect(x: self.currentHeartButton!.frame.minX - self.frame.minX, y: self.currentHeartButton!.frame.minY - self.frame.minY, width: (self.frame.width * 0.5) - (self.layer.borderWidth * 0.5), height: self.frame.height)
-        })
+            livesLeft += 1;
+            // Get spawn frame
+            let x:CGFloat = catButton.frame.midX * 0.5 + catButton.superview!.frame.minX;
+            let y:CGFloat = catButton.frame.midY * 0.5 + catButton.superview!.frame.minY;
+            let newFrame:CGRect = CGRect(x: x, y: y, width: (self.frame.width * 0.5) - (self.layer.borderWidth * 0.5), height: self.frame.height);
+            // Setup the heart button
+            setupHeartInactiveButtons();
+            // Save the target frame and set the new frame
+            self.superview!.addSubview(currentHeartButton!);
+            let targetFrame = CGRect(x: self.frame.minX + currentHeartButton!.frame.minX, y: self.frame.minY + currentHeartButton!.frame.minY, width: (self.frame.width * 0.5) - (self.layer.borderWidth * 0.5), height: self.frame.height);
+            currentHeartButton!.frame = newFrame;
+            self.superview!.bringSubviewToFront(currentHeartButton!);
+            // Move heart to target frame
+            UIView.animate(withDuration: 3.0, delay: 0.125, options: [.curveEaseInOut], animations: {
+                self.currentHeartButton!.transform = self.currentHeartButton!.transform.translatedBy(x: targetFrame.minX - newFrame.minX, y: targetFrame.minY - newFrame.minY);
+            })
     }
     
     func removeAllHeartLives() {
@@ -600,12 +602,12 @@ class UILivesMeter:UICView {
     }
     
     func resetLivesLeftCount() {
-        if (heartInactiveButtons.count > 3) {
-            for _ in 3..<heartInactiveButtons.count {
+        if (heartInactiveButtons.count > 1) {
+            for _ in 1..<heartInactiveButtons.count {
                 decrementLivesLeftCount();
             }
-        } else if (heartInactiveButtons.count < 3) {
-            livesLeft = 3;
+        } else if (heartInactiveButtons.count < 1) {
+            livesLeft = 1;
             setupHeartInactiveButtons();
         }
     }

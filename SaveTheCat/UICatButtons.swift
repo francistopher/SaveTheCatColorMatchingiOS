@@ -54,6 +54,15 @@ class UICatButtons {
         return count;
     }
     
+    func getCatButtonWith(backgroundColor:UIColor) -> UICatButton {
+        for catButton in presentCollection!.reversed() {
+            if (catButton.backgroundCGColor! == backgroundColor.cgColor) {
+                return catButton;
+            }
+        }
+        return presentCollection![0];
+    }
+    
     func count() -> Int {
         return presentCollection!.count;
     }

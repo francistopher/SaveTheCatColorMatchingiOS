@@ -57,7 +57,7 @@ class UICButton:UIButton {
     
     func grow(){
         UIView.animate(withDuration: 1.0, delay: 0.125, options: .curveEaseInOut, animations: {
-            self.frame = CGRect(x: self.originalFrame!.minX, y:self.originalFrame!.minY, width: self.originalFrame!.width, height: self.originalFrame!.height);
+            self.frame = self.originalFrame!;
         });
     }
     
@@ -108,7 +108,7 @@ class UICButton:UIButton {
     }
     
     func shrinked(){
-        self.frame = CGRect(x: 0.0, y: 0.0, width: 1.0, height: 1.0);
+        self.frame = CGRect(x: self.frame.midX, y: self.frame.midY, width: 1.0, height: 1.0);
     }
     
     func select(){

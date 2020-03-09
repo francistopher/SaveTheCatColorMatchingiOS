@@ -38,7 +38,7 @@ import UIKit
     }
     
     func fadeIn() {
-        UIView.animate(withDuration: 1.0, delay: 0.125, options: .curveEaseInOut, animations: {
+        UIView.animate(withDuration: 0.5, delay: 0.125, options: .curveEaseInOut, animations: {
             self.alpha = 1.0;
         }, completion: { _ in
             self.isFadedOut = false;
@@ -75,7 +75,6 @@ import UIKit
     
     func roundCorners(radius: CGFloat, _ corners:UIRectCorner, lineWidth:CGFloat) {
         let path = UIBezierPath(roundedRect: self.bounds, byRoundingCorners: corners, cornerRadii: CGSize(width: radius, height: radius));
-        
         let mask = CAShapeLayer();
         path.lineWidth = lineWidth;
         mask.path = path.cgPath;

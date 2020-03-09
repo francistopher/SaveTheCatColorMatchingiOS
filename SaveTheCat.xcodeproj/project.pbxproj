@@ -52,7 +52,7 @@
 		B83B03AC241159F900EC4BAD /* UIColorOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B83B03A5241159F900EC4BAD /* UIColorOptions.swift */; };
 		B83B03AD241159F900EC4BAD /* UICatButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = B83B03A6241159F900EC4BAD /* UICatButtons.swift */; };
 		B83B03AE241159F900EC4BAD /* UIViruses.swift in Sources */ = {isa = PBXBuildFile; fileRef = B83B03A7241159F900EC4BAD /* UIViruses.swift */; };
-		B83B03AF241159F900EC4BAD /* UIStatistics.swift in Sources */ = {isa = PBXBuildFile; fileRef = B83B03A8241159F900EC4BAD /* UIStatistics.swift */; };
+		B83B03AF241159F900EC4BAD /* UIResults.swift in Sources */ = {isa = PBXBuildFile; fileRef = B83B03A8241159F900EC4BAD /* UIResults.swift */; };
 		B83B03B0241159F900EC4BAD /* CACGradientLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B83B03A9241159F900EC4BAD /* CACGradientLayer.swift */; };
 		B83B03B1241159F900EC4BAD /* UIBoardGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = B83B03AA241159F900EC4BAD /* UIBoardGame.swift */; };
 		B83B03B2241159F900EC4BAD /* UICatButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B83B03AB241159F900EC4BAD /* UICatButton.swift */; };
@@ -148,7 +148,7 @@
 		B83B03A5241159F900EC4BAD /* UIColorOptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UIColorOptions.swift; path = SaveTheCat/UIColorOptions.swift; sourceTree = "<group>"; };
 		B83B03A6241159F900EC4BAD /* UICatButtons.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UICatButtons.swift; path = SaveTheCat/UICatButtons.swift; sourceTree = "<group>"; };
 		B83B03A7241159F900EC4BAD /* UIViruses.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UIViruses.swift; path = SaveTheCat/UIViruses.swift; sourceTree = "<group>"; };
-		B83B03A8241159F900EC4BAD /* UIStatistics.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UIStatistics.swift; path = SaveTheCat/UIStatistics.swift; sourceTree = "<group>"; };
+		B83B03A8241159F900EC4BAD /* UIResults.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UIResults.swift; path = SaveTheCat/UIResults.swift; sourceTree = "<group>"; };
 		B83B03A9241159F900EC4BAD /* CACGradientLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CACGradientLayer.swift; path = SaveTheCat/CACGradientLayer.swift; sourceTree = "<group>"; };
 		B83B03AA241159F900EC4BAD /* UIBoardGame.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UIBoardGame.swift; path = SaveTheCat/UIBoardGame.swift; sourceTree = "<group>"; };
 		B83B03AB241159F900EC4BAD /* UICatButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UICatButton.swift; path = SaveTheCat/UICatButton.swift; sourceTree = "<group>"; };
@@ -401,7 +401,7 @@
 				B83B03B324115A0C00EC4BAD /* Character */,
 				B83B03AA241159F900EC4BAD /* UIBoardGame.swift */,
 				B83B03A5241159F900EC4BAD /* UIColorOptions.swift */,
-				B83B03A8241159F900EC4BAD /* UIStatistics.swift */,
+				B83B03A8241159F900EC4BAD /* UIResults.swift */,
 				B83B03A9241159F900EC4BAD /* CACGradientLayer.swift */,
 				B83BC3D624169FD60026D7F6 /* UIAttackMeter.swift */,
 				B83BC3D82416A0100026D7F6 /* UILivesMeter.swift */,
@@ -670,7 +670,7 @@
 				B840323C241437C30020D9EA /* UIAds.swift in Sources */,
 				B83B0332241153E900EC4BAD /* UIMultiplayer.swift in Sources */,
 				B83B03AD241159F900EC4BAD /* UICatButtons.swift in Sources */,
-				B83B03AF241159F900EC4BAD /* UIStatistics.swift in Sources */,
+				B83B03AF241159F900EC4BAD /* UIResults.swift in Sources */,
 				B83BC3D92416A0100026D7F6 /* UILivesMeter.swift in Sources */,
 				B83B03C224115B3200EC4BAD /* SoundController.swift in Sources */,
 				B83B03B1241159F900EC4BAD /* UIBoardGame.swift in Sources */,

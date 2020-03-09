@@ -50,7 +50,7 @@ class UICatButton: UIButton {
     }
     
     func giveMouseCoin(withNoise:Bool) {
-        UIStatistics.mouseCoins += 1;
+        UIResults.mouseCoins += 1;
         // Generate mouse coin
         let mouseCoin:UIMouseCoin = UIMouseCoin(parentView: self.imageContainerButton!, x: 0.0, y: 0.0, width: self.imageContainerButton!.frame.width / 4.0, height: self.imageContainerButton!.frame.height / 4.0);
         mouseCoin.removeTarget(self, action: #selector(mouseCoin.mouseCoinSelector), for: .touchUpInside);
@@ -147,7 +147,7 @@ class UICatButton: UIButton {
     func setCat(named:String, stage:Int){
         // Save non empty strings only
         if (named != "" && named != "updateStyle") {
-            previousFileName = UIStatistics.getCatFileName(named:named) + ".png";
+            previousFileName = UIResults.getCatFileName(named:named) + ".png";
         }
         if (named == "updateStyle") {
             if (previousFileName.contains("light")) {

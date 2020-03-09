@@ -24,7 +24,7 @@ class UIBoardGame: UIView {
     
     var settingsButton:UISettingsButton? = nil;
     var livesMeter:UILivesMeter?
-    var statistics:UIStatistics?
+    var statistics:UIResults?
     var attackMeter:UIAttackMeter?
     var viruses:UIViruses?
     var timer:Timer?
@@ -40,7 +40,7 @@ class UIBoardGame: UIView {
         self.backgroundColor = UIColor.clear;
         self.layer.cornerRadius = width / 5.0;
         parentView.addSubview(self);
-        self.statistics = UIStatistics(parentView: parentView);
+        self.statistics = UIResults(parentView: parentView);
         self.statistics!.continueButton!.addTarget(self, action: #selector(continueSelector), for: .touchUpInside);
         setupAttackMeter();
         setupLivesMeter();
@@ -121,6 +121,8 @@ class UIBoardGame: UIView {
         colorOptions!.buildColorOptionButtons(setup: true);
         attackMeter!.holdVirusAtStart = false;
         if (!glovePointer!.hideForever) {
+            glovePointer!.button = colorOptions!.selectionButtons[0];
+            glovePointer!.catButton = cats.presentCollection![0];
             glovePointer!.fadeBackgroundIn();
             colorOptions!.selectionButtons[0].addTarget(self, action: #selector(translateGloveToCatButtonCenter), for: .touchUpInside);
         }
@@ -518,16 +520,30 @@ class UIGlovedPointer:UICButton {
     var translateToTapAnimation:UIViewPropertyAnimator?
     var translateFromTapAnimation:UIViewPropertyAnimator?
     
+    var transitionedToCatButton:Bool = false;
+    
+    var button:UICButton?
+    var catButton:UICatButton?
+    
     init(parentView:UIView, frame:CGRect) {
         super.init(parentView: parentView, frame: frame, backgroundColor: UIColor.clear);
         xTranslation = self.originalFrame!.width / 3.5;
         yTranslation = self.originalFrame!.height / 3.5;
         self.layer.borderWidth = 0.0;
         self.alpha = 0.0;
+        addTarget(self, action: #selector(selfSelector), for: .touchUpInside);
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    @objc func selfSelector() {
+        if (transitionedToCatButton) {
+            catButton?.sendActions(for: .touchUpInside);
+        } else {
+            button?.sendActions(for: .touchUpInside);
+        }
     }
     
     override func setStyle() {
@@ -553,6 +569,7 @@ class UIGlovedPointer:UICButton {
         stopAnimations();
         self.frame = self.originalFrame!;
         self.hideForever = false;
+        self.transitionedToCatButton = false;
     }
     
     func stopAnimations() {
@@ -562,6 +579,8 @@ class UIGlovedPointer:UICButton {
     
     override func fadeBackgroundIn() {
         self.superview!.bringSubviewToFront(self);
+        self.isTapping = true;
+        self.setStyle();
         if (hideForever) {
             return;
         }
@@ -603,6 +622,7 @@ class UIGlovedPointer:UICButton {
     }
     
     override func translate(newOriginalFrame:CGRect) {
+        transitionedToCatButton = true;
         UIView.animate(withDuration: 0.5, delay: 0.125, options: .curveEaseInOut, animations: {
             self.frame = newOriginalFrame;
             self.configureShrunkFrame();

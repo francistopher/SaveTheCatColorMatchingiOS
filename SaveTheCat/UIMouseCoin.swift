@@ -36,9 +36,9 @@ class UIMouseCoin: UIButton {
     }
     
     @objc func mouseCoinSelector() {
-        let mouseCoins:Int = UIStatistics.mouseCoins;
+        let mouseCoins:Int = UIResults.mouseCoins;
         self.amountLabel!.text = "\(mouseCoins)";
-        if (UIStatistics.mouseCoins > 0) {
+        if (UIResults.mouseCoins > 0) {
             SoundController.coinEarned();
         }
         mouseCoinView!.superview!.bringSubviewToFront(mouseCoinView!);

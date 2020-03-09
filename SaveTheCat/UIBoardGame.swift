@@ -319,17 +319,7 @@ class UIBoardGame: UIView {
             // Add data of survived cats
             statistics!.catsThatLived += cats.presentCollection!.count;
             if (cats.didAllSurvive()) {
-                let rowsAndColumns:[Int] = getRowsAndColumns(currentStage: currentRound + 1);
-                let count:Int = (rowsAndColumns[0] * rowsAndColumns[1]);
-                var index:Int = 0;
-                while (livesMeter!.livesLeft < count) {
-                    if (cats.presentCollection!.count == index) {
-                        index = 0;
-                    }
-                    let catButton:UICatButton = cats.presentCollection![index];
-                    livesMeter!.incrementLivesLeftCount(catButton: catButton);
-                    index += 1;
-                }
+                livesMeter!.incrementLivesLeftCount(catButton: catButton);
                 self.attackMeter!.updateDuration(change: 0.2);
                 self.attackMeter!.sendVirusToStart();
                 promote();
@@ -946,30 +936,30 @@ class UIAttackMeter:UICView {
     func pauseVirusMovement() {
         switch currentVirusPhase {
         case .TranslationToStart:
-            translationToStartAnimation!.stopAnimation(true);
+            translationToStartAnimation?.stopAnimation(true);
             print("Stopped translation to start animation");
         case .FirstRotation:
-            firstRotationAnimation!.stopAnimation(true);
+            firstRotationAnimation?.stopAnimation(true);
             let radians:CGFloat = atan2(virus!.transform.b, virus!.transform.a)
             let degrees:CGFloat = radians * 180 / .pi;
             self.firstRotationDegreeCheckpoint = degrees;
             print("Stopped first rotation animation ", firstRotationDegreeCheckpoint);
         case .SecondRotation:
-            secondRotationAnimation!.stopAnimation(true);
+            secondRotationAnimation?.stopAnimation(true);
             let radians:CGFloat = atan2(virus!.transform.b, virus!.transform.a)
             let degrees:CGFloat = radians * 180 / .pi;
             self.secondRotationDegreeCheckpoint = degrees;
             print("Stopped second rotation animation", secondRotationDegreeCheckpoint);
         case .TranslationToCat:
-            translationToCatAnimation!.stopAnimation(true);
+            translationToCatAnimation?.stopAnimation(true);
             print("Stopped translation to cat animation");
         case .SizeExpansion:
-            sizeExpansionAnimation!.stopAnimation(true);
+            sizeExpansionAnimation?.stopAnimation(true);
             let grownVirusX:CGFloat = virusXBeforeJump + (virus!.originalFrame!.width * 0.5) - (virus!.frame.width * 0.5);
             virus!.frame = CGRect(x: grownVirusX, y: virus!.frame.minY, width: virus!.frame.width, height: virus!.frame.height);
             print("Stopped size expansion animation")
         case .SizeReduction:
-            sizeReductionAnimation!.stopAnimation(true);
+            sizeReductionAnimation?.stopAnimation(true);
             let shrunkVirusX:CGFloat = virusXBeforeUnJump + (virus!.originalFrame!.width * 0.75) - (virus!.frame.width * 0.5);
             virus!.frame = CGRect(x: shrunkVirusX, y: virus!.frame.minY, width: virus!.frame.width, height: virus!.frame.height)
             print("Stopped size reduction animation")

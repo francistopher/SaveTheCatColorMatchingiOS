@@ -62,11 +62,20 @@ class ViewController: UIViewController {
     }
     
     func setupBannerView() {
+        var adSize:GADAdSize!
+        if (ViewController.aspectRatio! == .ar19point5by9) {
+            adSize = GADCurrentOrientationAnchoredAdaptiveBannerAdSizeWithWidth(mainView.frame.width);
+        } else if (ViewController.aspectRatio! == .ar16by9) {
+            adSize = GADCurrentOrientationAnchoredAdaptiveBannerAdSizeWithWidth(mainView.frame.width);
+        } else {
+            adSize = kGADAdSizeLeaderboard;
+        }
+        
         // Set the banner view
-        bannerView = GADBannerView(adSize: kGADAdSizeSmartBannerPortrait);
+        bannerView = GADBannerView(adSize: adSize);
         bannerView.backgroundColor = UIColor.clear;
         // Set the banner view frame and center
-        bannerView.frame = CGRect(x: 0.0, y: mainView.frame.height - bannerView.frame.height, width: bannerView.frame.width, height: bannerView.frame.height);
+        bannerView.frame = CGRect(x: 0.0, y: mainView.frame.height - bannerView.frame.height, width: bannerView.frame.width + 1, height: bannerView.frame.height + 1);
         CenterController.centerHorizontally(childView: bannerView, parentRect: mainView.frame, childRect: bannerView.frame);
         // Configure for ad to display
         // myBannerID ca-app-pub-9248016465919511/3503661709
@@ -397,5 +406,3 @@ class GameCenterMessage:UIView {
         })
     }
 }
-
-

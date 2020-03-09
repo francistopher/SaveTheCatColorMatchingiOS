@@ -357,7 +357,7 @@ class UICatButton: UIButton {
     }
     
     func fadeIn() {
-        UIView.animate(withDuration: 0.5, delay: 0.25, options: .curveEaseIn, animations: {
+        UIView.animate(withDuration: 0.25, delay: 0.125, options: .curveEaseIn, animations: {
             self.alpha = 1.0;
         });
     }

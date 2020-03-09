@@ -29,6 +29,8 @@ class UIBoardGame: UIView {
     var viruses:UIViruses?
     var timer:Timer?
     
+    var glovePointer:UIGlovedPointer?
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented");
     }
@@ -42,6 +44,13 @@ class UIBoardGame: UIView {
         self.statistics!.continueButton!.addTarget(self, action: #selector(continueSelector), for: .touchUpInside);
         setupAttackMeter();
         setupLivesMeter();
+        setupGlovePointer();
+    }
+    
+    func setupGlovePointer() {
+        let sideLength:CGFloat = ViewController.staticUnitViewHeight * 1.5;
+        let x:CGFloat = self.frame.minX + (self.frame.width * (1.0 / 3.0));
+        glovePointer = UIGlovedPointer(parentView: self.superview!, frame: CGRect(x: x, y: ViewController.staticUnitViewHeight * 11.725, width: sideLength, height: sideLength))
     }
     
     func setupAttackMeter() {
@@ -111,6 +120,19 @@ class UIBoardGame: UIView {
         recordGridColorsUsed();
         colorOptions!.buildColorOptionButtons(setup: true);
         attackMeter!.holdVirusAtStart = false;
+        if (!glovePointer!.hideForever) {
+            glovePointer!.fadeBackgroundIn();
+            colorOptions!.selectionButtons[0].addTarget(self, action: #selector(translateGloveToCatButtonCenter), for: .touchUpInside);
+        }
+    }
+    
+    @objc func translateGloveToCatButtonCenter() {
+        let newFrame:CGRect = CGRect(x: self.frame.midX - self.glovePointer!.frame.width * 0.5, y: self.frame.midY - self.glovePointer!.frame.height * 0.5, width: self.glovePointer!.frame.width, height: self.glovePointer!.frame.height);
+        glovePointer!.stopAnimations();
+        glovePointer!.translate(newOriginalFrame: newFrame);
+        Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false, block: { _ in
+            self.glovePointer!.sway();
+        })
     }
     
     func buildGridColors(){
@@ -219,6 +241,7 @@ class UIBoardGame: UIView {
         self.attackMeter!.disperseCatButton();
         self.attackMeter!.sendVirusToStartAndHold();
         self.attackMeter!.previousDisplacementDuration = 3.5;
+        self.glovePointer!.reset();
         // App data of dead cats
         Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false) { timer in
             self.reset(catsSurvived: false);
@@ -323,6 +346,8 @@ class UIBoardGame: UIView {
                 livesMeter!.incrementLivesLeftCount(catButton: catButton);
                 self.attackMeter!.updateDuration(change: 0.2);
                 self.attackMeter!.sendVirusToStart();
+                self.glovePointer!.reset();
+                self.glovePointer!.hideForever = true;
                 promote();
                 print("Promoted!");
                 return;
@@ -392,9 +417,7 @@ class UIBoardGame: UIView {
             for rowIndexOf in Array(indexesOfRowsWithAliveCatsCount.keys).sorted(by:<) {
                 resetCatButtonsPosition(rowIndexOf: rowIndexOf);
             }
-            print("ok@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
         } else {
-            print("Why^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^")
             rowGap = self.frame.height * 0.1 / CGFloat(countOfRowsLeft + 1);
             buttonHeight = self.frame.width * 0.90 / CGFloat(countOfRowsLeft);
             for rowIndexOf in Array(indexesOfRowsWithAliveCatsCount.keys).sorted(by:<) {
@@ -479,622 +502,111 @@ class UIBoardGame: UIView {
     }
 }
 
-class UIGameStatus:UICLabel {
+class UIGlovedPointer:UICButton {
     
-    var displayingRound:Bool = false;
+    var hideForever:Bool = false;
+    var darkImage = UIImage(named: "darkGlovePointer.png");
+    var lightImage = UIImage(named: "lightGlovePointer.png");
+    var darkTapImage = UIImage(named: "darkGloveTap.png");
+    var lightTapImage = UIImage(named: "lightGloveTap.png");
+
+    var xTranslation:CGFloat = 0.0;
+    var yTranslation:CGFloat = 0.0;
     
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+    var isTapping = true;
+    
+    var translateToTapAnimation:UIViewPropertyAnimator?
+    var translateFromTapAnimation:UIViewPropertyAnimator?
     
     init(parentView:UIView, frame:CGRect) {
-        super.init(parentView: parentView, x: frame.minX, y: frame.minY, width: frame.width, height: frame.height);
-        
-        self.layer.borderColor = UIColor.black.cgColor;
-        self.layer.borderWidth = self.frame.height * 0.03;
-        self.layer.cornerRadius = self.frame.height * 0.2;
-        
-        self.font = UIFont.boldSystemFont(ofSize: self.frame.height * 0.4);
-        self.backgroundColor = UIColor.white;
+        super.init(parentView: parentView, frame: frame, backgroundColor: UIColor.clear);
+        xTranslation = self.originalFrame!.width / 3.5;
+        yTranslation = self.originalFrame!.height / 3.5;
+        self.layer.borderWidth = 0.0;
         self.alpha = 0.0;
-        
     }
-    
-    func fadeInAndOut(text:String) {
-        displayingRound = true;
-        self.text = "\(text)";
-        UIView.animate(withDuration: 0.5, delay: 0.0, options: .curveEaseIn, animations: {
-            self.alpha = 1.0;
-        }, completion: { _ in
-            let finalDelay:Double = 0.4 + (Double(self.text!.count - 4) * 0.4);
-            UIView.animate(withDuration: 0.5, delay: finalDelay, options: .curveEaseOut, animations: {
-                self.alpha = 0.0;
-            }, completion:  { _ in
-                self.displayingRound = false;
-            })
-        })
-    }
-    
-    func fadeIn(text: String) {
-        self.text = "\(text)";
-        UIView.animate(withDuration: 0.5, delay: 0.125, options: .curveEaseOut, animations: {
-            self.alpha = 1.0;
-        })
-    }
-    
-    func fadeOut() {
-        UIView.animate(withDuration: 0.5, delay: 0.125, options: .curveEaseOut, animations: {
-            self.alpha = 0.0;
-        })
-    }
-
-}
-
-class UILivesMeter:UICView {
-    
-    var livesLeft:Int = 1;
-    var heartInactiveButtons:[UICButton] = [];
-    let heartImage:UIImage = UIImage(named: "heart.png")!;
-    var heartInactiveButtonXRange:[CGFloat] = [];
-    var currentHeartButton:UICButton?
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    init(parentView: UIView, frame:CGRect, backgroundColor: UIColor) {
-        super.init(parentView: parentView, x: frame.minX, y: frame.minY, width: frame.width, height: frame.height, backgroundColor: UIColor.clear);
-        self.layer.cornerRadius = self.frame.height * 0.5;
-        self.layer.borderWidth = self.frame.height / 12.0;
-        heartInactiveButtonXRange = [ 0.0, self.frame.width - (self.frame.height * 1.45), self.frame.width - self.frame.height + (self.layer.borderWidth * 0.8)];
-        setupHeartInactiveButtons();
-        setStyle();
-    }
-    
-    func setupHeartInactiveButtons() {
-        for _ in (heartInactiveButtons.count + 1)...livesLeft {
-            if (heartInactiveButtons.count == 0) {
-                buildHeartButton(x: heartInactiveButtonXRange[1]);
-            } else if (heartInactiveButtons.count == 1) {
-                buildHeartButton(x: heartInactiveButtonXRange[0]);
-            } else if (heartInactiveButtons.count == 2) {
-                buildHeartButton(x: heartInactiveButtonXRange[2]);
-            } else {
-                buildHeartButton(x: CGFloat.random(in: heartInactiveButtonXRange[0]..<heartInactiveButtonXRange[2]));
-            }
-        }
-    }
-    
-    func buildHeartButton(x:CGFloat) {
-        currentHeartButton = UICButton(parentView: self, frame: CGRect(x: x, y: 0.0, width: self.frame.height, height: self.frame.height), backgroundColor: UIColor.clear);
-        if (ViewController.aspectRatio! == .ar16by9) {
-            CenterController.center(childView: currentHeartButton!, parentRect: self.frame, childRect: currentHeartButton!.frame);
-        }
-        currentHeartButton!.layer.borderWidth = 0.0;
-        currentHeartButton!.setImage(heartImage, for: .normal);
-        currentHeartButton!.addTarget(self, action: #selector(heartButtonSelector(sender:)), for: .touchUpInside);
-        heartInactiveButtons.append(currentHeartButton!);
-        currentHeartButton!.alpha = 0.0;
-        currentHeartButton!.show();
-    }
-    
-    @objc func heartButtonSelector(sender:UIButton) {
-        UIView.animate(withDuration: 0.5, delay: 0.125, options: [.curveEaseInOut], animations: {
-            sender.transform = sender.transform.scaledBy(x: 1.25, y: 1.25);
-        }, completion: { _ in
-            UIView.animate(withDuration: 0.5, delay: 0.125, options: [.curveEaseInOut], animations: {
-                sender.transform = sender.transform.scaledBy(x: 0.8, y: 0.8);
-            })
-        })
-    }
-    
-    func decrementLivesLeftCount() {
-        if (livesLeft > 0) {
-            livesLeft -= 1;
-            let lastHeartButton:UICButton = heartInactiveButtons.last!;
-            heartInactiveButtons.removeLast();
-            lastHeartButton.frame = CGRect(x: lastHeartButton.frame.minX, y: lastHeartButton.frame.minY, width: lastHeartButton.frame.width, height: lastHeartButton.frame.height);
-            let randomTargetY:CGFloat = CGFloat.random(in: self.superview!.frame.height...(self.superview!.frame.height + lastHeartButton.frame.height))
-            UIView.animate(withDuration: 3.0, delay: 0.125, options: [.curveEaseInOut], animations: {
-                lastHeartButton.transform = lastHeartButton.transform.translatedBy(x: 0.0, y: randomTargetY);
-            }, completion: { _ in
-                lastHeartButton.removeFromSuperview();
-            })
-        }
-    }
-    
-    func incrementLivesLeftCount(catButton:UICatButton) {
-            livesLeft += 1;
-            // Get spawn frame
-            let x:CGFloat = catButton.frame.midX * 0.5 + catButton.superview!.frame.minX;
-            let y:CGFloat = catButton.frame.midY * 0.5 + catButton.superview!.frame.minY;
-        let newFrame:CGRect = CGRect(x: x, y: y, width: self.frame.height, height: self.frame.height);
-            // Setup the heart button
-            setupHeartInactiveButtons();
-            // Save the target frame and set the new frame
-            self.superview!.addSubview(currentHeartButton!);
-            let targetFrame = CGRect(x: self.frame.minX + currentHeartButton!.frame.minX, y: self.frame.minY + currentHeartButton!.frame.minY, width: (self.frame.width * 0.5) - (self.layer.borderWidth * 0.5), height: self.frame.height);
-            currentHeartButton!.frame = newFrame;
-            self.superview!.bringSubviewToFront(currentHeartButton!);
-            // Move heart to target frame
-            UIView.animate(withDuration: 3.0, delay: 0.125, options: [.curveEaseInOut], animations: {
-                self.currentHeartButton!.transform = self.currentHeartButton!.transform.translatedBy(x: targetFrame.minX - newFrame.minX, y: targetFrame.minY - newFrame.minY);
-            })
-    }
-    
-    func removeAllHeartLives() {
-        for _ in 0..<heartInactiveButtons.count {
-            decrementLivesLeftCount();
-        }
-    }
-    
-    func resetLivesLeftCount() {
-        if (heartInactiveButtons.count > 1) {
-            for _ in 1..<heartInactiveButtons.count {
-                decrementLivesLeftCount();
-            }
-        } else if (heartInactiveButtons.count < 1) {
-            livesLeft = 1;
-            setupHeartInactiveButtons();
-        }
     }
     
     override func setStyle() {
         if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1) {
-            self.layer.borderColor = UIColor.black.cgColor;
-            self.backgroundColor = UIColor.white;
-        } else {
-            self.layer.borderColor = UIColor.white.cgColor;
-            self.backgroundColor = UIColor.black;
-        }
-    }
-}
-
-enum VirusPhase {
-    case FirstRotation
-    case SecondRotation
-    case TranslationToCat
-    case SizeExpansion
-    case SizeReduction
-    case TranslationToStart
-}
-
-class UIAttackMeter:UICView {
-    
-    var virus:UIVirus?
-    var cat:UICatButton?
-    
-    var previousDisplacementDuration:Double = 3.5;
-    var displacementDuration:Double = 3.5;
-    var virusToCatDistance:CGFloat = 0.0;
-    
-    var firstRotationAnimation:UIViewPropertyAnimator?
-    var secondRotationAnimation:UIViewPropertyAnimator?
-    var translationToCatAnimation:UIViewPropertyAnimator?
-    var sizeExpansionAnimation:UIViewPropertyAnimator?
-    var sizeReductionAnimation:UIViewPropertyAnimator?
-    var translationToStartAnimation:UIViewPropertyAnimator?
-    
-    var didNotInvokeAttackImpulse:Bool = true;
-    var holdVirusAtStart:Bool = false;
-    var attackStarted:Bool = false;
-    var attack:Bool = false;
-    
-    var firstRotationDegreeCheckpoint:CGFloat = 0.0;
-    var secondRotationDegreeCheckpoint:CGFloat = 0.0;
-    
-    var virusXBeforeJump:CGFloat = 0.0;
-    var virusXBeforeUnJump:CGFloat = 0.0;
-    
-    var currentVirusPhase:VirusPhase?
-    var followingVirusPhase:VirusPhase?
-    
-    var boardGame:UIBoardGame?
-    var cats:UICatButtons?
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    init(parentView:UIView, frame:CGRect, cats:UICatButtons) {
-        super.init(parentView: parentView, x: frame.minX, y: frame.minY, width: frame.width, height: frame.height, backgroundColor: UIColor.clear);
-        self.layer.cornerRadius = self.frame.height * 0.5;
-        self.layer.borderWidth = self.frame.height / 12.0
-        self.cats = cats;
-    }
-    
-    func startFirstRotation(afterDelay:Double) {
-        
-        if (currentVirusPhase != nil || didNotInvokeAttackImpulse) {
-            return;
-        }
-        setupFirstRotationAnimation();
-        firstRotationAnimation!.startAnimation(afterDelay: afterDelay);
-        currentVirusPhase = .FirstRotation;
-    }
-    
-    func invokeAttackImpulse(delay:Double) {
-        Timer.scheduledTimer(withTimeInterval: delay, repeats: false, block: { _ in
-            self.didNotInvokeAttackImpulse = false;
-            self.startFirstRotation(afterDelay: 0.25);
-        })
-    }
-    
-    func setupFirstRotationAnimation() {
-        var firstDuration:Double = 0.5;
-        var firstRadian:CGFloat = -CGFloat.pi;
-        if (firstRotationDegreeCheckpoint > 0.0){
-            let remainingPercentage:CGFloat = (180.0 - firstRotationDegreeCheckpoint) / 180.0;
-            firstDuration *= Double(remainingPercentage);
-            firstRadian *= -remainingPercentage;
-            self.firstRotationDegreeCheckpoint = 0.0;
-        }
-        self.firstRotationAnimation = UIViewPropertyAnimator(duration: firstDuration, curve: .easeIn, animations: {
-            self.virus!.transform = self.virus!.transform.rotated(by: firstRadian);
-        });
-        self.firstRotationAnimation!.addCompletion({ _ in
-            self.dismantleFirstRotation();
-            self.startSecondRotation(afterDelay: 0.0);
-        })
-    }
-    
-    func dismantleFirstRotation() {
-        self.currentVirusPhase = nil;
-        self.followingVirusPhase = .SecondRotation;
-        self.firstRotationAnimation = nil;
-    }
-    
-    func startSecondRotation(afterDelay:Double) {
-        if (isVirusInAPhase()) {
-            return;
-        }
-        self.setupSecondRotationAnimation();
-        self.secondRotationAnimation!.startAnimation(afterDelay: afterDelay);
-        self.currentVirusPhase = .SecondRotation;
-    }
-    
-    func setupSecondRotationAnimation() {
-        var secondDuration:Double = 0.5;
-        var secondRadian:CGFloat = -CGFloat.pi;
-        if (-secondRotationDegreeCheckpoint > 0.0) {
-            let remainingPercentage:CGFloat = -secondRotationDegreeCheckpoint / 180.0;
-            secondDuration *= Double(remainingPercentage);
-            secondRadian *= -remainingPercentage;
-            self.secondRotationDegreeCheckpoint = 0.0;
-        }
-        self.secondRotationAnimation = UIViewPropertyAnimator(duration: secondDuration, curve: .easeOut, animations: {
-            self.virus!.transform = self.virus!.transform.rotated(by: secondRadian);
-        })
-        self.secondRotationAnimation!.addCompletion({ _ in
-            self.dismantleSecondRotation();
-            self.startTranslationToCat(afterDelay: 0.125);
-        })
-    }
-    
-    func dismantleSecondRotation() {
-        self.currentVirusPhase = nil;
-        self.followingVirusPhase = .TranslationToCat;
-        self.secondRotationAnimation = nil;
-    }
-    
-    func startTranslationToCat(afterDelay:Double) {
-        if (isVirusInAPhase()) {
-            return;
-        }
-        self.setupTranslationToCatAnimation();
-        self.translationToCatAnimation!.startAnimation(afterDelay: 0.125);
-        self.currentVirusPhase = .TranslationToCat;
-    }
-    
-    func setupTranslationToCatAnimation() {
-        self.translationToCatAnimation = UIViewPropertyAnimator(duration: getVirusToCatDuration(), curve: .easeIn, animations: {
-            self.virus!.transform = self.virus!.transform.translatedBy(x: self.getVirusToCatDistance(), y: 0.0);
-        })
-        self.translationToCatAnimation!.addCompletion({ _ in
-            self.dismantleTranslationToCat();
-            self.startSizeExpansionAnimation(afterDelay: 0.125);
-        })
-    }
-    
-    func dismantleTranslationToCat() {
-        self.currentVirusPhase = nil;
-        self.followingVirusPhase = .SizeExpansion;
-        self.translationToCatAnimation = nil;
-    }
-    
-    func startSizeExpansionAnimation(afterDelay:Double) {
-        if (isVirusInAPhase()) {
-            return;
-        }
-        self.setupSizeExpansionAnimation();
-        self.sizeExpansionAnimation!.startAnimation(afterDelay: afterDelay);
-        self.currentVirusPhase = .SizeExpansion;
-    }
-    
-    func setupSizeExpansionAnimation() {
-        var factor:CGFloat = 1.5;
-        var duration:Double = 0.5;
-        if (self.attackStarted) {
-            factor = (virus!.originalFrame!.height * 1.5) / (virus!.frame.height);
-            duration *= 1.5 - Double(factor);
-            virusXBeforeJump = 0.0;
-        } else {
-            virusXBeforeJump = virus!.frame.minX;
-        }
-        self.attackStarted = true;
-        sizeExpansionAnimation = UIViewPropertyAnimator(duration: duration, curve: .linear, animations: {
-           self.virus!.transform = self.virus!.transform.scaledBy(x: factor, y: factor);
-        })
-        sizeExpansionAnimation!.addCompletion({ _ in
-            self.dismantleSizeExpansion();
-            self.startSizeReductionAnimation(afterDelay: 0.0);
-        })
-    }
-    
-    func attackRandomCatButton() {
-        let randomCatButton:UICatButton = cats!.getRandomCatThatIsAlive();
-        self.boardGame!.attackCatButton(catButton: randomCatButton);
-    }
-    
-    func dismantleSizeExpansion() {
-        self.currentVirusPhase = nil;
-        self.followingVirusPhase = .SizeReduction;
-        self.sizeExpansionAnimation = nil;
-    }
-    
-    func startSizeReductionAnimation(afterDelay:Double) {
-        if (isVirusInAPhase()) {
-            return;
-        }
-        self.setupSizeReductionAnimation();
-        self.sizeReductionAnimation!.startAnimation(afterDelay: afterDelay);
-        self.currentVirusPhase = .SizeReduction;
-    }
-    
-    func setupSizeReductionAnimation() {
-        var factor:CGFloat = 1.0 / 1.5;
-        var duration:Double = 0.5;
-        if (!self.attackStarted) {
-            factor = (virus!.originalFrame!.width) / (virus!.frame.width);
-            duration *= (1.0 / Double(factor));
-            virusXBeforeUnJump = 0.0;
-        } else {
-            virusXBeforeUnJump = virus!.frame.minX;
-        }
-        self.attackStarted = false;
-        sizeReductionAnimation = UIViewPropertyAnimator(duration: duration, curve: .linear, animations: {
-           self.virus!.transform = self.virus!.transform.scaledBy(x: factor, y: factor);
-        })
-        sizeReductionAnimation!.addCompletion({ _ in
-            self.attackRandomCatButton();
-            self.dismantleSizeReduction();
-            self.startTranslationToStartAnimation(afterDelay: 0.125);
-        })
-    }
-    
-    func dismantleSizeReduction() {
-        self.currentVirusPhase = nil;
-        self.followingVirusPhase = .TranslationToStart;
-        self.sizeReductionAnimation = nil;
-    }
-    
-    func startTranslationToStartAnimation(afterDelay:Double) {
-        if (isVirusInAPhase()) {
-            return;
-        }
-        self.setupTranslationToStartAnimation();
-        self.translationToStartAnimation!.startAnimation(afterDelay: afterDelay);
-        self.currentVirusPhase = .TranslationToStart;
-    }
-    
-    func setupTranslationToStartAnimation() {
-        translationToStartAnimation = UIViewPropertyAnimator(duration: getVirusToStartDuration() , curve: .linear, animations: {
-            self.virus!.transform = .identity;
-            self.virus!.frame = self.virus!.originalFrame!;
-        })
-        translationToStartAnimation!.addCompletion({ _ in
-            self.displacementDuration = self.previousDisplacementDuration;
-            self.dismantleTranslationToStart();
-            if (!self.holdVirusAtStart) {
-                self.startFirstRotation(afterDelay: 0.125);
-            }
-        })
-    }
-    
-    func dismantleTranslationToStart() {
-        self.currentVirusPhase = nil;
-        self.followingVirusPhase = .FirstRotation;
-        self.sizeReductionAnimation = nil;
-    }
-    
-    func getVirusToCatDistance() -> CGFloat {
-        return (cat!.originalFrame!.minX - virus!.frame.minX);
-    }
-    func getVirusToStartDistance() -> CGFloat {
-        return (virus!.frame.minX - virus!.originalFrame!.minX);
-    }
-    
-    func getVirusToStartDuration() -> Double {
-        return displacementDuration * Double(getVirusToStartDistance()) / Double(virusToCatDistance);
-    }
-    
-    func getVirusToCatDuration() -> Double {
-        return displacementDuration * Double(getVirusToCatDistance()) / Double(virusToCatDistance);
-    }
-    
-    func setupComponents() {
-        setupCat();
-        setupVirus();
-        self.virusToCatDistance = cat!.originalFrame!.minX - virus!.originalFrame!.minX;
-    }
-    
-    func updateDuration(change:Double) {
-        if (change > 0.0) {
-            displacementDuration += change;
-            previousDisplacementDuration += change;
-        }
-        else if (change < 0.0) {
-            if (previousDisplacementDuration + change >= 3.0) {
-                displacementDuration += change;
-                previousDisplacementDuration += change;
+            if (isTapping) {
+                self.setImage(lightTapImage!, for: .normal);
             } else {
-                displacementDuration = 3.0;
-                previousDisplacementDuration = 3.0;
+                self.setImage(lightImage!, for: .normal);
             }
-        }
-        print(displacementDuration, "Displacement duration")
-        print(previousDisplacementDuration, "Previous Displacement duration")
-    }
-    
-    func pauseVirusMovement() {
-        switch currentVirusPhase {
-        case .TranslationToStart:
-            translationToStartAnimation?.stopAnimation(true);
-            print("Stopped translation to start animation");
-        case .FirstRotation:
-            firstRotationAnimation?.stopAnimation(true);
-            let radians:CGFloat = atan2(virus!.transform.b, virus!.transform.a)
-            let degrees:CGFloat = radians * 180 / .pi;
-            self.firstRotationDegreeCheckpoint = degrees;
-            print("Stopped first rotation animation ", firstRotationDegreeCheckpoint);
-        case .SecondRotation:
-            secondRotationAnimation?.stopAnimation(true);
-            let radians:CGFloat = atan2(virus!.transform.b, virus!.transform.a)
-            let degrees:CGFloat = radians * 180 / .pi;
-            self.secondRotationDegreeCheckpoint = degrees;
-            print("Stopped second rotation animation", secondRotationDegreeCheckpoint);
-        case .TranslationToCat:
-            translationToCatAnimation?.stopAnimation(true);
-            print("Stopped translation to cat animation");
-        case .SizeExpansion:
-            sizeExpansionAnimation?.stopAnimation(true);
-            let grownVirusX:CGFloat = virusXBeforeJump + (virus!.originalFrame!.width * 0.5) - (virus!.frame.width * 0.5);
-            virus!.frame = CGRect(x: grownVirusX, y: virus!.frame.minY, width: virus!.frame.width, height: virus!.frame.height);
-            print("Stopped size expansion animation")
-        case .SizeReduction:
-            sizeReductionAnimation?.stopAnimation(true);
-            let shrunkVirusX:CGFloat = virusXBeforeUnJump + (virus!.originalFrame!.width * 0.75) - (virus!.frame.width * 0.5);
-            virus!.frame = CGRect(x: shrunkVirusX, y: virus!.frame.minY, width: virus!.frame.width, height: virus!.frame.height)
-            print("Stopped size reduction animation")
-        default:
-            print("Something went wrong?");
+            self.imageView!.contentMode = UIView.ContentMode.scaleAspectFit;
+        } else {
+            if (isTapping) {
+                self.setImage(darkTapImage!, for: .normal);
+            } else {
+                self.setImage(darkImage!, for: .normal);
+            }
+            self.imageView!.contentMode = UIView.ContentMode.scaleAspectFit;
         }
     }
     
-    func unPauseVirusMovement() {
-        switch currentVirusPhase {
-        case .TranslationToStart:
-            let delay:Double = Double(0.5 * getVirusToCatDistance() / virusToCatDistance);
-            startTranslationToStartAnimation(afterDelay: delay);
-        case .FirstRotation:
-            currentVirusPhase = nil;
-            startFirstRotation(afterDelay: 0.25);
-            print("Started first rotation again.")
-        case .SecondRotation:
-            startSecondRotation(afterDelay: 0.25);
-            print("Started second rotation again.")
-        case .TranslationToCat:
-            let delay:Double = Double(0.75 * getVirusToStartDistance() / virusToCatDistance);
-            startTranslationToCat(afterDelay: delay);
-            print("Started translation to cat again.")
-        case .SizeExpansion:
-            startSizeExpansionAnimation(afterDelay: 0.125);
-            print("Started size expansion again.")
-        case .SizeReduction:
-            startSizeReductionAnimation(afterDelay: 0.125);
-            print("Started size reduction again.");
-        default:
-            print("Unpausing");
-            currentVirusPhase = .TranslationToStart;
-            unPauseVirusMovement();
+    func reset() {
+        self.alpha = 0.0;
+        stopAnimations();
+        self.frame = self.originalFrame!;
+        self.hideForever = false;
+    }
+    
+    func stopAnimations() {
+        translateToTapAnimation?.stopAnimation(true);
+        translateFromTapAnimation?.stopAnimation(true);
+    }
+    
+    override func fadeBackgroundIn() {
+        self.superview!.bringSubviewToFront(self);
+        if (hideForever) {
+            return;
         }
-    }
-    
-    func isVirusInAPhase() -> Bool {
-        let isVirusInAPhase:Bool = ((firstRotationAnimation != nil && firstRotationAnimation!.isRunning) || (secondRotationAnimation != nil && secondRotationAnimation!.isRunning) || (secondRotationAnimation != nil && secondRotationAnimation!.isRunning) || (translationToCatAnimation != nil && translationToCatAnimation!.isRunning) || (sizeExpansionAnimation != nil && sizeExpansionAnimation!.isRunning) || (sizeReductionAnimation != nil && sizeReductionAnimation!.isRunning) || (translationToStartAnimation != nil && translationToStartAnimation!.isRunning));
-        return isVirusInAPhase;
-    }
-    
-    func disperseCatButton() {
-        cat!.disperseRadially();
-    }
-    
-    func holdVirusOnceAtStart() {
-        holdVirusAtStart = true;
-        displacementDuration = 1.0;
-        Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false, block: { _ in
-           self.displacementDuration = self.previousDisplacementDuration;
+        UIView.animate(withDuration: 2.0, delay: 0.125, options: .curveEaseInOut, animations: {
+            self.alpha = 1.0;
+        }, completion: { _ in
+            self.sway();
         })
     }
     
-    func sendVirusToStartAndHold() {
-        holdVirusOnceAtStart();
-        pauseVirusMovement();
-        self.firstRotationDegreeCheckpoint = 0.0;
-        self.secondRotationDegreeCheckpoint = 0.0;
-        currentVirusPhase = .TranslationToStart;
-        unPauseVirusMovement();
+    func setupTranslateFromTapAnimation() {
+        translateFromTapAnimation = UIViewPropertyAnimator(duration: 0.5, curve: .easeInOut, animations: {
+            self.frame = CGRect(x: self.frame.minX - self.xTranslation, y: self.frame.minY - self.yTranslation, width: self.frame.width, height: self.frame.height);
+        })
+        translateFromTapAnimation!.addCompletion({ _ in
+            self.setupTranslateToTapAnimation();
+            self.translateToTapAnimation!.startAnimation();
+        })
     }
     
-    func sendVirusToStart() {
-        if (currentVirusPhase != nil && currentVirusPhase! != .TranslationToStart) {
-            displacementDuration = 1.0;
-            Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false, block: { _ in
-               self.displacementDuration = self.previousDisplacementDuration;
-            })
-            pauseVirusMovement();
-            self.firstRotationDegreeCheckpoint = 0.0;
-            self.secondRotationDegreeCheckpoint = 0.0;
-            currentVirusPhase = .TranslationToStart;
-            unPauseVirusMovement();
-        }
+    func setupTranslateToTapAnimation() {
+        translateToTapAnimation = UIViewPropertyAnimator(duration: 0.5, curve: .easeInOut, animations: {
+            self.frame = CGRect(x: self.frame.minX + self.xTranslation, y: self.frame.minY + self.yTranslation, width: self.frame.width, height: self.frame.height);
+        })
+        translateToTapAnimation!.addCompletion({ _ in
+            self.isTapping = true;
+            self.setStyle();
+            self.sway();
+        })
     }
     
-    func setupVirus() {
-        virus = UIVirus(parentView: self, frame: CGRect(x: -self.layer.borderWidth * 0.8, y: 0.0, width: self.frame.height, height: self.frame.height));
-        let newVirusFrame:CGRect = CGRect(x: self.frame.minX + virus!.frame.minX, y: self.frame.minY + virus!.frame.minY, width: virus!.frame.width, height: virus!.frame.height);
-        virus!.frame = newVirusFrame;
-        virus!.originalFrame = virus!.frame;
-        self.superview!.addSubview(virus!);
+    func sway() {
+        Timer.scheduledTimer(withTimeInterval: 0.25, repeats: false, block: { _ in
+            self.isTapping = false;
+            self.setStyle();
+        })
+        setupTranslateFromTapAnimation();
+        translateFromTapAnimation!.startAnimation(afterDelay: 0.125);
     }
     
-    func resetCat() {
-        cat!.setCat(named: "DeadCat", stage: 5);
-        setupCat();
-        cat!.setCat(named: "SmilingCat", stage: 5);
-        virus!.superview!.bringSubviewToFront(virus!);
-        virus!.superview!.bringSubviewToFront(boardGame!.settingsButton!.settingsMenu!);
-        virus!.superview!.bringSubviewToFront(boardGame!.settingsButton!);
-    }
-    
-    func setupCat() {
-        cat = UICatButton(parentView: self, x: self.frame.width - self.frame.height, y: 0.0, width: self.frame.height, height: self.frame.height, backgroundColor: UIColor.clear);
-        cat!.grown();
-        let newCatFrame:CGRect = CGRect(x: self.frame.minX + cat!.frame.minX, y: self.frame.minY + cat!.frame.minY, width: self.frame.height, height: self.frame.height);
-        cat!.frame = newCatFrame;
-        cat!.originalFrame = cat!.frame;
-        self.superview!.addSubview(cat!);
-        cat!.layer.borderWidth = 0.0;
-        cat!.setCat(named: "SmilingCat", stage:0);
-    }
-    
-    func setCompiledStyle() {
-        setStyle();
-        virus!.setupVirusImage();
-        cat!.setCat(named: "SmilingCat", stage: 5);
-    }
-    
-    func comiledHide() {
-        self.alpha = 0.0;
-        self.virus!.alpha = 0.0;
-        self.cat!.alpha = 0.0;
-    }
-    
-    func compiledShow() {
-        self.fadeIn();
-        self.virus!.fadeIn();
-        self.cat!.fadeIn();
+    override func translate(newOriginalFrame:CGRect) {
+        UIView.animate(withDuration: 0.5, delay: 0.125, options: .curveEaseInOut, animations: {
+            self.frame = newOriginalFrame;
+            self.configureShrunkFrame();
+        });
     }
     
 }
-

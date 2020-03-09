@@ -92,9 +92,11 @@
 		B840324724143B540020D9EA /* darkLeaderBoard.png in Resources */ = {isa = PBXBuildFile; fileRef = B840324524143B540020D9EA /* darkLeaderBoard.png */; };
 		B840324824143B540020D9EA /* lightLeaderBoard.png in Resources */ = {isa = PBXBuildFile; fileRef = B840324624143B540020D9EA /* lightLeaderBoard.png */; };
 		B840324C241588FB0020D9EA /* myCats.png in Resources */ = {isa = PBXBuildFile; fileRef = B840324B241588FB0020D9EA /* myCats.png */; };
+		CFCBC265AF268BF512930543 /* libPods-SaveTheCat.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F49880530830E5299E41C1DE /* libPods-SaveTheCat.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4CABDC3DBB7B48F0E0215922 /* Pods-SaveTheCat.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SaveTheCat.release.xcconfig"; path = "Target Support Files/Pods-SaveTheCat/Pods-SaveTheCat.release.xcconfig"; sourceTree = "<group>"; };
 		B83B032A241153E800EC4BAD /* UIMouseCoin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UIMouseCoin.swift; path = SaveTheCat/UIMouseCoin.swift; sourceTree = "<group>"; };
 		B83B032B241153E800EC4BAD /* UIMultiplayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UIMultiplayer.swift; path = SaveTheCat/UIMultiplayer.swift; sourceTree = "<group>"; };
 		B83B032C241153E800EC4BAD /* UISettingsButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UISettingsButton.swift; path = SaveTheCat/UISettingsButton.swift; sourceTree = "<group>"; };
@@ -182,6 +184,8 @@
 		B840324524143B540020D9EA /* darkLeaderBoard.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = darkLeaderBoard.png; path = SaveTheCat/darkLeaderBoard.png; sourceTree = "<group>"; };
 		B840324624143B540020D9EA /* lightLeaderBoard.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = lightLeaderBoard.png; path = SaveTheCat/lightLeaderBoard.png; sourceTree = "<group>"; };
 		B840324B241588FB0020D9EA /* myCats.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = myCats.png; path = SaveTheCat/myCats.png; sourceTree = "<group>"; };
+		BFFD34E3F63138C9ED73D8DE /* Pods-SaveTheCat.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SaveTheCat.debug.xcconfig"; path = "Target Support Files/Pods-SaveTheCat/Pods-SaveTheCat.debug.xcconfig"; sourceTree = "<group>"; };
+		F49880530830E5299E41C1DE /* libPods-SaveTheCat.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SaveTheCat.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -190,12 +194,23 @@
 			buildActionMask = 2147483647;
 			files = (
 				B83B03DE241160FD00EC4BAD /* GameKit.framework in Frameworks */,
+				CFCBC265AF268BF512930543 /* libPods-SaveTheCat.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		B2E2EC703BD32436DE923CED /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				BFFD34E3F63138C9ED73D8DE /* Pods-SaveTheCat.debug.xcconfig */,
+				4CABDC3DBB7B48F0E0215922 /* Pods-SaveTheCat.release.xcconfig */,
+			);
+			name = Pods;
+			path = Pods;
+			sourceTree = "<group>";
+		};
 		B833543F23EC8F0B00835672 = {
 			isa = PBXGroup;
 			children = (
@@ -212,6 +227,7 @@
 				B83B03D324115D2E00EC4BAD /* SaveTheCat.xcdatamodeld */,
 				B83B03D8241160AA00EC4BAD /* Save The Cat!.app */,
 				B83B03D9241160D600EC4BAD /* Frameworks */,
+				B2E2EC703BD32436DE923CED /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -423,6 +439,7 @@
 			isa = PBXGroup;
 			children = (
 				B83B03DA241160D600EC4BAD /* GameKit.framework */,
+				F49880530830E5299E41C1DE /* libPods-SaveTheCat.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -456,6 +473,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = B833545F23EC8F1400835672 /* Build configuration list for PBXNativeTarget "SaveTheCat" */;
 			buildPhases = (
+				8CF5A5F0E2888D89BE8C2C58 /* [CP] Check Pods Manifest.lock */,
 				B833544423EC8F0B00835672 /* Sources */,
 				B833544523EC8F0B00835672 /* Frameworks */,
 				B833544623EC8F0B00835672 /* Resources */,
@@ -572,6 +590,28 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		8CF5A5F0E2888D89BE8C2C58 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-SaveTheCat-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
 		B8BBAA6323FD967300614F95 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -768,6 +808,7 @@
 		};
 		B833546023EC8F1400835672 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = BFFD34E3F63138C9ED73D8DE /* Pods-SaveTheCat.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -789,6 +830,7 @@
 		};
 		B833546123EC8F1400835672 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 4CABDC3DBB7B48F0E0215922 /* Pods-SaveTheCat.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;

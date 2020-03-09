@@ -9,6 +9,7 @@
 import UIKit
 import AVFoundation
 import GameKit
+import GoogleMobileAds
 
 enum AspectRatio {
     case ar19point5by9
@@ -48,13 +49,32 @@ class ViewController: UIViewController {
     // Aspect ratio
     static var aspectRatio:AspectRatio?
     
-    @IBOutlet var mainViewController: UIView!
+    // Ads
+    var bannerView: GADBannerView!
+    
     override func viewDidLoad() {
         super.viewDidLoad();
         setupAspectRatio();
         setupSaveTheCat();
+        setupBannerView();
         setupGameCenterMessage();
         authenticateLocalPlayerForGamePlay();
+    }
+    
+    func setupBannerView() {
+        // Set the banner view
+        bannerView = GADBannerView(adSize: kGADAdSizeSmartBannerPortrait);
+        bannerView.backgroundColor = UIColor.clear;
+        // Set the banner view frame and center
+        bannerView.frame = CGRect(x: 0.0, y: mainView.frame.height - bannerView.frame.height, width: bannerView.frame.width, height: bannerView.frame.height);
+        CenterController.centerHorizontally(childView: bannerView, parentRect: mainView.frame, childRect: bannerView.frame);
+        // Configure for ad to display
+        // myBannerID ca-app-pub-9248016465919511/3503661709
+        bannerView.adUnitID = "ca-app-pub-3940256099942544/2934735716";
+        bannerView.rootViewController = self;
+        bannerView.load(GADRequest());
+        
+        mainView.addSubview(bannerView);
     }
     
     func setupAspectRatio() {
@@ -73,6 +93,7 @@ class ViewController: UIViewController {
         let player:GKLocalPlayer = GKLocalPlayer.local;
         player.authenticateHandler = {vc,error in
             guard error == nil else {
+                print("Possible internet connection loss??? $$$$$$$$$$$$$$$$$$$$$$$")
                 if (self.gameCenterAuthentificationOver) {
                     return;
                 }

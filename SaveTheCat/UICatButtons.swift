@@ -44,6 +44,16 @@ class UICatButtons {
         return true;
     }
     
+    func countOfAliveCatButtons() -> Int {
+        var count:Int = 0;
+        for catButton in presentCollection! {
+            if (catButton.isAlive) {
+                count += 1;
+            }
+        }
+        return count;
+    }
+    
     func count() -> Int {
         return presentCollection!.count;
     }
@@ -169,7 +179,7 @@ class UICatButtons {
     func transitionCatButtonBackgroundToClear() {
         for catButton in presentCollection! {
             catButton.imageContainerButton!.backgroundColor = UIColor.clear;
-            catButton.fadeBackgroundIn(color: UIColor.clear);
+            catButton.fadeBackgroundIn(color: UIColor.clear, duration: 0.5, delay: 0.125);
             catButton.clearedOutToSolve = true;
         }
     }
@@ -188,7 +198,7 @@ class UICatButtons {
         for catButton in presentCollection! {
             if (!catButton.isPodded && !catButton.clearedOutToSolve) {
                 catButton.imageContainerButton!.backgroundColor = UIColor.clear;
-                catButton.fadeBackgroundIn(color: UIColor.clear);
+                catButton.fadeBackgroundIn(color: UIColor.clear, duration: 0.5, delay: 0.125);
             }
         }
     }
@@ -196,7 +206,7 @@ class UICatButtons {
     func unClearCatButtons() {
         for catButton in presentCollection! {
             if (!catButton.isPodded && !catButton.clearedOutToSolve) {
-                catButton.fadeBackgroundIn(color: catButton.originalBackgroundColor);
+                catButton.fadeBackgroundIn(color: catButton.originalBackgroundColor, duration: 0.5, delay: 0.125);
             }
             
         }

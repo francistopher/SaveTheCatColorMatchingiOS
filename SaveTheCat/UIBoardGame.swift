@@ -196,6 +196,7 @@ class UIBoardGame: UIView {
                 let catButton:UICatButton = cats.buildCatButton(parent: self, frame: frame, backgroundColor: gridColors![rowIndex][columnIndex]);
                 catButton.rowIndex = rowIndex;
                 catButton.columnIndex = columnIndex;
+                catButton.imageContainerButton!.backgroundColor = UIColor.clear;
                 catButton.imageContainerButton!.addTarget(self, action: #selector(selectCatImageButton), for: .touchUpInside);
                 catButton.addTarget(self, action: #selector(selectCatButton), for: .touchUpInside);
                 x += buttonWidth;
@@ -425,9 +426,19 @@ class UIBoardGame: UIView {
     }
     
     func maintain() {
+        let countOfAliveCatButtons:Int = cats.countOfAliveCatButtons();
+        var newRound:Int = 1;
+        while (newRound != currentRound) {
+            let newRoundRowsAndColumns:[Int] = getRowsAndColumns(currentStage: newRound);
+            let product:Int = newRoundRowsAndColumns[0] * newRoundRowsAndColumns[1];
+            if (product == countOfAliveCatButtons) {
+                currentRound = newRound;
+                break;
+            }
+            newRound += 1;
+        }
         successGradientLayer!.isHidden = false;
         reset(catsSurvived: true);
-
         self.colorOptions!.shrinkColorOptions();
         configureComponentsAfterBoardGameReset();
     }

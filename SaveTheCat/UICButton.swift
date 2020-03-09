@@ -61,8 +61,8 @@ class UICButton:UIButton {
         });
     }
     
-    func fadeBackgroundIn(color:UIColor){
-        UIView.animate(withDuration: 0.5, delay: 0.25, options: .curveEaseIn, animations: {
+    func fadeBackgroundIn(color:UIColor, duration:Double){
+        UIView.animate(withDuration: duration, delay: 0.25, options: .curveEaseIn, animations: {
             self.backgroundColor = color;
         });
     }

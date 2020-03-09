@@ -380,8 +380,8 @@ class UICatButton: UIButton {
         });
     }
     
-    func fadeBackgroundIn(color:UIColor){
-        UIView.animate(withDuration: 0.5, delay: 0.25, options: .curveEaseIn, animations: {
+    func fadeBackgroundIn(color:UIColor, duration:Double, delay:Double){
+        UIView.animate(withDuration: duration, delay: delay, options: .curveEaseIn, animations: {
             self.backgroundColor = color;
         }, completion: { _ in
             if (color.cgColor != UIColor.clear.cgColor) {

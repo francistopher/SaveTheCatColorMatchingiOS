@@ -392,9 +392,11 @@ class UIBoardGame: UIView {
             for rowIndexOf in Array(indexesOfRowsWithAliveCatsCount.keys).sorted(by:<) {
                 resetCatButtonsPosition(rowIndexOf: rowIndexOf);
             }
+            print("ok@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
         } else {
-            rowGap = self.frame.height * 0.1 / CGFloat(countOfRowsLeft + 2);
-            buttonHeight = self.frame.width * 0.90 / CGFloat(countOfRowsLeft + 1);
+            print("Why^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^")
+            rowGap = self.frame.height * 0.1 / CGFloat(countOfRowsLeft + 1);
+            buttonHeight = self.frame.width * 0.90 / CGFloat(countOfRowsLeft);
             for rowIndexOf in Array(indexesOfRowsWithAliveCatsCount.keys).sorted(by:<) {
                 resetCatButtonsPosition(rowIndexOf: rowIndexOf);
             }

@@ -77,6 +77,7 @@ class UIViruses {
         for virus in self.virusCollection! {
             virus.alpha = 0.0;
             virus.layer.removeAllAnimations();
+            virus.frame = virus.originalFrame!;
         }
     }
     

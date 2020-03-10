@@ -70,12 +70,12 @@ class UIVirus:UIButton {
             self.imageView!.transform = self.imageView!.transform.translatedBy(x: xTranslation, y: yTranslation);
         });
         if (immediately) {
-            self.alpha = 1.0;
+            fadeIn();
         }
     }
 
     func fadeIn() {
-        UIView.animate(withDuration: 2.0, delay: 0.25, options: .curveEaseIn, animations: {
+        UIView.animate(withDuration: 1.0, delay: 0.25, options: .curveEaseIn, animations: {
             self.alpha = 1.0;
         });
     }

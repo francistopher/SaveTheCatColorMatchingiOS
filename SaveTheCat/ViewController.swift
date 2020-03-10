@@ -96,10 +96,14 @@ class ViewController: UIViewController, GADInterstitialDelegate {
     
     func interstitialWillPresentScreen(_ ad: GADInterstitial) {
         ViewController.interstitialWillPresentScreen = true;
+        viruses!.hide();
     }
     
     func interstitialWillDismissScreen(_ ad: GADInterstitial) {
         ViewController.interstitialWillDismissScreen = true;
+    }
+    
+    func interstitialDidDismissScreen(_ ad: GADInterstitial) {
         viruses!.sway(immediately: true);
     }
     

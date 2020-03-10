@@ -28,6 +28,7 @@ class UIResults:UICView {
     var durationTimeLabel:UICLabel?
     
     var continueButton:UICButton?
+    var watchAdForXMouseCoins:UICButton?
     
     var unitHeight:CGFloat?
     
@@ -46,6 +47,7 @@ class UIResults:UICView {
     // Content panel
     var contentView:UICView?
     
+    static var rewardAmount:Int = 5;
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -66,6 +68,7 @@ class UIResults:UICView {
         setupStagesLabel();
         setupDurationLabel();
         setupContinueButton();
+        setupWatchAdForXMouseCoins();
         super.invertColor = true;
         self.setCompiledStyle();
         CenterController.center(childView: self, parentRect: superview!.frame, childRect: self.frame);
@@ -190,6 +193,38 @@ class UIResults:UICView {
         continueButton!.setTitle("Continue", for: .normal);
         continueButton!.setTitleColor(UIColor.black, for: .normal);
         CenterController.centerHorizontally(childView: continueButton!, parentRect: contentView!.frame, childRect: continueButton!.frame);
+        self.continueButton!.originalFrame = self.continueButton!.frame;
+        self.continueButton!.frame = CGRect(x: self.continueButton!.frame.minX - self.continueButton!.frame.width * 0.60, y: self.continueButton!.frame.minY, width: self.continueButton!.frame.width, height: self.continueButton!.frame.height);
+    }
+    
+    func setupWatchAdForXMouseCoins() {
+        self.watchAdForXMouseCoins = UICButton(parentView: contentView!, frame: CGRect(x: 0.0, y: self.frame.height - (unitHeight! * 1.3125), width: contentView!.frame.width * 0.35, height: unitHeight!), backgroundColor: .clear);
+        watchAdForXMouseCoins!.titleLabel!.font = UIFont.boldSystemFont(ofSize:watchAdForXMouseCoins!.frame.height * 0.35);
+        watchAdForXMouseCoins!.layer.cornerRadius = watchAdForXMouseCoins!.frame.width * 0.1;
+        self.watchAdForXMouseCoins!.frame = CGRect(x: continueButton!.originalFrame!.minX + continueButton!.originalFrame!.width * 0.7, y: continueButton!.frame.minY, width: continueButton!.frame.width, height: continueButton!.frame.height);
+        self.watchAdForXMouseCoins!.titleLabel!.lineBreakMode = NSLineBreakMode.byWordWrapping;
+        self.watchAdForXMouseCoins!.titleLabel!.numberOfLines = 2;
+        self.watchAdForXMouseCoins!.titleLabel!.textAlignment = NSTextAlignment.center;
+        self.watchAdForXMouseCoins!.setTitle("Watch vid\nfor \(UIResults.rewardAmount) ·", for: .normal);
+        self.watchAdForXMouseCoins!.addTarget(nil, action: #selector(showAd), for: .touchUpInside);
+        // Setup mouse coin
+        var x:CGFloat = watchAdForXMouseCoins!.frame.width * 0.64;
+        if (UIResults.rewardAmount > 9) {
+            self.watchAdForXMouseCoins!.setTitle(self.watchAdForXMouseCoins!.titleLabel!.text! + "·", for: .normal);
+            x += watchAdForXMouseCoins!.frame.width * 0.015;
+        }
+        let mouseCoin:UIMouseCoin = UIMouseCoin(parentView: watchAdForXMouseCoins!, x: x, y: watchAdForXMouseCoins!.frame.height * 0.475, width: watchAdForXMouseCoins!.frame.height * 0.4, height: watchAdForXMouseCoins!.frame.height * 0.45);
+        mouseCoin.isSelectable = false;
+        mouseCoin.addTarget(self, action: #selector(mouseCoinSelector), for: .touchUpInside);
+    }
+    
+    @objc func showAd() {
+        print("Showing add!");
+    }
+    
+    @objc func mouseCoinSelector() {
+        SoundController.coinEarned();
+        watchAdForXMouseCoins!.sendActions(for: .touchUpInside);
     }
 
     func setSessionDuration() {
@@ -201,7 +236,7 @@ class UIResults:UICView {
         catsLivedAmountLabel!.text = String(catsThatLived);
         catsDiedAmountLabel!.text = String(catsThatDied);
         stagesRangeLabel!.text = "\(maxStage - 1)";
-        durationTimeLabel!.text = "\( Int(floor(sessionDuration)))";
+        durationTimeLabel!.text = "\(Int(floor(sessionDuration)))";
     }
     
     func setCompiledStyle() {

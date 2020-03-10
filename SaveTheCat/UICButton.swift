@@ -134,14 +134,18 @@ class UICButton:UIButton {
         if (inverted) {
             if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1){
                 self.layer.borderColor = UIColor.white.cgColor;
+                self.setTitleColor(UIColor.white, for: .normal);
             } else {
                 self.layer.borderColor = UIColor.black.cgColor;
+                self.setTitleColor(UIColor.black, for: .normal);
             }
         } else {
             if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1){
                 self.layer.borderColor = UIColor.black.cgColor;
+                self.setTitleColor(UIColor.black, for: .normal);
             } else {
                 self.layer.borderColor = UIColor.white.cgColor;
+                self.setTitleColor(UIColor.white, for: .normal);
             }
         }
         

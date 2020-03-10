@@ -14,7 +14,7 @@ class UIMouseCoin: UIButton {
     
     var originalFrame:CGRect? = nil;
     var reducedFrame:CGRect? = nil;
-    var isSelectable:Bool = false;
+    var isSelectable:Bool = true;
     var mouseCoinView:UICView?
     var imageMouseCoinView:UIImageView?
     var amountLabel:UICLabel?
@@ -36,20 +36,22 @@ class UIMouseCoin: UIButton {
     }
     
     @objc func mouseCoinSelector() {
-        let mouseCoins:Int = UIResults.mouseCoins;
-        self.amountLabel!.text = "\(mouseCoins)";
-        if (UIResults.mouseCoins > 0) {
-            SoundController.coinEarned();
-        }
-        mouseCoinView!.superview!.bringSubviewToFront(mouseCoinView!);
-        UIView.animate(withDuration: 0.5, delay: 0.0, options: .curveEaseIn, animations: {
-            self.mouseCoinView!.alpha = 1.0;
-        }, completion: { _ in
-            let finalDelay:Double = 0.4 + (Double(self.amountLabel!.text!.count) * 0.4);
-            UIView.animate(withDuration: 0.5, delay: finalDelay, options: .curveEaseOut, animations: {
-                self.mouseCoinView!.alpha = 0.0;
+        if (isSelectable) {
+            let mouseCoins:Int = UIResults.mouseCoins;
+            self.amountLabel!.text = "\(mouseCoins)";
+            if (UIResults.mouseCoins > 0) {
+                SoundController.coinEarned();
+            }
+            mouseCoinView!.superview!.bringSubviewToFront(mouseCoinView!);
+            UIView.animate(withDuration: 0.5, delay: 0.0, options: .curveEaseIn, animations: {
+                self.mouseCoinView!.alpha = 1.0;
+            }, completion: { _ in
+                let finalDelay:Double = 0.4 + (Double(self.amountLabel!.text!.count) * 0.4);
+                UIView.animate(withDuration: 0.5, delay: finalDelay, options: .curveEaseOut, animations: {
+                    self.mouseCoinView!.alpha = 0.0;
+                })
             })
-        })
+        }
     }
     
     func setIconImage(imageName:String) {

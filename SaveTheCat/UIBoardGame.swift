@@ -636,6 +636,8 @@ class UIGlovedPointer:UICButton {
     }
     
     override func translate(newOriginalFrame:CGRect) {
+        self.isTapping = true;
+        setStyle();
         transitionedToCatButton = true;
         if (catButton == nil) {
             reset();

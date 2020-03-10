@@ -6,9 +6,10 @@
 //  Copyright © 2020 Christopher Francisco. All rights reserved.
 //
 
-import SwiftUI
+import UIKit
+import GoogleMobileAds
 
-class UIResults:UICView {
+class UIResults: UICView {
     
     static var selectedCat:Cat = .standard;
     static var mouseCoins:Int = 0;
@@ -47,6 +48,7 @@ class UIResults:UICView {
     // Content panel
     var contentView:UICView?
     
+    // Reward amount
     static var rewardAmount:Int = 5;
     
     required init?(coder: NSCoder) {
@@ -220,6 +222,69 @@ class UIResults:UICView {
     
     @objc func showAd() {
         print("Showing add!");
+        // load the ad
+        ViewController.presentInterstitial();
+        // Wait to see if ad will load
+        var timer:Timer?
+        timer = Timer.scheduledTimer(withTimeInterval: 0.01, repeats: true, block: { _ in
+            if (ViewController.interstitialWillPresentScreen) {
+                ViewController.interstitialWillPresentScreen = false;
+                SoundController.chopinPrelude(play: false);
+                timer!.invalidate();
+                // Wait for the ad to be dismissed
+                timer = Timer.scheduledTimer(withTimeInterval: 0.01, repeats: true, block: { _ in
+                    if (ViewController.interstitialWillDismissScreen) {
+                        ViewController.interstitialWillDismissScreen = false;
+                        SoundController.chopinPrelude(play: true);
+                        timer!.invalidate();
+                        // Reformat the buttons
+                        self.watchAdForXMouseCoins!.hide();
+                        self.continueButton!.frame = self.continueButton!.originalFrame!;
+                        // Give mouse coins
+                        self.giveMouseCoins();
+                    }
+                })
+            }
+        })
+    }
+    
+    func giveMouseCoins() {
+        let totalSpace:CGFloat = self.frame.width;
+        let unavailableSpace:CGFloat = (continueButton!.frame.height * 0.5) * CGFloat(UIResults.rewardAmount);
+        let availableSpace:CGFloat = totalSpace - unavailableSpace;
+        let spaceBetween:CGFloat = availableSpace / CGFloat(UIResults.rewardAmount + 1);
+        for index in 0..<UIResults.rewardAmount {
+            UIResults.mouseCoins += 1;
+            // Generate mouse coin
+            let space:CGFloat = CGFloat(index + 1) * spaceBetween;
+            var x:CGFloat = CGFloat(index) * (continueButton!.frame.height * 0.5);
+            x += space;
+            let mouseCoin:UIMouseCoin = UIMouseCoin(parentView: self, x: x, y: continueButton!.frame.minY, width: continueButton!.frame.height * 0.5, height: continueButton!.frame.height * 0.5);
+            // Create frame for mouse coin on view
+            var mouseCoinX = mouseCoin.frame.minX;
+            var mouseCoinY = mouseCoin.frame.minY;
+            mouseCoinX += contentView!.frame.minX + self.frame.minX;
+            mouseCoinY += contentView!.frame.minY + self.frame.minY
+            // Set new frame and superview for mouse coin
+            ViewController.staticMainView!.addSubview(mouseCoin);
+            mouseCoin.frame = CGRect(x: mouseCoinX, y: mouseCoinY, width: mouseCoin.frame.width, height: mouseCoin.frame.height);
+            // Calculate time for translation
+            let boardGameFrame:CGRect = self.superview!.frame;
+            let time:Double = Double(mouseCoin.frame.minX / (boardGameFrame.minX + boardGameFrame.width));
+            DispatchQueue.main.asyncAfter(deadline: .now() + time) {
+                ViewController.staticMainView!.bringSubviewToFront(mouseCoin);
+                UIView.animate(withDuration: 1.0, delay: 0.125, options: [.curveEaseInOut], animations: {
+                    let settingsButton:UISettingsButton = ViewController.settingsButton!;
+                    let settingsMenuFrame:CGRect = settingsButton.settingsMenu!.frame;
+                    let settingsMouseCoinFrame:CGRect = settingsButton.settingsMenu!.mouseCoin!.frame;
+                    let newMouseCoinFrame:CGRect = CGRect(x: settingsMenuFrame.minX + settingsMouseCoinFrame.minX, y: settingsMenuFrame.minY + settingsMouseCoinFrame.minY, width: settingsMouseCoinFrame.width, height: settingsMouseCoinFrame.height);
+                    mouseCoin.frame = newMouseCoinFrame;
+                }, completion: { _ in
+                    SoundController.coinEarned();
+                    mouseCoin.removeFromSuperview();
+                })
+            }
+        }
     }
     
     @objc func mouseCoinSelector() {

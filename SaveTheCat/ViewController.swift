@@ -17,7 +17,7 @@ enum AspectRatio {
     case ar4by3
 }
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, GADInterstitialDelegate {
 
     @IBOutlet var mainView: UIView!
     var mainViewWidth:CGFloat = 0.0;
@@ -25,67 +25,55 @@ class ViewController: UIViewController {
     var unitViewWidth:CGFloat = 0.0;
     var unitViewHeight:CGFloat = 0.0;
     
+    // Static
     static var staticUnitViewHeight:CGFloat = 0.0;
     static var staticUnitViewWidth:CGFloat = 0.0;
+    static var staticViewController:UIViewController?
+    static var staticMainView:UIView?
     
+    // Game play components
     var introLabel:UICLabel?;
     var settingsButton:UISettingsButton?
     static var settingsButton:UISettingsButton?
     var boardGame:UIBoardGame?
     var colorOptions:UIColorOptions?
     
+    // Sucess gradient layer
     var successGradientLayer:CAGradientLayer?
     let mellowYellow:UIColor = UIColor(red: 252.0/255.0, green: 212.0/255.0, blue: 64.0/255.0, alpha: 1.0);
     
+    // Viruses
     var viruses:UIViruses?
     static var appInBackgroundBeforeFirstAttackImpulse:Bool = false;
-    static var staticMainView:UIView?
-    var gameCenterAuthentificationOver:Bool = false;
-    
-    // Game center message
-    var gameCenterMessage:GameCenterMessage?
-    var gameCenterMessageWidthHeightY:(CGFloat, CGFloat, CGFloat)?;
     
     // Aspect ratio
     static var aspectRatio:AspectRatio?
     
+    // Game center message
+    var gameCenterMessage:GameCenterMessage?
+    var gameCenterMessageWidthHeightY:(CGFloat, CGFloat, CGFloat)?;
+    var gameCenterAuthentificationOver:Bool = false;
+    
     // Ads
     var bannerView: GADBannerView!
+    private static var interstitial:GADInterstitial!
+    static var interstitialWillPresentScreen:Bool = false;
+    static var interstitialWillDismissScreen:Bool = false;
     
     override func viewDidLoad() {
         super.viewDidLoad();
+        ViewController.staticViewController = self;
+        ViewController.staticMainView = mainView;
         setupAspectRatio();
-        setupSaveTheCat();
+        setupMainViewDimensionProperties();
         setupBannerView();
+        setupInterstitial();
+        setupSaveTheCat();
         setupGameCenterMessage();
         authenticateLocalPlayerForGamePlay();
     }
     
-    func setupBannerView() {
-        var adSize:GADAdSize!
-        if (ViewController.aspectRatio! == .ar19point5by9) {
-            adSize = GADCurrentOrientationAnchoredAdaptiveBannerAdSizeWithWidth(mainView.frame.width);
-        } else if (ViewController.aspectRatio! == .ar16by9) {
-            adSize = GADCurrentOrientationAnchoredAdaptiveBannerAdSizeWithWidth(mainView.frame.width);
-        } else {
-            adSize = kGADAdSizeLeaderboard;
-        }
-        
-        // Set the banner view
-        bannerView = GADBannerView(adSize: adSize);
-        bannerView.backgroundColor = UIColor.clear;
-        // Set the banner view frame and center
-        bannerView.frame = CGRect(x: 0.0, y: mainView.frame.height - bannerView.frame.height, width: bannerView.frame.width + 1, height: bannerView.frame.height + 1);
-        CenterController.centerHorizontally(childView: bannerView, parentRect: mainView.frame, childRect: bannerView.frame);
-        // Configure for ad to display
-        // myBannerID ca-app-pub-9248016465919511/3503661709
-        bannerView.adUnitID = "ca-app-pub-3940256099942544/2934735716";
-        bannerView.rootViewController = self;
-        bannerView.load(GADRequest());
-        
-        mainView.addSubview(bannerView);
-    }
-    
+    // Aspect ratio
     func setupAspectRatio() {
         let screenDecimalRatio:CGFloat = mainView.frame.height / mainView.frame.width;
         if (screenDecimalRatio > 2.1) {
@@ -95,6 +83,55 @@ class ViewController: UIViewController {
         } else {
             ViewController.aspectRatio = .ar4by3;
         }
+    }
+    
+    // Interstisial
+    func setupInterstitial() {
+        ViewController.interstitial = GADInterstitial(adUnitID: "ca-app-pub-9248016465919511/8662589234");
+        ViewController.interstitial.delegate = self;
+        // prepare
+        let request = GADRequest();
+        ViewController.interstitial.load(request);
+    }
+    
+    func interstitialWillPresentScreen(_ ad: GADInterstitial) {
+        ViewController.interstitialWillPresentScreen = true;
+    }
+    
+    func interstitialWillDismissScreen(_ ad: GADInterstitial) {
+        ViewController.interstitialWillDismissScreen = true;
+        viruses!.sway(immediately: true);
+    }
+    
+    static func presentInterstitial() {
+        if ViewController.interstitial.isReady {
+            ViewController.interstitial.present(fromRootViewController: ViewController.staticViewController!);
+        }
+    }
+    
+    // Banner
+    func setupBannerView() {
+        var adSize:GADAdSize!
+        if (ViewController.aspectRatio! == .ar19point5by9) {
+            adSize = GADCurrentOrientationAnchoredAdaptiveBannerAdSizeWithWidth(mainView.frame.width);
+        } else if (ViewController.aspectRatio! == .ar16by9) {
+            adSize = GADCurrentOrientationAnchoredAdaptiveBannerAdSizeWithWidth(mainView.frame.width);
+        } else {
+            adSize = kGADAdSizeLeaderboard;
+        }
+        // Set the banner view
+        bannerView = GADBannerView(adSize: adSize);
+        bannerView.backgroundColor = UIColor.clear;
+        // Set the banner view frame and center
+        bannerView.frame = CGRect(x: 0.0, y: mainView.frame.height - bannerView.frame.height, width: bannerView.frame.width + 1, height: bannerView.frame.height + 1);
+        CenterController.centerHorizontally(childView: bannerView, parentRect: mainView.frame, childRect: bannerView.frame);
+        // Configure for ad to display
+        // myBannerID
+        bannerView.adUnitID = "ca-app-pub-9248016465919511/3503661709";
+        bannerView.rootViewController = self;
+        bannerView.load(GADRequest());
+        
+        mainView.addSubview(bannerView);
     }
     
     // Game Center Authentication
@@ -141,9 +178,7 @@ class ViewController: UIViewController {
     }
     
     func setupSaveTheCat() {
-        ViewController.staticMainView = mainView;
         setupSounds();
-        setupMainViewDimensionProperties();
         setupIntroLabel();
         setupSuccessGradientLayer();
         setupViruses();

@@ -144,8 +144,8 @@ class ViewController: UIViewController, GADInterstitialDelegate, GKGameCenterCon
         bannerView.adUnitID = "ca-app-pub-9248016465919511/3503661709";
         bannerView.rootViewController = self;
         bannerView.load(GADRequest());
-        
         mainView.addSubview(bannerView);
+        bannerView!.alpha = 0.0;
     }
     
     // Game Center Authentication
@@ -241,6 +241,7 @@ class ViewController: UIViewController, GADInterstitialDelegate, GKGameCenterCon
             self.colorOptions!.fadeIn();
             self.boardGame!.buildBoardGame();
             self.settingsButton!.fadeIn();
+            self.bannerView!.alpha = 1.0;
         }
     }
     

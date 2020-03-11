@@ -28,7 +28,7 @@ class UILeadBoard: UIButton {
     }
 
     @objc func statsSelector() {
-        print("Testing: Stats!");
+        ViewController.staticViewController!.checkMemoryCapacityLeaderBoard();
     }
 
     func setIconImage(imageName:String) {

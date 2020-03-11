@@ -17,7 +17,11 @@ enum AspectRatio {
     case ar4by3
 }
 
-class ViewController: UIViewController, GADInterstitialDelegate {
+class ViewController: UIViewController, GADInterstitialDelegate, GKGameCenterControllerDelegate {
+    
+    func gameCenterViewControllerDidFinish(_ gameCenterViewController: GKGameCenterViewController) {
+        gameCenterViewController.dismiss(animated: true, completion: nil);
+    }
 
     @IBOutlet var mainView: UIView!
     var mainViewWidth:CGFloat = 0.0;
@@ -28,7 +32,8 @@ class ViewController: UIViewController, GADInterstitialDelegate {
     // Static
     static var staticUnitViewHeight:CGFloat = 0.0;
     static var staticUnitViewWidth:CGFloat = 0.0;
-    static var staticViewController:UIViewController?
+    static var staticUIViewController:UIViewController?
+    static var staticViewController:ViewController?
     static var staticMainView:UIView?
     
     // Game play components
@@ -53,6 +58,10 @@ class ViewController: UIViewController, GADInterstitialDelegate {
     var gameCenterMessage:GameCenterMessage?
     var gameCenterMessageWidthHeightY:(CGFloat, CGFloat, CGFloat)?;
     var gameCenterAuthentificationOver:Bool = false;
+    // Game center leaderboard
+    var isGCEnabled:Bool = Bool();
+    var gcDefaultLeaderboardID:String = String();
+    
     
     // Ads
     var bannerView: GADBannerView!
@@ -63,6 +72,7 @@ class ViewController: UIViewController, GADInterstitialDelegate {
     override func viewDidLoad() {
         super.viewDidLoad();
         ViewController.staticViewController = self;
+        ViewController.staticUIViewController = self;
         ViewController.staticMainView = mainView;
         setupAspectRatio();
         setupMainViewDimensionProperties();
@@ -108,7 +118,7 @@ class ViewController: UIViewController, GADInterstitialDelegate {
     
     static func presentInterstitial() {
         if ViewController.interstitial.isReady {
-            ViewController.interstitial.present(fromRootViewController: ViewController.staticViewController!);
+            ViewController.interstitial.present(fromRootViewController: ViewController.staticUIViewController!);
         }
     }
     
@@ -166,12 +176,36 @@ class ViewController: UIViewController, GADInterstitialDelegate {
                         return;
                     }
                     print("ENABLE MULTIPLAYER")
+                    print("PLAYER AUTHENTICATED!")
+                    print(self.gcDefaultLeaderboardID, " gcDefault leaderboard id")
                     self.gameCenterAuthentificationOver = true;
                     self.boardGame!.attackMeter!.invokeAttackImpulse(delay: 5.5);
                     self.presentSaveTheCat();
                 }
             }
         }
+    }
+    
+    // Game center score submission
+    static func submitMemoryCapacityScore(memoryCapacity:Int) {
+        let bestMemoryCapacityScore = GKScore(leaderboardIdentifier: "topMemoryCapacities");
+        bestMemoryCapacityScore.value = Int64(memoryCapacity);
+        GKScore.report([bestMemoryCapacityScore]) { (error) in
+            if error != nil {
+                print(error!.localizedDescription)
+            } else {
+                print("Memory Capacity score submitted to your Leaderboard!");
+            }
+        }
+    }
+    
+    // Game center leaderboard
+    func checkMemoryCapacityLeaderBoard() {
+        let gcVC = GKGameCenterViewController()
+        gcVC.gameCenterDelegate = self;
+        gcVC.viewState = .leaderboards
+        gcVC.leaderboardIdentifier = "topMemory"
+        present(gcVC, animated: true, completion: nil)
     }
     
     func setupGameCenterMessage() {

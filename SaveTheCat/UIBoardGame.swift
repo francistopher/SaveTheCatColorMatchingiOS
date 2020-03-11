@@ -241,6 +241,8 @@ class UIBoardGame: UIView {
             self.reset(catsSurvived: false);
             self.colorOptions!.shrinkColorOptions();
             self.results!.update();
+            // Submit memory capacity score
+            ViewController.submitMemoryCapacityScore(memoryCapacity: self.results!.colorMemoryCapacity);
             self.results!.fadeIn();
         }
     }

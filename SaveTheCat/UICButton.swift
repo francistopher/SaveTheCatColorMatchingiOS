@@ -12,6 +12,7 @@ import UIKit
 class UICButton:UIButton {
     
     var originalFrame:CGRect? = nil;
+    var secondaryFrame:CGRect? = nil;
     var shrunkFrame:CGRect? = nil;
     var originalBackgroundColor:UIColor? = nil;
     var shrinkType:shrink = .mid;

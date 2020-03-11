@@ -66,8 +66,6 @@ class ViewController: UIViewController, GADInterstitialDelegate {
         ViewController.staticMainView = mainView;
         setupAspectRatio();
         setupMainViewDimensionProperties();
-        setupBannerView();
-        setupInterstitial();
         setupSaveTheCat();
         setupGameCenterMessage();
         authenticateLocalPlayerForGamePlay();
@@ -105,6 +103,7 @@ class ViewController: UIViewController, GADInterstitialDelegate {
     
     func interstitialDidDismissScreen(_ ad: GADInterstitial) {
         viruses!.sway(immediately: true);
+        setupInterstitial();
     }
     
     static func presentInterstitial() {
@@ -185,9 +184,14 @@ class ViewController: UIViewController, GADInterstitialDelegate {
         setupSounds();
         setupIntroLabel();
         setupSuccessGradientLayer();
+        // Set ads
+        setupBannerView();
+        setupInterstitial();
+        // Stop setting ads
         setupViruses();
         setupBoardMainView();
         setupColorOptionsView();
+        setupGlovePointer();
         setupSettingsButton();
         self.setupNotificationCenter();
         SoundController.mozartSonata(play: true);
@@ -313,7 +317,7 @@ class ViewController: UIViewController, GADInterstitialDelegate {
     }
     
     func setupBoardMainView(){
-        let boardGameWidth:CGFloat = unitViewHeight * 8;
+        let boardGameWidth:CGFloat = unitViewHeight * 8.5;
         boardGame = UIBoardGame(parentView: mainView, x: 0.0, y: 0.0, width: boardGameWidth, height:boardGameWidth);
         CenterController.center(childView: boardGame!, parentRect: mainView.frame, childRect: boardGame!.frame);
         boardGame!.successGradientLayer = successGradientLayer!;
@@ -331,6 +335,11 @@ class ViewController: UIViewController, GADInterstitialDelegate {
         boardGame!.livesMeter!.alpha = 0.0;
         colorOptions!.alpha = 0.0;
     }
+    
+    func setupGlovePointer() {
+         let sideLength:CGFloat = ViewController.staticUnitViewHeight * 1.5;
+        boardGame!.glovePointer = UIGlovedPointer(parentView: ViewController.staticMainView!, frame: CGRect(x: 0.0, y: colorOptions!.frame.minY + colorOptions!.frame.height * 0.13, width: sideLength, height: sideLength))
+     }
     
     func setupSettingsButton() {
         let sideLength:CGFloat = (mainView.frame.height * ((1.0/300.0) + 0.08));
@@ -353,7 +362,7 @@ class ViewController: UIViewController, GADInterstitialDelegate {
         settingsButton!.settingsMenu!.multiplayer!.activePlayersScrollView!.invitationCatButton!.updateUIStyle();
         boardGame!.cats.updateUIStyle();
         boardGame!.livesMeter!.setStyle();
-        boardGame!.statistics!.setCompiledStyle();
+        boardGame!.results!.setCompiledStyle();
         boardGame!.attackMeter!.setCompiledStyle();
         colorOptions!.setStyle();
     }

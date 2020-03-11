@@ -125,7 +125,7 @@ class UIColorOptions: UIView {
             }
         }
         if (setup && boardGameView!.currentRound == 1) {
-            boardGameView!.statistics!.sessionStartTime = CFAbsoluteTimeGetCurrent();
+            boardGameView!.results!.sessionStartTime = CFAbsoluteTimeGetCurrent();
         }
     }
     

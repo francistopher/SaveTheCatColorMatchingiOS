@@ -24,7 +24,7 @@ class UIBoardGame: UIView {
     
     var settingsButton:UISettingsButton? = nil;
     var livesMeter:UILivesMeter?
-    var statistics:UIResults?
+    var results:UIResults?
     var attackMeter:UIAttackMeter?
     var viruses:UIViruses?
     var timer:Timer?
@@ -40,17 +40,12 @@ class UIBoardGame: UIView {
         self.backgroundColor = UIColor.clear;
         self.layer.cornerRadius = width / 5.0;
         parentView.addSubview(self);
-        self.statistics = UIResults(parentView: parentView);
-        self.statistics!.continueButton!.addTarget(self, action: #selector(continueSelector), for: .touchUpInside);
+        self.results = UIResults(parentView: parentView);
+        self.results!.continueButton!.addTarget(self, action: #selector(continueSelector), for: .touchUpInside);
         setupAttackMeter();
         setupLivesMeter();
-        setupGlovePointer();
     }
     
-    func setupGlovePointer() {
-        let sideLength:CGFloat = ViewController.staticUnitViewHeight * 1.5;
-        glovePointer = UIGlovedPointer(parentView: ViewController.staticMainView!, frame: CGRect(x: 0.0, y: ViewController.staticUnitViewHeight * 11.725, width: sideLength, height: sideLength))
-    }
     
     func setupAttackMeter() {
         let height:CGFloat = ViewController.staticMainView!.frame.height * ((1.0/300.0) + 0.08);
@@ -91,9 +86,9 @@ class UIBoardGame: UIView {
     @objc func continueSelector() {
         print("Continuing?");
         livesMeter!.resetLivesLeftCount();
-        self.statistics!.fadeOut();
-        statistics!.catsThatLived = 0;
-        statistics!.catsThatDied = 0;
+        self.results!.fadeOut();
+        results!.catsThatLived = 0;
+        results!.catsThatDied = 0;
         SoundController.chopinPrelude(play: false);
         SoundController.mozartSonata(play: true);
         colorOptions!.isTransitioned = false;
@@ -221,10 +216,18 @@ class UIBoardGame: UIView {
     func gameOverTransition() {
         self.attackMeter!.attack = false;
         self.attackMeter!.attackStarted = false;
-        statistics!.maxStage = self.currentRound;
-        statistics!.sessionEndTime = CFAbsoluteTimeGetCurrent();
-        statistics!.setSessionDuration();
-        statistics!.catsThatDied = cats.presentCollection!.count;
+        if (self.currentRound == 1 && self.results!.catsThatLived > 1) {
+            results!.colorMemoryCapacity = 1;
+        } else if (self.currentRound == 1) {
+            results!.colorMemoryCapacity = 0;
+        } else {
+            var colorMemoryCapacity:Int = 0;
+            let rowsAndColumns:[Int] = getRowsAndColumns(currentStage: currentRound - 1);
+            colorMemoryCapacity = rowsAndColumns[0] * rowsAndColumns[1];
+            results!.colorMemoryCapacity = colorMemoryCapacity;
+        }
+        results!.sessionEndTime = CFAbsoluteTimeGetCurrent();
+        results!.setSessionDuration();
         SoundController.mozartSonata(play: false);
         SoundController.chopinPrelude(play: true);
         colorOptions!.removeBorderOfSelectionButtons();
@@ -237,8 +240,8 @@ class UIBoardGame: UIView {
         Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false) { timer in
             self.reset(catsSurvived: false);
             self.colorOptions!.shrinkColorOptions();
-            self.statistics!.update();
-            self.statistics!.fadeIn();
+            self.results!.update();
+            self.results!.fadeIn();
         }
     }
     
@@ -292,6 +295,7 @@ class UIBoardGame: UIView {
     }
     
     func attackCatButton(catButton:UICatButton) {
+        self.results!.catsThatDied += 1;
         self.attackMeter!.updateDuration(change: -0.80);
         if (livesMeter!.livesLeft > 0) {
             setCatButtonAsDead(catButton: catButton);
@@ -332,7 +336,7 @@ class UIBoardGame: UIView {
             colorOptions!.selectedColor = UIColor.lightGray;
             colorOptions!.isTransitioned = false;
             // Add data of survived cats
-            statistics!.catsThatLived += cats.presentCollection!.count;
+            results!.catsThatLived += cats.presentCollection!.count;
             if (cats.didAllSurvive()) {
                 livesMeter!.incrementLivesLeftCount(catButton: catButton);
                 self.attackMeter!.updateDuration(change: 0.2);
@@ -534,12 +538,13 @@ class UIGlovedPointer:UICButton {
         self.colorButton = colorButtons[0];
         self.catButton = catButtons.getCatButtonWith(backgroundColor: colorButton!.originalBackgroundColor!);
         self.colorButton!.addTarget(self, action: #selector(translateGloveToCatButtonCenter), for: .touchUpInside);
-        resetPositionToEndOfColorButton();
+        resetPositionToFrontOfColorButton();
     }
     
-    func resetPositionToEndOfColorButton() {
+    func resetPositionToFrontOfColorButton() {
         let x:CGFloat = self.colorButton!.superview!.frame.minX - (self.frame.width * 0.1);
-        self.frame = CGRect(x: x, y: self.frame.minY, width: self.frame.width, height: self.frame.height);
+        let y:CGFloat = self.colorButton!.superview!.frame.minY + self.colorButton!.frame.height * 0.2;
+        self.frame = CGRect(x: x, y: y, width: self.frame.width, height: self.frame.height);
         self.originalFrame! = self.frame;
         self.shrinked();
     }

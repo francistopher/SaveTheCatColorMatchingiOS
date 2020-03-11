@@ -6,5 +6,4 @@ target 'SaveTheCat' do
   # use_frameworks!
   pod 'Google-Mobile-Ads-SDK'
   # Pods for SaveTheCat
-
 end

@@ -260,6 +260,8 @@ class UIBoardGame: UIView {
             Timer.scheduledTimer(withTimeInterval: 1.25, repeats: false, block: { _ in
                 self.glovePointer!.sway();
             })
+        } else {
+            self.glovePointer!.shrink();
         }
         Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false) { timer in
             self.reset(catsSurvived: false);
@@ -366,6 +368,7 @@ class UIBoardGame: UIView {
                 self.attackMeter!.updateDuration(change: 0.2);
                 self.attackMeter!.sendVirusToStart();
                 self.glovePointer!.shrinked();
+                self.glovePointer!.stopAnimations();
                 promote();
                 print("Promoted!");
                 return;

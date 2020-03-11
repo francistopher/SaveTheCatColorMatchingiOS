@@ -10,7 +10,7 @@ import SwiftUI
 
 class UILivesMeter:UICView {
     
-    var livesLeft:Int = 1;
+    var livesLeft:Int = 3;
     var heartInactiveButtons:[UICButton] = [];
     let heartImage:UIImage = UIImage(named: "heart.png")!;
     var heartInactiveButtonXRange:[CGFloat] = [];
@@ -24,7 +24,7 @@ class UILivesMeter:UICView {
         super.init(parentView: parentView, x: frame.minX, y: frame.minY, width: frame.width, height: frame.height, backgroundColor: UIColor.clear);
         self.layer.cornerRadius = self.frame.height * 0.5;
         self.layer.borderWidth = self.frame.height / 12.0;
-        heartInactiveButtonXRange = [ 0.0, self.frame.width - (self.frame.height * 1.45), self.frame.width - self.frame.height + (self.layer.borderWidth * 0.8)];
+        heartInactiveButtonXRange = [ 0.0, self.frame.width - (self.frame.height * 1.45), self.frame.width - self.frame.height + (self.layer.borderWidth * 0.05)];
         setupHeartInactiveButtons();
         setStyle();
     }
@@ -107,12 +107,12 @@ class UILivesMeter:UICView {
     }
     
     func resetLivesLeftCount() {
-        if (heartInactiveButtons.count > 1) {
+        if (heartInactiveButtons.count > 3) {
             for _ in 1..<heartInactiveButtons.count {
                 decrementLivesLeftCount();
             }
-        } else if (heartInactiveButtons.count < 1) {
-            livesLeft = 1;
+        } else if (heartInactiveButtons.count < 3) {
+            livesLeft = 3;
             setupHeartInactiveButtons();
         }
     }

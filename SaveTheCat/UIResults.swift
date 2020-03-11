@@ -56,7 +56,7 @@ class UIResults: UICView {
     }
     
     init(parentView:UIView) {
-        super.init(parentView: parentView, x: 0.0, y: 0.0, width: ViewController.staticUnitViewHeight * 8.0, height: ViewController.staticUnitViewHeight * 9.0, backgroundColor: .black);
+        super.init(parentView: parentView, x: 0.0, y: 0.0, width: ViewController.staticUnitViewHeight * 7.75, height: ViewController.staticUnitViewHeight * 9.0, backgroundColor: .black);
         parentView.addSubview(self);
         self.layer.borderWidth = 0.0;
         self.layer.cornerRadius = ViewController.staticUnitViewHeight * 8.0 / 7.0;
@@ -300,24 +300,21 @@ class UIResults: UICView {
         sessionDuration = Double(floor(10 * sessionDuration) / 10)
     }
     
-    func update() {
+    func update() -> [UICButton] {
         catsLivedAmountLabel!.text = String(catsThatLived);
         catsDiedAmountLabel!.text = String(catsThatDied);
         stagesRangeLabel!.text = "\(colorMemoryCapacity)";
         durationTimeLabel!.text = "\(Int(floor(sessionDuration)))";
         // Determine whether to show ad
-        if (CGFloat.random(in: 0...1) > 0.20) {
+        if (CGFloat.random(in: 0...1) > 0.15) {
             continueButton!.frame = continueButton!.secondaryFrame!;
             watchAdForXMouseCoins!.frame = watchAdForXMouseCoins!.secondaryFrame!;
             watchAdForXMouseCoins!.alpha = 1.0
-            mouseCoin!.layer.removeAllAnimations();
-            mouseCoin!.transform = .identity;
-            UIView.animate(withDuration: 1.0, delay: 0.125, options: [.autoreverse, .repeat, .curveEaseInOut], animations: {
-                self.mouseCoin!.transform = self.mouseCoin!.transform.scaledBy(x: 1.5, y: 1.5);
-            })
+            return [watchAdForXMouseCoins!];
         } else {
             continueButton!.frame = continueButton!.originalFrame!;
             watchAdForXMouseCoins!.hide();
+            return [];
         }
     }
     
@@ -336,6 +333,8 @@ class UIResults: UICView {
             self.durationTimeLabel!.textColor = UIColor.black;
             self.continueButton!.setTitleColor(UIColor.black, for: .normal);
             self.continueButton!.layer.borderColor = UIColor.black.cgColor;
+            self.watchAdForXMouseCoins!.setTitleColor(UIColor.black, for: .normal);
+            self.watchAdForXMouseCoins!.layer.borderColor = UIColor.black.cgColor;
         } else {
             self.backgroundColor = UIColor.white;
             self.contentView!.backgroundColor = UIColor.black;
@@ -350,6 +349,8 @@ class UIResults: UICView {
             self.durationTimeLabel!.textColor = UIColor.white;
             self.continueButton!.setTitleColor(UIColor.white, for: .normal);
             self.continueButton!.layer.borderColor = UIColor.white.cgColor;
+            self.watchAdForXMouseCoins!.setTitleColor(UIColor.white, for: .normal);
+            self.watchAdForXMouseCoins!.layer.borderColor = UIColor.white.cgColor;
         }
     }
     

@@ -26,7 +26,21 @@ class UICatButtons {
         return catButton;
     }
     
-    func isOneAlive() -> Bool {
+    func onlyOneIsAlive() -> Bool {
+        var aliveCount:Int = 0;
+        for catButton in presentCollection! {
+            if (catButton.isAlive) {
+                aliveCount += 1;
+            }
+        }
+        if (aliveCount == 1) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+    func atLeastOneIsAlive() -> Bool {
         for catButton in presentCollection! {
             if (catButton.isAlive) {
                 return true;

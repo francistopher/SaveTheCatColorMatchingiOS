@@ -85,6 +85,11 @@ class UIBoardGame: UIView {
     
     @objc func continueSelector() {
         print("Continuing?");
+        glovePointer!.adButton = nil;
+        glovePointer!.stopAnimations();
+        glovePointer!.isTapping = false;
+        glovePointer!.setStyle();
+        glovePointer!.doShrink = false;
         livesMeter!.resetLivesLeftCount();
         self.results!.fadeOut();
         results!.catsThatLived = 0;
@@ -115,10 +120,11 @@ class UIBoardGame: UIView {
         colorOptions!.buildColorOptionButtons(setup: true);
         attackMeter!.holdVirusAtStart = false;
         // Set glove pointer
-        if (currentRound < 3) {
-            glovePointer!.setColorAndCatButtons(colorButtons: colorOptions!.selectionButtons, catButtons: cats);
+        if (currentRound == 1) {
+            glovePointer!.setColorAndCatButtons(colorButtons: colorOptions!.selectionButtons, catButtons: cats, first: true);
             glovePointer!.grow();
         }
+        print(glovePointer!.frame, glovePointer!.alpha, "dadsfgghjgghfgdsdgfhjkhgfhjhghfdgsf")
     }
     
     func buildGridColors(){
@@ -235,12 +241,29 @@ class UIBoardGame: UIView {
         self.attackMeter!.disperseCatButton();
         self.attackMeter!.sendVirusToStartAndHold();
         self.attackMeter!.previousDisplacementDuration = 3.5;
-        self.glovePointer!.reset();
-        // App data of dead cats
+        self.glovePointer!.stopAnimations();
+        // Prepare glove pointer and
+        self.glovePointer!.isTapping = false;
+        self.glovePointer!.setStyle();
+        let buttons = self.results!.update();
+        if (buttons.count == 1) {
+            print("Le button exists!!!")
+            let button:UICButton = buttons[0];
+            self.glovePointer!.adButton = button;
+            let buttonSuperview:UIView = button.superview!;
+            let buttonSuperview2:UIView = button.superview!.superview!;
+            let x:CGFloat = button.frame.minX + buttonSuperview.frame.minX + buttonSuperview2.frame.minX - glovePointer!.originalFrame!.width * 0.35;
+            let y:CGFloat = button.frame.minY + buttonSuperview.frame.minY + buttonSuperview2.frame.minY - glovePointer!.originalFrame!.height * 0.2;
+            let newFrame:CGRect = CGRect(x: x, y: y, width: glovePointer!.originalFrame!.width, height: glovePointer!.originalFrame!.width);
+            self.glovePointer!.translate(newOriginalFrame: newFrame);
+            self.glovePointer!.alpha = 1.0;
+            Timer.scheduledTimer(withTimeInterval: 1.25, repeats: false, block: { _ in
+                self.glovePointer!.sway();
+            })
+        }
         Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false) { timer in
             self.reset(catsSurvived: false);
             self.colorOptions!.shrinkColorOptions();
-            self.results!.update();
             // Submit memory capacity score
             ViewController.submitMemoryCapacityScore(memoryCapacity: self.results!.colorMemoryCapacity);
             self.results!.fadeIn();
@@ -264,10 +287,9 @@ class UIBoardGame: UIView {
     
     @objc func interaction(catButton:UICatButton, catImageButton:UICButton){
         // Selection of a color option is made after fresh new round
-        if (cats.isOneAlive() && colorOptions!.selectedColor.cgColor != UIColor.lightGray.cgColor) {
+        if (cats.atLeastOneIsAlive() && colorOptions!.selectedColor.cgColor != UIColor.lightGray.cgColor) {
             // Correct matching grid button color and selection color
             if (catButton.backgroundCGColor! == colorOptions!.selectedColor.cgColor){
-                self.glovePointer!.reset();
                 if (!catButton.isPodded) {
                     gridColorsCount[catButton.backgroundCGColor!]! -= 1;
                     colorOptions!.buildColorOptionButtons(setup: false);
@@ -343,6 +365,7 @@ class UIBoardGame: UIView {
                 livesMeter!.incrementLivesLeftCount(catButton: catButton);
                 self.attackMeter!.updateDuration(change: 0.2);
                 self.attackMeter!.sendVirusToStart();
+                self.glovePointer!.shrinked();
                 promote();
                 print("Promoted!");
                 return;
@@ -495,165 +518,4 @@ class UIBoardGame: UIView {
             self.successGradientLayer!.isHidden = true;
         }
     }
-}
-
-class UIGlovedPointer:UICButton {
-    
-    var darkImage = UIImage(named: "darkGlovePointer.png");
-    var lightImage = UIImage(named: "lightGlovePointer.png");
-    var darkTapImage = UIImage(named: "darkGloveTap.png");
-    var lightTapImage = UIImage(named: "lightGloveTap.png");
-
-    var xTranslation:CGFloat = 0.0;
-    var yTranslation:CGFloat = 0.0;
-    
-    var isTapping = true;
-    
-    var translateToTapAnimation:UIViewPropertyAnimator?
-    var translateFromTapAnimation:UIViewPropertyAnimator?
-    
-    var transitionedToCatButton:Bool = false;
-    
-    var colorButton:UICButton?
-    var catButton:UICatButton?
-    
-    var colorButtons:[UICButton]?
-    var catButtons:UICatButtons?
-    
-    var hiddenForever:Bool = false;
-    
-    init(parentView:UIView, frame:CGRect) {
-        super.init(parentView: parentView, frame: frame, backgroundColor: UIColor.clear);
-        xTranslation = self.originalFrame!.width / 3.5;
-        yTranslation = self.originalFrame!.height / 3.5;
-        self.layer.borderWidth = 0.0;
-        self.alpha = 0.0;
-        addTarget(self, action: #selector(selfSelector), for: .touchUpInside);
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    func setColorAndCatButtons(colorButtons:[UICButton], catButtons:UICatButtons) {
-        print(colorButtons.count, "porque")
-        self.colorButton = colorButtons[0];
-        self.catButton = catButtons.getCatButtonWith(backgroundColor: colorButton!.originalBackgroundColor!);
-        self.colorButton!.addTarget(self, action: #selector(translateGloveToCatButtonCenter), for: .touchUpInside);
-        resetPositionToFrontOfColorButton();
-    }
-    
-    func resetPositionToFrontOfColorButton() {
-        let x:CGFloat = self.colorButton!.superview!.frame.minX - (self.frame.width * 0.1);
-        let y:CGFloat = self.colorButton!.superview!.frame.minY + self.colorButton!.frame.height * 0.2;
-        self.frame = CGRect(x: x, y: y, width: self.frame.width, height: self.frame.height);
-        self.originalFrame! = self.frame;
-        self.shrinked();
-    }
-    
-    @objc func translateGloveToCatButtonCenter() {
-        print("This runs???????????????????????????????????????????????????????????????")
-        let newFrame:CGRect = CGRect(x: self.frame.midX - self.frame.width * 0.5, y: self.frame.midY - self.frame.height * 0.5, width: self.frame.width, height: self.frame.height);
-        self.stopAnimations();
-        self.translate(newOriginalFrame: newFrame);
-        Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false, block: { _ in
-            self.sway();
-        })
-        
-    }
-    
-    @objc func selfSelector() {
-        if (transitionedToCatButton) {
-            catButton?.sendActions(for: .touchUpInside);
-        } else {
-            colorButton?.sendActions(for: .touchUpInside);
-        }
-    }
-    
-    override func setStyle() {
-        if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1) {
-            if (isTapping) {
-                self.setImage(lightTapImage!, for: .normal);
-            } else {
-                self.setImage(lightImage!, for: .normal);
-            }
-            self.imageView!.contentMode = UIView.ContentMode.scaleAspectFit;
-        } else {
-            if (isTapping) {
-                self.setImage(darkTapImage!, for: .normal);
-            } else {
-                self.setImage(darkImage!, for: .normal);
-            }
-            self.imageView!.contentMode = UIView.ContentMode.scaleAspectFit;
-        }
-    }
-    
-    func reset() {
-        self.alpha = 0.0;
-        stopAnimations();
-        self.frame = self.originalFrame!;
-        self.transitionedToCatButton = false;
-    }
-    
-    func stopAnimations() {
-        translateToTapAnimation?.stopAnimation(true);
-        translateFromTapAnimation?.stopAnimation(true);
-    }
-    
-    override func grow() {
-        self.alpha = 1.0;
-        self.superview!.bringSubviewToFront(self);
-        self.isTapping = true;
-        self.setStyle();
-        UIView.animate(withDuration: 0.25, delay: 0.75, options: .curveEaseInOut, animations: {
-            self.frame = self.originalFrame!;
-        }, completion: { _ in
-            self.sway();
-        });
-    }
-    
-    func setupTranslateFromTapAnimation() {
-        translateFromTapAnimation = UIViewPropertyAnimator(duration: 0.5, curve: .easeInOut, animations: {
-            self.frame = CGRect(x: self.frame.minX - self.xTranslation, y: self.frame.minY - self.yTranslation, width: self.frame.width, height: self.frame.height);
-        })
-        translateFromTapAnimation!.addCompletion({ _ in
-            self.setupTranslateToTapAnimation();
-            self.translateToTapAnimation!.startAnimation();
-        })
-    }
-    
-    func setupTranslateToTapAnimation() {
-        translateToTapAnimation = UIViewPropertyAnimator(duration: 0.5, curve: .easeInOut, animations: {
-            self.frame = CGRect(x: self.frame.minX + self.xTranslation, y: self.frame.minY + self.yTranslation, width: self.frame.width, height: self.frame.height);
-        })
-        translateToTapAnimation!.addCompletion({ _ in
-            self.isTapping = true;
-            self.setStyle();
-            self.sway();
-        })
-    }
-    
-    func sway() {
-        Timer.scheduledTimer(withTimeInterval: 0.25, repeats: false, block: { _ in
-            self.isTapping = false;
-            self.setStyle();
-        })
-        setupTranslateFromTapAnimation();
-        translateFromTapAnimation!.startAnimation(afterDelay: 0.125);
-    }
-    
-    override func translate(newOriginalFrame:CGRect) {
-        self.isTapping = true;
-        setStyle();
-        transitionedToCatButton = true;
-        if (catButton == nil) {
-            reset();
-            return;
-        }
-        UIView.animate(withDuration: 0.5, delay: 0.125, options: .curveEaseInOut, animations: {
-            self.frame = CGRect(x: self.catButton!.superview!.frame.minX + self.catButton!.frame.midX - (self.frame.width * 0.75), y: self.catButton!.superview!.frame.minY + self.catButton!.frame.midY - (self.frame.height * 0.25), width: self.frame.width, height: self.frame.height);
-            self.configureShrunkFrame();
-        });
-    }
-    
 }

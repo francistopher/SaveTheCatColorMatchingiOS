@@ -108,6 +108,7 @@ class ViewController: UIViewController, GADInterstitialDelegate, GKGameCenterCon
     }
     
     func interstitialWillDismissScreen(_ ad: GADInterstitial) {
+        boardGame!.glovePointer!.reset();
         ViewController.interstitialWillDismissScreen = true;
     }
     
@@ -203,8 +204,7 @@ class ViewController: UIViewController, GADInterstitialDelegate, GKGameCenterCon
     func checkMemoryCapacityLeaderBoard() {
         let gcVC = GKGameCenterViewController()
         gcVC.gameCenterDelegate = self;
-        gcVC.viewState = .leaderboards
-        gcVC.leaderboardIdentifier = "topMemory"
+        gcVC.viewState = .leaderboards;
         present(gcVC, animated: true, completion: nil)
     }
     
@@ -371,8 +371,10 @@ class ViewController: UIViewController, GADInterstitialDelegate, GKGameCenterCon
     }
     
     func setupGlovePointer() {
-         let sideLength:CGFloat = ViewController.staticUnitViewHeight * 1.5;
-        boardGame!.glovePointer = UIGlovedPointer(parentView: ViewController.staticMainView!, frame: CGRect(x: 0.0, y: colorOptions!.frame.minY + colorOptions!.frame.height * 0.13, width: sideLength, height: sideLength))
+        let sideLength:CGFloat = ViewController.staticUnitViewHeight * 1.5;
+        boardGame!.glovePointer = UIGlovedPointer(parentView: ViewController.staticMainView!, frame: CGRect(x: 0.0, y: colorOptions!.frame.minY + colorOptions!.frame.height * 0.13, width: sideLength, height: sideLength));
+        boardGame!.glovePointer!.shrinked();
+        boardGame!.glovePointer!.reset();
      }
     
     func setupSettingsButton() {

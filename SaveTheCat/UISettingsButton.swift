@@ -63,7 +63,6 @@ class UISettingsButton:UIButton {
             isPressable = false;
             // Settings button pressed
             if(!isPressed){
-                boardGame!.results!.continueButton!.isEnabled = false;
                 ViewController.staticMainView!.bringSubviewToFront(settingsMenu!);
                 ViewController.staticMainView!.bringSubviewToFront(self);
                 ViewController.staticMainView!.bringSubviewToFront(settingsMenu!.mouseCoin!.mouseCoinView!);
@@ -76,7 +75,6 @@ class UISettingsButton:UIButton {
                 settingsMenuShow();
             } else {
                 // Settings button unpressed
-                boardGame!.results!.continueButton!.isEnabled = true;
                 if (ViewController.aspectRatio! != .ar19point5by9) {
                     settingsMenu!.mouseCoin!.mouseCoinView!.transform(frame: settingsMenu!.mouseCoin!.mouseCoinView!.reducedFrame!);
                 }

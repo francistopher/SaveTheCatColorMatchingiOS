@@ -218,11 +218,10 @@ class ViewController: UIViewController, GADInterstitialDelegate, GKGameCenterCon
         setupSounds();
         setupIntroLabel();
         setupSuccessGradientLayer();
+        setupViruses();
         // Set ads
         setupBannerView();
         setupInterstitial();
-        // Stop setting ads
-        setupViruses();
         setupBoardMainView();
         setupColorOptionsView();
         setupGlovePointer();

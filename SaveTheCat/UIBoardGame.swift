@@ -85,6 +85,9 @@ class UIBoardGame: UIView {
     
     @objc func continueSelector() {
         print("Continuing?");
+        if (settingsButton!.isPressed) {
+            settingsButton!.sendActions(for: .touchUpInside);
+        }
         glovePointer!.adButton = nil;
         glovePointer!.stopAnimations();
         glovePointer!.isTapping = false;
@@ -220,6 +223,9 @@ class UIBoardGame: UIView {
     }
     
     func gameOverTransition() {
+        if (!settingsButton!.isPressed) {
+            settingsButton!.sendActions(for: .touchUpInside);
+        }
         self.attackMeter!.attack = false;
         self.attackMeter!.attackStarted = false;
         if (self.currentRound == 1 && self.results!.catsThatLived > 1) {

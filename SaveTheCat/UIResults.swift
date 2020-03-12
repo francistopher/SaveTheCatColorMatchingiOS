@@ -30,6 +30,7 @@ class UIResults: UICView {
     
     var continueButton:UICButton?
     var watchAdForXMouseCoins:UICButton?
+    var adIsShowing:Bool = false;
     
     var unitHeight:CGFloat?
     
@@ -50,6 +51,9 @@ class UIResults: UICView {
     
     // Reward amount
     static var rewardAmount:Int = 5;
+    var rewardAmountQuantity:[Int:Double] = [0:0, 5:1.0, 10:0.8, 15:00.6, 20:0.4, 25:0.2]
+    var rewardAmountRate:[Int:Double] = [0:0.0, 5:1.0, 10:0.0, 20:0.0, 25:0.0]
+    var threshold = 0.5
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -198,6 +202,22 @@ class UIResults: UICView {
         self.continueButton!.originalFrame = self.continueButton!.frame;
         self.continueButton!.frame = CGRect(x: self.continueButton!.frame.minX - self.continueButton!.frame.width * 0.60, y: self.continueButton!.frame.minY, width: self.continueButton!.frame.width, height: self.continueButton!.frame.height);
         self.continueButton!.secondaryFrame = self.continueButton!.frame;
+        self.continueButton!.addTarget(self, action: #selector(adjustRewardAmount), for: .touchUpInside);
+    }
+    
+    @objc func adjustRewardAmount() {
+        if (!adIsShowing && watchAdForXMouseCoins!.alpha == 1.0) {
+            rewardAmountQuantity[0]! += 0.5;
+            threshold -= 0.1 * 25.0 / Double(UIResults.rewardAmount);
+        }
+        if (UIResults.rewardAmount < 25 && threshold < rewardAmountRate[UIResults.rewardAmount]!) {
+             UIResults.rewardAmount += 5;
+             threshold = 1.0;
+             self.watchAdForXMouseCoins!.setTitle("Watch video\nfor \(UIResults.rewardAmount) " + "·", for: .normal);
+             let x:CGFloat = watchAdForXMouseCoins!.frame.width * 0.64 + watchAdForXMouseCoins!.frame.width * 0.05;
+             mouseCoin!.frame = CGRect(x: x, y: mouseCoin!.frame.minY, width: mouseCoin!.frame.width, height: mouseCoin!.frame.height);
+         }
+        adIsShowing = false;
     }
     
     var mouseCoin:UIMouseCoin?
@@ -213,18 +233,17 @@ class UIResults: UICView {
         self.watchAdForXMouseCoins!.addTarget(nil, action: #selector(showAd), for: .touchUpInside);
         self.watchAdForXMouseCoins!.secondaryFrame = self.watchAdForXMouseCoins!.frame;
         // Setup mouse coin
-        var x:CGFloat = watchAdForXMouseCoins!.frame.width * 0.64;
-        if (UIResults.rewardAmount > 9) {
-            self.watchAdForXMouseCoins!.setTitle(self.watchAdForXMouseCoins!.titleLabel!.text! + "·", for: .normal);
-            x += watchAdForXMouseCoins!.frame.width * 0.015;
-        }
+        let x:CGFloat = watchAdForXMouseCoins!.frame.width * 0.64;
         mouseCoin = UIMouseCoin(parentView: watchAdForXMouseCoins!, x: x, y: watchAdForXMouseCoins!.frame.height * 0.475, width: watchAdForXMouseCoins!.frame.height * 0.4, height: watchAdForXMouseCoins!.frame.height * 0.45);
         mouseCoin!.isSelectable = false;
         mouseCoin!.addTarget(self, action: #selector(mouseCoinSelector), for: .touchUpInside);
     }
     
     @objc func showAd() {
-        print("Showing add!");
+        // Gathering user selection data
+        rewardAmountQuantity[UIResults.rewardAmount]! += 1.0;
+        threshold = 1.0;
+        adIsShowing = true;
         // load the ad
         ViewController.presentInterstitial();
         // Wait to see if ad will load
@@ -300,13 +319,30 @@ class UIResults: UICView {
         sessionDuration = Double(floor(10 * sessionDuration) / 10)
     }
     
+    func setAmountRate() {
+        let total:Double = rewardAmountQuantity[0]! + rewardAmountQuantity[UIResults.rewardAmount]!;
+        rewardAmountRate[UIResults.rewardAmount] = rewardAmountQuantity[UIResults.rewardAmount]! / total;
+        rewardAmountRate[0] = rewardAmountQuantity[0]! / total;
+    }
+    
+    func isAdButtonAdvertised() -> Bool {
+        if (CFloat.random(in:0.0...1.0) > 0.15) {
+            print("Ad button is advertised")
+            return true;
+        }
+        print("Ad button not advertised")
+        return false;
+    }
+    
     func update() -> [UICButton] {
         catsLivedAmountLabel!.text = String(catsThatLived);
         catsDiedAmountLabel!.text = String(catsThatDied);
         stagesRangeLabel!.text = "\(colorMemoryCapacity)";
         durationTimeLabel!.text = "\(Int(floor(sessionDuration)))";
+        // Adjust reward amount
+        setAmountRate();
         // Determine whether to show ad
-        if (CGFloat.random(in: 0...1) > 0.20) {
+        if (CGFloat.random(in: 0...1) > 0.15) {
             continueButton!.frame = continueButton!.secondaryFrame!;
             watchAdForXMouseCoins!.frame = watchAdForXMouseCoins!.secondaryFrame!;
             watchAdForXMouseCoins!.alpha = 1.0

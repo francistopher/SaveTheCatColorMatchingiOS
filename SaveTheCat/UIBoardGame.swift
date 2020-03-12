@@ -328,7 +328,7 @@ class UIBoardGame: UIView {
     
     func attackCatButton(catButton:UICatButton) {
         self.results!.catsThatDied += 1;
-        self.attackMeter!.updateDuration(change: -0.90);
+        self.attackMeter!.updateDuration(change: -0.75);
         if (livesMeter!.livesLeft > 0) {
             setCatButtonAsDead(catButton: catButton, disperseDownwardOnly:true);
             livesMeter!.decrementLivesLeftCount();

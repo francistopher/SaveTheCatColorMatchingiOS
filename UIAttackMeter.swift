@@ -293,12 +293,12 @@ class UIAttackMeter:UICView {
             previousDisplacementDuration += change;
         }
         else if (change < 0.0) {
-            if (previousDisplacementDuration + change >= 2.0) {
+            if (previousDisplacementDuration + change >= 2.5) {
                 displacementDuration += change;
                 previousDisplacementDuration += change;
             } else {
-                displacementDuration = 2.0;
-                previousDisplacementDuration = 2.0;
+                displacementDuration = 2.5;
+                previousDisplacementDuration = 2.5;
             }
         }
         print(displacementDuration, "Displacement duration")

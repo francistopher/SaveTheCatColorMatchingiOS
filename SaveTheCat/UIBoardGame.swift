@@ -117,6 +117,7 @@ class UIBoardGame: UIView {
     }
     
     func buildBoardGame(){
+        results!.catsThatLived += cats.countOfAliveCatButtons();
         rowAndColumnNums = getRowsAndColumns(currentStage: currentRound);
         cats.reset();
         colorOptions!.selectSelectionColors();
@@ -334,9 +335,8 @@ class UIBoardGame: UIView {
     }
     
     func attackCatButton(catButton:UICatButton) {
-        self.results!.catsThatDied += 1;
         self.attackMeter!.updateDuration(change: -0.75);
-        if (livesMeter!.livesLeft > 0) {
+        if (livesMeter!.livesLeft - 1 > 0) {
             setCatButtonAsDead(catButton: catButton, disperseDownwardOnly:true);
             livesMeter!.decrementLivesLeftCount();
             if (cats.areAllCatsDead()) {
@@ -353,6 +353,10 @@ class UIBoardGame: UIView {
     }
     
     func setCatButtonAsDead(catButton:UICatButton, disperseDownwardOnly:Bool) {
+        if (disperseDownwardOnly) {
+            looseMouseCoin();
+        }
+        results!.catsThatDied += 1;
         gridColorsCount[catButton.originalBackgroundColor.cgColor]? -= 1;
         colorOptions!.buildColorOptionButtons(setup: false);
         catButton.isDead();
@@ -360,6 +364,26 @@ class UIBoardGame: UIView {
         catButton.disperseRadially();
         displaceArea(ofCatButton: catButton);
         SoundController.kittenDie();
+    }
+    
+    func looseMouseCoin() {
+        let x:CGFloat = settingsButton!.settingsMenu!.frame.minX + settingsButton!.settingsMenu!.mouseCoin!.frame.minX;
+        let y:CGFloat = settingsButton!.settingsMenu!.frame.minY + settingsButton!.settingsMenu!.mouseCoin!.frame.minY;
+        let width:CGFloat = settingsButton!.settingsMenu!.mouseCoin!.frame.width;
+        let height:CGFloat = settingsButton!.settingsMenu!.mouseCoin!.frame.height;
+        let mouseCoin:UIMouseCoin = UIMouseCoin(parentView: self.superview!, x: x, y: y, width: width, height: height);
+        mouseCoin.isSelectable = false;
+        let superViewHeight:CGFloat = self.superview!.frame.height;
+        let targetY:CGFloat = CGFloat.random(in: superViewHeight...(superViewHeight + height));
+        UIView.animate(withDuration: 2.0, delay: 0.125, options: .curveEaseInOut, animations: {
+            mouseCoin.frame = CGRect(x: x, y: targetY, width: width, height: height);
+        }, completion: { _ in
+            mouseCoin.removeFromSuperview();
+        })
+        if (UIResults.mouseCoins != 0) {
+            UIResults.mouseCoins -= 1;
+            settingsButton!.settingsMenu!.mouseCoin!.amountLabel!.text = "\(UIResults.mouseCoins)";
+        }
     }
     
     @objc func transitionBackgroundColorOfButtonsToClear(){
@@ -372,25 +396,24 @@ class UIBoardGame: UIView {
     func verifyThatRemainingCatsArePodded(catButton:UICatButton) {
         // Check if all the cats have been podded
         if (cats.aliveCatsArePodded()) {
-                SoundController.heaven();
-                successGradientLayer!.isHidden = false;
-                colorOptions!.selectedColor = UIColor.lightGray;
-                colorOptions!.isTransitioned = false;
-                // Add data of survived cats
-                results!.catsThatLived += cats.countOfAliveCatButtons();
-                if (cats.didAllSurvive()) {
-                    livesMeter!.incrementLivesLeftCount(catButton: catButton);
-                    self.attackMeter!.updateDuration(change: 0.1);
-                    self.attackMeter!.sendVirusToStart();
-                    self.glovePointer!.shrinked();
-                    self.glovePointer!.stopAnimations();
-                    promote();
-                    return;
-                } else {
-                    self.attackMeter!.sendVirusToStart();
-                    maintain();
-                    return;
-                }
+            SoundController.heaven();
+            successGradientLayer!.isHidden = false;
+            colorOptions!.selectedColor = UIColor.lightGray;
+            colorOptions!.isTransitioned = false;
+            // Add data of survived cats
+            if (cats.didAllSurvive()) {
+                livesMeter!.incrementLivesLeftCount(catButton: catButton);
+                self.attackMeter!.updateDuration(change: 0.1);
+                self.attackMeter!.sendVirusToStart();
+                self.glovePointer!.shrinked();
+                self.glovePointer!.stopAnimations();
+                promote();
+                return;
+            } else {
+                self.attackMeter!.sendVirusToStart();
+                maintain();
+                return;
+            }
         } else {
             self.attackMeter!.updateDuration(change: 0.05);
             self.attackMeter!.sendVirusToStart();

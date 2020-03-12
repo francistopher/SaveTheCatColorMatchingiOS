@@ -26,6 +26,8 @@ class UICatButtons {
         return catButton;
     }
     
+    
+    
     func oneIsNeitherPoddedOrDead() -> Bool {
         for catButton in presentCollection! {
             if (!catButton.isPodded && catButton.isAlive) {

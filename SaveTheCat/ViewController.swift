@@ -46,6 +46,7 @@ class ViewController: UIViewController, GADInterstitialDelegate, GKGameCenterCon
     // Sucess gradient layer
     var successGradientLayer:CAGradientLayer?
     let mellowYellow:UIColor = UIColor(red: 252.0/255.0, green: 212.0/255.0, blue: 64.0/255.0, alpha: 1.0);
+    var successGradientView:UIView?
     
     // Viruses
     var viruses:UIViruses?
@@ -245,7 +246,7 @@ class ViewController: UIViewController, GADInterstitialDelegate, GKGameCenterCon
     func setupSaveTheCat() {
         setupSounds();
         setupIntroLabel();
-        setupSuccessGradientLayer();
+        setupSuccessGradientViewAndLayer();
         setupViruses();
         // Set ads
         setupBannerView();
@@ -359,10 +360,16 @@ class ViewController: UIViewController, GADInterstitialDelegate, GKGameCenterCon
         introLabel!.alpha = 0.0;
     }
     
-    func setupSuccessGradientLayer() {
+    func setupSuccessGradientViewAndLayer() {
+        // Setup success gradient view
+        successGradientView = UIView(frame: mainView.frame);
+        successGradientView!.backgroundColor = UIColor.clear;
+        mainView!.addSubview(successGradientView!);
+        mainView.sendSubviewToBack(successGradientView!);
+        // Setup success gradient layer
         successGradientLayer = CAGradientLayer();
-        successGradientLayer!.frame = mainView.frame;
-        mainView.layer.addSublayer(successGradientLayer!);
+        successGradientLayer!.frame = successGradientView!.frame;
+        successGradientView!.layer.addSublayer(successGradientLayer!);
         successGradientLayer!.type = .radial;
         successGradientLayer!.startPoint = CGPoint(x:0.5, y:0.0);
         successGradientLayer!.endPoint = CGPoint(x:-0.5, y:0.15);

@@ -321,18 +321,21 @@ class UIBoardGame: UIView {
     func setAllCatButtonsAsDead() {
         for catButton in cats.presentCollection! {
             if (catButton.isAlive) {
-                setCatButtonAsDead(catButton: catButton);
+                setCatButtonAsDead(catButton: catButton, disperseDownwardOnly:false);
             }
         }
     }
     
     func attackCatButton(catButton:UICatButton) {
         self.results!.catsThatDied += 1;
-        self.attackMeter!.updateDuration(change: -0.80);
+        self.attackMeter!.updateDuration(change: -0.90);
         if (livesMeter!.livesLeft > 0) {
-            setCatButtonAsDead(catButton: catButton);
+            setCatButtonAsDead(catButton: catButton, disperseDownwardOnly:true);
             livesMeter!.decrementLivesLeftCount();
-            if (!cats.oneIsNeitherPoddedOrDead()){
+            if (cats.areAllCatsDead()) {
+                self.attackMeter!.sendVirusToStart();
+                maintain();
+            } else {
                 verifyThatRemainingCatsArePodded(catButton:catButton);
             }
         } else {
@@ -342,11 +345,10 @@ class UIBoardGame: UIView {
         
     }
     
-    func setCatButtonAsDead(catButton:UICatButton) {
+    func setCatButtonAsDead(catButton:UICatButton, disperseDownwardOnly:Bool) {
         gridColorsCount[catButton.originalBackgroundColor.cgColor]? -= 1;
         colorOptions!.buildColorOptionButtons(setup: false);
         catButton.isDead();
-        self.superview!.sendSubviewToBack(catButton);
         self.viruses!.translateToCatAndBack(catButton:catButton);
         catButton.disperseRadially();
         displaceArea(ofCatButton: catButton);
@@ -363,27 +365,27 @@ class UIBoardGame: UIView {
     func verifyThatRemainingCatsArePodded(catButton:UICatButton) {
         // Check if all the cats have been podded
         if (cats.aliveCatsArePodded()) {
-            SoundController.heaven();
-            colorOptions!.selectedColor = UIColor.lightGray;
-            colorOptions!.isTransitioned = false;
-            // Add data of survived cats
-            results!.catsThatLived += cats.countOfAliveCatButtons();
-            if (cats.didAllSurvive()) {
-                livesMeter!.incrementLivesLeftCount(catButton: catButton);
-                self.attackMeter!.updateDuration(change: 0.2);
-                self.attackMeter!.sendVirusToStart();
-                self.glovePointer!.shrinked();
-                self.glovePointer!.stopAnimations();
-                promote();
-                print("Promoted!");
-                return;
-            } else {
-                self.attackMeter!.sendVirusToStart();
-                maintain();
-                return;
-            }
+                SoundController.heaven();
+                successGradientLayer!.isHidden = false;
+                colorOptions!.selectedColor = UIColor.lightGray;
+                colorOptions!.isTransitioned = false;
+                // Add data of survived cats
+                results!.catsThatLived += cats.countOfAliveCatButtons();
+                if (cats.didAllSurvive()) {
+                    livesMeter!.incrementLivesLeftCount(catButton: catButton);
+                    self.attackMeter!.updateDuration(change: 0.1);
+                    self.attackMeter!.sendVirusToStart();
+                    self.glovePointer!.shrinked();
+                    self.glovePointer!.stopAnimations();
+                    promote();
+                    return;
+                } else {
+                    self.attackMeter!.sendVirusToStart();
+                    maintain();
+                    return;
+                }
         } else {
-            self.attackMeter!.updateDuration(change: 0.1);
+            self.attackMeter!.updateDuration(change: 0.05);
             self.attackMeter!.sendVirusToStart();
             self.attackMeter!.startFirstRotation(afterDelay: 1.0);
         }
@@ -463,8 +465,6 @@ class UIBoardGame: UIView {
     func reset(catsSurvived:Bool){
         if (catsSurvived) {
             cats.disperseVertically()
-        } else {
-            cats.disperseRadially();
         }
         gridColors = [[UIColor]]();
         colorOptions!.selectionColors = [UIColor]();
@@ -487,15 +487,15 @@ class UIBoardGame: UIView {
             }
             newRound += 1;
         }
-        successGradientLayer!.isHidden = false;
         reset(catsSurvived: true);
         self.colorOptions!.shrinkColorOptions();
         configureComponentsAfterBoardGameReset();
     }
     
     func promote(){
-        successGradientLayer!.isHidden = false;
         reset(catsSurvived: true);
+        gridColors = [[UIColor]]();
+        colorOptions!.selectionColors = [UIColor]();
         colorOptions!.shrinkColorOptions();
         self.colorOptions!.loadSelectionButtonsToSelectedButtons();
         // Build board game

@@ -261,9 +261,10 @@ class UICatButton: UIButton {
         self.backgroundColor = UIColor.clear;
         let targetPointX:CGFloat = getRadialXTargetPoint(parentFrame: self.superview!.frame, childFrame: self.frame);
         let targetPointY:CGFloat = getRadialYTargetPoint(parentFrame: self.superview!.frame, childFrame: self.frame);
-        UIView.animate(withDuration: 2.0, delay: 0.125, options: .curveEaseIn, animations: {
+        ViewController.staticMainView!.insertSubview(self, at: 1);
+        UIView.animate(withDuration: 1.5, delay: 0.125, options: .curveEaseIn, animations: {
             self.imageContainerButton!.transform =  self.imageContainerButton!.transform.rotated(by: CGFloat.pi);
-            let newFrame:CGRect = CGRect(x: targetPointX, y:targetPointY, width: self.frame.width, height: self.frame.height);
+            let newFrame:CGRect = CGRect(x: targetPointX, y:targetPointY, width: 1.0, height: 1.0);
             self.frame = newFrame;
         }, completion: { _ in
             self.removeFromSuperview();
@@ -322,7 +323,7 @@ class UICatButton: UIButton {
     
     func getRadialXTargetPoint(parentFrame:CGRect, childFrame:CGRect) -> CGFloat {
         let angle:CGFloat = CGFloat.random(in: 0.0...45.0);
-        var targetX:CGFloat = parentFrame.width + childFrame.width;
+        var targetX:CGFloat = self.frame.minX + childFrame.width;
         targetX *= cos((CGFloat.pi * angle) / 180.0);
         if (Int.random(in: 0...1) == 1) {
             targetX *= -1;
@@ -332,7 +333,7 @@ class UICatButton: UIButton {
     
     func getRadialYTargetPoint(parentFrame:CGRect, childFrame:CGRect) -> CGFloat {
         let angle:CGFloat = CGFloat.random(in: 45.0...90.0);
-        var targetY:CGFloat = parentFrame.height + childFrame.height;
+        var targetY:CGFloat = self.frame.minY + childFrame.height;
         targetY *= sin((CGFloat.pi * angle) / 180.0);
         if (Int.random(in: 0...1) == 1) {
             targetY *= -1;

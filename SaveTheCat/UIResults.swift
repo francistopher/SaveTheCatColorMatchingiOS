@@ -12,7 +12,7 @@ import GoogleMobileAds
 class UIResults: UICView {
     
     static var selectedCat:Cat = .standard;
-    static var mouseCoins:Int = 0;
+    static var mouseCoins:Int64 = 0;
     
     var gameOverLabel:UICLabel?
     
@@ -210,13 +210,15 @@ class UIResults: UICView {
             rewardAmountQuantity[0]! += 0.5;
             threshold -= 0.1 * 25.0 / Double(UIResults.rewardAmount);
         }
-        if (UIResults.rewardAmount < 25 && threshold < rewardAmountRate[UIResults.rewardAmount]!) {
-             UIResults.rewardAmount += 5;
-             threshold = 1.0;
-             self.watchAdForXMouseCoins!.setTitle("Watch video\nfor \(UIResults.rewardAmount) " + "·", for: .normal);
-             let x:CGFloat = watchAdForXMouseCoins!.frame.width * 0.64 + watchAdForXMouseCoins!.frame.width * 0.05;
-             mouseCoin!.frame = CGRect(x: x, y: mouseCoin!.frame.minY, width: mouseCoin!.frame.width, height: mouseCoin!.frame.height);
-         }
+        Timer.scheduledTimer(withTimeInterval: 2.0, repeats: false, block: { _ in
+            if (UIResults.rewardAmount < 25 && self.threshold < self.rewardAmountRate[UIResults.rewardAmount]!) {
+                UIResults.rewardAmount += 5;
+                self.threshold = 1.0;
+                self.watchAdForXMouseCoins!.setTitle("Watch video\nfor \(UIResults.rewardAmount) " + "·", for: .normal);
+                let x:CGFloat = self.watchAdForXMouseCoins!.frame.width * 0.64 + self.watchAdForXMouseCoins!.frame.width * 0.05;
+                self.mouseCoin!.frame = CGRect(x: x, y: self.mouseCoin!.frame.minY, width: self.mouseCoin!.frame.width, height: self.mouseCoin!.frame.height);
+            }
+        })
         adIsShowing = false;
     }
     

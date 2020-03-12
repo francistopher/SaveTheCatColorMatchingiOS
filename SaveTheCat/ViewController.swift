@@ -70,6 +70,8 @@ class ViewController: UIViewController, GADInterstitialDelegate, GKGameCenterCon
     static var interstitialWillPresentScreen:Bool = false;
     static var interstitialWillDismissScreen:Bool = false;
     
+    var keyValueStore:NSUbiquitousKeyValueStore = NSUbiquitousKeyValueStore();
+    
     override func viewDidLoad() {
         super.viewDidLoad();
         ViewController.staticViewController = self;
@@ -252,6 +254,7 @@ class ViewController: UIViewController, GADInterstitialDelegate, GKGameCenterCon
         setupBannerView();
         setupInterstitial();
         setupBoardMainView();
+        // Save the mouse coins from icloud
         setupColorOptionsView();
         setupGlovePointer();
         setupSettingsButton();
@@ -420,6 +423,9 @@ class ViewController: UIViewController, GADInterstitialDelegate, GKGameCenterCon
         boardGame!.settingsButton = settingsButton!;
         settingsButton!.settingsMenu!.alpha = 0.0;
         settingsButton!.alpha = 0.0;
+        // Get saved mouse coins from icloud
+        UIResults.mouseCoins = keyValueStore.longLong(forKey: "mouseCoins");
+        settingsButton!.settingsMenu!.mouseCoin!.amountLabel!.text = "\(UIResults.mouseCoins)";
     }
     
     func setStyle() {

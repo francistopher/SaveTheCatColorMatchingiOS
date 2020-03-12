@@ -7,6 +7,7 @@
 // (int)
 
 import SwiftUI
+import CloudKit
 
 class UIBoardGame: UIView {
     
@@ -34,6 +35,9 @@ class UIBoardGame: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented");
     }
+    
+    // Save number of coins
+    var keyValStore:NSUbiquitousKeyValueStore = NSUbiquitousKeyValueStore();
     
     init(parentView: UIView, x:CGFloat, y:CGFloat, width:CGFloat, height:CGFloat) {
         super.init(frame:CGRect(x: x, y: y, width: width, height: height));
@@ -275,6 +279,9 @@ class UIBoardGame: UIView {
             // Submit memory capacity score
             ViewController.submitMemoryCapacityScore(memoryCapacity: self.results!.colorMemoryCapacity);
             self.results!.fadeIn();
+            // Save coins earned for the user
+            self.keyValStore.set(UIResults.mouseCoins, forKey: "mouseCoins");
+            self.keyValStore.synchronize();
         }
     }
     

@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import CloudKit
 
 class UIMouseCoin: UIButton {
     
@@ -37,8 +38,7 @@ class UIMouseCoin: UIButton {
     
     @objc func mouseCoinSelector() {
         if (isSelectable) {
-            let mouseCoins:Int = UIResults.mouseCoins;
-            self.amountLabel!.text = "\(mouseCoins)";
+            self.amountLabel!.text = "\(UIResults.mouseCoins)";
             if (UIResults.mouseCoins > 0) {
                 SoundController.coinEarned();
             }

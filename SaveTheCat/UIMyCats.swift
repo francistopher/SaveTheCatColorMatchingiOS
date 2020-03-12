@@ -31,13 +31,17 @@ class UIMyCats: UIButton {
        print("Testing: More Cats!");
     }
        
-    func setIconImage() {
-        let iconImage:UIImage? = UIImage(named: "myCats.png");
+    func setIconImage(named:String) {
+        let iconImage:UIImage? = UIImage(named: named);
         self.setImage(iconImage, for: .normal);
         self.imageView!.contentMode = UIView.ContentMode.scaleAspectFit;
     }
    
     func setStyle() {
-        setIconImage();
+        if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1) {
+            setIconImage(named: "lightMyCats.png");
+        } else {
+            setIconImage(named: "darkMyCats.png");
+        }
     }
 }

@@ -187,9 +187,9 @@ class ViewController: UIViewController, GADInterstitialDelegate, GKGameCenterCon
         }
     }
     
-    // Game center score submission
+    // Game center memory capacity score submission
     static func submitMemoryCapacityScore(memoryCapacity:Int) {
-        let bestMemoryCapacityScore = GKScore(leaderboardIdentifier: "topMemoryCapacities");
+        let bestMemoryCapacityScore = GKScore(leaderboardIdentifier: "topColorMemorizers");
         bestMemoryCapacityScore.value = Int64(memoryCapacity);
         GKScore.report([bestMemoryCapacityScore]) { (error) in
             if error != nil {
@@ -198,6 +198,34 @@ class ViewController: UIViewController, GADInterstitialDelegate, GKGameCenterCon
                 print("Memory Capacity score submitted to your Leaderboard!");
             }
         }
+    }
+    
+    // Game center saved cats score
+    static func submitCatsSavedScore(catsSaved:Int) {
+        func submitScore(score:Int64) {
+            let bestCatSaverScore = GKScore(leaderboardIdentifier: "topCatSavers");
+            bestCatSaverScore.value = score;
+            GKScore.report([bestCatSaverScore], withCompletionHandler: { (error) in
+                if error != nil {
+                    print(error!.localizedDescription)
+                } else {
+                    print("Cat saver score submitted to your Leaderboard!");
+                }
+            })
+        }
+        let leaderBoard:GKLeaderboard = GKLeaderboard();
+        leaderBoard.identifier = "topCatSavers";
+        leaderBoard.loadScores(completionHandler: { scores, error in
+            if error == nil {
+                if (leaderBoard.localPlayerScore != nil) {
+                    let score = Int64(catsSaved) + leaderBoard.localPlayerScore!.value;
+                    print("Now the score should be this", score);
+                    submitScore(score:score);
+                } else {
+                    submitScore(score:Int64(catsSaved));
+                }
+            }
+        })
     }
     
     // Game center leaderboard

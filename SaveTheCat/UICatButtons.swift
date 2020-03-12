@@ -26,6 +26,15 @@ class UICatButtons {
         return catButton;
     }
     
+    func oneIsNeitherPoddedOrDead() -> Bool {
+        for catButton in presentCollection! {
+            if (!catButton.isPodded && catButton.isAlive) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
     func onlyOneIsAlive() -> Bool {
         var aliveCount:Int = 0;
         for catButton in presentCollection! {

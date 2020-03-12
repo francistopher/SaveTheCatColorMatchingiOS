@@ -179,6 +179,7 @@ class UIGlovedPointer:UICButton {
     override func translate(newOriginalFrame:CGRect) {
         setStyle();
         transitionedToCatButton = true;
+        stopAnimations();
         UIView.animate(withDuration: 0.5, delay: 0.125, options: .curveEaseInOut, animations: {
             self.isTapping = true;
             self.frame = newOriginalFrame;

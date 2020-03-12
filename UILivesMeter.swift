@@ -10,7 +10,7 @@ import SwiftUI
 
 class UILivesMeter:UICView {
     
-    var livesLeft:Int = 3;
+    var livesLeft:Int = 1;
     var heartInactiveButtons:[UICButton] = [];
     let heartImage:UIImage = UIImage(named: "heart.png")!;
     var heartInactiveButtonXRange:[CGFloat] = [];
@@ -107,12 +107,12 @@ class UILivesMeter:UICView {
     }
     
     func resetLivesLeftCount() {
-        if (heartInactiveButtons.count > 3) {
+        if (heartInactiveButtons.count > 1) {
             for _ in 1..<heartInactiveButtons.count {
                 decrementLivesLeftCount();
             }
-        } else if (heartInactiveButtons.count < 3) {
-            livesLeft = 3;
+        } else if (heartInactiveButtons.count < 1) {
+            livesLeft = 1;
             setupHeartInactiveButtons();
         }
     }

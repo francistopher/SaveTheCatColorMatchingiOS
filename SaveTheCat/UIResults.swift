@@ -160,7 +160,7 @@ class UIResults: UICView {
         self.stagesLabel = UICLabel(parentView: contentView!, x: self.frame.width * 0.02875, y: catsLivedAmountLabel!.frame.maxY, width: contentView!.frame.width * 0.5, height: unitHeight!);
         stagesLabel!.lineBreakMode = NSLineBreakMode.byWordWrapping;
         stagesLabel!.numberOfLines = 2;
-        stagesLabel!.text = "Memory\nCapacity";
+        stagesLabel!.text = "Color\nCapacity";
         stagesLabel!.font = UIFont.boldSystemFont(ofSize: stagesLabel!.frame.height * 0.40);
         stagesLabel!.backgroundColor = UIColor.clear;
         setupStagesRangeLabel();
@@ -306,7 +306,7 @@ class UIResults: UICView {
         stagesRangeLabel!.text = "\(colorMemoryCapacity)";
         durationTimeLabel!.text = "\(Int(floor(sessionDuration)))";
         // Determine whether to show ad
-        if (CGFloat.random(in: 0...1) > 0.15) {
+        if (CGFloat.random(in: 0...1) > 0.20) {
             continueButton!.frame = continueButton!.secondaryFrame!;
             watchAdForXMouseCoins!.frame = watchAdForXMouseCoins!.secondaryFrame!;
             watchAdForXMouseCoins!.alpha = 1.0

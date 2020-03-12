@@ -127,7 +127,6 @@ class UIBoardGame: UIView {
             glovePointer!.setColorAndCatButtons(colorButtons: colorOptions!.selectionButtons, catButtons: cats, first: true);
             glovePointer!.grow();
         }
-        print(glovePointer!.frame, glovePointer!.alpha, "dadsfgghjgghfgdsdgfhjkhgfhjhghfdgsf")
     }
     
     func buildGridColors(){
@@ -269,6 +268,7 @@ class UIBoardGame: UIView {
         } else {
             self.glovePointer!.shrink();
         }
+        ViewController.submitCatsSavedScore(catsSaved: self.results!.catsThatLived);
         Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false) { timer in
             self.reset(catsSurvived: false);
             self.colorOptions!.shrinkColorOptions();
@@ -332,15 +332,14 @@ class UIBoardGame: UIView {
         if (livesMeter!.livesLeft > 0) {
             setCatButtonAsDead(catButton: catButton);
             livesMeter!.decrementLivesLeftCount();
+            if (!cats.oneIsNeitherPoddedOrDead()){
+                verifyThatRemainingCatsArePodded(catButton:catButton);
+            }
         } else {
             setAllCatButtonsAsDead();
+            gameOverTransition();
         }
         
-        if (cats.areAllCatsDead()){
-            gameOverTransition();
-        } else {
-            verifyThatRemainingCatsArePodded(catButton:catButton);
-        }
     }
     
     func setCatButtonAsDead(catButton:UICatButton) {
@@ -368,7 +367,7 @@ class UIBoardGame: UIView {
             colorOptions!.selectedColor = UIColor.lightGray;
             colorOptions!.isTransitioned = false;
             // Add data of survived cats
-            results!.catsThatLived += cats.presentCollection!.count;
+            results!.catsThatLived += cats.countOfAliveCatButtons();
             if (cats.didAllSurvive()) {
                 livesMeter!.incrementLivesLeftCount(catButton: catButton);
                 self.attackMeter!.updateDuration(change: 0.2);
@@ -382,7 +381,6 @@ class UIBoardGame: UIView {
                 self.attackMeter!.sendVirusToStart();
                 maintain();
                 return;
-               
             }
         } else {
             self.attackMeter!.updateDuration(change: 0.1);

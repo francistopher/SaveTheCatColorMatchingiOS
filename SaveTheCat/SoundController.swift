@@ -66,7 +66,7 @@ class SoundController {
         gearSpinningURL = URL(fileURLWithPath: gearSpinningPath!);
         do {
             gearSpinningSoundEffect = try AVAudioPlayer(contentsOf: gearSpinningURL!);
-        gearSpinningSoundEffect!.volume = 0.5;
+            gearSpinningSoundEffect!.volume = 0.25;
        } catch {
            print("Unable to play gearSpinning sound effect.");
        }

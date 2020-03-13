@@ -88,11 +88,7 @@ class UIGlovedPointer:UICButton {
             adButton?.sendActions(for: .touchUpInside);
             return;
         }
-        if (transitionedToCatButton) {
-            catButton?.sendActions(for: .touchUpInside);
-        } else {
-            colorButton?.sendActions(for: .touchUpInside);
-        }
+        SoundController.kittenMeow();
     }
     
     func setCompiledStyle() {

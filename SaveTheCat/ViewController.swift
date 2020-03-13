@@ -438,6 +438,13 @@ class ViewController: UIViewController, GADInterstitialDelegate, GKGameCenterCon
         settingsButton!.settingsMenu!.multiplayer!.setStyle();
         settingsButton!.settingsMenu!.multiplayer!.activePlayersScrollView!.searchingCatButton!.updateUIStyle();
         settingsButton!.settingsMenu!.multiplayer!.activePlayersScrollView!.invitationCatButton!.updateUIStyle();
+        if (settingsButton!.settingsMenu!.mouseCoin!.mouseCoinView!.backgroundColor!.cgColor != UIColor.clear.cgColor) {
+            if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1){
+                settingsButton!.settingsMenu!.mouseCoin!.mouseCoinView!.backgroundColor = UIColor.white;
+            } else {
+                settingsButton!.settingsMenu!.mouseCoin!.mouseCoinView!.backgroundColor = UIColor.black;
+            }
+        }
         boardGame!.cats.updateUIStyle();
         boardGame!.livesMeter!.setStyle();
         boardGame!.results!.setCompiledStyle();

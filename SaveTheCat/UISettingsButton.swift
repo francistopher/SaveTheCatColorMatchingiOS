@@ -67,6 +67,7 @@ class UISettingsButton:UIButton {
                 ViewController.staticMainView!.bringSubviewToFront(self);
                 ViewController.staticMainView!.bringSubviewToFront(settingsMenu!.mouseCoin!.mouseCoinView!);
                 settingsMenu!.mouseCoin!.mouseCoinView!.backgroundColor = self.backgroundColor;
+                settingsMenu!.mouseCoin!.mouseCoinView!.layer.borderColor = UIColor.systemYellow.cgColor;
                 settingsMenu!.mouseCoin!.mouseCoinView!.fadeOut();
                 boardGame!.cats.clearCatButtons();
                 boardGame!.attackMeter!.pauseVirusMovement();

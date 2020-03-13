@@ -110,6 +110,16 @@ class UICButton:UIButton {
         });
     }
     
+    func fadeOutAndIn() {
+        UIView.animate(withDuration: 0.125, delay: 0.0, options: .curveEaseInOut, animations: {
+            super.alpha = 0.0;
+        }, completion: { _ in
+            UIView.animate(withDuration: 0.125, delay: 0.0, options: .curveEaseInOut, animations: {
+                super.alpha = 1.0;
+            })
+        })
+    }
+    
     func shrinked(){
         self.frame = CGRect(x: self.frame.midX, y: self.frame.midY, width: 1.0, height: 1.0);
     }

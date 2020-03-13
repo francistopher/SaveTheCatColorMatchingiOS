@@ -100,6 +100,9 @@
 		B83BC3FB241B1A8C0026D7F6 /* ReachabilityObserverDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B83BC3FA241B1A8C0026D7F6 /* ReachabilityObserverDelegate.swift */; };
 		B83BC400241BD8EA0026D7F6 /* noInternet.png in Resources */ = {isa = PBXBuildFile; fileRef = B83BC3FE241BD8EA0026D7F6 /* noInternet.png */; };
 		B83BC401241BD8EA0026D7F6 /* yesInternet.png in Resources */ = {isa = PBXBuildFile; fileRef = B83BC3FF241BD8EA0026D7F6 /* yesInternet.png */; };
+		B83BC404241BEAC30026D7F6 /* noiCloud.png in Resources */ = {isa = PBXBuildFile; fileRef = B83BC402241BEAC30026D7F6 /* noiCloud.png */; };
+		B83BC405241BEAC30026D7F6 /* yesiCloud.png in Resources */ = {isa = PBXBuildFile; fileRef = B83BC403241BEAC30026D7F6 /* yesiCloud.png */; };
+		B83BC407241BF9930026D7F6 /* GameMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B83BC406241BF9930026D7F6 /* GameMessage.swift */; };
 		B84032382414150D0020D9EA /* UISettingsMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = B84032372414150D0020D9EA /* UISettingsMenu.swift */; };
 		B840323C241437C30020D9EA /* UIAds.swift in Sources */ = {isa = PBXBuildFile; fileRef = B840323B241437C30020D9EA /* UIAds.swift */; };
 		B840323F241438780020D9EA /* UILeadBoard.swift in Sources */ = {isa = PBXBuildFile; fileRef = B840323D241438780020D9EA /* UILeadBoard.swift */; };
@@ -207,6 +210,9 @@
 		B83BC3FA241B1A8C0026D7F6 /* ReachabilityObserverDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReachabilityObserverDelegate.swift; sourceTree = "<group>"; };
 		B83BC3FE241BD8EA0026D7F6 /* noInternet.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = noInternet.png; path = SaveTheCat/noInternet.png; sourceTree = "<group>"; };
 		B83BC3FF241BD8EA0026D7F6 /* yesInternet.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = yesInternet.png; path = SaveTheCat/yesInternet.png; sourceTree = "<group>"; };
+		B83BC402241BEAC30026D7F6 /* noiCloud.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = noiCloud.png; path = SaveTheCat/noiCloud.png; sourceTree = "<group>"; };
+		B83BC403241BEAC30026D7F6 /* yesiCloud.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = yesiCloud.png; path = SaveTheCat/yesiCloud.png; sourceTree = "<group>"; };
+		B83BC406241BF9930026D7F6 /* GameMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameMessage.swift; sourceTree = "<group>"; };
 		B84032372414150D0020D9EA /* UISettingsMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UISettingsMenu.swift; path = SaveTheCat/UISettingsMenu.swift; sourceTree = "<group>"; };
 		B840323B241437C30020D9EA /* UIAds.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UIAds.swift; path = SaveTheCat/UIAds.swift; sourceTree = "<group>"; };
 		B840323D241438780020D9EA /* UILeadBoard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UILeadBoard.swift; path = SaveTheCat/UILeadBoard.swift; sourceTree = "<group>"; };
@@ -287,6 +293,8 @@
 		B83B0342241154C000EC4BAD /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				B83BC402241BEAC30026D7F6 /* noiCloud.png */,
+				B83BC403241BEAC30026D7F6 /* yesiCloud.png */,
 				B83BC3FE241BD8EA0026D7F6 /* noInternet.png */,
 				B83BC3FF241BD8EA0026D7F6 /* yesInternet.png */,
 				B83BC3E7241707E60026D7F6 /* darkVideo.png */,
@@ -422,14 +430,15 @@
 		B83B03A2241159AB00EC4BAD /* Particular View Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				B83BC3ED241948E40026D7F6 /* UIGlovedPointer.swift */,
 				B83B03B324115A0C00EC4BAD /* Character */,
 				B83B03AA241159F900EC4BAD /* UIBoardGame.swift */,
+				B83BC3ED241948E40026D7F6 /* UIGlovedPointer.swift */,
 				B83B03A5241159F900EC4BAD /* UIColorOptions.swift */,
 				B83B03A8241159F900EC4BAD /* UIResults.swift */,
 				B83B03A9241159F900EC4BAD /* CACGradientLayer.swift */,
 				B83BC3D624169FD60026D7F6 /* UIAttackMeter.swift */,
 				B83BC3D82416A0100026D7F6 /* UILivesMeter.swift */,
+				B83BC406241BF9930026D7F6 /* GameMessage.swift */,
 			);
 			name = "Particular View Controllers";
 			sourceTree = "<group>";
@@ -633,6 +642,7 @@
 				B83B0361241154EB00EC4BAD /* darkNinjaCheeringCat.png in Resources */,
 				B83B03D024115C9500EC4BAD /* Assets.xcassets in Resources */,
 				B83BC3E52416B1C30026D7F6 /* lightGloveTap.png in Resources */,
+				B83BC405241BEAC30026D7F6 /* yesiCloud.png in Resources */,
 				B83B034E241154D700EC4BAD /* darkFancySmilingCat.png in Resources */,
 				B83B03F22411877E00EC4BAD /* Icon-120@2x.png in Resources */,
 				B83B03822411551300EC4BAD /* lightNinjaCheeringCat.png in Resources */,
@@ -641,6 +651,7 @@
 				B83B0360241154EB00EC4BAD /* darkVirus.png in Resources */,
 				B83B03772411551300EC4BAD /* lightGear.png in Resources */,
 				B83B03FA2411877E00EC4BAD /* Icon-20@1x.png in Resources */,
+				B83BC404241BEAC30026D7F6 /* noiCloud.png in Resources */,
 				B83B034D241154D700EC4BAD /* darkGear.png in Resources */,
 				B83B035E241154EB00EC4BAD /* darkNoAds.png in Resources */,
 				B83B033F241154B500EC4BAD /* gearSpinning.mp3 in Resources */,
@@ -726,6 +737,7 @@
 				B83B03B1241159F900EC4BAD /* UIBoardGame.swift in Sources */,
 				B83B03A0241158FC00EC4BAD /* UICLabel.swift in Sources */,
 				B83B039D241158FC00EC4BAD /* UICScrollView.swift in Sources */,
+				B83BC407241BF9930026D7F6 /* GameMessage.swift in Sources */,
 				B83B03C324115B3200EC4BAD /* ViewController.swift in Sources */,
 				B83B03AC241159F900EC4BAD /* UIColorOptions.swift in Sources */,
 				B83B03B2241159F900EC4BAD /* UICatButton.swift in Sources */,

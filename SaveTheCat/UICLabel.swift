@@ -43,6 +43,16 @@ class UICLabel:UILabel {
         }
     }
     
+    func fadeOutAndIn() {
+        UIView.animate(withDuration: 0.125, delay: 0.0, options: .curveEaseIn, animations: {
+            super.alpha = 0.0;
+        }, completion: { _ in
+            UIView.animate(withDuration: 0.125, delay: 0.0, options: .curveEaseOut, animations: {
+                super.alpha = 1.0;
+            })
+        })
+    }
+    
     func setStyle() {
         if (isInverted) {
             if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1) {

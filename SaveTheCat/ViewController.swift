@@ -20,14 +20,18 @@ enum AspectRatio {
 
 class ViewController: UIViewController, GADInterstitialDelegate, GKGameCenterControllerDelegate, ReachabilityObserverDelegate {
     
-    var isReachableViaInternet:Bool = false;
+    var firedITunesStatus:Bool = false;
+    var isInternetReachable:Bool = false;
     func reachabilityChanged(_ isReachable: Bool) {
         if (isReachable) {
-            print("We are reachable via internet")
-            self.isReachableViaInternet = true;
+            gameMessage!.displayInternetConnectionEstablishedMessage();
+            self.isInternetReachable = true;
+            if (self.settingsButton != nil) {
+                UIResults.mouseCoins = keyValueStore.longLong(forKey: "mouseCoins");
+            }
         } else {
-            print("We are not reachable via internet")
-            self.isReachableViaInternet = false;
+            gameMessage!.displayNoInternetConsequencesMessage();
+            self.isInternetReachable = false;
         }
     }
     
@@ -71,7 +75,7 @@ class ViewController: UIViewController, GADInterstitialDelegate, GKGameCenterCon
     static var aspectRatio:AspectRatio?
     
     // Game center message
-    var gameCenterMessage:GameMessage?
+    var gameMessage:UIGameMessage?
     var gameCenterMessageWidthHeightY:(CGFloat, CGFloat, CGFloat)?;
     var gameCenterAuthentificationOver:Bool = false;
     
@@ -102,6 +106,26 @@ class ViewController: UIViewController, GADInterstitialDelegate, GKGameCenterCon
     
     func setupReachability() {
         try? addReachabilityObserver();
+        func isICloudContainerAvailable() -> Bool {
+            if FileManager.default.ubiquityIdentityToken != nil {
+                return true
+            }
+            else {
+                return false
+            }
+        }
+        Timer.scheduledTimer(withTimeInterval: 0.125, repeats: true, block: { _ in
+            let isCloudContainerAvailable:Bool = isICloudContainerAvailable();
+            if (!isCloudContainerAvailable && !self.firedITunesStatus) {
+                self.gameMessage!.displayNotLoggedIntoiCloudMessage();
+                self.gameMessage!.displayGameCenterDirectionsMessage();
+                self.firedITunesStatus = true;
+            }
+            if (isCloudContainerAvailable && self.firedITunesStatus) {
+                self.gameMessage!.displayLoggedIntoiCloudMessage();
+                self.firedITunesStatus = false;
+            }
+        })
     }
     
     // Aspect ratio
@@ -179,10 +203,10 @@ class ViewController: UIViewController, GADInterstitialDelegate, GKGameCenterCon
                 if (self.gameCenterAuthentificationOver) {
                     return;
                 }
-                if (!self.isReachableViaInternet) {
-                    self.gameCenterMessage!.displayNoInternetConsequencesMessage();
+                if (player.isAuthenticated) {
+                    self.gameMessage!.stayALittleLonger = true;
                 } else {
-                    self.gameCenterMessage!.displayGameCenterDirectionsMessage();
+                    self.gameMessage!.displayGameCenterDirectionsMessage();
                 }
                 self.gameCenterAuthentificationOver = true;
                 print("DISABLE MULTIPLAYER")
@@ -199,14 +223,13 @@ class ViewController: UIViewController, GADInterstitialDelegate, GKGameCenterCon
                 })
             } else {
                 if (player.isAuthenticated) {
-                    print("No Internet Connection - Your Game Center experience will be limited!");
                     if (self.gameCenterAuthentificationOver) {
                         return;
                     }
+                    self.gameCenterAuthentificationOver = true;
+                    self.gameMessage!.stayALittleLonger = true;
                     print("ENABLE MULTIPLAYER")
                     print("PLAYER AUTHENTICATED!")
-                    print(self.gcDefaultLeaderboardID, " gcDefault leaderboard id")
-                    self.gameCenterAuthentificationOver = true;
                     self.boardGame!.attackMeter!.invokeAttackImpulse(delay: 5.5);
                     self.presentSaveTheCat();
                 }
@@ -265,8 +288,8 @@ class ViewController: UIViewController, GADInterstitialDelegate, GKGameCenterCon
     
     func setupGameCenterMessage() {
         let gameCenterMessageX:CGFloat = (mainView.frame.width - gameCenterMessageWidthHeightY!.0) * 0.5;
-        gameCenterMessage = GameMessage(parentView: mainView, frame: CGRect(x: gameCenterMessageX, y: gameCenterMessageWidthHeightY!.2, width: gameCenterMessageWidthHeightY!.0, height: gameCenterMessageWidthHeightY!.1));
-        CenterController.centerHorizontally(childView: gameCenterMessage!, parentRect: mainView.frame, childRect: gameCenterMessage!.frame);
+        gameMessage = UIGameMessage(parentView: mainView, frame: CGRect(x: gameCenterMessageX, y: gameCenterMessageWidthHeightY!.2, width: gameCenterMessageWidthHeightY!.0, height: gameCenterMessageWidthHeightY!.1));
+        CenterController.centerHorizontally(childView: gameMessage!, parentRect: mainView.frame, childRect: gameMessage!.frame);
     }
     
     func setupSaveTheCat() {
@@ -324,7 +347,9 @@ class ViewController: UIViewController, GADInterstitialDelegate, GKGameCenterCon
         self.boardGame!.cats.resumeCatAnimations();
         self.settingsButton!.settingsMenu!.multiplayer!.activePlayersScrollView!.searchingCatButton!.animate(AgainWithoutDelay: true);
         self.settingsButton!.settingsMenu!.multiplayer!.activePlayersScrollView!.invitationCatButton!.animate(AgainWithoutDelay: true);
-        self.boardGame!.attackMeter!.unPauseVirusMovement();
+        if (!settingsButton!.isPressed) {
+            self.boardGame!.attackMeter!.unPauseVirusMovement();
+        }
         print("App foregrounded");
     }
     
@@ -454,7 +479,7 @@ class ViewController: UIViewController, GADInterstitialDelegate, GKGameCenterCon
     }
     
     func setStyle() {
-        gameCenterMessage!.setStyle();
+        gameMessage!.setStyle();
         viruses!.setStyle();
         introLabel!.setStyle();
         setSuccessGradientLayerStyle();
@@ -479,99 +504,5 @@ class ViewController: UIViewController, GADInterstitialDelegate, GKGameCenterCon
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         setStyle();
-    }
-}
-
-class GameMessage:UIView {
-    
-    var blurEffect:UIBlurEffect?
-    var blurView:UIVisualEffectView?
-    var imageButton:UIButton?
-    var messageLabel:UICLabel?
-    
-    var targetFrame:CGRect?
-    var defaultFrame:CGRect?
-    
-    var noConnection:Bool = false;
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    init(parentView:UIView, frame:CGRect) {
-        targetFrame = frame;
-        defaultFrame = CGRect(x: frame.minX, y: -(frame.minY * 2.0 + frame.height), width: frame.width, height: frame.height);
-        super.init(frame: defaultFrame!);
-        self.backgroundColor = UIColor.clear;
-        self.layer.cornerRadius = self.frame.width * 0.07;
-        self.clipsToBounds = true;
-        setupBlurEffect();
-        setupVisualEffectView();
-        setupImageButton();
-        setupLabel();
-        parentView.addSubview(self);
-    }
-    
-    func displayGameCenterDirectionsMessage() {
-        setupImage(named: "gameCenter.png");
-        messageLabel!.text = "Go to Settings and sign into\nGame Center for more fun!";
-        showAndHideMessage();
-    }
-    
-    func displayNoInternetConsequencesMessage() {
-        setupImage(named: "noInternet.png");
-        messageLabel!.text = "No Internet Connection! Game Center and Data will be limited!";
-        showAndHideMessage();
-    }
-    
-    func setupBlurEffect() {
-        if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1) {
-            blurEffect = UIBlurEffect(style: .systemThinMaterialDark);
-        } else {
-            blurEffect = UIBlurEffect(style: .systemThickMaterialDark);
-        }
-    }
-    
-    func setupVisualEffectView() {
-        blurView = UIVisualEffectView(effect: blurEffect);
-        blurView!.frame = self.bounds;
-        self.addSubview(blurView!);
-    }
-    
-    func setupImageButton() {
-        imageButton = UIButton(frame: CGRect(x: self.frame.width * 0.0839, y: 0.0, width: self.frame.height * 0.65, height: self.frame.height));
-        imageButton!.backgroundColor = UIColor.clear;
-        self.addSubview(imageButton!);
-    }
-    
-    func setupImage(named:String) {
-        let image:UIImage = UIImage(named: named)!;
-        imageButton!.setImage(image, for: .normal);
-        imageButton!.imageView!.contentMode = UIView.ContentMode.scaleAspectFit;
-    }
-    
-    func setupLabel() {
-        let messageLabelWidth:CGFloat = self.imageButton!.frame.minX + self.imageButton!.frame.width * 1.05;
-        messageLabel = UICLabel(parentView: self, x:  messageLabelWidth, y: 0.0, width: self.frame.width * 0.75, height: self.frame.height);
-        messageLabel!.backgroundColor = UIColor.clear;
-        messageLabel!.textColor = UIColor.white;
-        messageLabel!.lineBreakMode = NSLineBreakMode.byWordWrapping;
-        messageLabel!.numberOfLines = 2;
-        messageLabel!.font = UIFont.boldSystemFont(ofSize: messageLabel!.frame.height * 0.25);
-    }
-    
-    func setStyle() {
-        setupBlurEffect();
-        blurView!.effect = blurEffect;
-    }
-    
-    func showAndHideMessage() {
-        UIView.animate(withDuration: 0.415, delay: 0.25, options: .curveLinear, animations: {
-            self.frame = self.targetFrame!;
-        })
-        Timer.scheduledTimer(withTimeInterval: 4.1, repeats: false, block: { _ in
-            UIView.animate(withDuration: 0.415, delay: 0.0, options: .curveLinear, animations: {
-                self.frame = self.defaultFrame!;
-            })
-        })
     }
 }

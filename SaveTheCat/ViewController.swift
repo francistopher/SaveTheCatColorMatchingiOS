@@ -17,7 +17,17 @@ enum AspectRatio {
     case ar4by3
 }
 
-class ViewController: UIViewController, GADInterstitialDelegate, GKGameCenterControllerDelegate {
+class ViewController: UIViewController, GADInterstitialDelegate, GKGameCenterControllerDelegate, ReachabilityObserverDelegate {
+    
+    func reachabilityChanged(_ isReachable: Bool) {
+        
+        if (isReachable) {
+            print("We have internet connection!!!");
+        } else {
+            print("We do not have internet connection!!!");
+        }
+    }
+    
     
     func gameCenterViewControllerDidFinish(_ gameCenterViewController: GKGameCenterViewController) {
         gameCenterViewController.dismiss(animated: true, completion: nil);
@@ -86,7 +96,7 @@ class ViewController: UIViewController, GADInterstitialDelegate, GKGameCenterCon
     }
     
     func setupReachability() {
-  
+        try? addReachabilityObserver();
     }
     
     // Aspect ratio

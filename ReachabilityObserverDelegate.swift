@@ -23,8 +23,8 @@ protocol ReachabilityObserverDelegate: class, ReachabilityActionDelegate {
 extension ReachabilityObserverDelegate {
     
     func addReachabilityObserver() throws {
-        reachability = try Reachability()
         
+        reachability = try Reachability()
         reachability.whenReachable = { [weak self] reachability in
             self?.reachabilityChanged(true)
         }

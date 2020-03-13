@@ -280,9 +280,11 @@ class UIBoardGame: UIView {
             // Submit memory capacity score
             ViewController.submitMemoryCapacityScore(memoryCapacity: self.results!.colorMemoryCapacity);
             self.results!.fadeIn();
-            // Save coins earned for the user
-            self.keyValStore.set(UIResults.mouseCoins, forKey: "mouseCoins");
-            self.keyValStore.synchronize();
+            // Save coins earned for the use
+            if (ViewController.staticViewController!.isInternetReachable) {
+                self.keyValStore.set(UIResults.mouseCoins, forKey: "mouseCoins");
+                self.keyValStore.synchronize();
+            }
         }
     }
     

@@ -26,12 +26,16 @@ class ViewController: UIViewController, GADInterstitialDelegate, GKGameCenterCon
         if (isReachable) {
             gameMessage!.displayInternetConnectionEstablishedMessage();
             self.isInternetReachable = true;
-            if (self.settingsButton != nil) {
-                UIResults.mouseCoins = keyValueStore.longLong(forKey: "mouseCoins");
-            }
+            bannerView.load(GADRequest());
+            ViewController.interstitial.load(GADRequest());
+            UIResults.mouseCoins = keyValueStore.longLong(forKey: "mouseCoins");
+            settingsButton!.settingsMenu!.mouseCoin!.amountLabel!.text = "\(UIResults.mouseCoins)";
         } else {
+            UIResults.mouseCoins = 0;
+            settingsButton!.settingsMenu!.mouseCoin!.amountLabel!.text = "\(UIResults.mouseCoins)";
             gameMessage!.displayNoInternetConsequencesMessage();
             self.isInternetReachable = false;
+            
         }
     }
     
@@ -144,9 +148,7 @@ class ViewController: UIViewController, GADInterstitialDelegate, GKGameCenterCon
     func setupInterstitial() {
         ViewController.interstitial = GADInterstitial(adUnitID: "ca-app-pub-9248016465919511/8662589234");
         ViewController.interstitial.delegate = self;
-        // prepare
-        let request = GADRequest();
-        ViewController.interstitial.load(request);
+        ViewController.interstitial.load(GADRequest());
     }
     
     func interstitialWillPresentScreen(_ ad: GADInterstitial) {

@@ -28,9 +28,11 @@ PODS:
     - nanopb/encode (= 0.3.9011)
   - nanopb/decode (0.3.9011)
   - nanopb/encode (0.3.9011)
+  - ReachabilitySwift (5.0.0)
 
 DEPENDENCIES:
   - Google-Mobile-Ads-SDK
+  - ReachabilitySwift
 
 SPEC REPOS:
   trunk:
@@ -38,13 +40,15 @@ SPEC REPOS:
     - GoogleAppMeasurement
     - GoogleUtilities
     - nanopb
+    - ReachabilitySwift
 
 SPEC CHECKSUMS:
   Google-Mobile-Ads-SDK: 65e335fadc97c5a91a9d4546214bfd3a2fb11047
   GoogleAppMeasurement: 39ecba10918b21c83877d392246157f65db351cf
   GoogleUtilities: 06eb53bb579efe7099152735900dd04bf09e7275
   nanopb: 18003b5e52dab79db540fe93fe9579f399bd1ccd
+  ReachabilitySwift: 985039c6f7b23a1da463388634119492ff86c825
 
-PODFILE CHECKSUM: f9cd20a16fc60935e171a32fe6931f29e805221c
+PODFILE CHECKSUM: 6a23353454c36131b1d40f261f48eebc38ef7db6
 
 COCOAPODS: 1.9.0

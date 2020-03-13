@@ -74,6 +74,7 @@ class ViewController: UIViewController, GADInterstitialDelegate, GKGameCenterCon
     
     override func viewDidLoad() {
         super.viewDidLoad();
+        setupReachability();
         ViewController.staticViewController = self;
         ViewController.staticUIViewController = self;
         ViewController.staticMainView = mainView;
@@ -82,6 +83,10 @@ class ViewController: UIViewController, GADInterstitialDelegate, GKGameCenterCon
         setupSaveTheCat();
         setupGameCenterMessage();
         authenticateLocalPlayerForGamePlay();
+    }
+    
+    func setupReachability() {
+  
     }
     
     // Aspect ratio

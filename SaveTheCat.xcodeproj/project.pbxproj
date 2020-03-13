@@ -3,10 +3,11 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		16CF995035758E55123640B3 /* Pods_SaveTheCat.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55C6E4EB948AE2FD3FA22E3A /* Pods_SaveTheCat.framework */; };
 		B83B0331241153E900EC4BAD /* UIMouseCoin.swift in Sources */ = {isa = PBXBuildFile; fileRef = B83B032A241153E800EC4BAD /* UIMouseCoin.swift */; };
 		B83B0332241153E900EC4BAD /* UIMultiplayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B83B032B241153E800EC4BAD /* UIMultiplayer.swift */; };
 		B83B0333241153E900EC4BAD /* UISettingsButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B83B032C241153E800EC4BAD /* UISettingsButton.swift */; };
@@ -96,6 +97,7 @@
 		B83BC3F12419965F0026D7F6 /* darkMyCats.png in Resources */ = {isa = PBXBuildFile; fileRef = B83BC3EF2419965F0026D7F6 /* darkMyCats.png */; };
 		B83BC3F22419965F0026D7F6 /* lightMyCats.png in Resources */ = {isa = PBXBuildFile; fileRef = B83BC3F02419965F0026D7F6 /* lightMyCats.png */; };
 		B83BC3F7241ACDF90026D7F6 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B83BC3F6241ACDF90026D7F6 /* CloudKit.framework */; };
+		B83BC3FB241B1A8C0026D7F6 /* ReachabilityObserverDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B83BC3FA241B1A8C0026D7F6 /* ReachabilityObserverDelegate.swift */; };
 		B84032382414150D0020D9EA /* UISettingsMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = B84032372414150D0020D9EA /* UISettingsMenu.swift */; };
 		B840323C241437C30020D9EA /* UIAds.swift in Sources */ = {isa = PBXBuildFile; fileRef = B840323B241437C30020D9EA /* UIAds.swift */; };
 		B840323F241438780020D9EA /* UILeadBoard.swift in Sources */ = {isa = PBXBuildFile; fileRef = B840323D241438780020D9EA /* UILeadBoard.swift */; };
@@ -103,11 +105,11 @@
 		B8403244241439210020D9EA /* multiPlayer.png in Resources */ = {isa = PBXBuildFile; fileRef = B8403242241439210020D9EA /* multiPlayer.png */; };
 		B840324724143B540020D9EA /* darkLeaderBoard.png in Resources */ = {isa = PBXBuildFile; fileRef = B840324524143B540020D9EA /* darkLeaderBoard.png */; };
 		B840324824143B540020D9EA /* lightLeaderBoard.png in Resources */ = {isa = PBXBuildFile; fileRef = B840324624143B540020D9EA /* lightLeaderBoard.png */; };
-		CFCBC265AF268BF512930543 /* libPods-SaveTheCat.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F49880530830E5299E41C1DE /* libPods-SaveTheCat.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		4CABDC3DBB7B48F0E0215922 /* Pods-SaveTheCat.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SaveTheCat.release.xcconfig"; path = "Target Support Files/Pods-SaveTheCat/Pods-SaveTheCat.release.xcconfig"; sourceTree = "<group>"; };
+		55C6E4EB948AE2FD3FA22E3A /* Pods_SaveTheCat.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SaveTheCat.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B83B032A241153E800EC4BAD /* UIMouseCoin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UIMouseCoin.swift; path = SaveTheCat/UIMouseCoin.swift; sourceTree = "<group>"; };
 		B83B032B241153E800EC4BAD /* UIMultiplayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UIMultiplayer.swift; path = SaveTheCat/UIMultiplayer.swift; sourceTree = "<group>"; };
 		B83B032C241153E800EC4BAD /* UISettingsButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UISettingsButton.swift; path = SaveTheCat/UISettingsButton.swift; sourceTree = "<group>"; };
@@ -200,6 +202,7 @@
 		B83BC3F02419965F0026D7F6 /* lightMyCats.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = lightMyCats.png; path = SaveTheCat/lightMyCats.png; sourceTree = "<group>"; };
 		B83BC3F5241ACDEE0026D7F6 /* Save The Cat!.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = "Save The Cat!.entitlements"; path = "SaveTheCat/Save The Cat!.entitlements"; sourceTree = "<group>"; };
 		B83BC3F6241ACDF90026D7F6 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
+		B83BC3FA241B1A8C0026D7F6 /* ReachabilityObserverDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReachabilityObserverDelegate.swift; sourceTree = "<group>"; };
 		B84032372414150D0020D9EA /* UISettingsMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UISettingsMenu.swift; path = SaveTheCat/UISettingsMenu.swift; sourceTree = "<group>"; };
 		B840323B241437C30020D9EA /* UIAds.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UIAds.swift; path = SaveTheCat/UIAds.swift; sourceTree = "<group>"; };
 		B840323D241438780020D9EA /* UILeadBoard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UILeadBoard.swift; path = SaveTheCat/UILeadBoard.swift; sourceTree = "<group>"; };
@@ -208,7 +211,6 @@
 		B840324524143B540020D9EA /* darkLeaderBoard.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = darkLeaderBoard.png; path = SaveTheCat/darkLeaderBoard.png; sourceTree = "<group>"; };
 		B840324624143B540020D9EA /* lightLeaderBoard.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = lightLeaderBoard.png; path = SaveTheCat/lightLeaderBoard.png; sourceTree = "<group>"; };
 		BFFD34E3F63138C9ED73D8DE /* Pods-SaveTheCat.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SaveTheCat.debug.xcconfig"; path = "Target Support Files/Pods-SaveTheCat/Pods-SaveTheCat.debug.xcconfig"; sourceTree = "<group>"; };
-		F49880530830E5299E41C1DE /* libPods-SaveTheCat.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SaveTheCat.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -218,7 +220,7 @@
 			files = (
 				B83BC3F7241ACDF90026D7F6 /* CloudKit.framework in Frameworks */,
 				B83B03DE241160FD00EC4BAD /* GameKit.framework in Frameworks */,
-				CFCBC265AF268BF512930543 /* libPods-SaveTheCat.a in Frameworks */,
+				16CF995035758E55123640B3 /* Pods_SaveTheCat.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -462,6 +464,7 @@
 			children = (
 				B83B03C524115B6F00EC4BAD /* AppDelegate.swift */,
 				B83B03C624115B6F00EC4BAD /* SceneDelegate.swift */,
+				B83BC3FA241B1A8C0026D7F6 /* ReachabilityObserverDelegate.swift */,
 			);
 			name = Delegates;
 			sourceTree = "<group>";
@@ -471,7 +474,7 @@
 			children = (
 				B83BC3F6241ACDF90026D7F6 /* CloudKit.framework */,
 				B83B03DA241160D600EC4BAD /* GameKit.framework */,
-				F49880530830E5299E41C1DE /* libPods-SaveTheCat.a */,
+				55C6E4EB948AE2FD3FA22E3A /* Pods_SaveTheCat.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -521,6 +524,7 @@
 				B833544523EC8F0B00835672 /* Frameworks */,
 				B833544623EC8F0B00835672 /* Resources */,
 				B8BBAA6323FD967300614F95 /* ShellScript */,
+				6AA0C9C3B464C65DAFFDB808 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -640,6 +644,23 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		6AA0C9C3B464C65DAFFDB808 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-SaveTheCat/Pods-SaveTheCat-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-SaveTheCat/Pods-SaveTheCat-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-SaveTheCat/Pods-SaveTheCat-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		8CF5A5F0E2888D89BE8C2C58 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -709,6 +730,7 @@
 				B83B03AE241159F900EC4BAD /* UIViruses.swift in Sources */,
 				B83B039F241158FC00EC4BAD /* UICButton.swift in Sources */,
 				B83BC3EE241948E40026D7F6 /* UIGlovedPointer.swift in Sources */,
+				B83BC3FB241B1A8C0026D7F6 /* ReachabilityObserverDelegate.swift in Sources */,
 				B84032382414150D0020D9EA /* UISettingsMenu.swift in Sources */,
 				B83B03C124115B3200EC4BAD /* MCController.swift in Sources */,
 				B83B03C824115B6F00EC4BAD /* SceneDelegate.swift in Sources */,

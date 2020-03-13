@@ -98,6 +98,8 @@
 		B83BC3F22419965F0026D7F6 /* lightMyCats.png in Resources */ = {isa = PBXBuildFile; fileRef = B83BC3F02419965F0026D7F6 /* lightMyCats.png */; };
 		B83BC3F7241ACDF90026D7F6 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B83BC3F6241ACDF90026D7F6 /* CloudKit.framework */; };
 		B83BC3FB241B1A8C0026D7F6 /* ReachabilityObserverDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B83BC3FA241B1A8C0026D7F6 /* ReachabilityObserverDelegate.swift */; };
+		B83BC400241BD8EA0026D7F6 /* noInternet.png in Resources */ = {isa = PBXBuildFile; fileRef = B83BC3FE241BD8EA0026D7F6 /* noInternet.png */; };
+		B83BC401241BD8EA0026D7F6 /* yesInternet.png in Resources */ = {isa = PBXBuildFile; fileRef = B83BC3FF241BD8EA0026D7F6 /* yesInternet.png */; };
 		B84032382414150D0020D9EA /* UISettingsMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = B84032372414150D0020D9EA /* UISettingsMenu.swift */; };
 		B840323C241437C30020D9EA /* UIAds.swift in Sources */ = {isa = PBXBuildFile; fileRef = B840323B241437C30020D9EA /* UIAds.swift */; };
 		B840323F241438780020D9EA /* UILeadBoard.swift in Sources */ = {isa = PBXBuildFile; fileRef = B840323D241438780020D9EA /* UILeadBoard.swift */; };
@@ -203,6 +205,8 @@
 		B83BC3F5241ACDEE0026D7F6 /* Save The Cat!.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = "Save The Cat!.entitlements"; path = "SaveTheCat/Save The Cat!.entitlements"; sourceTree = "<group>"; };
 		B83BC3F6241ACDF90026D7F6 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		B83BC3FA241B1A8C0026D7F6 /* ReachabilityObserverDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReachabilityObserverDelegate.swift; sourceTree = "<group>"; };
+		B83BC3FE241BD8EA0026D7F6 /* noInternet.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = noInternet.png; path = SaveTheCat/noInternet.png; sourceTree = "<group>"; };
+		B83BC3FF241BD8EA0026D7F6 /* yesInternet.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = yesInternet.png; path = SaveTheCat/yesInternet.png; sourceTree = "<group>"; };
 		B84032372414150D0020D9EA /* UISettingsMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UISettingsMenu.swift; path = SaveTheCat/UISettingsMenu.swift; sourceTree = "<group>"; };
 		B840323B241437C30020D9EA /* UIAds.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UIAds.swift; path = SaveTheCat/UIAds.swift; sourceTree = "<group>"; };
 		B840323D241438780020D9EA /* UILeadBoard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UILeadBoard.swift; path = SaveTheCat/UILeadBoard.swift; sourceTree = "<group>"; };
@@ -283,6 +287,8 @@
 		B83B0342241154C000EC4BAD /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				B83BC3FE241BD8EA0026D7F6 /* noInternet.png */,
+				B83BC3FF241BD8EA0026D7F6 /* yesInternet.png */,
 				B83BC3E7241707E60026D7F6 /* darkVideo.png */,
 				B83BC3E8241707E60026D7F6 /* lightVideo.png */,
 				B83BC3DA2416A2100026D7F6 /* Glove */,
@@ -574,6 +580,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B83BC401241BD8EA0026D7F6 /* yesInternet.png in Resources */,
 				B83B03F42411877E00EC4BAD /* Icon-80@2x.png in Resources */,
 				B83B03962411577200EC4BAD /* mozartSonata.mp3 in Resources */,
 				B83B034B241154D700EC4BAD /* darkCheeringCat.png in Resources */,
@@ -614,6 +621,7 @@
 				B83BC3EA241707E60026D7F6 /* lightVideo.png in Resources */,
 				B83B037C2411551300EC4BAD /* lightCheeringCat.png in Resources */,
 				B83B033D241154B500EC4BAD /* chopinPrelude.mp3 in Resources */,
+				B83BC400241BD8EA0026D7F6 /* noInternet.png in Resources */,
 				B83B0340241154B500EC4BAD /* heaven.mp3 in Resources */,
 				B840324824143B540020D9EA /* lightLeaderBoard.png in Resources */,
 				B83B03842411551300EC4BAD /* lightNinjaDeadCat.png in Resources */,

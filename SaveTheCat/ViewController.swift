@@ -10,6 +10,7 @@ import UIKit
 import AVFoundation
 import GameKit
 import GoogleMobileAds
+import CoreBluetooth
 
 enum AspectRatio {
     case ar19point5by9
@@ -19,15 +20,19 @@ enum AspectRatio {
 
 class ViewController: UIViewController, GADInterstitialDelegate, GKGameCenterControllerDelegate, ReachabilityObserverDelegate {
     
+    var isReachableViaInternet:Bool = false;
     func reachabilityChanged(_ isReachable: Bool) {
-        
         if (isReachable) {
-            print("We have internet connection!!!");
+            print("We are reachable via internet")
+            self.isReachableViaInternet = true;
         } else {
-            print("We do not have internet connection!!!");
+            print("We are not reachable via internet")
+            self.isReachableViaInternet = false;
         }
     }
     
+    var manager:CBCentralManager!
+
     
     func gameCenterViewControllerDidFinish(_ gameCenterViewController: GKGameCenterViewController) {
         gameCenterViewController.dismiss(animated: true, completion: nil);
@@ -66,13 +71,13 @@ class ViewController: UIViewController, GADInterstitialDelegate, GKGameCenterCon
     static var aspectRatio:AspectRatio?
     
     // Game center message
-    var gameCenterMessage:GameCenterMessage?
+    var gameCenterMessage:GameMessage?
     var gameCenterMessageWidthHeightY:(CGFloat, CGFloat, CGFloat)?;
     var gameCenterAuthentificationOver:Bool = false;
+    
     // Game center leaderboard
     var isGCEnabled:Bool = Bool();
     var gcDefaultLeaderboardID:String = String();
-    
     
     // Ads
     var bannerView: GADBannerView!
@@ -171,15 +176,18 @@ class ViewController: UIViewController, GADInterstitialDelegate, GKGameCenterCon
         let player:GKLocalPlayer = GKLocalPlayer.local;
         player.authenticateHandler = {vc,error in
             guard error == nil else {
-                print("Possible internet connection loss??? $$$$$$$$$$$$$$$$$$$$$$$")
                 if (self.gameCenterAuthentificationOver) {
                     return;
                 }
-                print("DISABLE MULTIPLAYER")
+                if (!self.isReachableViaInternet) {
+                    self.gameCenterMessage!.displayNoInternetConsequencesMessage();
+                } else {
+                    self.gameCenterMessage!.displayGameCenterDirectionsMessage();
+                }
                 self.gameCenterAuthentificationOver = true;
+                print("DISABLE MULTIPLAYER")
                 self.boardGame!.attackMeter!.invokeAttackImpulse(delay: 5.75);
                 self.presentSaveTheCat();
-                self.gameCenterMessage!.showAndHideMessage();
                 return;
             }
             if let vc = vc {
@@ -191,6 +199,7 @@ class ViewController: UIViewController, GADInterstitialDelegate, GKGameCenterCon
                 })
             } else {
                 if (player.isAuthenticated) {
+                    print("No Internet Connection - Your Game Center experience will be limited!");
                     if (self.gameCenterAuthentificationOver) {
                         return;
                     }
@@ -256,7 +265,7 @@ class ViewController: UIViewController, GADInterstitialDelegate, GKGameCenterCon
     
     func setupGameCenterMessage() {
         let gameCenterMessageX:CGFloat = (mainView.frame.width - gameCenterMessageWidthHeightY!.0) * 0.5;
-        gameCenterMessage = GameCenterMessage(parentView: mainView, frame: CGRect(x: gameCenterMessageX, y: gameCenterMessageWidthHeightY!.2, width: gameCenterMessageWidthHeightY!.0, height: gameCenterMessageWidthHeightY!.1));
+        gameCenterMessage = GameMessage(parentView: mainView, frame: CGRect(x: gameCenterMessageX, y: gameCenterMessageWidthHeightY!.2, width: gameCenterMessageWidthHeightY!.0, height: gameCenterMessageWidthHeightY!.1));
         CenterController.centerHorizontally(childView: gameCenterMessage!, parentRect: mainView.frame, childRect: gameCenterMessage!.frame);
     }
     
@@ -473,7 +482,7 @@ class ViewController: UIViewController, GADInterstitialDelegate, GKGameCenterCon
     }
 }
 
-class GameCenterMessage:UIView {
+class GameMessage:UIView {
     
     var blurEffect:UIBlurEffect?
     var blurView:UIVisualEffectView?
@@ -482,6 +491,8 @@ class GameCenterMessage:UIView {
     
     var targetFrame:CGRect?
     var defaultFrame:CGRect?
+    
+    var noConnection:Bool = false;
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -498,6 +509,18 @@ class GameCenterMessage:UIView {
         setupImageButton();
         setupLabel();
         parentView.addSubview(self);
+    }
+    
+    func displayGameCenterDirectionsMessage() {
+        setupImage(named: "gameCenter.png");
+        messageLabel!.text = "Go to Settings and sign into\nGame Center for more fun!";
+        showAndHideMessage();
+    }
+    
+    func displayNoInternetConsequencesMessage() {
+        setupImage(named: "noInternet.png");
+        messageLabel!.text = "No Internet Connection! Game Center and Data will be limited!";
+        showAndHideMessage();
     }
     
     func setupBlurEffect() {
@@ -517,12 +540,11 @@ class GameCenterMessage:UIView {
     func setupImageButton() {
         imageButton = UIButton(frame: CGRect(x: self.frame.width * 0.0839, y: 0.0, width: self.frame.height * 0.65, height: self.frame.height));
         imageButton!.backgroundColor = UIColor.clear;
-        setupGameCenterButton();
         self.addSubview(imageButton!);
     }
     
-    func setupGameCenterButton() {
-        let image:UIImage = UIImage(named: "gameCenter.png")!;
+    func setupImage(named:String) {
+        let image:UIImage = UIImage(named: named)!;
         imageButton!.setImage(image, for: .normal);
         imageButton!.imageView!.contentMode = UIView.ContentMode.scaleAspectFit;
     }
@@ -535,7 +557,6 @@ class GameCenterMessage:UIView {
         messageLabel!.lineBreakMode = NSLineBreakMode.byWordWrapping;
         messageLabel!.numberOfLines = 2;
         messageLabel!.font = UIFont.boldSystemFont(ofSize: messageLabel!.frame.height * 0.25);
-        messageLabel!.text = "Go to Settings and sign into\nGame Center for more fun!";
     }
     
     func setStyle() {

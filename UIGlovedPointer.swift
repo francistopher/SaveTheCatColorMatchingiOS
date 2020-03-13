@@ -95,7 +95,7 @@ class UIGlovedPointer:UICButton {
         }
     }
     
-    override func setStyle() {
+    func setCompiledStyle() {
         if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1) {
             if (isTapping) {
                 self.setImage(lightTapImage!, for: .normal);
@@ -138,7 +138,7 @@ class UIGlovedPointer:UICButton {
         self.alpha = 1.0;
         self.superview!.bringSubviewToFront(self);
         self.isTapping = false;
-        self.setStyle();
+        self.setCompiledStyle();
         UIView.animate(withDuration: 0.25, delay: 0.75, options: .curveEaseInOut, animations: {
             self.frame = self.originalFrame!;
         }, completion: { _ in
@@ -162,7 +162,7 @@ class UIGlovedPointer:UICButton {
         })
         translateToTapAnimation!.addCompletion({ _ in
             self.isTapping = true;
-            self.setStyle();
+            self.setCompiledStyle();
             self.sway();
         })
     }
@@ -170,14 +170,14 @@ class UIGlovedPointer:UICButton {
     func sway() {
         Timer.scheduledTimer(withTimeInterval: 0.25, repeats: false, block: { _ in
             self.isTapping = false;
-            self.setStyle();
+            self.setCompiledStyle();
         })
         setupTranslateFromTapAnimation();
         translateFromTapAnimation!.startAnimation(afterDelay: 0.125);
     }
     
     override func translate(newOriginalFrame:CGRect) {
-        setStyle();
+        setCompiledStyle();
         transitionedToCatButton = true;
         stopAnimations();
         UIView.animate(withDuration: 0.5, delay: 0.125, options: .curveEaseInOut, animations: {

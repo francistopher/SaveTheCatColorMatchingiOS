@@ -95,7 +95,7 @@ class UIBoardGame: UIView {
         glovePointer!.adButton = nil;
         glovePointer!.stopAnimations();
         glovePointer!.isTapping = false;
-        glovePointer!.setStyle();
+        glovePointer!.setCompiledStyle();
         glovePointer!.doShrink = false;
         livesMeter!.resetLivesLeftCount();
         self.results!.fadeOut();
@@ -254,7 +254,7 @@ class UIBoardGame: UIView {
         self.glovePointer!.stopAnimations();
         // Prepare glove pointer and
         self.glovePointer!.isTapping = false;
-        self.glovePointer!.setStyle();
+        self.glovePointer!.setCompiledStyle();
         let buttons = self.results!.update();
         if (buttons.count == 1) {
             print("Le button exists!!!")

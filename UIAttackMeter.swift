@@ -58,7 +58,7 @@ class UIAttackMeter:UICView {
     init(parentView:UIView, frame:CGRect, cats:UICatButtons) {
         super.init(parentView: parentView, x: frame.minX, y: frame.minY, width: frame.width, height: frame.height, backgroundColor: UIColor.clear);
         self.layer.cornerRadius = self.frame.height * 0.5;
-        self.layer.borderWidth = self.frame.height / 12.0
+        self.layer.borderWidth = self.frame.height / 12.0;
         self.cats = cats;
     }
     
@@ -439,6 +439,7 @@ class UIAttackMeter:UICView {
     
     func setCompiledStyle() {
         setStyle();
+        self.layer.borderColor = UIColor.systemYellow.cgColor;
         virus!.setupVirusImage();
         cat!.setCat(named: "SmilingCat", stage: 5);
     }

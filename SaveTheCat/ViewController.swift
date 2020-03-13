@@ -273,6 +273,7 @@ class ViewController: UIViewController, GADInterstitialDelegate, GKGameCenterCon
             self.colorOptions!.fadeIn();
             self.boardGame!.buildBoardGame();
             self.settingsButton!.fadeIn();
+            self.settingsButton!.settingsMenu!.mouseCoin!.mouseCoinView!.fadeIn();
             self.bannerView!.alpha = 1.0;
         }
     }

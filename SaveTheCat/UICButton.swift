@@ -93,13 +93,15 @@ class UICButton:UIButton {
     }
     
     func hide(){
-        self.alpha = 0.0;
+        UIView.animate(withDuration: 1.0, delay: 0.125, options: .curveEaseIn, animations: {
+            self.alpha = 0.0;
+        });
     }
     
     func show() {
         UIView.animate(withDuration: 1.0, delay: 0.125, options: .curveEaseIn, animations: {
             self.alpha = 1.0;
-       });
+        });
     }
     
     func fadeBackgroundIn(){

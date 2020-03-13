@@ -50,7 +50,6 @@ class UICatButton: UIButton {
     }
     
     func giveMouseCoin(withNoise:Bool) {
-        UIResults.mouseCoins += 1;
         // Generate mouse coin
         let mouseCoin:UIMouseCoin = UIMouseCoin(parentView: self.imageContainerButton!, x: 0.0, y: 0.0, width: self.imageContainerButton!.frame.width / 4.0, height: self.imageContainerButton!.frame.height / 4.0);
         mouseCoin.removeTarget(self, action: #selector(mouseCoin.mouseCoinSelector), for: .touchUpInside);
@@ -80,6 +79,11 @@ class UICatButton: UIButton {
                 mouseCoin.frame = newMouseCoinFrame;
             }, completion: { _ in
                 SoundController.coinEarned();
+                UIResults.mouseCoins += 1;
+                ViewController.settingsButton!.settingsMenu!.mouseCoin!.amountLabel!.text = "\(UIResults.mouseCoins)";
+                if (ViewController.settingsButton!.settingsMenu!.mouseCoin!.mouseCoinView!.alpha == 0.0) {
+                    ViewController.settingsButton!.settingsMenu!.mouseCoin!.sendActions(for: .touchUpInside);
+                }
                 mouseCoin.removeFromSuperview();
             })
         }

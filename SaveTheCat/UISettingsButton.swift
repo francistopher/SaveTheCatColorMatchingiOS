@@ -66,19 +66,16 @@ class UISettingsButton:UIButton {
                 ViewController.staticMainView!.bringSubviewToFront(settingsMenu!);
                 ViewController.staticMainView!.bringSubviewToFront(self);
                 ViewController.staticMainView!.bringSubviewToFront(settingsMenu!.mouseCoin!.mouseCoinView!);
-                if (ViewController.aspectRatio! != .ar19point5by9) {
-                    settingsMenu!.mouseCoin!.mouseCoinView!.transform(frame: settingsMenu!.mouseCoin!.mouseCoinView!.originalFrame!);
-                }
-                settingsMenu!.mouseCoin!.setStyle();
+                settingsMenu!.mouseCoin!.mouseCoinView!.backgroundColor = self.backgroundColor;
+                settingsMenu!.mouseCoin!.mouseCoinView!.fadeOut();
                 boardGame!.cats.clearCatButtons();
                 boardGame!.attackMeter!.pauseVirusMovement();
                 settingsMenuShow();
             } else {
                 // Settings button unpressed
-                if (ViewController.aspectRatio! != .ar19point5by9) {
-                    settingsMenu!.mouseCoin!.mouseCoinView!.transform(frame: settingsMenu!.mouseCoin!.mouseCoinView!.reducedFrame!);
-                }
+                settingsMenu!.mouseCoin!.mouseCoinView!.fadeIn();
                 settingsMenu!.mouseCoin!.mouseCoinView!.backgroundColor = UIColor.clear;
+                settingsMenu!.mouseCoin!.mouseCoinView!.layer.borderColor = UIColor.clear.cgColor;
                 boardGame!.cats.unClearCatButtons();
                 boardGame!.attackMeter!.unPauseVirusMovement();
                 settingsMenuHide();

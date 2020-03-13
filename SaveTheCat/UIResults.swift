@@ -262,7 +262,7 @@ class UIResults: UICView {
                         SoundController.chopinPrelude(play: true);
                         timer!.invalidate();
                         // Reformat the buttons
-                        self.watchAdForXMouseCoins!.hide();
+                        self.watchAdForXMouseCoins!.alpha = 0.0;
                         self.continueButton!.frame = self.continueButton!.originalFrame!;
                         // Give mouse coins
                         self.giveMouseCoins();

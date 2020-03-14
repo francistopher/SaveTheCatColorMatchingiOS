@@ -53,7 +53,6 @@ class UIGameMessage:UIView {
         Timer.scheduledTimer(withTimeInterval: 0.125, repeats: true, block: { _ in
             parentView.bringSubviewToFront(self);
             if (self.frame == self.defaultFrame && self.messageQueue.count > 0) {
-                print("MESSAGE: Started the show!");
                 self.showMessage();
             }
             if (self.messageQueue.count > 0 && self.isShowing) {

@@ -8,6 +8,7 @@
 
 import SwiftUI
 import CloudKit
+import GameKit
 
 class UIBoardGame: UIView {
     
@@ -116,7 +117,28 @@ class UIBoardGame: UIView {
         })
     }
     
-    func buildBoardGame(){
+    func match(_ match: GKMatch, player: GKPlayer, didChange state: GKPlayerConnectionState) {
+        print("MESSAGE: We found \(state)")
+    }
+    
+    func searchForOpponent() {
+        // Hold virus
+        self.attackMeter!.sendVirusToStartAndHold();
+        // Setup the match request
+        let matchRequest = GKMatchRequest();
+        matchRequest.minPlayers = 2;
+        matchRequest.maxPlayers = 2;
+        // Start match making
+        print("MESSAGE: We are searching for an opponent!")
+        let matchMakerVC = GKMatchmakerViewController(matchRequest: matchRequest);
+        matchMakerVC!.matchmakerDelegate = ViewController.staticViewController!;
+        ViewController.staticViewController!.present(matchMakerVC!, animated: true, completion: {
+            print("MESSAGE: Match maker view presented")
+        })
+        
+    }
+    
+    func buildGame() {
         results!.catsThatLived += cats.countOfAliveCatButtons();
         rowAndColumnNums = getRowsAndColumns(currentStage: currentRound);
         cats.reset();
@@ -132,6 +154,11 @@ class UIBoardGame: UIView {
             glovePointer!.setColorAndCatButtons(colorButtons: colorOptions!.selectionButtons, catButtons: cats, first: true);
             glovePointer!.grow();
         }
+    }
+    
+    func prepareGame(){
+        print("Searching for an opponent!");
+        searchForOpponent();
     }
     
     func buildGridColors(){
@@ -533,7 +560,7 @@ class UIBoardGame: UIView {
         // Build board game
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.75) {
             self.currentRound += 1;
-            self.buildBoardGame();
+            self.prepareGame();
             self.attackMeter!.startFirstRotation(afterDelay: 1.50);
         }
         // Remove selected buttons after they've shrunk
@@ -548,7 +575,7 @@ class UIBoardGame: UIView {
         colorOptions!.loadSelectionButtonsToSelectedButtons();
         // Build board game
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.75) {
-            self.buildBoardGame();
+            self.prepareGame();
             self.attackMeter!.startFirstRotation(afterDelay: 1.50);
         }
         // Remove dispersed buttons after they've dispersed

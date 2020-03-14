@@ -63,7 +63,6 @@ class UIAttackMeter:UICView {
     }
     
     func startFirstRotation(afterDelay:Double) {
-        
         if (currentVirusPhase != nil || didNotInvokeAttackImpulse) {
             return;
         }

@@ -18,7 +18,19 @@ enum AspectRatio {
     case ar4by3
 }
 
-class ViewController: UIViewController, GADInterstitialDelegate, GKGameCenterControllerDelegate, ReachabilityObserverDelegate {
+class ViewController: UIViewController, GADInterstitialDelegate, GKGameCenterControllerDelegate, ReachabilityObserverDelegate, GKMatchmakerViewControllerDelegate {
+    
+    func matchmakerViewController(_ viewController: GKMatchmakerViewController, didFailWithError error: Error) {
+        print("MESSAGE: Match maker view controller!");
+    }
+    
+    
+    func matchmakerViewControllerWasCancelled(_ viewController: GKMatchmakerViewController) {
+        print("MESSAGE: Match maker view controller canceled!");
+        self.dismiss(animated: true, completion: {
+            print("MESSAGE: Match maker view controller dismissed!")
+        })
+    }
     
     var firedITunesStatus:Bool = false;
     var isInternetReachable:Bool = false;
@@ -212,7 +224,6 @@ class ViewController: UIViewController, GADInterstitialDelegate, GKGameCenterCon
                 }
                 self.gameCenterAuthentificationOver = true;
                 print("DISABLE MULTIPLAYER")
-                self.boardGame!.attackMeter!.invokeAttackImpulse(delay: 5.75);
                 self.presentSaveTheCat();
                 return;
             }
@@ -232,7 +243,6 @@ class ViewController: UIViewController, GADInterstitialDelegate, GKGameCenterCon
                     self.gameMessage!.stayALittleLonger = true;
                     print("ENABLE MULTIPLAYER")
                     print("PLAYER AUTHENTICATED!")
-                    self.boardGame!.attackMeter!.invokeAttackImpulse(delay: 5.5);
                     self.presentSaveTheCat();
                 }
             }
@@ -320,7 +330,7 @@ class ViewController: UIViewController, GADInterstitialDelegate, GKGameCenterCon
             self.boardGame!.livesMeter!.fadeIn();
             self.boardGame!.attackMeter!.compiledShow();
             self.colorOptions!.fadeIn();
-            self.boardGame!.buildBoardGame();
+            self.boardGame!.prepareGame();
             self.settingsButton!.fadeIn();
             self.settingsButton!.settingsMenu!.mouseCoin!.mouseCoinView!.fadeIn();
             self.bannerView!.alpha = 1.0;

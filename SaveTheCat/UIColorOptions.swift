@@ -10,7 +10,7 @@ import SwiftUI
 
 class UIColorOptions: UIView {
     
-    var colors:[UIColor] = [UIColor.systemGreen, UIColor.systemYellow, UIColor.systemOrange, UIColor.systemRed, UIColor.systemPurple, UIColor.systemBlue];
+    var colors:[UIColor] = [UIColor.systemGreen, UIColor.systemYellow, UIColor.systemOrange, UIColor.systemPink, UIColor.systemPurple, UIColor.systemBlue];
     var selectedColor:UIColor = UIColor.lightGray;
     var selectionButtons:[UICButton] = [UICButton]();
     var selectedButtons:[UICButton] = [UICButton]();

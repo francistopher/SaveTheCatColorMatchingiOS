@@ -18,19 +18,7 @@ enum AspectRatio {
     case ar4by3
 }
 
-class ViewController: UIViewController, GADInterstitialDelegate, GKGameCenterControllerDelegate, ReachabilityObserverDelegate, GKMatchmakerViewControllerDelegate {
-    
-    func matchmakerViewController(_ viewController: GKMatchmakerViewController, didFailWithError error: Error) {
-        print("MESSAGE: Match maker view controller!");
-    }
-    
-    
-    func matchmakerViewControllerWasCancelled(_ viewController: GKMatchmakerViewController) {
-        print("MESSAGE: Match maker view controller canceled!");
-        self.dismiss(animated: true, completion: {
-            print("MESSAGE: Match maker view controller dismissed!")
-        })
-    }
+class ViewController: UIViewController, GADInterstitialDelegate, ReachabilityObserverDelegate, GKGameCenterControllerDelegate {
     
     var firedITunesStatus:Bool = false;
     var isInternetReachable:Bool = false;
@@ -51,7 +39,6 @@ class ViewController: UIViewController, GADInterstitialDelegate, GKGameCenterCon
     }
     
     var manager:CBCentralManager!
-
     
     func gameCenterViewControllerDidFinish(_ gameCenterViewController: GKGameCenterViewController) {
         gameCenterViewController.dismiss(animated: true, completion: nil);
@@ -505,6 +492,7 @@ class ViewController: UIViewController, GADInterstitialDelegate, GKGameCenterCon
                 settingsButton!.settingsMenu!.mouseCoin!.mouseCoinView!.backgroundColor = UIColor.black;
             }
         }
+        boardGame!.searchMagnifyGlass!.setThisStyle();
         boardGame!.cats.updateUIStyle();
         boardGame!.livesMeter!.setStyle();
         boardGame!.results!.setCompiledStyle();

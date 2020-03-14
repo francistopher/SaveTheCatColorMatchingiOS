@@ -10,7 +10,7 @@ import SwiftUI
 import CloudKit
 import GameKit
 
-class UIBoardGame: UIView {
+class UIBoardGame: UIView, GKMatchDelegate {
     
     var colorOptions:UIColorOptions? = nil;
     
@@ -32,6 +32,7 @@ class UIBoardGame: UIView {
     var timer:Timer?
     
     var glovePointer:UIGlovedPointer?
+    var searchMagnifyGlass:UISearchMagnifyGlass?
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented");
@@ -49,6 +50,12 @@ class UIBoardGame: UIView {
         self.results!.continueButton!.addTarget(self, action: #selector(continueSelector), for: .touchUpInside);
         setupAttackMeter();
         setupLivesMeter();
+        setupSearchMagnifyGlass();
+    }
+    
+    func setupSearchMagnifyGlass() {
+         let size:CGSize = CGSize(width: self.frame.height * 0.25, height: self.frame.width * 0.25);
+        searchMagnifyGlass = UISearchMagnifyGlass(parentView: self, frame: CGRect(x: (frame.width - size.width) * 0.5, y: (frame.height - size.height) * 0.5, width: size.width, height: size.height));
     }
     
     func setupAttackMeter() {
@@ -117,24 +124,31 @@ class UIBoardGame: UIView {
     }
     
     func match(_ match: GKMatch, player: GKPlayer, didChange state: GKPlayerConnectionState) {
-        print("MESSAGE: We found \(state)")
+        print("MESSAGE: We found \(player.displayName)")
     }
     
+    var myMatch:GKMatch?
     func searchForOpponent() {
         // Hold virus
         self.attackMeter!.sendVirusToStartAndHold();
         // Setup the match request
         let matchRequest = GKMatchRequest();
+        matchRequest.restrictToAutomatch = true;
         matchRequest.minPlayers = 2;
         matchRequest.maxPlayers = 2;
         // Start match making
-        print("MESSAGE: We are searching for an opponent!")
-        let matchMakerVC = GKMatchmakerViewController(matchRequest: matchRequest);
-        matchMakerVC!.matchmakerDelegate = ViewController.staticViewController!;
-        ViewController.staticViewController!.present(matchMakerVC!, animated: true, completion: {
-            print("MESSAGE: Match maker view presented")
+        let matchMaker = GKMatchmaker();
+        print("MESSAGE: Start finding players for match!")
+        matchMaker.findMatch(for: matchRequest, withCompletionHandler: { (match:GKMatch?, error:Error?) -> Void in
+            if (error != nil) {
+                print(error!.localizedDescription);
+            }
+            if (match != nil) {
+                self.myMatch = match;
+                match!.delegate = self
+                print("MESSAGE: We found a match!!!")
+            }
         })
-        
     }
     
     func buildGame() {
@@ -146,6 +160,9 @@ class UIBoardGame: UIView {
         buildGridButtons();
         cats.loadPreviousCats();
         recordGridColorsUsed();
+    }
+    
+    func startGame() {
         colorOptions!.buildColorOptionButtons(setup: true);
         attackMeter!.holdVirusAtStart = false;
         // Set glove pointer
@@ -156,12 +173,14 @@ class UIBoardGame: UIView {
     }
     
     func prepareGame(){
-        print("Searching for an opponent!");
         if (GKLocalPlayer.local.isAuthenticated && ViewController.staticViewController!.isInternetReachable) {
+            buildGame();
+            searchMagnifyGlass!.startAnimation();
             searchForOpponent();
         } else {
             attackMeter!.invokeAttackImpulse(delay: 1.0);
             buildGame();
+            startGame();
         }
     }
     
@@ -562,6 +581,7 @@ class UIBoardGame: UIView {
         // Build board game
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.75) {
             self.buildGame();
+            self.startGame();
             self.attackMeter!.startFirstRotation(afterDelay: 1.50);
         }
         configureComponentsAfterBoardGameReset();
@@ -585,6 +605,7 @@ class UIBoardGame: UIView {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.75) {
             self.currentRound += 1;
             self.buildGame();
+            self.startGame();
             self.attackMeter!.startFirstRotation(afterDelay: 1.50);
         }
         // Remove selected buttons after they've shrunk
@@ -594,5 +615,97 @@ class UIBoardGame: UIView {
             self.currentRound += 1;
             self.successGradientLayer!.isHidden = true;
         }
+    }
+}
+
+class UISearchMagnifyGlass:UICButton {
+    
+    enum Target {
+        case topLeft
+        case topRight
+        case bottomLeft
+        case bottomRight
+        case center
+    }
+    
+    var label:UICLabel?
+    var targetFrames:[Target:CGRect] = [:];
+    var previousTarget:Target?
+    var nextTarget:Target?
+    var transitionAnimation:UIViewPropertyAnimator?
+    
+    init(parentView:UIView, frame:CGRect) {
+        super.init(parentView: parentView, frame: frame, backgroundColor: UIColor.clear);
+        self.layer.borderWidth = 0.0;
+        self.alpha = 0.0;
+        setupLabel();
+        setupTargetFrames(parentView);
+        setupTransitionAnimation();
+        setThisStyle();
+    }
+    
+    func setupTargetFrames(_ parentView:UIView) {
+        targetFrames[.center] = frame;
+        targetFrames[.topLeft] = CGRect(x: frame.width * 0.5, y: frame.height * 0.5, width: frame.width, height: frame.height);
+        targetFrames[.topRight] = CGRect(x: parentView.frame.width - frame.width - frame.width * 0.5, y: frame.height * 0.5, width: frame.width, height: frame.height);
+        targetFrames[.bottomLeft] = CGRect(x: frame.width * 0.5, y: parentView.frame.height - frame.height - frame.height * 0.9, width: frame.width, height: frame.height);
+        targetFrames[.bottomRight] = CGRect(x: parentView.frame.width - frame.width - frame.width * 0.5, y:  parentView.frame.height - frame.height - frame.height * 0.9, width: frame.width, height: frame.height);
+    }
+    
+    func setupLabel() {
+        let height:CGFloat = frame.height * 0.25;
+        label = UICLabel(parentView: self, x: 0.0, y: frame.height * 0.9, width: frame.width, height: height * 2.0)
+        label!.backgroundColor = UIColor.clear;
+        label!.numberOfLines = 2;
+        label!.lineBreakMode = NSLineBreakMode.byWordWrapping;
+        label!.text = "Searching for\nOpponent";
+        label!.font = UIFont.boldSystemFont(ofSize: height * 0.65);
+    }
+    
+    func setNextTarget() {
+        var targets:[Target] = [.topLeft, .topRight, .bottomLeft, .bottomRight, .center];
+        var index:Int = -1;
+        if (nextTarget != nil) {
+            index = targets.firstIndex(of: nextTarget!)!;
+            targets.remove(at: index);
+            if (previousTarget != nil) {
+                index = targets.firstIndex(of: previousTarget!)!;
+                targets.remove(at: index);
+            }
+            previousTarget = nextTarget!;
+        }
+        nextTarget = targets.randomElement()!;
+    }
+    
+    func setupTransitionAnimation() {
+        setNextTarget();
+        transitionAnimation = UIViewPropertyAnimator(duration: 1.5, curve: .easeInOut, animations: {
+            self.frame = self.targetFrames[self.nextTarget!]!;
+        })
+        transitionAnimation!.addCompletion({ _ in
+            self.setupTransitionAnimation();
+            self.transitionAnimation!.startAnimation();
+        })
+    }
+    
+    func startAnimation() {
+        self.superview!.bringSubviewToFront(self);
+        self.transitionAnimation!.startAnimation();
+        self.alpha = 1.0;
+    }
+    
+    func setThisStyle() {
+        if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1) {
+            self.setImage(UIImage(named: "lightMagnifyGlass.png"), for: .normal);
+            label!.textColor = UIColor.black;
+        } else {
+            self.setImage(UIImage(named: "darkMagnifyGlass.png"), for: .normal);
+            label!.textColor = UIColor.white;
+        }
+        self.imageView!.contentMode = UIView.ContentMode.scaleAspectFit;
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 }

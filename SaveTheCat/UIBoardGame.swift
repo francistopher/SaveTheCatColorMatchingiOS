@@ -51,7 +51,6 @@ class UIBoardGame: UIView {
         setupLivesMeter();
     }
     
-    
     func setupAttackMeter() {
         let height:CGFloat = ViewController.staticMainView!.frame.height * ((1.0/300.0) + 0.08);
         var width:CGFloat = ViewController.staticUnitViewWidth * 6.5;
@@ -158,7 +157,12 @@ class UIBoardGame: UIView {
     
     func prepareGame(){
         print("Searching for an opponent!");
-        searchForOpponent();
+        if (GKLocalPlayer.local.isAuthenticated && ViewController.staticViewController!.isInternetReachable) {
+            searchForOpponent();
+        } else {
+            attackMeter!.invokeAttackImpulse(delay: 1.0);
+            buildGame();
+        }
     }
     
     func buildGridColors(){
@@ -531,6 +535,12 @@ class UIBoardGame: UIView {
     
     func restart(){
         currentRound = 1
+        colorOptions!.loadSelectionButtonsToSelectedButtons();
+        // Build board game
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.75) {
+            self.prepareGame();
+            self.attackMeter!.startFirstRotation(afterDelay: 1.50);
+        }
         configureComponentsAfterBoardGameReset();
     }
     
@@ -548,7 +558,21 @@ class UIBoardGame: UIView {
         }
         reset(catsSurvived: true);
         self.colorOptions!.shrinkColorOptions();
+        colorOptions!.loadSelectionButtonsToSelectedButtons();
+        // Build board game
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.75) {
+            self.buildGame();
+            self.attackMeter!.startFirstRotation(afterDelay: 1.50);
+        }
         configureComponentsAfterBoardGameReset();
+    }
+    
+    func configureComponentsAfterBoardGameReset() {
+        // Remove dispersed buttons after they've dispersed
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+            self.colorOptions!.removeSelectedButtons();
+            self.successGradientLayer!.isHidden = true;
+        }
     }
     
     func promote(){
@@ -556,11 +580,11 @@ class UIBoardGame: UIView {
         gridColors = [[UIColor]]();
         colorOptions!.selectionColors = [UIColor]();
         colorOptions!.shrinkColorOptions();
-        self.colorOptions!.loadSelectionButtonsToSelectedButtons();
+        colorOptions!.loadSelectionButtonsToSelectedButtons();
         // Build board game
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.75) {
             self.currentRound += 1;
-            self.prepareGame();
+            self.buildGame();
             self.attackMeter!.startFirstRotation(afterDelay: 1.50);
         }
         // Remove selected buttons after they've shrunk
@@ -568,19 +592,6 @@ class UIBoardGame: UIView {
             self.currentRound -= 1;
             self.colorOptions!.removeSelectedButtons();
             self.currentRound += 1;
-            self.successGradientLayer!.isHidden = true;
-        }
-    }
-    func configureComponentsAfterBoardGameReset() {
-        colorOptions!.loadSelectionButtonsToSelectedButtons();
-        // Build board game
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.75) {
-            self.prepareGame();
-            self.attackMeter!.startFirstRotation(afterDelay: 1.50);
-        }
-        // Remove dispersed buttons after they've dispersed
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-            self.colorOptions!.removeSelectedButtons();
             self.successGradientLayer!.isHidden = true;
         }
     }

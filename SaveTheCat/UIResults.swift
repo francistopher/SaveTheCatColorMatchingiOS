@@ -344,6 +344,11 @@ class UIResults: UICView {
         // Adjust reward amount
         setAmountRate();
         // Determine whether to show ad
+        if (!ViewController.staticViewController!.isInternetReachable) {
+            continueButton!.frame = continueButton!.originalFrame!;
+            watchAdForXMouseCoins!.hide();
+            return [];
+        }
         if (CGFloat.random(in: 0...1) > 0.15) {
             continueButton!.frame = continueButton!.secondaryFrame!;
             watchAdForXMouseCoins!.frame = watchAdForXMouseCoins!.secondaryFrame!;

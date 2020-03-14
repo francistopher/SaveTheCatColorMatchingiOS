@@ -47,7 +47,6 @@ class ViewController: UIViewController, GADInterstitialDelegate, GKGameCenterCon
             settingsButton!.settingsMenu!.mouseCoin!.amountLabel!.text = "\(UIResults.mouseCoins)";
             gameMessage!.displayNoInternetConsequencesMessage();
             self.isInternetReachable = false;
-            
         }
     }
     

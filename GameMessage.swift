@@ -26,6 +26,7 @@ class UIGameMessage:UIView {
     var messageLabel:UICLabel?
     
     var targetFrame:CGRect?
+    var shrunkTargetFrame:CGRect?
     var defaultFrame:CGRect?
     
     var isShowing:Bool = false;
@@ -39,7 +40,8 @@ class UIGameMessage:UIView {
     
     init(parentView:UIView, frame:CGRect) {
         targetFrame = frame;
-        defaultFrame = CGRect(x: frame.minX, y: -(frame.minY * 2.0 + frame.height), width: frame.width, height: frame.height);
+        shrunkTargetFrame = CGRect(x: (parentView.frame.width - frame.width) * 0.5, y: frame.minY + frame.height * 0.5, width: 1.0, height: 1.0);
+        defaultFrame = CGRect(x: (parentView.frame.width - frame.width) * 0.5, y: -(frame.minY * 2.0 + frame.height), width: frame.width, height: frame.height);
         super.init(frame: defaultFrame!);
         self.backgroundColor = UIColor.clear;
         self.layer.cornerRadius = self.frame.width * 0.07;
@@ -186,10 +188,18 @@ class UIGameMessage:UIView {
     }
     
     func showMessage() {
+        
         UIView.animate(withDuration: 0.415, delay: 0.25, options: .curveLinear, animations: {
-            self.frame = self.targetFrame!;
+            if (self.stayALittleLonger) {
+                self.frame = self.shrunkTargetFrame!;
+            } else {
+                self.frame = self.targetFrame!;
+            }
         }, completion: { _ in
             self.isShowing = true;
+            if (self.stayALittleLonger) {
+                self.frame = self.targetFrame!;
+            }
         })
     }
     

@@ -313,7 +313,7 @@ class ViewController: UIViewController, GADInterstitialDelegate, ReachabilityObs
             self.viruses!.sway(immediately: false);
             self.viruses!.fadeIn();
             self.boardGame!.fadeIn();
-            self.boardGame!.livesMeter!.fadeIn();
+            self.boardGame!.myLiveMeter!.fadeIn();
             self.boardGame!.attackMeter!.compiledShow();
             self.colorOptions!.fadeIn();
             self.boardGame!.prepareGame();
@@ -452,7 +452,7 @@ class ViewController: UIViewController, GADInterstitialDelegate, ReachabilityObs
         CenterController.centerHorizontally(childView: colorOptions!, parentRect: mainView.frame, childRect: colorOptions!.frame);
         boardGame!.colorOptions = colorOptions!;
         colorOptions!.boardGameView = boardGame!;
-        boardGame!.livesMeter!.alpha = 0.0;
+        boardGame!.myLiveMeter!.alpha = 0.0;
         colorOptions!.alpha = 0.0;
     }
     
@@ -465,7 +465,7 @@ class ViewController: UIViewController, GADInterstitialDelegate, ReachabilityObs
     
     func setupSettingsButton() {
         let sideLength:CGFloat = (mainView.frame.height * ((1.0/300.0) + 0.08));
-        settingsButton = UISettingsButton(parentView: mainView, x: unitViewWidth, y: unitViewHeight, width: sideLength, height: sideLength);
+        settingsButton = UISettingsButton(parentView: mainView, x: unitViewWidth, y: unitViewHeight * 0.925, width: sideLength, height: sideLength);
         settingsButton!.setBoardGameAndColorOptionsView(boardGameView:boardGame!, colorOptionsView: colorOptions!);
         ViewController.settingsButton = settingsButton!;
         boardGame!.settingsButton = settingsButton!;
@@ -494,7 +494,7 @@ class ViewController: UIViewController, GADInterstitialDelegate, ReachabilityObs
         }
         boardGame!.searchMagnifyGlass!.setThisStyle();
         boardGame!.cats.updateUIStyle();
-        boardGame!.livesMeter!.setStyle();
+        boardGame!.myLiveMeter!.setStyle();
         boardGame!.results!.setCompiledStyle();
         boardGame!.attackMeter!.setCompiledStyle();
         colorOptions!.setStyle();

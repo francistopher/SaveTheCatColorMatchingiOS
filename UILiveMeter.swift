@@ -8,11 +8,11 @@
 
 import SwiftUI
 
-class UILivesMeter:UICView {
+class UILiveMeter:UICView {
     
     var livesLeft:Int = 1;
     var heartInactiveButtons:[UICButton] = [];
-    let heartImage:UIImage = UIImage(named: "heart.png")!;
+    var heartImage:UIImage?
     var heartInactiveButtonXRange:[CGFloat] = [];
     var currentHeartButton:UICButton?
     
@@ -20,8 +20,13 @@ class UILivesMeter:UICView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    init(parentView: UIView, frame:CGRect, backgroundColor: UIColor) {
+    init(parentView: UIView, frame:CGRect, isOpponent:Bool) {
         super.init(parentView: parentView, x: frame.minX, y: frame.minY, width: frame.width, height: frame.height, backgroundColor: UIColor.clear);
+        if (isOpponent) {
+          heartImage = UIImage(named: "opponentHeart.png")!
+        } else {
+          heartImage = UIImage(named: "heart.png")!
+        }
         self.layer.cornerRadius = self.frame.height * 0.5;
         self.layer.borderWidth = self.frame.height / 12.0;
         heartInactiveButtonXRange = [ 0.0, self.frame.width - (self.frame.height * 1.45), self.frame.width - self.frame.height + (self.layer.borderWidth * 0.05)];
@@ -45,9 +50,7 @@ class UILivesMeter:UICView {
     
     func buildHeartButton(x:CGFloat) {
         currentHeartButton = UICButton(parentView: self, frame: CGRect(x: x, y: 0.0, width: self.frame.height, height: self.frame.height), backgroundColor: UIColor.clear);
-        if (ViewController.aspectRatio! == .ar16by9) {
-            CenterController.center(childView: currentHeartButton!, parentRect: self.frame, childRect: currentHeartButton!.frame);
-        }
+        CenterController.center(childView: currentHeartButton!, parentRect: self.frame, childRect: currentHeartButton!.frame);
         currentHeartButton!.layer.borderWidth = 0.0;
         currentHeartButton!.setImage(heartImage, for: .normal);
         currentHeartButton!.addTarget(self, action: #selector(heartButtonSelector(sender:)), for: .touchUpInside);
@@ -115,6 +118,14 @@ class UILivesMeter:UICView {
             livesLeft = 1;
             setupHeartInactiveButtons();
         }
+    }
+    
+    override func fadeIn() {
+        UIView.animate(withDuration: 1.0, delay: 0.125, options: .curveEaseInOut, animations: {
+            self.alpha = 1.0;
+        }, completion: { _ in
+            self.isFadedOut = false;
+        })
     }
     
     override func setStyle() {

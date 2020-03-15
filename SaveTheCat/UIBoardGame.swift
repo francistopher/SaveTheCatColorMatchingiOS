@@ -25,7 +25,8 @@ class UIBoardGame: UIView, GKMatchDelegate {
     var successGradientLayer:CAGradientLayer? = nil;
     
     var settingsButton:UISettingsButton? = nil;
-    var livesMeter:UILivesMeter?
+    var myLiveMeter:UILiveMeter?
+    var opponentLiveMeter:UILiveMeter?
     var results:UIResults?
     var attackMeter:UIAttackMeter?
     var viruses:UIViruses?
@@ -33,6 +34,8 @@ class UIBoardGame: UIView, GKMatchDelegate {
     
     var glovePointer:UIGlovedPointer?
     var searchMagnifyGlass:UISearchMagnifyGlass?
+    
+    var currentMatch:GKMatch?
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented");
@@ -48,8 +51,8 @@ class UIBoardGame: UIView, GKMatchDelegate {
         parentView.addSubview(self);
         self.results = UIResults(parentView: parentView);
         self.results!.continueButton!.addTarget(self, action: #selector(continueSelector), for: .touchUpInside);
-        setupAttackMeter();
         setupLivesMeter();
+        setupAttackMeter();
         setupSearchMagnifyGlass();
     }
     
@@ -63,14 +66,10 @@ class UIBoardGame: UIView, GKMatchDelegate {
         var width:CGFloat = ViewController.staticUnitViewWidth * 6.5;
         var y:CGFloat = ViewController.staticUnitViewHeight;
         var x:CGFloat = 0.0;
-        if (ViewController.aspectRatio! == .ar19point5by9){
+        if (ViewController.aspectRatio! == .ar19point5by9 || ViewController.aspectRatio! == .ar16by9){
             width *= 1.5;
             x = (self.superview!.frame.width - width) * 0.5;
-            y += height * 1.15;
-        } else if (ViewController.aspectRatio! == .ar16by9) {
-            x = (self.superview!.frame.width - width) * 0.5;
-            x += ViewController.staticUnitViewWidth;
-            width += ViewController.staticUnitViewWidth * 0.5;
+            y = myLiveMeter!.frame.maxY + myLiveMeter!.layer.borderWidth;
         } else {
             x = (self.superview!.frame.width - width) * 0.5;
         }
@@ -82,20 +81,12 @@ class UIBoardGame: UIView, GKMatchDelegate {
 
     func setupLivesMeter() {
         let height:CGFloat = ViewController.staticMainView!.frame.height * ((1.0/300.0) + 0.08);
-        var width:CGFloat = height * (1.0 / 60.0 + 1.9)
-        var x:CGFloat = ViewController.staticMainView!.frame.width - width - ViewController.staticUnitViewWidth;
-        if (ViewController.aspectRatio! == .ar19point5by9){
-            
-        } else if (ViewController.aspectRatio! == .ar16by9) {
-            width = height;
-            x = ViewController.staticMainView!.frame.width - width - ViewController.staticUnitViewWidth;
-        }
-        let livesMeterFrame:CGRect = CGRect(x: x, y: ViewController.staticUnitViewHeight, width: width, height: height);
-        livesMeter = UILivesMeter(parentView: self.superview!, frame: livesMeterFrame, backgroundColor: UIColor.white);
+        let x:CGFloat = ViewController.staticMainView!.frame.width - height - ViewController.staticUnitViewWidth;
+        let livesMeterFrame:CGRect = CGRect(x: x, y: ViewController.staticUnitViewHeight * 0.925, width: height, height: height);
+        myLiveMeter = UILiveMeter(parentView: self.superview!, frame: livesMeterFrame, isOpponent: false);
     }
     
     @objc func continueSelector() {
-        print("Continuing?");
         if (settingsButton!.isPressed) {
             settingsButton!.sendActions(for: .touchUpInside);
         }
@@ -104,7 +95,7 @@ class UIBoardGame: UIView, GKMatchDelegate {
         glovePointer!.isTapping = false;
         glovePointer!.setCompiledStyle();
         glovePointer!.doShrink = false;
-        livesMeter!.resetLivesLeftCount();
+        myLiveMeter!.resetLivesLeftCount();
         self.results!.fadeOut();
         results!.catsThatLived = 0;
         results!.catsThatDied = 0;
@@ -124,10 +115,20 @@ class UIBoardGame: UIView, GKMatchDelegate {
     }
     
     func match(_ match: GKMatch, player: GKPlayer, didChange state: GKPlayerConnectionState) {
+        print("MESSAGE: Connection state \(state)");
         print("MESSAGE: We found \(player.displayName)")
     }
     
-    var myMatch:GKMatch?
+    func setupOpponentLiveMeter() {
+        let x:CGFloat = myLiveMeter!.frame.minX + myLiveMeter!.layer.borderWidth - myLiveMeter!.frame.width;
+        opponentLiveMeter = UILiveMeter(parentView: ViewController.staticMainView!, frame: CGRect(x: myLiveMeter!.frame.minX, y: myLiveMeter!.frame.minY, width: myLiveMeter!.frame.width, height: myLiveMeter!.frame.height), isOpponent: true);
+        opponentLiveMeter!.alpha = 1.0;
+        ViewController.staticMainView!.bringSubviewToFront(myLiveMeter!);
+        UIView.animate(withDuration: 1.0, animations: {
+            self.opponentLiveMeter!.frame = CGRect(x: x, y: self.opponentLiveMeter!.frame.minY, width: self.opponentLiveMeter!.frame.width, height: self.opponentLiveMeter!.frame.height);
+        })
+    }
+
     func searchForOpponent() {
         // Hold virus
         self.attackMeter!.sendVirusToStartAndHold();
@@ -144,9 +145,10 @@ class UIBoardGame: UIView, GKMatchDelegate {
                 print(error!.localizedDescription);
             }
             if (match != nil) {
-                self.myMatch = match;
-                match!.delegate = self
-                print("MESSAGE: We found a match!!!")
+                self.currentMatch = match!;
+                match!.delegate = self;
+                self.searchMagnifyGlass!.stopTransitionAnimation();
+                self.setupOpponentLiveMeter();
             }
         })
     }
@@ -297,7 +299,7 @@ class UIBoardGame: UIView, GKMatchDelegate {
         SoundController.mozartSonata(play: false);
         SoundController.chopinPrelude(play: true);
         colorOptions!.removeBorderOfSelectionButtons();
-        self.livesMeter!.removeAllHeartLives();
+        self.myLiveMeter!.removeAllHeartLives();
         self.attackMeter!.disperseCatButton();
         self.attackMeter!.sendVirusToStartAndHold();
         self.attackMeter!.previousDisplacementDuration = 3.5;
@@ -388,9 +390,9 @@ class UIBoardGame: UIView, GKMatchDelegate {
     
     func attackCatButton(catButton:UICatButton) {
         self.attackMeter!.updateDuration(change: -0.75);
-        if (livesMeter!.livesLeft - 1 > 0) {
+        if (myLiveMeter!.livesLeft - 1 > 0) {
             setCatButtonAsDead(catButton: catButton, disperseDownwardOnly:true);
-            livesMeter!.decrementLivesLeftCount();
+            myLiveMeter!.decrementLivesLeftCount();
             if (cats.areAllCatsDead()) {
                 self.attackMeter!.sendVirusToStart();
                 maintain();
@@ -454,7 +456,7 @@ class UIBoardGame: UIView, GKMatchDelegate {
             colorOptions!.isTransitioned = false;
             // Add data of survived cats
             if (cats.didAllSurvive()) {
-                livesMeter!.incrementLivesLeftCount(catButton: catButton);
+                myLiveMeter!.incrementLivesLeftCount(catButton: catButton);
                 self.attackMeter!.updateDuration(change: 0.1);
                 self.attackMeter!.sendVirusToStart();
                 self.glovePointer!.shrinked();
@@ -537,7 +539,7 @@ class UIBoardGame: UIView, GKMatchDelegate {
     
     func revertSelections() {
         attackMeter!.sendVirusToStartAndHold();
-        livesMeter!.resetLivesLeftCount();
+        myLiveMeter!.resetLivesLeftCount();
         colorOptions!.selectedColor = UIColor.lightGray;
         cats.shrink();
         currentRound = 1;
@@ -615,97 +617,5 @@ class UIBoardGame: UIView, GKMatchDelegate {
             self.currentRound += 1;
             self.successGradientLayer!.isHidden = true;
         }
-    }
-}
-
-class UISearchMagnifyGlass:UICButton {
-    
-    enum Target {
-        case topLeft
-        case topRight
-        case bottomLeft
-        case bottomRight
-        case center
-    }
-    
-    var label:UICLabel?
-    var targetFrames:[Target:CGRect] = [:];
-    var previousTarget:Target?
-    var nextTarget:Target?
-    var transitionAnimation:UIViewPropertyAnimator?
-    
-    init(parentView:UIView, frame:CGRect) {
-        super.init(parentView: parentView, frame: frame, backgroundColor: UIColor.clear);
-        self.layer.borderWidth = 0.0;
-        self.alpha = 0.0;
-        setupLabel();
-        setupTargetFrames(parentView);
-        setupTransitionAnimation();
-        setThisStyle();
-    }
-    
-    func setupTargetFrames(_ parentView:UIView) {
-        targetFrames[.center] = frame;
-        targetFrames[.topLeft] = CGRect(x: frame.width * 0.5, y: frame.height * 0.5, width: frame.width, height: frame.height);
-        targetFrames[.topRight] = CGRect(x: parentView.frame.width - frame.width - frame.width * 0.5, y: frame.height * 0.5, width: frame.width, height: frame.height);
-        targetFrames[.bottomLeft] = CGRect(x: frame.width * 0.5, y: parentView.frame.height - frame.height - frame.height * 0.9, width: frame.width, height: frame.height);
-        targetFrames[.bottomRight] = CGRect(x: parentView.frame.width - frame.width - frame.width * 0.5, y:  parentView.frame.height - frame.height - frame.height * 0.9, width: frame.width, height: frame.height);
-    }
-    
-    func setupLabel() {
-        let height:CGFloat = frame.height * 0.25;
-        label = UICLabel(parentView: self, x: 0.0, y: frame.height * 0.9, width: frame.width, height: height * 2.0)
-        label!.backgroundColor = UIColor.clear;
-        label!.numberOfLines = 2;
-        label!.lineBreakMode = NSLineBreakMode.byWordWrapping;
-        label!.text = "Searching for\nOpponent";
-        label!.font = UIFont.boldSystemFont(ofSize: height * 0.65);
-    }
-    
-    func setNextTarget() {
-        var targets:[Target] = [.topLeft, .topRight, .bottomLeft, .bottomRight, .center];
-        var index:Int = -1;
-        if (nextTarget != nil) {
-            index = targets.firstIndex(of: nextTarget!)!;
-            targets.remove(at: index);
-            if (previousTarget != nil) {
-                index = targets.firstIndex(of: previousTarget!)!;
-                targets.remove(at: index);
-            }
-            previousTarget = nextTarget!;
-        }
-        nextTarget = targets.randomElement()!;
-    }
-    
-    func setupTransitionAnimation() {
-        setNextTarget();
-        transitionAnimation = UIViewPropertyAnimator(duration: 1.5, curve: .easeInOut, animations: {
-            self.frame = self.targetFrames[self.nextTarget!]!;
-        })
-        transitionAnimation!.addCompletion({ _ in
-            self.setupTransitionAnimation();
-            self.transitionAnimation!.startAnimation();
-        })
-    }
-    
-    func startAnimation() {
-        self.superview!.bringSubviewToFront(self);
-        self.transitionAnimation!.startAnimation();
-        self.alpha = 1.0;
-    }
-    
-    func setThisStyle() {
-        if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1) {
-            self.setImage(UIImage(named: "lightMagnifyGlass.png"), for: .normal);
-            label!.textColor = UIColor.black;
-        } else {
-            self.setImage(UIImage(named: "darkMagnifyGlass.png"), for: .normal);
-            label!.textColor = UIColor.white;
-        }
-        self.imageView!.contentMode = UIView.ContentMode.scaleAspectFit;
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
 }

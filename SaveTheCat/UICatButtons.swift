@@ -22,6 +22,9 @@ class UICatButtons {
         catButton.grow();
         catButton.imageContainerButton!.grow();
         catButton.setCat(named: "SmilingCat", stage:0);
+        if (ViewController.settingsButton!.isPressed) {
+            catButton.fadeBackgroundOut();
+        }
         presentCollection!.append(catButton);
         return catButton;
     }

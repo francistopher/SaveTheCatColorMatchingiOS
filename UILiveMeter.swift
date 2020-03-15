@@ -84,23 +84,27 @@ class UILiveMeter:UICView {
         }
     }
     
-    func incrementLivesLeftCount(catButton:UICatButton) {
-            livesLeft += 1;
-            // Get spawn frame
-            let x:CGFloat = catButton.frame.midX * 0.5 + catButton.superview!.frame.minX;
-            let y:CGFloat = catButton.frame.midY * 0.5 + catButton.superview!.frame.minY;
+    func incrementLivesLeftCount(catButton:UICatButton, forOpponent:Bool) {
+        livesLeft += 1;
+        // Get spawn frame
+        var x:CGFloat = catButton.frame.midX * 0.5 + catButton.superview!.frame.minX;
+        var y:CGFloat = catButton.frame.midY * 0.5 + catButton.superview!.frame.minY;
+        if (forOpponent) {
+            x = self.frame.minX - (self.frame.height * 2.0);
+            y = self.frame.minY;
+        }
         let newFrame:CGRect = CGRect(x: x, y: y, width: self.frame.height, height: self.frame.height);
-            // Setup the heart button
-            setupHeartInactiveButtons();
-            // Save the target frame and set the new frame
-            self.superview!.addSubview(currentHeartButton!);
-            let targetFrame = CGRect(x: self.frame.minX + currentHeartButton!.frame.minX, y: self.frame.minY + currentHeartButton!.frame.minY, width: (self.frame.width * 0.5) - (self.layer.borderWidth * 0.5), height: self.frame.height);
-            currentHeartButton!.frame = newFrame;
-            self.superview!.bringSubviewToFront(currentHeartButton!);
-            // Move heart to target frame
-            UIView.animate(withDuration: 3.0, delay: 0.125, options: [.curveEaseInOut], animations: {
-                self.currentHeartButton!.transform = self.currentHeartButton!.transform.translatedBy(x: targetFrame.minX - newFrame.minX, y: targetFrame.minY - newFrame.minY);
-            })
+        // Setup the heart button
+        setupHeartInactiveButtons();
+        // Save the target frame and set the new frame
+        self.superview!.addSubview(currentHeartButton!);
+        let targetFrame = CGRect(x: self.frame.minX + currentHeartButton!.frame.minX, y: self.frame.minY + currentHeartButton!.frame.minY, width: (self.frame.width * 0.5) - (self.layer.borderWidth * 0.5), height: self.frame.height);
+        currentHeartButton!.frame = newFrame;
+        self.superview!.bringSubviewToFront(currentHeartButton!);
+        // Move heart to target frame
+        UIView.animate(withDuration: 3.0, delay: 0.125, options: [.curveEaseInOut], animations: {
+            self.currentHeartButton!.transform = self.currentHeartButton!.transform.translatedBy(x: targetFrame.minX - newFrame.minX, y: targetFrame.minY - newFrame.minY);
+        })
     }
     
     func removeAllHeartLives() {

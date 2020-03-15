@@ -54,6 +54,7 @@ class UIBoardGame: UIView, GKMatchDelegate {
         parentView.addSubview(self);
         self.results = UIResults(parentView: parentView);
         self.results!.continueButton!.addTarget(self, action: #selector(continueSelector), for: .touchUpInside);
+        setupOpponentLiveMeter();
         setupLivesMeter();
         setupAttackMeter();
         setupSearchMagnifyGlass();
@@ -81,12 +82,17 @@ class UIBoardGame: UIView, GKMatchDelegate {
         attackMeter!.setupComponents();
         attackMeter!.setCompiledStyle();
     }
-
-    func setupLivesMeter() {
+    
+    
+    func setupOpponentLiveMeter() {
         let height:CGFloat = ViewController.staticMainView!.frame.height * ((1.0/300.0) + 0.08);
         let x:CGFloat = ViewController.staticMainView!.frame.width - height - ViewController.staticUnitViewWidth;
-        let livesMeterFrame:CGRect = CGRect(x: x, y: ViewController.staticUnitViewHeight * 0.925, width: height, height: height);
-        myLiveMeter = UILiveMeter(parentView: self.superview!, frame: livesMeterFrame, isOpponent: false);
+        opponentLiveMeter = UILiveMeter(parentView: ViewController.staticMainView!, frame: CGRect(x: x, y: ViewController.staticUnitViewHeight * 0.925, width: height, height: height), isOpponent: true);
+        opponentLiveMeter!.alpha = 0.0;
+    }
+
+    func setupLivesMeter() {
+        myLiveMeter = UILiveMeter(parentView: self.superview!, frame:  CGRect(x: opponentLiveMeter!.frame.minX, y: opponentLiveMeter!.frame.minY, width: opponentLiveMeter!.frame.width, height: opponentLiveMeter!.frame.height), isOpponent: false);
     }
     
     @objc func continueSelector() {
@@ -117,11 +123,19 @@ class UIBoardGame: UIView, GKMatchDelegate {
     }
     
     func match(_ match: GKMatch, player: GKPlayer, didChange state: GKPlayerConnectionState) {
-        
+        self.opponent = player;
     }
     
     func match(_ match: GKMatch, didReceive data: Data, fromRemotePlayer player: GKPlayer) {
-        
+        var intData:UInt8 = 3;
+        data.copyBytes(to: &intData, count: MemoryLayout<UInt8>.size);
+        print("MESSAGE: Data from opponent \(intData)")
+        if (intData == 0) {
+            opponentLiveMeter!.decrementLivesLeftCount();
+        } else {
+            print("Increment lives left count!!!");
+            opponentLiveMeter!.incrementLivesLeftCount(catButton: attackMeter!.cat!, forOpponent: true);
+        }
     }
     
     func displayOpponentLiveMeter() {
@@ -130,18 +144,13 @@ class UIBoardGame: UIView, GKMatchDelegate {
             self.opponentLiveMeter!.frame = CGRect(x: x, y: self.opponentLiveMeter!.frame.minY, width: self.opponentLiveMeter!.frame.width, height: self.opponentLiveMeter!.frame.height);
         })
     }
-    
-    func setupOpponentLiveMeter() {
-        opponentLiveMeter = UILiveMeter(parentView: ViewController.staticMainView!, frame: CGRect(x: myLiveMeter!.frame.minX, y: myLiveMeter!.frame.minY, width: myLiveMeter!.frame.width, height: myLiveMeter!.frame.height), isOpponent: true);
-        opponentLiveMeter!.alpha = 1.0;
-        ViewController.staticMainView!.bringSubviewToFront(myLiveMeter!);
-    }
 
     func startMatchmaking() {
         // Hold virus
         self.attackMeter!.sendVirusToStartAndHold();
         // Setup the match request
         let matchRequest = GKMatchRequest();
+        matchRequest.defaultNumberOfPlayers = 2;
         matchRequest.minPlayers = 2;
         matchRequest.maxPlayers = 2;
         matchRequest.restrictToAutomatch = true;
@@ -153,13 +162,21 @@ class UIBoardGame: UIView, GKMatchDelegate {
                 print("MESSAGE: We found a match")
                 self.currentMatch = match!;
                 match!.delegate = self;
-                self.searchMagnifyGlass!.stopTransitionAnimation(successful: true);
-                self.setupOpponentLiveMeter();
+                var timer:Timer?
                 self.displayOpponentLiveMeter();
-                // Start hiding search magnify glass
-                self.attackMeter!.holdVirusAtStart = false;
-                self.attackMeter!.invokeAttackImpulse(delay: 0.0);
-                self.startGame();
+                self.searchMagnifyGlass!.stopTransitionAnimation();
+                self.searchMagnifyGlass!.label!.textColor = UIColor.blue;
+                timer = Timer.scheduledTimer(withTimeInterval: 0.01, repeats: true, block: { _ in
+                    if (self.opponent != nil) {
+                        // Start hiding search magnify glass
+                        self.searchMagnifyGlass!.setThisStyle();
+                        self.searchMagnifyGlass!.endAnimationAndFadeOut();
+                        self.attackMeter!.holdVirusAtStart = false;
+                        self.attackMeter!.invokeAttackImpulse(delay: 0.0);
+                        self.startGame();
+                        timer!.invalidate();
+                    }
+                })
             }
         })
     }
@@ -408,10 +425,23 @@ class UIBoardGame: UIView, GKMatchDelegate {
         }
     }
     
+    func letOpponentKnowYouveBeenAttacked() {
+        if (opponent != nil) {
+            var intValue:Int = Int(truncating: NSNumber(value: false));
+            let data:Data = Data(bytes: &intValue, count: MemoryLayout.size(ofValue: intValue));
+            do {
+                try currentMatch!.send(data, to: [opponent!], dataMode: GKMatch.SendDataMode.unreliable);
+            } catch {
+                print("Send the data again!!!");
+            }
+        }
+    }
+    
     func attackCatButton(catButton:UICatButton) {
         self.attackMeter!.updateDuration(change: -0.75);
         if (myLiveMeter!.livesLeft > 0) {
             setCatButtonAsDead(catButton: catButton, disperseDownwardOnly:true);
+            letOpponentKnowYouveBeenAttacked();
             myLiveMeter!.decrementLivesLeftCount();
             if (cats.areAllCatsDead()) {
                 self.attackMeter!.sendVirusToStart();
@@ -467,6 +497,18 @@ class UIBoardGame: UIView, GKMatchDelegate {
         }
     }
     
+    func letOpponentKnowYouveSurpassedRound() {
+        if (opponent != nil) {
+            var intValue:Int = Int(truncating: NSNumber(value: true));
+            let data:Data = Data(bytes: &intValue, count: MemoryLayout.size(ofValue: intValue));
+            do {
+                try currentMatch!.send(data, to: [opponent!], dataMode: GKMatch.SendDataMode.unreliable);
+            } catch {
+                print("Send the data again!!!");
+            }
+        }
+    }
+    
     func verifyThatRemainingCatsArePodded(catButton:UICatButton) {
         // Check if all the cats have been podded
         if (cats.aliveCatsArePodded()) {
@@ -476,7 +518,8 @@ class UIBoardGame: UIView, GKMatchDelegate {
             colorOptions!.isTransitioned = false;
             // Add data of survived cats
             if (cats.didAllSurvive()) {
-                myLiveMeter!.incrementLivesLeftCount(catButton: catButton);
+                myLiveMeter!.incrementLivesLeftCount(catButton: catButton, forOpponent: false);
+                letOpponentKnowYouveSurpassedRound();
                 self.attackMeter!.updateDuration(change: 0.1);
                 self.attackMeter!.sendVirusToStart();
                 self.glovePointer!.shrinked();

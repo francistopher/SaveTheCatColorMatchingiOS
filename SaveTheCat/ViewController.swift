@@ -44,7 +44,7 @@ class ViewController: UIViewController, GADInterstitialDelegate, ReachabilityObs
             // Cancel matchmaking
             if (self.boardGame!.matchMaker != nil) {
                 self.boardGame!.matchMaker!.cancel();
-                self.boardGame!.searchMagnifyGlass!.stopTransitionAnimation(successful: false);
+                self.boardGame!.searchMagnifyGlass!.endAnimationAndFadeOut();
                 self.boardGame!.attackMeter!.invokeAttackImpulse(delay: 0.0);
                 self.boardGame!.startGame();
             }
@@ -328,6 +328,7 @@ class ViewController: UIViewController, GADInterstitialDelegate, ReachabilityObs
             self.viruses!.fadeIn();
             self.boardGame!.fadeIn();
             self.boardGame!.myLiveMeter!.fadeIn();
+            self.boardGame!.opponentLiveMeter!.fadeIn();
             self.boardGame!.attackMeter!.compiledShow();
             self.colorOptions!.fadeIn();
             self.settingsButton!.fadeIn();

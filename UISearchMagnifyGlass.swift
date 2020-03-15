@@ -38,17 +38,20 @@ class UISearchMagnifyGlass:UICButton {
         targetFrames[.center] = frame;
         targetFrames[.topLeft] = CGRect(x: frame.width * 0.5, y: frame.height * 0.5, width: frame.width, height: frame.height);
         targetFrames[.topRight] = CGRect(x: parentView.frame.width - frame.width - frame.width * 0.5, y: frame.height * 0.5, width: frame.width, height: frame.height);
-        targetFrames[.bottomLeft] = CGRect(x: frame.width * 0.5, y: parentView.frame.height - frame.height - frame.height * 0.9, width: frame.width, height: frame.height);
-        targetFrames[.bottomRight] = CGRect(x: parentView.frame.width - frame.width - frame.width * 0.5, y:  parentView.frame.height - frame.height - frame.height * 0.9, width: frame.width, height: frame.height);
+        targetFrames[.bottomLeft] = CGRect(x: frame.width * 0.5, y: parentView.frame.height - frame.height - frame.height * 0.95, width: frame.width, height: frame.height);
+        targetFrames[.bottomRight] = CGRect(x: parentView.frame.width - frame.width - frame.width * 0.5, y:  parentView.frame.height - frame.height - frame.height * 0.95, width: frame.width, height: frame.height);
     }
     
     func setupLabel() {
         let height:CGFloat = frame.height * 0.25;
-        label = UICLabel(parentView: self, x: 0.0, y: frame.height * 0.9, width: frame.width, height: height * 2.0)
+        label = UICLabel(parentView: self, x: 0.0, y: frame.height * 0.95, width: frame.width, height: height * 2.0)
         label!.backgroundColor = UIColor.clear;
+        label!.layer.cornerRadius = frame.width * 0.25;
+        label!.clipsToBounds = true;
+        label!.layer.borderWidth = frame.width * 0.02;
         label!.numberOfLines = 2;
         label!.lineBreakMode = NSLineBreakMode.byWordWrapping;
-        label!.font = UIFont.boldSystemFont(ofSize: height * 0.65);
+        label!.font = UIFont.boldSystemFont(ofSize: height * 0.6);
     }
     
     func setNextTarget() {
@@ -77,16 +80,25 @@ class UISearchMagnifyGlass:UICButton {
         })
     }
     
-    func stopTransitionAnimation(successful:Bool) {
-        if (successful) {
-            label!.text = "Found\nOpponent";
-        }
-        self.hide();
+    func stopTransitionAnimation() {
+        label!.text = "Opponent is\nPreparing!";
         transitionAnimation!.stopAnimation(true);
         nextTarget = nil;
         previousTarget = nil;
         UIView.animate(withDuration: 1.0, delay: 0.0, options: .curveEaseInOut, animations: {
             self.frame = self.targetFrames[.center]!;
+        }, completion: { _ in
+            UIView.animate(withDuration: 1.0, delay: 0.0, options: [.curveEaseInOut, .autoreverse, .repeat], animations: {
+                self.transform = self.transform.scaledBy(x: 1.25, y: 1.25);
+            })
+        })
+    }
+    
+    func endAnimationAndFadeOut() {
+        self.layer.removeAllAnimations();
+        UIView.animate(withDuration: 1.0, delay: 0.0, options: .curveEaseInOut, animations: {
+            self.frame = self.originalFrame!;
+            self.alpha = 0.0;
         })
     }
     
@@ -99,12 +111,19 @@ class UISearchMagnifyGlass:UICButton {
     }
     
     func setThisStyle() {
+        if (label!.textColor.cgColor == UIColor.blue.cgColor) {
+            return;
+        }
         if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1) {
             self.setImage(UIImage(named: "lightMagnifyGlass.png"), for: .normal);
             label!.textColor = UIColor.black;
+            label!.layer.borderColor = UIColor.black.cgColor;
+            label!.backgroundColor = UIColor.white;
         } else {
             self.setImage(UIImage(named: "darkMagnifyGlass.png"), for: .normal);
             label!.textColor = UIColor.white;
+            label!.layer.borderColor = UIColor.white.cgColor;
+            label!.backgroundColor = UIColor.black;
         }
         self.imageView!.contentMode = UIView.ContentMode.scaleAspectFit;
     }

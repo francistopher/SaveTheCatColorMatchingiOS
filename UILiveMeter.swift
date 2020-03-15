@@ -90,7 +90,7 @@ class UILiveMeter:UICView {
         var x:CGFloat = catButton.frame.midX * 0.5 + catButton.superview!.frame.minX;
         var y:CGFloat = catButton.frame.midY * 0.5 + catButton.superview!.frame.minY;
         if (forOpponent) {
-            x = self.frame.minX - (self.frame.height * 2.0);
+            x = self.frame.minX - (self.frame.height * 1.5);
             y = self.frame.minY;
         }
         let newFrame:CGRect = CGRect(x: x, y: y, width: self.frame.height, height: self.frame.height);

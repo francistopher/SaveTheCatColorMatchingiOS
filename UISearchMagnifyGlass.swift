@@ -51,7 +51,7 @@ class UISearchMagnifyGlass:UICButton {
         label!.layer.borderWidth = frame.width * 0.02;
         label!.numberOfLines = 2;
         label!.lineBreakMode = NSLineBreakMode.byWordWrapping;
-        label!.font = UIFont.boldSystemFont(ofSize: height * 0.6);
+        label!.font = UIFont.boldSystemFont(ofSize: height * 0.45);
     }
     
     func setNextTarget() {

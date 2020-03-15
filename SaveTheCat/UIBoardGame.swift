@@ -123,19 +123,35 @@ class UIBoardGame: UIView, GKMatchDelegate {
     }
     
     func match(_ match: GKMatch, player: GKPlayer, didChange state: GKPlayerConnectionState) {
-        self.opponent = player;
+        if (state.rawValue == 1){
+            self.opponent = player;
+        }
     }
     
     func match(_ match: GKMatch, didReceive data: Data, fromRemotePlayer player: GKPlayer) {
-        var intData:UInt8 = 3;
+        var intData:UInt8 = 2;
         data.copyBytes(to: &intData, count: MemoryLayout<UInt8>.size);
-        print("MESSAGE: Data from opponent \(intData)")
         if (intData == 0) {
             opponentLiveMeter!.decrementLivesLeftCount();
-        } else {
-            print("Increment lives left count!!!");
+        } else if (intData == 1) {
             opponentLiveMeter!.incrementLivesLeftCount(catButton: attackMeter!.cat!, forOpponent: true);
+        } else {
+            print("MESSAGE: YOU WIN!!!")
+            self.attackMeter!.pauseVirusMovement();
+            self.attackMeter!.sendVirusToStartAndHold();
+            self.isUserInteractionEnabled = false;
+            self.colorOptions!.isUserInteractionEnabled = false;
+            self.hideOpponentLiveMeter();
+            self.currentMatch!.disconnect();
         }
+    }
+    
+    func hideOpponentLiveMeter() {
+        UIView.animate(withDuration: 1.0, delay: 0.0, options: .curveEaseIn, animations: {
+            self.opponentLiveMeter!.frame = self.opponentLiveMeter!.originalFrame!;
+        }, completion: { _ in
+            self.opponentLiveMeter!.resetLivesLeftCount();
+        })
     }
     
     func displayOpponentLiveMeter() {
@@ -425,15 +441,23 @@ class UIBoardGame: UIView, GKMatchDelegate {
         }
     }
     
-    func letOpponentKnowYouveBeenAttacked() {
+    func letOpponentKnow(passedValue:Int) {
+        if (passedValue == 2) {
+            hideOpponentLiveMeter();
+        }
         if (opponent != nil) {
-            var intValue:Int = Int(truncating: NSNumber(value: false));
-            let data:Data = Data(bytes: &intValue, count: MemoryLayout.size(ofValue: intValue));
+            var value:Int = passedValue;
+            let data:Data = Data(bytes: &value, count: MemoryLayout.size(ofValue: value));
             do {
                 try currentMatch!.send(data, to: [opponent!], dataMode: GKMatch.SendDataMode.unreliable);
             } catch {
                 print("Send the data again!!!");
             }
+        }
+        if (passedValue == 2) {
+            currentMatch!.disconnect();
+            currentMatch = nil;
+            opponent = nil;
         }
     }
     
@@ -441,7 +465,7 @@ class UIBoardGame: UIView, GKMatchDelegate {
         self.attackMeter!.updateDuration(change: -0.75);
         if (myLiveMeter!.livesLeft > 0) {
             setCatButtonAsDead(catButton: catButton, disperseDownwardOnly:true);
-            letOpponentKnowYouveBeenAttacked();
+            letOpponentKnow(passedValue: 0);
             myLiveMeter!.decrementLivesLeftCount();
             if (cats.areAllCatsDead()) {
                 self.attackMeter!.sendVirusToStart();
@@ -450,6 +474,7 @@ class UIBoardGame: UIView, GKMatchDelegate {
                 verifyThatRemainingCatsArePodded(catButton:catButton);
             }
         } else {
+            letOpponentKnow(passedValue: 2);
             setAllCatButtonsAsDead();
             gameOverTransition();
         }
@@ -497,18 +522,6 @@ class UIBoardGame: UIView, GKMatchDelegate {
         }
     }
     
-    func letOpponentKnowYouveSurpassedRound() {
-        if (opponent != nil) {
-            var intValue:Int = Int(truncating: NSNumber(value: true));
-            let data:Data = Data(bytes: &intValue, count: MemoryLayout.size(ofValue: intValue));
-            do {
-                try currentMatch!.send(data, to: [opponent!], dataMode: GKMatch.SendDataMode.unreliable);
-            } catch {
-                print("Send the data again!!!");
-            }
-        }
-    }
-    
     func verifyThatRemainingCatsArePodded(catButton:UICatButton) {
         // Check if all the cats have been podded
         if (cats.aliveCatsArePodded()) {
@@ -519,7 +532,7 @@ class UIBoardGame: UIView, GKMatchDelegate {
             // Add data of survived cats
             if (cats.didAllSurvive()) {
                 myLiveMeter!.incrementLivesLeftCount(catButton: catButton, forOpponent: false);
-                letOpponentKnowYouveSurpassedRound();
+                letOpponentKnow(passedValue: 1);
                 self.attackMeter!.updateDuration(change: 0.1);
                 self.attackMeter!.sendVirusToStart();
                 self.glovePointer!.shrinked();

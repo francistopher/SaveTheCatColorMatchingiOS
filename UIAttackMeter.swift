@@ -335,7 +335,7 @@ class UIAttackMeter:UICView {
             virus!.frame = CGRect(x: shrunkVirusX, y: virus!.frame.minY, width: virus!.frame.width, height: virus!.frame.height)
             print("Stopped size reduction animation")
         default:
-            print("Something went wrong?");
+            print("")
         }
     }
     

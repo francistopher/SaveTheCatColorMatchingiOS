@@ -24,17 +24,30 @@ class ViewController: UIViewController, GADInterstitialDelegate, ReachabilityObs
     var isInternetReachable:Bool = false;
     func reachabilityChanged(_ isReachable: Bool) {
         if (isReachable) {
-            gameMessage!.displayInternetConnectionEstablishedMessage();
             self.isInternetReachable = true;
+            // Display Internet Message
+            gameMessage!.displayInternetConnectionEstablishedMessage();
+            // Load ads
             bannerView.load(GADRequest());
             ViewController.interstitial.load(GADRequest());
+            // Load mouse coins
             UIResults.mouseCoins = keyValueStore.longLong(forKey: "mouseCoins");
             settingsButton!.settingsMenu!.mouseCoin!.amountLabel!.text = "\(UIResults.mouseCoins)";
+            // Restart matchmaking
         } else {
+            self.isInternetReachable = false;
+            // Display no Internet Message
+            gameMessage!.displayNoInternetConsequencesMessage();
+            // Clear mouse coins
             UIResults.mouseCoins = 0;
             settingsButton!.settingsMenu!.mouseCoin!.amountLabel!.text = "\(UIResults.mouseCoins)";
-            gameMessage!.displayNoInternetConsequencesMessage();
-            self.isInternetReachable = false;
+            // Cancel matchmaking
+            if (self.boardGame!.matchMaker != nil) {
+                self.boardGame!.matchMaker!.cancel();
+                self.boardGame!.searchMagnifyGlass!.stopTransitionAnimation(successful: false);
+                self.boardGame!.attackMeter!.invokeAttackImpulse(delay: 0.0);
+                self.boardGame!.startGame();
+            }
         }
     }
     

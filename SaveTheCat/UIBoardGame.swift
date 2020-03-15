@@ -37,6 +37,8 @@ class UIBoardGame: UIView, GKMatchDelegate {
     
     var opponent:GKPlayer?
     var currentMatch:GKMatch?
+    var matchMaker:GKMatchmaker?
+    var matchmaking:Bool = false;
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented");
@@ -106,7 +108,6 @@ class UIBoardGame: UIView, GKMatchDelegate {
         colorOptions!.selectedColor = UIColor.lightGray;
         attackMeter!.resetCat();
         restart();
-        self.attackMeter!.startFirstRotation(afterDelay: 1.25);
     }
     
     func fadeIn(){
@@ -136,7 +137,7 @@ class UIBoardGame: UIView, GKMatchDelegate {
         ViewController.staticMainView!.bringSubviewToFront(myLiveMeter!);
     }
 
-    func searchForOpponent() {
+    func startMatchmaking() {
         // Hold virus
         self.attackMeter!.sendVirusToStartAndHold();
         // Setup the match request
@@ -145,23 +146,20 @@ class UIBoardGame: UIView, GKMatchDelegate {
         matchRequest.maxPlayers = 2;
         matchRequest.restrictToAutomatch = true;
         // Start match making
-        let matchMaker = GKMatchmaker();
+        matchMaker = GKMatchmaker();
         print("MESSAGE: Start finding players for match!")
-        matchMaker.findMatch(for: matchRequest, withCompletionHandler: { (match:GKMatch?, error:Error?) -> Void in
+        matchMaker!.findMatch(for: matchRequest, withCompletionHandler: { (match:GKMatch?, error:Error?) -> Void in
             if (match != nil) {
                 print("MESSAGE: We found a match")
                 self.currentMatch = match!;
                 match!.delegate = self;
-                self.searchMagnifyGlass!.stopTransitionAnimation();
+                self.searchMagnifyGlass!.stopTransitionAnimation(successful: true);
                 self.setupOpponentLiveMeter();
                 self.displayOpponentLiveMeter();
                 // Start hiding search magnify glass
                 self.attackMeter!.holdVirusAtStart = false;
                 self.attackMeter!.invokeAttackImpulse(delay: 0.0);
                 self.startGame();
-                UIView.animate(withDuration: 1.0, delay: 0.0, options: .curveEaseInOut, animations: {
-                    self.searchMagnifyGlass!.alpha = 0.0;
-                })
             }
         })
     }
@@ -189,16 +187,24 @@ class UIBoardGame: UIView, GKMatchDelegate {
     
     func prepareGame(){
         if (GKLocalPlayer.local.isAuthenticated && ViewController.staticViewController!.isInternetReachable) {
-            buildGame();
-            searchMagnifyGlass!.startAnimation();
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-                self.searchForOpponent();
-            }
+            prepareGameWithMatchMaking();
         } else {
-            attackMeter!.invokeAttackImpulse(delay: 1.0);
-            buildGame();
-            startGame();
+            prepareGameWithoutMatchMaking();
         }
+    }
+    
+    func prepareGameWithMatchMaking() {
+        buildGame();
+        searchMagnifyGlass!.startAnimation();
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            self.startMatchmaking();
+        }
+    }
+    
+    func prepareGameWithoutMatchMaking() {
+        attackMeter!.invokeAttackImpulse(delay: 1.0);
+        buildGame();
+        startGame();
     }
     
     func buildGridColors(){
@@ -324,7 +330,6 @@ class UIBoardGame: UIView, GKMatchDelegate {
         self.glovePointer!.setCompiledStyle();
         let buttons = self.results!.update();
         if (buttons.count == 1) {
-            print("Le button exists!!!")
             let button:UICButton = buttons[0];
             self.glovePointer!.adButton = button;
             let buttonSuperview:UIView = button.superview!;
@@ -405,7 +410,7 @@ class UIBoardGame: UIView, GKMatchDelegate {
     
     func attackCatButton(catButton:UICatButton) {
         self.attackMeter!.updateDuration(change: -0.75);
-        if (myLiveMeter!.livesLeft - 1 > 0) {
+        if (myLiveMeter!.livesLeft > 0) {
             setCatButtonAsDead(catButton: catButton, disperseDownwardOnly:true);
             myLiveMeter!.decrementLivesLeftCount();
             if (cats.areAllCatsDead()) {
@@ -571,11 +576,11 @@ class UIBoardGame: UIView, GKMatchDelegate {
     
     func restart(){
         currentRound = 1
+        glovePointer!.shrink();
         colorOptions!.loadSelectionButtonsToSelectedButtons();
         // Build board game
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.75) {
             self.prepareGame();
-            self.attackMeter!.startFirstRotation(afterDelay: 1.50);
         }
         configureComponentsAfterBoardGameReset();
     }

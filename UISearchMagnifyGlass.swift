@@ -31,7 +31,6 @@ class UISearchMagnifyGlass:UICButton {
         self.alpha = 0.0;
         setupLabel();
         setupTargetFrames(parentView);
-        setupTransitionAnimation();
         setThisStyle();
     }
     
@@ -78,8 +77,11 @@ class UISearchMagnifyGlass:UICButton {
         })
     }
     
-    func stopTransitionAnimation() {
-        label!.text = "Found\nOpponent";
+    func stopTransitionAnimation(successful:Bool) {
+        if (successful) {
+            label!.text = "Found\nOpponent";
+        }
+        self.hide();
         transitionAnimation!.stopAnimation(true);
         nextTarget = nil;
         previousTarget = nil;
@@ -91,6 +93,7 @@ class UISearchMagnifyGlass:UICButton {
     func startAnimation() {
         label!.text = "Finding\nOpponent";
         self.superview!.bringSubviewToFront(self);
+        self.setupTransitionAnimation();
         self.transitionAnimation!.startAnimation();
         self.alpha = 1.0;
     }

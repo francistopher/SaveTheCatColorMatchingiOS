@@ -196,11 +196,7 @@ class UICatButtons {
     
     func updateUIStyle() {
         for catIndex in 0..<presentCollection!.count {
-            if (presentCollection!.count == 0) {
-                presentCollection![catIndex].updateUIStyle();
-            } else {
-                presentCollection![catIndex].updateUIStyle();
-            }
+            presentCollection![catIndex].updateUIStyle();
         }
     }
     

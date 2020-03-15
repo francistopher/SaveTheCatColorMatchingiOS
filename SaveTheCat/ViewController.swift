@@ -263,6 +263,7 @@ class ViewController: UIViewController, GADInterstitialDelegate, ReachabilityObs
         }
         let leaderBoard:GKLeaderboard = GKLeaderboard();
         leaderBoard.identifier = "topCatSavers";
+        // UNEXPECTED ERROR
         leaderBoard.loadScores(completionHandler: { scores, error in
             if error == nil {
                 if (leaderBoard.localPlayerScore != nil) {
@@ -316,10 +317,10 @@ class ViewController: UIViewController, GADInterstitialDelegate, ReachabilityObs
             self.boardGame!.myLiveMeter!.fadeIn();
             self.boardGame!.attackMeter!.compiledShow();
             self.colorOptions!.fadeIn();
-            self.boardGame!.prepareGame();
             self.settingsButton!.fadeIn();
             self.settingsButton!.settingsMenu!.mouseCoin!.mouseCoinView!.fadeIn();
             self.bannerView!.alpha = 1.0;
+            self.boardGame!.prepareGame();
         }
     }
     

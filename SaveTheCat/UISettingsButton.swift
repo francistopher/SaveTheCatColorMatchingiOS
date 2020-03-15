@@ -65,10 +65,12 @@ class UISettingsButton:UIButton {
             if(!isPressed){
                 ViewController.staticMainView!.bringSubviewToFront(settingsMenu!);
                 ViewController.staticMainView!.bringSubviewToFront(self);
-                ViewController.staticMainView!.bringSubviewToFront(settingsMenu!.mouseCoin!.mouseCoinView!);
-                settingsMenu!.mouseCoin!.mouseCoinView!.backgroundColor = self.backgroundColor;
-                settingsMenu!.mouseCoin!.mouseCoinView!.layer.borderColor = UIColor.systemYellow.cgColor;
-                settingsMenu!.mouseCoin!.mouseCoinView!.fadeOut();
+                if (ViewController.aspectRatio! == .ar4by3) {
+                    settingsMenu!.mouseCoin!.mouseCoinView!.fadeOut();
+                    settingsMenu!.mouseCoin!.mouseCoinView!.backgroundColor = self.backgroundColor;
+                    ViewController.staticMainView!.bringSubviewToFront(settingsMenu!.mouseCoin!.mouseCoinView!);
+                    settingsMenu!.mouseCoin!.mouseCoinView!.layer.borderColor = UIColor.systemYellow.cgColor;
+                }
                 boardGame!.cats.clearCatButtons();
                 boardGame!.attackMeter!.pauseVirusMovement();
                 settingsMenuShow();

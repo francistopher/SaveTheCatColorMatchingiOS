@@ -35,6 +35,7 @@ class UIBoardGame: UIView, GKMatchDelegate {
     var glovePointer:UIGlovedPointer?
     var searchMagnifyGlass:UISearchMagnifyGlass?
     
+    var opponent:GKPlayer?
     var currentMatch:GKMatch?
     
     required init?(coder: NSCoder) {
@@ -64,7 +65,7 @@ class UIBoardGame: UIView, GKMatchDelegate {
     func setupAttackMeter() {
         let height:CGFloat = ViewController.staticMainView!.frame.height * ((1.0/300.0) + 0.08);
         var width:CGFloat = ViewController.staticUnitViewWidth * 6.5;
-        var y:CGFloat = ViewController.staticUnitViewHeight;
+        var y:CGFloat = ViewController.staticUnitViewHeight * 0.925;
         var x:CGFloat = 0.0;
         if (ViewController.aspectRatio! == .ar19point5by9 || ViewController.aspectRatio! == .ar16by9){
             width *= 1.5;
@@ -109,24 +110,30 @@ class UIBoardGame: UIView, GKMatchDelegate {
     }
     
     func fadeIn(){
-        UIView.animate(withDuration: 2, delay: 0.5, options: .curveEaseIn, animations: {
+        UIView.animate(withDuration: 1.0, delay: 0.5, options: .curveEaseIn, animations: {
             super.alpha = 1.0;
         })
     }
     
     func match(_ match: GKMatch, player: GKPlayer, didChange state: GKPlayerConnectionState) {
-        print("MESSAGE: Connection state \(state)");
-        print("MESSAGE: We found \(player.displayName)")
+        
     }
     
-    func setupOpponentLiveMeter() {
-        let x:CGFloat = myLiveMeter!.frame.minX + myLiveMeter!.layer.borderWidth - myLiveMeter!.frame.width;
-        opponentLiveMeter = UILiveMeter(parentView: ViewController.staticMainView!, frame: CGRect(x: myLiveMeter!.frame.minX, y: myLiveMeter!.frame.minY, width: myLiveMeter!.frame.width, height: myLiveMeter!.frame.height), isOpponent: true);
-        opponentLiveMeter!.alpha = 1.0;
-        ViewController.staticMainView!.bringSubviewToFront(myLiveMeter!);
+    func match(_ match: GKMatch, didReceive data: Data, fromRemotePlayer player: GKPlayer) {
+        
+    }
+    
+    func displayOpponentLiveMeter() {
+        let x:CGFloat = self.myLiveMeter!.frame.minX + self.myLiveMeter!.layer.borderWidth - self.myLiveMeter!.frame.width;
         UIView.animate(withDuration: 1.0, animations: {
             self.opponentLiveMeter!.frame = CGRect(x: x, y: self.opponentLiveMeter!.frame.minY, width: self.opponentLiveMeter!.frame.width, height: self.opponentLiveMeter!.frame.height);
         })
+    }
+    
+    func setupOpponentLiveMeter() {
+        opponentLiveMeter = UILiveMeter(parentView: ViewController.staticMainView!, frame: CGRect(x: myLiveMeter!.frame.minX, y: myLiveMeter!.frame.minY, width: myLiveMeter!.frame.width, height: myLiveMeter!.frame.height), isOpponent: true);
+        opponentLiveMeter!.alpha = 1.0;
+        ViewController.staticMainView!.bringSubviewToFront(myLiveMeter!);
     }
 
     func searchForOpponent() {
@@ -134,21 +141,27 @@ class UIBoardGame: UIView, GKMatchDelegate {
         self.attackMeter!.sendVirusToStartAndHold();
         // Setup the match request
         let matchRequest = GKMatchRequest();
-        matchRequest.restrictToAutomatch = true;
         matchRequest.minPlayers = 2;
         matchRequest.maxPlayers = 2;
+        matchRequest.restrictToAutomatch = true;
         // Start match making
         let matchMaker = GKMatchmaker();
         print("MESSAGE: Start finding players for match!")
         matchMaker.findMatch(for: matchRequest, withCompletionHandler: { (match:GKMatch?, error:Error?) -> Void in
-            if (error != nil) {
-                print(error!.localizedDescription);
-            }
             if (match != nil) {
+                print("MESSAGE: We found a match")
                 self.currentMatch = match!;
                 match!.delegate = self;
                 self.searchMagnifyGlass!.stopTransitionAnimation();
                 self.setupOpponentLiveMeter();
+                self.displayOpponentLiveMeter();
+                // Start hiding search magnify glass
+                self.attackMeter!.holdVirusAtStart = false;
+                self.attackMeter!.invokeAttackImpulse(delay: 0.0);
+                self.startGame();
+                UIView.animate(withDuration: 1.0, delay: 0.0, options: .curveEaseInOut, animations: {
+                    self.searchMagnifyGlass!.alpha = 0.0;
+                })
             }
         })
     }
@@ -178,7 +191,9 @@ class UIBoardGame: UIView, GKMatchDelegate {
         if (GKLocalPlayer.local.isAuthenticated && ViewController.staticViewController!.isInternetReachable) {
             buildGame();
             searchMagnifyGlass!.startAnimation();
-            searchForOpponent();
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                self.searchForOpponent();
+            }
         } else {
             attackMeter!.invokeAttackImpulse(delay: 1.0);
             buildGame();

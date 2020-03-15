@@ -30,7 +30,7 @@ class UIColorOptions: UIView {
     }
 
     func fadeIn(){
-      UIView.animate(withDuration: 2, delay: 0.5, options: .curveEaseIn, animations: {
+        UIView.animate(withDuration: 1.0, delay: 0.5, options: .curveEaseIn, animations: {
           super.alpha = 1.0;
       })
     }

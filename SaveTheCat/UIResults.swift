@@ -60,7 +60,7 @@ class UIResults: UICView {
     }
     
     init(parentView:UIView) {
-        super.init(parentView: parentView, x: 0.0, y: 0.0, width: ViewController.staticUnitViewHeight * 7.75, height: ViewController.staticUnitViewHeight * 9.0, backgroundColor: .black);
+        super.init(parentView: parentView, x: 0.0, y: 0.0, width: ViewController.staticUnitViewHeight * 7, height: ViewController.staticUnitViewHeight * 8.25, backgroundColor: .black);
         parentView.addSubview(self);
         self.layer.borderWidth = 0.0;
         self.layer.cornerRadius = ViewController.staticUnitViewHeight * 8.0 / 7.0;

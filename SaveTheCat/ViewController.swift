@@ -347,16 +347,15 @@ class ViewController: UIViewController, GADInterstitialDelegate, ReachabilityObs
     }
     
     @objc func appMovedToBackground() {
+        self.boardGame!.clearOpponentSearching();
+        self.boardGame!.clearMatchSearching(instant: true);
+        self.boardGame!.clearMatchMakerAndMagnifyGlass(instant: true);
+        
         self.viruses!.hide();
         self.boardGame!.cats.suspendCatAnimations();
         self.settingsButton!.settingsMenu!.multiplayer!.activePlayersScrollView!.searchingCatButton!.hideCat();
         self.settingsButton!.settingsMenu!.multiplayer!.activePlayersScrollView!.invitationCatButton!.hideCat();
         self.boardGame!.attackMeter!.pauseVirusMovement();
-        
-        self.boardGame!.clearOpponentSearching();
-        self.boardGame!.clearMatchSearching(instant: true);
-        self.boardGame!.clearMatchMakerAndMagnifyGlass(instant: true);
-
         print("App backgrounded");
     }
     

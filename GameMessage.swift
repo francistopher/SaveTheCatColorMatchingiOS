@@ -17,6 +17,7 @@ class UIGameMessage:UIView {
         case noGameCenter
         case noInternet
         case yesInternet
+        case opponent
     }
     
     var messageQueue:[Message] = [];
@@ -33,6 +34,9 @@ class UIGameMessage:UIView {
     var count:Double = 0.0;
     
     var stayALittleLonger:Bool = false;
+    
+    var opponentImage:UIImage?
+    var opponentAlias:String?
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -100,8 +104,28 @@ class UIGameMessage:UIView {
         case .yesInternet:
             setupImage(named:"yesInternet.png");
             messageLabel!.text = "Connected to the Internet! Game experience is renewable!";
+        case .opponent:
+            displayOpponentImageAndAlias();
         }
     }
+    
+    func displayOpponentImageAndAlias() {
+        messageLabel!.text = "Your opponent is\n\(opponentAlias!)";
+        if (opponentImage == nil) {
+            imageButton!.backgroundColor = UIColor.gray;
+            imageButton!.frame = CGRect(x: imageButton!.frame.minX, y: imageButton!.frame.minY, width: imageButton!.frame.width, height: imageButton!.frame.width);
+            CenterController.centerVertically(childView: imageButton!, parentRect: self.frame, childRect: imageButton!.frame)
+            imageButton!.layer.cornerRadius = imageButton!.frame.width * 0.5;
+            imageButton!.titleLabel!.font = UIFont.boldSystemFont(ofSize: imageButton!.frame.height * 0.5);
+            imageButton!.setTitleColor(UIColor.white, for: .normal);
+            imageButton!.setTitle(String(opponentAlias!.prefix(1)), for: .normal);
+            imageButton!.setImage(nil, for: .normal);
+        } else {
+            imageButton!.setImage(opponentImage!, for: .normal);
+            imageButton!.imageView!.contentMode = UIView.ContentMode.scaleAspectFit;
+        }
+    }
+    
     
     func addToMessageQueue(message:Message) {
         if (messageQueue.count > 0) {
@@ -144,6 +168,19 @@ class UIGameMessage:UIView {
     func displayInternetConnectionEstablishedMessage() {
         print("MESSAGE: Internet connection established")
         addToMessageQueue(message: .yesInternet);
+    }
+    
+    func displayOpponentInfo(image:UIImage, alias:String) {
+        print("MESSAGE: Opponent with profile image found")
+        self.opponentImage = image;
+        self.opponentAlias = alias;
+        addToMessageQueue(message: .opponent);
+    }
+    
+    func displayOpponentInfo(alias:String) {
+        print("MESSAGE: Opponent without profile image found")
+        self.opponentAlias = alias;
+        addToMessageQueue(message: .opponent);
     }
     
     func setupBlurEffect() {

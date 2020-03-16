@@ -67,7 +67,7 @@ class ViewController: UIViewController, GADInterstitialDelegate, ReachabilityObs
     static var staticUnitViewHeight:CGFloat = 0.0;
     static var staticUnitViewWidth:CGFloat = 0.0;
     static var staticUIViewController:UIViewController?
-    static var staticViewController:ViewController?
+    static var staticSelf:ViewController?
     static var staticMainView:UIView?
     
     // Game play components
@@ -109,7 +109,7 @@ class ViewController: UIViewController, GADInterstitialDelegate, ReachabilityObs
     override func viewDidLoad() {
         super.viewDidLoad();
         setupReachability();
-        ViewController.staticViewController = self;
+        ViewController.staticSelf = self;
         ViewController.staticUIViewController = self;
         ViewController.staticMainView = mainView;
         setupAspectRatio();

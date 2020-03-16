@@ -44,7 +44,7 @@ class UIMouseCoin: UICButton {
             self.mouseCoinView!.fadeIn();
             self.mouseCoinView!.layer.borderColor = UIColor.systemYellow.cgColor;
             Timer.scheduledTimer(withTimeInterval: 1.5, repeats: false, block: { _ in
-                if (viewShouldFadeOut && ViewController.staticViewController!.settingsButton!.isPressed) {
+                if (viewShouldFadeOut && ViewController.staticSelf!.settingsButton!.isPressed) {
                     self.mouseCoinView!.fadeOut();
                 }
             })

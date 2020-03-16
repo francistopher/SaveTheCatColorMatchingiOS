@@ -135,10 +135,10 @@ class UIBoardGame: UIView, GKMatchDelegate {
         }
         if (value == 65535) {
             print("MESSAGE: YOU WIN!!!")
+            self.attackMeter!.didNotInvokeAttackImpulse = true;
+            self.attackMeter!.sendVirusToStartAndHold();
             self.currentLivesTimer!.invalidate();
             self.currentLivesTimer = nil;
-            self.attackMeter!.pauseVirusMovement();
-            self.attackMeter!.sendVirusToStartAndHold();
             self.isUserInteractionEnabled = false;
             self.colorOptions!.isUserInteractionEnabled = false;
             self.hideOpponentLiveMeter();

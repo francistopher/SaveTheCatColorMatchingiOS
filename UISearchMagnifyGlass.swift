@@ -81,6 +81,7 @@ class UISearchMagnifyGlass:UICButton {
     }
     
     func stopTransitionAnimation() {
+        label!.textColor = UIColor.blue;
         label!.text = "Opponent is\nPreparing!";
         transitionAnimation!.stopAnimation(true);
         nextTarget = nil;
@@ -94,12 +95,19 @@ class UISearchMagnifyGlass:UICButton {
         })
     }
     
-    func endAnimationAndFadeOut() {
+    func endAnimationAndFadeOut(instant:Bool) {
+        self.label!.textColor = UIColor.clear;
+        self.setThisStyle();
         self.layer.removeAllAnimations();
-        UIView.animate(withDuration: 1.0, delay: 0.0, options: .curveEaseInOut, animations: {
+        if (instant) {
             self.frame = self.originalFrame!;
             self.alpha = 0.0;
-        })
+        } else {
+            UIView.animate(withDuration: 1.0, delay: 0.0, options: .curveEaseInOut, animations: {
+                self.frame = self.originalFrame!;
+                self.transform = .identity;
+            })
+        }
     }
     
     func startAnimation() {
@@ -107,7 +115,7 @@ class UISearchMagnifyGlass:UICButton {
         self.superview!.bringSubviewToFront(self);
         self.setupTransitionAnimation();
         self.transitionAnimation!.startAnimation();
-        self.alpha = 1.0;
+        self.show();
     }
     
     func setThisStyle() {

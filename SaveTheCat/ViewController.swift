@@ -44,7 +44,8 @@ class ViewController: UIViewController, GADInterstitialDelegate, ReachabilityObs
             // Cancel matchmaking
             if (self.boardGame!.matchMaker != nil) {
                 self.boardGame!.matchMaker!.cancel();
-                self.boardGame!.searchMagnifyGlass!.endAnimationAndFadeOut();
+                self.boardGame!.searchMagnifyGlass!.endAnimationAndFadeOut(instant: false);
+                self.boardGame!.searchMagnifyGlass!.hide();
                 self.boardGame!.attackMeter!.invokeAttackImpulse(delay: 0.0);
                 self.boardGame!.startGame();
             }
@@ -334,6 +335,7 @@ class ViewController: UIViewController, GADInterstitialDelegate, ReachabilityObs
             self.settingsButton!.fadeIn();
             self.settingsButton!.settingsMenu!.mouseCoin!.mouseCoinView!.fadeIn();
             self.bannerView!.alpha = 1.0;
+            self.boardGame!.buildGame();
             self.boardGame!.prepareGame();
         }
     }
@@ -350,6 +352,11 @@ class ViewController: UIViewController, GADInterstitialDelegate, ReachabilityObs
         self.settingsButton!.settingsMenu!.multiplayer!.activePlayersScrollView!.searchingCatButton!.hideCat();
         self.settingsButton!.settingsMenu!.multiplayer!.activePlayersScrollView!.invitationCatButton!.hideCat();
         self.boardGame!.attackMeter!.pauseVirusMovement();
+        
+        self.boardGame!.clearOpponentSearching();
+        self.boardGame!.clearMatchSearching(instant: true);
+        self.boardGame!.clearMatchMakerAndMagnifyGlass(instant: true);
+
         print("App backgrounded");
     }
     
@@ -362,6 +369,13 @@ class ViewController: UIViewController, GADInterstitialDelegate, ReachabilityObs
         self.settingsButton!.settingsMenu!.multiplayer!.activePlayersScrollView!.invitationCatButton!.animate(AgainWithoutDelay: true);
         if (!settingsButton!.isPressed) {
             self.boardGame!.attackMeter!.unPauseVirusMovement();
+        }
+        if (!self.boardGame!.continueWithMatchMaking && !self.boardGame!.continueWithMatchSearching && !self.boardGame!.continueWithOpponentSearching) {
+            self.boardGame!.continueWithOpponentSearching = true;
+            self.boardGame!.continueWithMatchSearching = true;
+            self.boardGame!.continueWithMatchMaking = true;
+            self.boardGame!.searchMagnifyGlass!.transform = .identity;
+            self.boardGame!.prepareGame();
         }
         print("App foregrounded");
     }

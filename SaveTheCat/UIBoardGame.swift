@@ -48,6 +48,9 @@ class UIBoardGame: UIView, GKMatchDelegate {
     var findingOpponentCounter:Double = 0.0;
     var opponentValuePerSecond:Double = 0.0;
     
+    var singlePlayerButton:UICButton?
+    var twoPlayerButton:UICButton?
+    
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented");
@@ -333,6 +336,46 @@ class UIBoardGame: UIView, GKMatchDelegate {
         recordGridColorsUsed();
     }
     
+    func setupSingleAndTwoPlayerButtons() {
+        singlePlayerButton = UICButton(parentView: self.superview!, frame: CGRect(x: self.colorOptions!.frame.minX + self.colorOptions!.frame.width * 0.05, y: self.colorOptions!.frame.minY, width: self.frame.width * 0.425, height: self.colorOptions!.frame.height), backgroundColor: UIColor.clear);
+        singlePlayerButton!.setTitle("Single Player", for: .normal);
+        singlePlayerButton!.styleBackground = true;
+        singlePlayerButton!.setStyle();
+        singlePlayerButton!.layer.borderWidth = attackMeter!.layer.borderWidth;
+        singlePlayerButton!.titleLabel!.font = UIFont.boldSystemFont(ofSize: singlePlayerButton!.frame.height * 0.3);
+        singlePlayerButton!.addTarget(self, action: #selector(singlePlayerButtonSelector), for: .touchUpInside);
+        singlePlayerButton!.shrinked();
+        twoPlayerButton = UICButton(parentView: self.superview!, frame: CGRect(x: self.colorOptions!.frame.minX + self.colorOptions!.frame.width * 0.525, y: self.colorOptions!.frame.minY, width: self.colorOptions!.frame.width * 0.425, height: self.colorOptions!.frame.height), backgroundColor: UIColor.clear);
+        twoPlayerButton!.setTitle("Two Player", for: .normal);
+        twoPlayerButton!.styleBackground = true;
+        twoPlayerButton!.setStyle();
+        twoPlayerButton!.layer.borderWidth = attackMeter!.layer.borderWidth;
+        twoPlayerButton!.titleLabel!.font = UIFont.boldSystemFont(ofSize: twoPlayerButton!.frame.height * 0.3);
+        twoPlayerButton!.addTarget(self, action: #selector(twoPlayerButtonSelector), for: .touchUpInside);
+        twoPlayerButton!.shrinked();
+    }
+    
+    @objc func singlePlayerButtonSelector() {
+        shrinkSinglePlayerAndTwoPlayerButtons();
+        startGameWithoutMatchmaking();
+    }
+    
+    @objc func twoPlayerButtonSelector() {
+        
+    }
+    
+    func growSinglePlayerAndTwoPlayerButtons() {
+        self.superview!.addSubview(singlePlayerButton!);
+        self.superview!.addSubview(twoPlayerButton!);
+        singlePlayerButton!.grow();
+        twoPlayerButton!.grow();
+    }
+    
+    func shrinkSinglePlayerAndTwoPlayerButtons() {
+        singlePlayerButton!.shrink(colorOptionButton: false);
+        twoPlayerButton!.shrink(colorOptionButton: false);
+    }
+    
     func startGame() {
         colorOptions!.buildColorOptionButtons(setup: true);
         attackMeter!.holdVirusAtStart = false;
@@ -347,11 +390,11 @@ class UIBoardGame: UIView, GKMatchDelegate {
         if (GKLocalPlayer.local.isAuthenticated && ViewController.staticSelf!.isInternetReachable) {
             startMatchmaking();
         } else {
-            startWithoutMatchmaking();
+            startGameWithoutMatchmaking();
         }
     }
     
-    func startWithoutMatchmaking() {
+    func startGameWithoutMatchmaking() {
         attackMeter!.invokeAttackImpulse(delay: 1.0);
         startGame();
     }
@@ -745,7 +788,7 @@ class UIBoardGame: UIView, GKMatchDelegate {
         // Build board game
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.75) {
             self.buildGame();
-            self.prepareGame();
+            self.growSinglePlayerAndTwoPlayerButtons();
         }
         configureComponentsAfterBoardGameReset();
     }

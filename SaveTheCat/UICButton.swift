@@ -18,6 +18,7 @@ class UICButton:UIButton {
     var shrinkType:shrink = .mid;
     var parentView:UIView? = nil;
     var willBeShrunk:Bool = false;
+    var styleBackground:Bool = false;
     
     var inverted:Bool = false;
     enum shrink {
@@ -148,17 +149,29 @@ class UICButton:UIButton {
             if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1){
                 self.layer.borderColor = UIColor.white.cgColor;
                 self.setTitleColor(UIColor.white, for: .normal);
+                if (styleBackground) {
+                    self.backgroundColor = UIColor.black;
+                }
             } else {
                 self.layer.borderColor = UIColor.black.cgColor;
                 self.setTitleColor(UIColor.black, for: .normal);
+                if (styleBackground) {
+                    self.backgroundColor = UIColor.white;
+                }
             }
         } else {
             if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1){
                 self.layer.borderColor = UIColor.black.cgColor;
                 self.setTitleColor(UIColor.black, for: .normal);
+                if (styleBackground) {
+                    self.backgroundColor = UIColor.white;
+                }
             } else {
                 self.layer.borderColor = UIColor.white.cgColor;
                 self.setTitleColor(UIColor.white, for: .normal);
+                if (styleBackground) {
+                   self.backgroundColor = UIColor.black;
+                }
             }
         }
         

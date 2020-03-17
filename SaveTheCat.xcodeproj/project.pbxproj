@@ -116,6 +116,7 @@
 		B840324824143B540020D9EA /* lightLeaderBoard.png in Resources */ = {isa = PBXBuildFile; fileRef = B840324624143B540020D9EA /* lightLeaderBoard.png */; };
 		B8F6C9B7242164FC00CD668C /* darkCatIntro.png in Resources */ = {isa = PBXBuildFile; fileRef = B8F6C9B5242164FC00CD668C /* darkCatIntro.png */; };
 		B8F6C9B8242164FC00CD668C /* lightCatIntro.png in Resources */ = {isa = PBXBuildFile; fileRef = B8F6C9B6242164FC00CD668C /* lightCatIntro.png */; };
+		B8F6C9BA242168C300CD668C /* UIIntroCatAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8F6C9B9242168C300CD668C /* UIIntroCatAnimation.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -232,6 +233,7 @@
 		B840324624143B540020D9EA /* lightLeaderBoard.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = lightLeaderBoard.png; path = SaveTheCat/lightLeaderBoard.png; sourceTree = "<group>"; };
 		B8F6C9B5242164FC00CD668C /* darkCatIntro.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = darkCatIntro.png; path = SaveTheCat/darkCatIntro.png; sourceTree = "<group>"; };
 		B8F6C9B6242164FC00CD668C /* lightCatIntro.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = lightCatIntro.png; path = SaveTheCat/lightCatIntro.png; sourceTree = "<group>"; };
+		B8F6C9B9242168C300CD668C /* UIIntroCatAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIIntroCatAnimation.swift; sourceTree = "<group>"; };
 		BFFD34E3F63138C9ED73D8DE /* Pods-SaveTheCat.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SaveTheCat.debug.xcconfig"; path = "Target Support Files/Pods-SaveTheCat/Pods-SaveTheCat.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -456,6 +458,7 @@
 				B83BC3D82416A0100026D7F6 /* UILiveMeter.swift */,
 				B83BC406241BF9930026D7F6 /* GameMessage.swift */,
 				B83BC40E241D960C0026D7F6 /* UISearchMagnifyGlass.swift */,
+				B8F6C9B9242168C300CD668C /* UIIntroCatAnimation.swift */,
 			);
 			name = "Particular View Controllers";
 			sourceTree = "<group>";
@@ -781,6 +784,7 @@
 				B8403240241438780020D9EA /* UIMyCats.swift in Sources */,
 				B83B03AE241159F900EC4BAD /* UIViruses.swift in Sources */,
 				B83B039F241158FC00EC4BAD /* UICButton.swift in Sources */,
+				B8F6C9BA242168C300CD668C /* UIIntroCatAnimation.swift in Sources */,
 				B83BC3EE241948E40026D7F6 /* UIGlovedPointer.swift in Sources */,
 				B83BC3FB241B1A8C0026D7F6 /* ReachabilityObserverDelegate.swift in Sources */,
 				B84032382414150D0020D9EA /* UISettingsMenu.swift in Sources */,

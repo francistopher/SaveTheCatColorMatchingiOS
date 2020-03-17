@@ -85,7 +85,7 @@ class ViewController: UIViewController, GADInterstitialDelegate, ReachabilityObs
     static var staticMainView:UIView?
     
     // Game play components
-    var introCat:UIIntroCat?;
+    var introCatAnimation:UIIntroCatAnimation?;
     var settingsButton:UISettingsButton?
     static var settingsButton:UISettingsButton?
     var boardGame:UIBoardGame?
@@ -320,7 +320,7 @@ class ViewController: UIViewController, GADInterstitialDelegate, ReachabilityObs
     
     func setupSaveTheCat() {
         setupSounds();
-        setupIntroCat();
+        setupIntroCatAnimatio();
         setupSuccessGradientViewAndLayer();
         setupViruses();
         // Set ads
@@ -336,19 +336,24 @@ class ViewController: UIViewController, GADInterstitialDelegate, ReachabilityObs
     }
     
     func presentSaveTheCat() {
-        self.introCat!.fadeInAndOut();
-        DispatchQueue.main.asyncAfter(deadline: .now() + 4.0) {
-            self.viruses!.sway(immediately: false);
-            self.viruses!.fadeIn();
-            self.boardGame!.fadeIn();
-            self.boardGame!.myLiveMeter!.fadeIn();
-            self.boardGame!.opponentLiveMeter!.fadeIn();
-            self.boardGame!.attackMeter!.compiledShow();
-            self.colorOptions!.fadeIn();
-            self.settingsButton!.fadeIn();
-            self.settingsButton!.settingsMenu!.mouseCoin!.mouseCoinView!.fadeIn();
-            self.bannerView!.alpha = 1.0;
-            self.boardGame!.buildGame();
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+            self.introCatAnimation!.fadeOut();
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+                UIView.animate(withDuration: 1.0, delay: 0.125, options: .curveEaseIn, animations: {
+                    self.bannerView!.alpha = 1.0;
+                })
+                self.viruses!.sway(immediately: false);
+                self.viruses!.fadeIn();
+                self.boardGame!.fadeIn();
+                self.boardGame!.myLiveMeter!.fadeIn();
+                self.boardGame!.opponentLiveMeter!.fadeIn();
+                self.boardGame!.attackMeter!.compiledShow();
+                self.colorOptions!.fadeIn();
+                self.settingsButton!.fadeIn();
+                self.settingsButton!.settingsMenu!.mouseCoin!.mouseCoinView!.fadeIn();
+                self.boardGame!.buildGame();
+                self.boardGame!.growSinglePlayerAndTwoPlayerButtons();
+            }
         }
     }
     
@@ -365,9 +370,9 @@ class ViewController: UIViewController, GADInterstitialDelegate, ReachabilityObs
 //            self.boardGame!.clearMatchMakerAndMagnifyGlass(instant: true);
 //        }
 //
-//        if (self.boardGame!.opponent == nil) {
-//            self.boardGame!.attackMeter!.pauseVirusMovement();
-//        }
+        if (self.boardGame!.opponent == nil) {
+            self.boardGame!.attackMeter!.pauseVirusMovement();
+        }
         self.viruses!.hide();
         self.boardGame!.cats.suspendCatAnimations();
         self.settingsButton!.settingsMenu!.multiplayer!.activePlayersScrollView!.searchingCatButton!.hideCat();
@@ -448,11 +453,12 @@ class ViewController: UIViewController, GADInterstitialDelegate, ReachabilityObs
         viruses!.hide();
     }
     
-    func setupIntroCat(){
+    func setupIntroCatAnimatio(){
         let sideLength:CGFloat = unitViewWidth * 8.0;
-        introCat = UIIntroCat(parentView: mainView, frame: CGRect(x: 0.0, y: 0.0, width: sideLength, height: sideLength));
-        CenterController.center(childView: introCat!, parentRect: mainView.frame, childRect: introCat!.frame);
-        introCat!.layer.borderWidth = 0.0;
+        introCatAnimation = UIIntroCatAnimation(parentView: mainView, frame: CGRect(x: 0.0, y: 0.0, width: sideLength, height: sideLength));
+        CenterController.center(childView: introCatAnimation!, parentRect: mainView.frame, childRect: introCatAnimation!.frame);
+        introCatAnimation!.layer.borderWidth = 0.0;
+        introCatAnimation!.fadeIn();
     }
     
     func setupSuccessGradientViewAndLayer() {
@@ -496,6 +502,7 @@ class ViewController: UIViewController, GADInterstitialDelegate, ReachabilityObs
         CenterController.centerHorizontally(childView: colorOptions!, parentRect: mainView.frame, childRect: colorOptions!.frame);
         boardGame!.colorOptions = colorOptions!;
         colorOptions!.boardGameView = boardGame!;
+        boardGame!.setupSingleAndTwoPlayerButtons();
         boardGame!.myLiveMeter!.alpha = 0.0;
         colorOptions!.alpha = 0.0;
     }
@@ -523,7 +530,7 @@ class ViewController: UIViewController, GADInterstitialDelegate, ReachabilityObs
     func setStyle() {
         gameMessage!.setStyle();
         viruses!.setStyle();
-        introCat!.setCompiledStyle();
+        introCatAnimation!.setCompiledStyle();
         setSuccessGradientLayerStyle();
         settingsButton!.setStyle();
         settingsButton!.settingsMenu!.multiplayer!.setStyle();
@@ -548,42 +555,4 @@ class ViewController: UIViewController, GADInterstitialDelegate, ReachabilityObs
         super.traitCollectionDidChange(previousTraitCollection)
         setStyle();
     }
-}
-
-class UIIntroCat:UICButton {
-    
-    let darkCatImage:UIImage = UIImage(named: "darkCatIntro")!;
-    let lightCatImage:UIImage = UIImage(named: "lightCatIntro")!;
-    
-    init(parentView:UIView, frame:CGRect) {
-        super.init(parentView: parentView, frame: frame, backgroundColor: UIColor.clear);
-        self.alpha = 0.0;
-        setCompiledStyle();
-    }
-    
-    func setCompiledStyle() {
-        if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1) {
-            self.setImage(darkCatImage, for: .normal);
-        } else {
-            self.setImage(lightCatImage, for: .normal);
-        }
-        self.imageView!.contentMode = UIView.ContentMode.scaleAspectFit;
-    }
-    
-    func fadeInAndOut(){
-        UIView.animate(withDuration: 2, delay: 0.5, options: .curveEaseIn, animations: {
-            super.alpha = 1.0;
-        }) { (_) in
-            SoundController.kittenMeow();
-            UIView.animate(withDuration: 2, delay: 0.5, options: .curveEaseOut, animations: {
-                super.alpha = 0.0;
-            })
-        }
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    
 }

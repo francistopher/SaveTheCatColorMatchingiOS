@@ -72,6 +72,7 @@ class UIAttackMeter:UICView {
     }
     
     func invokeAttackImpulse(delay:Double) {
+        print("MESSAGE: Invoking attack multiple times")
         Timer.scheduledTimer(withTimeInterval: delay, repeats: false, block: { _ in
             self.didNotInvokeAttackImpulse = false;
             self.startFirstRotation(afterDelay: 0.25);

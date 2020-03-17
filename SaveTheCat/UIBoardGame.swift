@@ -46,6 +46,7 @@ class UIBoardGame: UIView, GKMatchDelegate {
     var continueWithMatchSearching:Bool = true;
     var continueWithOpponentSearching:Bool = true;
     var findingOpponentCounter:Double = 0.0;
+    var opponentValuePerSecond:Double = 0.0;
     
     
     required init?(coder: NSCoder) {
@@ -133,28 +134,19 @@ class UIBoardGame: UIView, GKMatchDelegate {
         if (state.rawValue == 1){
             self.opponent = player;
         }
-        print("MESSAGE: State \(state.rawValue) and player \(player.alias)")
     }
     
     func match(_ match: GKMatch, didReceive data: Data, fromRemotePlayer player: GKPlayer) {
         if (opponent == nil) {
             return;
         }
+        self.opponentValuePerSecond += 0.2;
         let value = data.withUnsafeBytes {
             $0.load(as: UInt16.self);
         }
         if (value == 65535) {
             print("MESSAGE: YOU WIN!!!")
-            self.attackMeter!.didNotInvokeAttackImpulse = true;
-            self.attackMeter!.sendVirusToStartAndHold();
-            self.presentLivesTimer!.invalidate();
-            self.presentLivesTimer = nil;
-            self.isUserInteractionEnabled = false;
-            self.colorOptions!.isUserInteractionEnabled = false;
-            self.hideOpponentLiveMeter(instant: false);
-            self.currentMatch!.disconnect();
-            self.currentMatch = nil;
-            self.opponent = nil;
+            gameWon();
         } else if (value != opponentLiveMeter!.livesLeft) {
             print("NEW VALUE: \(value) OLD VALUE:\(opponentLiveMeter!.livesLeft)")
             if (value > opponentLiveMeter!.livesLeft) {
@@ -164,6 +156,19 @@ class UIBoardGame: UIView, GKMatchDelegate {
                 opponentLiveMeter!.decrementLivesLeftCount();
             }
         }
+    }
+    
+    func gameWon() {
+        self.attackMeter!.didNotInvokeAttackImpulse = true;
+        self.attackMeter!.sendVirusToStartAndHold();
+        self.presentLivesTimer!.invalidate();
+        self.presentLivesTimer = nil;
+        self.isUserInteractionEnabled = false;
+        self.colorOptions!.isUserInteractionEnabled = false;
+        self.hideOpponentLiveMeter(instant: false);
+        self.currentMatch!.disconnect();
+        self.currentMatch = nil;
+        self.opponent = nil;
     }
     
     func hideOpponentLiveMeter(instant:Bool) {
@@ -177,7 +182,6 @@ class UIBoardGame: UIView, GKMatchDelegate {
                 self.opponentLiveMeter!.resetLivesLeftCount();
             })
         }
-        
     }
     
     func displayOpponentLiveMeter() {
@@ -234,10 +238,12 @@ class UIBoardGame: UIView, GKMatchDelegate {
                             self.searchMagnifyGlass!.endAnimationAndFadeOut(instant: false);
                             self.searchMagnifyGlass!.hide();
                             self.attackMeter!.holdVirusAtStart = false;
-                            self.attackMeter!.invokeAttackImpulse(delay: 0.0);
-                            self.startGame();
+                            print("MESSAGE: Invoking attacks 24/7")
                             self.showOpponentNotification();
-                            self.presentLivesTimer = Timer.scheduledTimer(withTimeInterval: 0.25, repeats: true, block: { _ in
+                            self.startGame();
+                            var myValueCounterPerSecond:Double = 0.0;
+                            self.presentLivesTimer = Timer.scheduledTimer(withTimeInterval: 0.2, repeats: true, block: { _ in
+                                myValueCounterPerSecond += 0.2;
                                 if (self.opponent == nil) {
                                     self.presentLivesTimer!.invalidate();
                                     return;
@@ -250,11 +256,19 @@ class UIBoardGame: UIView, GKMatchDelegate {
                                 } catch {
                                     print("Error encountered, but we will keep trying!")
                                 }
+                                if (myValueCounterPerSecond == 1.0) {
+                                    if (self.opponentValuePerSecond < 0.6) {
+                                        self.gameWon();
+                                    }
+                                    myValueCounterPerSecond = 0.0;
+                                    self.opponentValuePerSecond = 0.0;
+                                }
                             })
                             self.findingOpponentTimer!.invalidate();
+                            self.attackMeter!.invokeAttackImpulse(delay: 0.0);
                         }
                         self.findingOpponentCounter += 0.1;
-                        if (self.findingOpponentCounter > 12.0) {
+                        if (self.findingOpponentCounter > 10.0) {
                             self.clearOpponentSearching();
                             self.clearMatchSearching(instant: false);
                             self.continueWithMatchMaking = false;
@@ -552,8 +566,6 @@ class UIBoardGame: UIView, GKMatchDelegate {
             }
         } else {
             if (currentMatch != nil) {
-                self.presentLivesTimer!.invalidate();
-                self.presentLivesTimer = nil;
                 var livesInt:UInt16 = UInt16(65535);
                 let data:Data = Data(bytes: &livesInt, count: MemoryLayout.size(ofValue: livesInt));
                 do {
@@ -561,13 +573,15 @@ class UIBoardGame: UIView, GKMatchDelegate {
                 } catch {
                     print("Error encountered, should have been recieved!")
                 }
+                self.presentLivesTimer!.invalidate();
+                self.presentLivesTimer = nil;
                 hideOpponentLiveMeter(instant: false);
                 currentMatch!.disconnect();
                 currentMatch = nil;
                 opponent = nil;
-                setAllCatButtonsAsDead();
-                gameOverTransition();
             }
+            setAllCatButtonsAsDead();
+            gameOverTransition();
         }
         
     }

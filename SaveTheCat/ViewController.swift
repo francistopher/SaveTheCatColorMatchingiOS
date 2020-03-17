@@ -552,8 +552,8 @@ class ViewController: UIViewController, GADInterstitialDelegate, ReachabilityObs
 
 class UIIntroCat:UICButton {
     
-    let darkCatImage:UIImage = UIImage(named: "darkCatShape")!;
-    let lightCatImage:UIImage = UIImage(named: "lightCatShape")!;
+    let darkCatImage:UIImage = UIImage(named: "darkCatIntro")!;
+    let lightCatImage:UIImage = UIImage(named: "lightCatIntro")!;
     
     init(parentView:UIView, frame:CGRect) {
         super.init(parentView: parentView, frame: frame, backgroundColor: UIColor.clear);

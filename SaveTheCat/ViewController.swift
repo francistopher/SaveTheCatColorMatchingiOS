@@ -42,15 +42,26 @@ class ViewController: UIViewController, GADInterstitialDelegate, ReachabilityObs
             UIResults.mouseCoins = 0;
             settingsButton!.settingsMenu!.mouseCoin!.amountLabel!.text = "\(UIResults.mouseCoins)";
             // Cancel matchmaking
-            if (self.boardGame!.matchMaker != nil) {
-                self.boardGame!.clearOpponentSearching();
-                self.boardGame!.clearMatchSearching(instant: true);
-                self.boardGame!.clearMatchMakerAndMagnifyGlass(instant: true);
-                self.boardGame!.startWithoutMatchmaking();
-                self.boardGame!.continueWithMatchMaking = true;
-                self.boardGame!.continueWithMatchSearching = true;
-                self.boardGame!.continueWithOpponentSearching = true;
-            }
+//            func clearMatch() {
+//                self.boardGame!.clearOpponentSearching();
+//                self.boardGame!.clearMatchSearching(instant: false);
+//                self.boardGame!.clearMatchMakerAndMagnifyGlass(instant: false);
+//            }
+//
+//            func continueWithMatch() {
+//                self.boardGame!.continueWithMatchMaking = true;
+//                self.boardGame!.continueWithMatchSearching = true;
+//                self.boardGame!.continueWithOpponentSearching = true;
+//            }
+//
+//            if (self.boardGame!.opponent != nil) {
+//                clearMatch();
+//                continueWithMatch();
+//            } else if (self.boardGame!.matchMaker != nil) {
+//                clearMatch();
+//                self.boardGame!.startWithoutMatchmaking();
+//                continueWithMatch();
+//            }
         }
     }
     
@@ -74,7 +85,7 @@ class ViewController: UIViewController, GADInterstitialDelegate, ReachabilityObs
     static var staticMainView:UIView?
     
     // Game play components
-    var introLabel:UICLabel?;
+    var introCat:UIIntroCat?;
     var settingsButton:UISettingsButton?
     static var settingsButton:UISettingsButton?
     var boardGame:UIBoardGame?
@@ -309,7 +320,7 @@ class ViewController: UIViewController, GADInterstitialDelegate, ReachabilityObs
     
     func setupSaveTheCat() {
         setupSounds();
-        setupIntroLabel();
+        setupIntroCat();
         setupSuccessGradientViewAndLayer();
         setupViruses();
         // Set ads
@@ -325,7 +336,7 @@ class ViewController: UIViewController, GADInterstitialDelegate, ReachabilityObs
     }
     
     func presentSaveTheCat() {
-        self.introLabel!.fadeInAndOut();
+        self.introCat!.fadeInAndOut();
         DispatchQueue.main.asyncAfter(deadline: .now() + 4.0) {
             self.viruses!.sway(immediately: false);
             self.viruses!.fadeIn();
@@ -338,7 +349,6 @@ class ViewController: UIViewController, GADInterstitialDelegate, ReachabilityObs
             self.settingsButton!.settingsMenu!.mouseCoin!.mouseCoinView!.fadeIn();
             self.bannerView!.alpha = 1.0;
             self.boardGame!.buildGame();
-            self.boardGame!.prepareGame();
         }
     }
     
@@ -349,40 +359,39 @@ class ViewController: UIViewController, GADInterstitialDelegate, ReachabilityObs
     }
     
     @objc func appMovedToBackground() {
-        if (self.boardGame!.opponent == nil) {
-            self.boardGame!.clearOpponentSearching();
-            self.boardGame!.clearMatchSearching(instant: true);
-            self.boardGame!.clearMatchMakerAndMagnifyGlass(instant: true);
-        }
-
-        if (self.boardGame!.opponent == nil) {
-            self.boardGame!.attackMeter!.pauseVirusMovement();
-        }
+//        if (self.boardGame!.opponent == nil) {
+//            self.boardGame!.clearOpponentSearching();
+//            self.boardGame!.clearMatchSearching(instant: true);
+//            self.boardGame!.clearMatchMakerAndMagnifyGlass(instant: true);
+//        }
+//
+//        if (self.boardGame!.opponent == nil) {
+//            self.boardGame!.attackMeter!.pauseVirusMovement();
+//        }
         self.viruses!.hide();
         self.boardGame!.cats.suspendCatAnimations();
         self.settingsButton!.settingsMenu!.multiplayer!.activePlayersScrollView!.searchingCatButton!.hideCat();
         self.settingsButton!.settingsMenu!.multiplayer!.activePlayersScrollView!.invitationCatButton!.hideCat();
-        
         print("App backgrounded");
     }
     
     @objc func appMovedToForeground() {
-        if (self.boardGame!.opponent == nil) {
-            if (!self.boardGame!.continueWithMatchMaking && !self.boardGame!.continueWithMatchSearching && !self.boardGame!.continueWithOpponentSearching) {
-                self.boardGame!.continueWithOpponentSearching = true;
-                self.boardGame!.continueWithMatchSearching = true;
-                self.boardGame!.continueWithMatchMaking = true;
-                self.boardGame!.searchMagnifyGlass!.transform = .identity;
-                self.boardGame!.prepareGame();
-            }
-        }
+//        if (self.boardGame!.opponent == nil) {
+//            if (!self.boardGame!.continueWithMatchMaking && !self.boardGame!.continueWithMatchSearching && !self.boardGame!.continueWithOpponentSearching) {
+//                self.boardGame!.continueWithOpponentSearching = true;
+//                self.boardGame!.continueWithMatchSearching = true;
+//                self.boardGame!.continueWithMatchMaking = true;
+//                self.boardGame!.searchMagnifyGlass!.transform = .identity;
+//                self.boardGame!.prepareGame();
+//            }
+//        }
         if (self.gameCenterAuthentificationOver){
             self.viruses!.sway(immediately: true);
         }
         self.boardGame!.cats.resumeCatAnimations();
         self.settingsButton!.settingsMenu!.multiplayer!.activePlayersScrollView!.searchingCatButton!.animate(AgainWithoutDelay: true);
         self.settingsButton!.settingsMenu!.multiplayer!.activePlayersScrollView!.invitationCatButton!.animate(AgainWithoutDelay: true);
-        if (!settingsButton!.isPressed && self.boardGame!.opponent == nil) {
+        if (!settingsButton!.isPressed) {
             self.boardGame!.attackMeter!.unPauseVirusMovement();
         }
         print("App foregrounded");
@@ -439,13 +448,11 @@ class ViewController: UIViewController, GADInterstitialDelegate, ReachabilityObs
         viruses!.hide();
     }
     
-    func setupIntroLabel(){
-        introLabel = UICLabel(parentView: mainView, x: 0.0, y: 0.0, width: unitViewWidth * 10, height: unitViewHeight);
-        CenterController.center(childView: introLabel!, parentRect: mainView.frame, childRect: introLabel!.frame);
-        introLabel!.font = UIFont.boldSystemFont(ofSize: unitViewHeight * 0.75);
-        introLabel!.backgroundColor = .clear;
-        introLabel!.text = "Save The Cat";
-        introLabel!.alpha = 0.0;
+    func setupIntroCat(){
+        let sideLength:CGFloat = unitViewWidth * 8.0;
+        introCat = UIIntroCat(parentView: mainView, frame: CGRect(x: 0.0, y: 0.0, width: sideLength, height: sideLength));
+        CenterController.center(childView: introCat!, parentRect: mainView.frame, childRect: introCat!.frame);
+        introCat!.layer.borderWidth = 0.0;
     }
     
     func setupSuccessGradientViewAndLayer() {
@@ -516,7 +523,7 @@ class ViewController: UIViewController, GADInterstitialDelegate, ReachabilityObs
     func setStyle() {
         gameMessage!.setStyle();
         viruses!.setStyle();
-        introLabel!.setStyle();
+        introCat!.setCompiledStyle();
         setSuccessGradientLayerStyle();
         settingsButton!.setStyle();
         settingsButton!.settingsMenu!.multiplayer!.setStyle();
@@ -541,4 +548,42 @@ class ViewController: UIViewController, GADInterstitialDelegate, ReachabilityObs
         super.traitCollectionDidChange(previousTraitCollection)
         setStyle();
     }
+}
+
+class UIIntroCat:UICButton {
+    
+    let darkCatImage:UIImage = UIImage(named: "darkCatShape")!;
+    let lightCatImage:UIImage = UIImage(named: "lightCatShape")!;
+    
+    init(parentView:UIView, frame:CGRect) {
+        super.init(parentView: parentView, frame: frame, backgroundColor: UIColor.clear);
+        self.alpha = 0.0;
+        setCompiledStyle();
+    }
+    
+    func setCompiledStyle() {
+        if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1) {
+            self.setImage(darkCatImage, for: .normal);
+        } else {
+            self.setImage(lightCatImage, for: .normal);
+        }
+        self.imageView!.contentMode = UIView.ContentMode.scaleAspectFit;
+    }
+    
+    func fadeInAndOut(){
+        UIView.animate(withDuration: 2, delay: 0.5, options: .curveEaseIn, animations: {
+            super.alpha = 1.0;
+        }) { (_) in
+            SoundController.kittenMeow();
+            UIView.animate(withDuration: 2, delay: 0.5, options: .curveEaseOut, animations: {
+                super.alpha = 0.0;
+            })
+        }
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    
 }

@@ -137,7 +137,7 @@ class UIBoardGame: UIView, GKMatchDelegate {
     }
     
     func match(_ match: GKMatch, didReceive data: Data, fromRemotePlayer player: GKPlayer) {
-        if (opponent == nil) {
+        if (opponent == nil || opponent != player) {
             return;
         }
         self.opponentValuePerSecond += 0.2;
@@ -241,6 +241,7 @@ class UIBoardGame: UIView, GKMatchDelegate {
                             print("MESSAGE: Invoking attacks 24/7")
                             self.showOpponentNotification();
                             self.startGame();
+                            self.opponentValuePerSecond = 0.0;
                             var myValueCounterPerSecond:Double = 0.0;
                             self.presentLivesTimer = Timer.scheduledTimer(withTimeInterval: 0.2, repeats: true, block: { _ in
                                 myValueCounterPerSecond += 0.2;
@@ -290,6 +291,8 @@ class UIBoardGame: UIView, GKMatchDelegate {
     
     func clearOpponentSearching() {
         continueWithOpponentSearching = false;
+        findingOpponentTimer?.invalidate();
+        presentLivesTimer?.invalidate();
         opponent = nil;
     }
            
@@ -310,6 +313,7 @@ class UIBoardGame: UIView, GKMatchDelegate {
     
     func showOpponentNotification() {
         opponent!.loadPhoto(for: GKPlayer.PhotoSize.small, withCompletionHandler: { (image:UIImage?, error:Error?) -> Void in
+            // ERROR
             if (error == nil) {
                 ViewController.staticSelf!.gameMessage!.displayOpponentInfo(image: image!, alias: self.opponent!.alias);
             } else {

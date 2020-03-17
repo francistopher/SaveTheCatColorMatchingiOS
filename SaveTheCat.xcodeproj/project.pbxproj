@@ -114,6 +114,8 @@
 		B8403244241439210020D9EA /* multiPlayer.png in Resources */ = {isa = PBXBuildFile; fileRef = B8403242241439210020D9EA /* multiPlayer.png */; };
 		B840324724143B540020D9EA /* darkLeaderBoard.png in Resources */ = {isa = PBXBuildFile; fileRef = B840324524143B540020D9EA /* darkLeaderBoard.png */; };
 		B840324824143B540020D9EA /* lightLeaderBoard.png in Resources */ = {isa = PBXBuildFile; fileRef = B840324624143B540020D9EA /* lightLeaderBoard.png */; };
+		B8F6C9B324214FB100CD668C /* darkCatShape.png in Resources */ = {isa = PBXBuildFile; fileRef = B8F6C9B124214FB100CD668C /* darkCatShape.png */; };
+		B8F6C9B424214FB100CD668C /* lightCatShape.png in Resources */ = {isa = PBXBuildFile; fileRef = B8F6C9B224214FB100CD668C /* lightCatShape.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -228,6 +230,8 @@
 		B8403242241439210020D9EA /* multiPlayer.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = multiPlayer.png; path = SaveTheCat/multiPlayer.png; sourceTree = "<group>"; };
 		B840324524143B540020D9EA /* darkLeaderBoard.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = darkLeaderBoard.png; path = SaveTheCat/darkLeaderBoard.png; sourceTree = "<group>"; };
 		B840324624143B540020D9EA /* lightLeaderBoard.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = lightLeaderBoard.png; path = SaveTheCat/lightLeaderBoard.png; sourceTree = "<group>"; };
+		B8F6C9B124214FB100CD668C /* darkCatShape.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = darkCatShape.png; path = SaveTheCat/darkCatShape.png; sourceTree = "<group>"; };
+		B8F6C9B224214FB100CD668C /* lightCatShape.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = lightCatShape.png; path = SaveTheCat/lightCatShape.png; sourceTree = "<group>"; };
 		BFFD34E3F63138C9ED73D8DE /* Pods-SaveTheCat.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SaveTheCat.debug.xcconfig"; path = "Target Support Files/Pods-SaveTheCat/Pods-SaveTheCat.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -301,6 +305,7 @@
 		B83B0342241154C000EC4BAD /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				B8F6C9B024214F8F00CD668C /* Cat Shape */,
 				B83BC410241D9DD00026D7F6 /* opponentHeart.png */,
 				B83BC40B241D65050026D7F6 /* darkMagnifyGlass.png */,
 				B83BC40A241D65050026D7F6 /* lightMagnifyGlass.png */,
@@ -539,6 +544,15 @@
 			name = Glove;
 			sourceTree = "<group>";
 		};
+		B8F6C9B024214F8F00CD668C /* Cat Shape */ = {
+			isa = PBXGroup;
+			children = (
+				B8F6C9B124214FB100CD668C /* darkCatShape.png */,
+				B8F6C9B224214FB100CD668C /* lightCatShape.png */,
+			);
+			name = "Cat Shape";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -631,6 +645,7 @@
 				B83BC3E9241707E60026D7F6 /* darkVideo.png in Resources */,
 				B83B034A241154D700EC4BAD /* darkDeadCat.png in Resources */,
 				B83BC40D241D65050026D7F6 /* darkMagnifyGlass.png in Resources */,
+				B8F6C9B324214FB100CD668C /* darkCatShape.png in Resources */,
 				B83B03F72411877E00EC4BAD /* Icon-40@2x.png in Resources */,
 				B83B03FD2411877E00EC4BAD /* Icon-1024@1x.png in Resources */,
 				B83B03D224115CDD00EC4BAD /* Default-568h@2x.png in Resources */,
@@ -658,6 +673,7 @@
 				B83BC3E52416B1C30026D7F6 /* lightGloveTap.png in Resources */,
 				B83BC405241BEAC30026D7F6 /* yesiCloud.png in Resources */,
 				B83B034E241154D700EC4BAD /* darkFancySmilingCat.png in Resources */,
+				B8F6C9B424214FB100CD668C /* lightCatShape.png in Resources */,
 				B83B03F22411877E00EC4BAD /* Icon-120@2x.png in Resources */,
 				B83B03822411551300EC4BAD /* lightNinjaCheeringCat.png in Resources */,
 				B83BC3E42416B1C30026D7F6 /* lightGlovePointer.png in Resources */,

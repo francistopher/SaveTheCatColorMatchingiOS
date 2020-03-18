@@ -18,7 +18,17 @@ enum AspectRatio {
     case ar4by3
 }
 
-class ViewController: UIViewController, GADInterstitialDelegate, ReachabilityObserverDelegate, GKGameCenterControllerDelegate {
+class ViewController: UIViewController, GADInterstitialDelegate, ReachabilityObserverDelegate, GKGameCenterControllerDelegate, GKMatchmakerViewControllerDelegate {
+    
+    func matchmakerViewControllerWasCancelled(_ viewController: GKMatchmakerViewController) {
+        
+        viewController.dismiss(animated: true, completion: nil);
+    }
+    
+    func matchmakerViewController(_ viewController: GKMatchmakerViewController, didFailWithError error: Error) {
+        print("Match maker view controller !!!");
+    }
+    
     
     var firedITunesStatus:Bool = false;
     var isInternetReachable:Bool = false;

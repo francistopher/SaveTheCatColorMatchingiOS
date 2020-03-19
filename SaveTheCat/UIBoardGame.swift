@@ -145,10 +145,7 @@ class UIBoardGame: UIView, GKMatchDelegate {
         let value = data.withUnsafeBytes {
             $0.load(as: UInt16.self);
         }
-        if (value == 65535) {
-            print("MESSAGE: YOU WIN!!!")
-            gameWon();
-        } else if (value != opponentLiveMeter!.livesLeft) {
+        if (value != opponentLiveMeter!.livesLeft) {
             print("NEW VALUE: \(value) OLD VALUE:\(opponentLiveMeter!.livesLeft)")
             if (value > opponentLiveMeter!.livesLeft) {
                 opponentLiveMeter!.incrementLivesLeftCount(catButton: attackMeter!.cat!, forOpponent: true);
@@ -163,14 +160,12 @@ class UIBoardGame: UIView, GKMatchDelegate {
         self.clearBoardGameToDisplayVictoryAnimation();
         // Show victory view
         self.victoryView!.fadeIn();
-        self.victoryView!.showVictoryMessageAndGifWith(text: "YOU WON!");
+        self.victoryView!.showVictoryMessageAndGifWith(text: "YOU WIN, CAT SAVER!");
         // Disappear cats and selection colors
         // Stop virus from attacking
         self.attackMeter!.didNotInvokeAttackImpulse = true;
         self.attackMeter!.sendVirusToStartAndHold();
         // Invalidate opponent resignation timer and reset value
-        self.opponentResignationTimer!.invalidate();
-        self.opponentResignationTimer = nil;
         self.opponentValuePerSecond = 0.0;
         self.myValueCounterPerSecond = 0.0;
         // Hide and reset opponent live meter
@@ -217,13 +212,9 @@ class UIBoardGame: UIView, GKMatchDelegate {
     }
     
     func setupOpponentResignationTimer() {
-        self.opponentValuePerSecond = 0.0;
         self.opponentResignationTimer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true, block: { _ in
+            print("MESSAGE: Sending value counter")
             self.myValueCounterPerSecond += 0.1;
-            if (self.opponent == nil) {
-                self.opponentResignationTimer!.invalidate();
-                return;
-            }
             var livesInt:UInt16 = UInt16(self.myLiveMeter!.livesLeft);
             let data:Data = Data(bytes: &livesInt, count: MemoryLayout.size(ofValue: livesInt));
             do {
@@ -231,8 +222,10 @@ class UIBoardGame: UIView, GKMatchDelegate {
             } catch {
                 print("Error encountered, but we will keep trying!")
             }
-            if (self.myValueCounterPerSecond == 1.0) {
+            if (self.myValueCounterPerSecond > 1.0) {
                 if (self.opponentValuePerSecond == 0.0) {
+                    self.opponentResignationTimer!.invalidate();
+                    self.opponentResignationTimer = nil;
                     self.gameWon();
                 }
                 self.myValueCounterPerSecond = 0.0;
@@ -251,19 +244,6 @@ class UIBoardGame: UIView, GKMatchDelegate {
             matchMakerVC = GKMatchmakerViewController(matchRequest: matchRequest);
             matchMakerVC!.matchmakerDelegate = ViewController.staticSelf!;
             ViewController.staticSelf!.present(matchMakerVC!, animated: true, completion: nil);
-//            if (self.findingOpponentCounter > 10.0) {
-//                self.clearOpponentSearching();
-//                self.clearMatchSearching(instant: false);
-//                self.continueWithMatchMaking = false;
-//                self.matchMaker?.cancel();
-//                self.matchMaker = nil;
-//                self.searchMagnifyGlass!.endAnimationAndFadeOut(instant: false);
-//                self.findingOpponentTimer?.invalidate();
-//                self.findingOpponentCounter = 0.0;
-//                self.continueWithMatchMaking = true;
-//                self.continueWithMatchSearching = true;
-//                self.continueWithOpponentSearching = true;
-//                self.startMatchmaking();
         }
     }
     
@@ -282,10 +262,6 @@ class UIBoardGame: UIView, GKMatchDelegate {
 
     func clearMatchMakerAndMagnifyGlass() {
         continueWithMatchMaking = false;
-    }
-    
-    func hideOpponentLivesMeter() {
-       
     }
     
     func showOpponentNotification() {
@@ -587,19 +563,12 @@ class UIBoardGame: UIView, GKMatchDelegate {
             }
         } else {
             if (currentMatch != nil) {
-                var livesInt:UInt16 = UInt16(65535);
-                let data:Data = Data(bytes: &livesInt, count: MemoryLayout.size(ofValue: livesInt));
-                do {
-                    try self.currentMatch!.send(data, to: [self.opponent!], dataMode: GKMatch.SendDataMode.reliable);
-                } catch {
-                    print("Error encountered, should have been recieved!")
-                }
+                print("MESSAGE: I LOST :(")
                 self.opponentResignationTimer!.invalidate();
                 self.opponentResignationTimer = nil;
                 hideOpponentLiveMeter(instant: false);
                 currentMatch!.disconnect();
                 currentMatch = nil;
-                opponent = nil;
             }
             setAllCatButtonsAsDead();
             gameOverTransition();

@@ -33,11 +33,14 @@ class UILiveMeter:UICView {
         heartInactiveButtonXRange = [ 0.0, self.frame.width - (self.frame.height * 1.45), self.frame.width - self.frame.height + (self.layer.borderWidth * 0.05)];
         setupHeartInactiveButtons();
         setupLivesCountLabel();
-        setStyle();
+        setCompiledStyle();
     }
     
     func setupLivesCountLabel() {
-        
+        livesCountLabel = UICLabel(parentView: self, x: 0.0, y: frame.height * 0.02, width: frame.width * 1.0, height: frame.height * 1.0);
+        livesCountLabel!.font = UIFont.boldSystemFont(ofSize: livesCountLabel!.frame.height * 0.3);
+        livesCountLabel!.backgroundColor = UIColor.clear;
+        self.livesCountLabel!.text = "\(self.livesLeft)";
     }
     
     func setupHeartInactiveButtons() {
@@ -78,6 +81,9 @@ class UILiveMeter:UICView {
     func decrementLivesLeftCount() {
         if (livesLeft > 0) {
             livesLeft -= 1;
+            self.livesCountLabel!.text = "\(self.livesLeft)";
+            
+            
             // Get the last heart button
             let lastHeartButton:UICButton = heartInactiveButtons.last!;
             heartInactiveButtons.removeLast();
@@ -116,6 +122,8 @@ class UILiveMeter:UICView {
         }, completion: { _ in
             self.addSubview(self.currentHeartButton!);
             self.currentHeartButton!.frame = CGRect(x: targetFrame.minX - self.frame.minX, y: targetFrame.minY - self.frame.minY, width: self.frame.height, height: self.frame.height);
+            self.livesCountLabel!.text = "\(self.livesLeft)";
+            self.bringSubviewToFront(self.livesCountLabel!);
         })
     }
     
@@ -134,6 +142,10 @@ class UILiveMeter:UICView {
             livesLeft = 1;
             setupHeartInactiveButtons();
         }
+        Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false, block: { _ in
+            self.bringSubviewToFront(self.livesCountLabel!);
+            self.livesCountLabel!.text = "\(self.livesLeft)";
+        })
     }
     
     override func fadeIn() {
@@ -144,13 +156,15 @@ class UILiveMeter:UICView {
         })
     }
     
-    override func setStyle() {
+    func setCompiledStyle() {
         if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1) {
             self.layer.borderColor = UIColor.black.cgColor;
             self.backgroundColor = UIColor.white;
+            self.livesCountLabel!.textColor = UIColor.white;
         } else {
             self.layer.borderColor = UIColor.white.cgColor;
             self.backgroundColor = UIColor.black;
+            self.livesCountLabel!.textColor = UIColor.black;
         }
     }
 }

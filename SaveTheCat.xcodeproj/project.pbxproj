@@ -59,7 +59,6 @@
 		B83B03B2241159F900EC4BAD /* UICatButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B83B03AB241159F900EC4BAD /* UICatButton.swift */; };
 		B83B03BB24115AA900EC4BAD /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B83B03B624115AA900EC4BAD /* Main.storyboard */; };
 		B83B03BC24115AA900EC4BAD /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B83B03B824115AA900EC4BAD /* LaunchScreen.storyboard */; };
-		B83B03C124115B3200EC4BAD /* MCController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B83B03BE24115B3200EC4BAD /* MCController.swift */; };
 		B83B03C224115B3200EC4BAD /* SoundController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B83B03BF24115B3200EC4BAD /* SoundController.swift */; };
 		B83B03C324115B3200EC4BAD /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B83B03C024115B3200EC4BAD /* ViewController.swift */; };
 		B83B03C724115B6F00EC4BAD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B83B03C524115B6F00EC4BAD /* AppDelegate.swift */; };
@@ -177,7 +176,6 @@
 		B83B03B524115AA900EC4BAD /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = SaveTheCat/Info.plist; sourceTree = "<group>"; };
 		B83B03B724115AA900EC4BAD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = SaveTheCat/Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		B83B03B924115AA900EC4BAD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = SaveTheCat/Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		B83B03BE24115B3200EC4BAD /* MCController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MCController.swift; path = SaveTheCat/MCController.swift; sourceTree = "<group>"; };
 		B83B03BF24115B3200EC4BAD /* SoundController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SoundController.swift; path = SaveTheCat/SoundController.swift; sourceTree = "<group>"; };
 		B83B03C024115B3200EC4BAD /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ViewController.swift; path = SaveTheCat/ViewController.swift; sourceTree = "<group>"; };
 		B83B03C524115B6F00EC4BAD /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = SaveTheCat/AppDelegate.swift; sourceTree = "<group>"; };
@@ -495,7 +493,6 @@
 			isa = PBXGroup;
 			children = (
 				B83B03D624115F7600EC4BAD /* CenterController.swift */,
-				B83B03BE24115B3200EC4BAD /* MCController.swift */,
 				B83B03BF24115B3200EC4BAD /* SoundController.swift */,
 				B83B03C024115B3200EC4BAD /* ViewController.swift */,
 			);
@@ -808,7 +805,6 @@
 				B83BC3EE241948E40026D7F6 /* UIGlovedPointer.swift in Sources */,
 				B83BC3FB241B1A8C0026D7F6 /* ReachabilityObserverDelegate.swift in Sources */,
 				B84032382414150D0020D9EA /* UISettingsMenu.swift in Sources */,
-				B83B03C124115B3200EC4BAD /* MCController.swift in Sources */,
 				B83B03C824115B6F00EC4BAD /* SceneDelegate.swift in Sources */,
 				B83B039E241158FC00EC4BAD /* UICView.swift in Sources */,
 				B83B0331241153E900EC4BAD /* UIMouseCoin.swift in Sources */,

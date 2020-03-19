@@ -371,8 +371,6 @@ class ViewController: UIViewController, GADInterstitialDelegate, ReachabilityObs
         }
         self.viruses!.hide();
         self.boardGame!.cats.suspendCatAnimations();
-        self.settingsButton!.settingsMenu!.multiplayer!.activePlayersScrollView!.searchingCatButton!.hideCat();
-        self.settingsButton!.settingsMenu!.multiplayer!.activePlayersScrollView!.invitationCatButton!.hideCat();
         print("App backgrounded");
     }
     
@@ -390,8 +388,6 @@ class ViewController: UIViewController, GADInterstitialDelegate, ReachabilityObs
             self.viruses!.sway(immediately: true);
         }
         self.boardGame!.cats.resumeCatAnimations();
-        self.settingsButton!.settingsMenu!.multiplayer!.activePlayersScrollView!.searchingCatButton!.animate(AgainWithoutDelay: true);
-        self.settingsButton!.settingsMenu!.multiplayer!.activePlayersScrollView!.invitationCatButton!.animate(AgainWithoutDelay: true);
         if (!settingsButton!.isPressed) {
             self.boardGame!.attackMeter!.unPauseVirusMovement();
         }
@@ -531,8 +527,6 @@ class ViewController: UIViewController, GADInterstitialDelegate, ReachabilityObs
         setSuccessGradientLayerStyle();
         settingsButton!.setStyle();
         settingsButton!.settingsMenu!.multiplayer!.setStyle();
-        settingsButton!.settingsMenu!.multiplayer!.activePlayersScrollView!.searchingCatButton!.updateUIStyle();
-        settingsButton!.settingsMenu!.multiplayer!.activePlayersScrollView!.invitationCatButton!.updateUIStyle();
         if (settingsButton!.settingsMenu!.mouseCoin!.mouseCoinView!.backgroundColor!.cgColor != UIColor.clear.cgColor) {
             if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1){
                 settingsButton!.settingsMenu!.mouseCoin!.mouseCoinView!.backgroundColor = UIColor.white;
@@ -541,7 +535,8 @@ class ViewController: UIViewController, GADInterstitialDelegate, ReachabilityObs
             }
         }
         boardGame!.cats.updateUIStyle();
-        boardGame!.myLiveMeter!.setStyle();
+        boardGame!.myLiveMeter!.setCompiledStyle();
+        boardGame!.opponentLiveMeter!.setCompiledStyle();
         boardGame!.results!.setCompiledStyle();
         boardGame!.attackMeter!.setCompiledStyle();
         colorOptions!.setStyle();

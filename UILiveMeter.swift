@@ -17,6 +17,8 @@ class UILiveMeter:UICView {
     var currentHeartButton:UICButton?
     var livesCountLabel:UICLabel?
     
+    var liveMeterView:UICView?
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -30,17 +32,27 @@ class UILiveMeter:UICView {
         }
         self.layer.cornerRadius = self.frame.height * 0.5;
         self.layer.borderWidth = self.frame.height / 12.0;
-        heartInactiveButtonXRange = [ 0.0, self.frame.width - (self.frame.height * 1.45), self.frame.width - self.frame.height + (self.layer.borderWidth * 0.05)];
+        heartInactiveButtonXRange = [0.0, self.frame.width - (self.frame.height * 1.45), self.frame.width - self.frame.height + (self.layer.borderWidth * 0.05)];
         setupHeartInactiveButtons();
         setupLivesCountLabel();
+        setupLiveMeterView();
         setCompiledStyle();
     }
     
+    func setupLiveMeterView() {
+        liveMeterView = UICView(parentView: self.superview!, x: frame.minX - frame.width + layer.borderWidth, y: frame.minY, width: (frame.width * 2.0 - layer.borderWidth), height: frame.height, backgroundColor: UIColor.clear);
+        self.superview!.addSubview(self);
+        liveMeterView!.alpha = 0.0;
+        liveMeterView!.layer.borderWidth = self.layer.borderWidth;
+        liveMeterView!.layer.cornerRadius = self.layer.cornerRadius;
+    }
+    
     func setupLivesCountLabel() {
-        livesCountLabel = UICLabel(parentView: self, x: 0.0, y: frame.height * 0.02, width: frame.width * 1.0, height: frame.height * 1.0);
+        livesCountLabel = UICLabel(parentView: self, x: 0.0, y: frame.height * 0.01, width: frame.width * 1.0, height: frame.height * 1.0);
         livesCountLabel!.font = UIFont.boldSystemFont(ofSize: livesCountLabel!.frame.height * 0.3);
         livesCountLabel!.backgroundColor = UIColor.clear;
         self.livesCountLabel!.text = "\(self.livesLeft)";
+        self.livesCountLabel!.textColor = UIColor.white;
     }
     
     func setupHeartInactiveButtons() {
@@ -63,7 +75,6 @@ class UILiveMeter:UICView {
         currentHeartButton!.layer.borderWidth = 0.0;
         currentHeartButton!.setImage(heartImage, for: .normal);
         currentHeartButton!.addTarget(self, action: #selector(heartButtonSelector(sender:)), for: .touchUpInside);
-        currentHeartButton!.addTarget(self, action: #selector(heartButtonSelector(sender:)), for: .touchDown);
         heartInactiveButtons.append(currentHeartButton!);
         currentHeartButton!.alpha = 0.0;
         currentHeartButton!.show();
@@ -109,7 +120,17 @@ class UILiveMeter:UICView {
         var y:CGFloat = catButton.frame.midY * 0.5 + catButton.superview!.frame.minY;
         if (forOpponent) {
             x = self.frame.minX - (self.frame.height * 1.5);
-            y = self.frame.minY;
+            if (ViewController.aspectRatio! == .ar19point5by9) {
+                x = self.frame.minX - (self.frame.height * 0.15625);
+                y = self.frame.minY + (self.frame.height * 1.0625);
+            } else  if (ViewController.aspectRatio! == .ar16by9) {
+                x = self.frame.minX - (self.frame.height * 1.25);
+                y = self.frame.minY - (self.frame.height * 0.96875);
+            } else {
+                x = self.frame.minX - (self.frame.height * 1.5);
+                y = self.frame.minY;
+            }
+            
         }
         let newFrame:CGRect = CGRect(x: x, y: y, width: self.frame.height, height: self.frame.height);
         // Setup the heart button
@@ -163,11 +184,13 @@ class UILiveMeter:UICView {
         if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1) {
             self.layer.borderColor = UIColor.black.cgColor;
             self.backgroundColor = UIColor.white;
-            self.livesCountLabel!.textColor = UIColor.black;
+            liveMeterView!.layer.borderColor = UIColor.black.cgColor;
+            liveMeterView!.backgroundColor = UIColor.white;
         } else {
             self.layer.borderColor = UIColor.white.cgColor;
             self.backgroundColor = UIColor.black;
-            self.livesCountLabel!.textColor = UIColor.white;
+            liveMeterView!.layer.borderColor = UIColor.white.cgColor;
+            liveMeterView!.backgroundColor = UIColor.black;
         }
     }
 }

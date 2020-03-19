@@ -32,12 +32,24 @@ class UICLabel:UILabel {
         })
     }
     
+    func fadeIn() {
+        UIView.animate(withDuration: 1, delay: 0.125, options: .curveEaseIn, animations: {
+            super.alpha = 1.0;
+        })
+    }
+    
+    func fadeOut() {
+        UIView.animate(withDuration: 1, delay: 0.125, options: .curveEaseIn, animations: {
+            super.alpha = 0.0;
+        })
+    }
+    
     func fadeInAndOut(){
-        UIView.animate(withDuration: 2, delay: 0.5, options: .curveEaseIn, animations: {
+        UIView.animate(withDuration: 2, delay: 0.125, options: .curveEaseIn, animations: {
             super.alpha = 1.0;
         }) { (_) in
             SoundController.kittenMeow();
-            UIView.animate(withDuration: 2, delay: 0.5, options: .curveEaseOut, animations: {
+            UIView.animate(withDuration: 2, delay: 0.125, options: .curveEaseOut, animations: {
                 super.alpha = 0.0;
             })
         }

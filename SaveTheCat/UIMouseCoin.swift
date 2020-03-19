@@ -31,19 +31,21 @@ class UIMouseCoin: UICButton {
         self.layer.cornerRadius = height / 2.0;
         setIconImage(imageName: "mouseCoin.png");
         self.addTarget(self, action: #selector(mouseCoinSelector), for: .touchUpInside);
-        self.addTarget(self, action: #selector(mouseCoinSelector), for: .touchDown);
         setupMouseCoinView();
         mouseCoinView!.alpha = 0.0;
     }
     
     @objc func mouseCoinSelector() {
         if (isSelectable) {
+            SoundController.coinEarned();
+            if (ViewController.aspectRatio! != .ar19point5by9 && !ViewController.staticSelf!.settingsButton!.isPressed) {
+                return;
+            }
             self.amountLabel!.text = "\(UIResults.mouseCoins)";
             var viewShouldFadeOut:Bool = true;
             if (self.mouseCoinView!.alpha == 1.0) {
                 viewShouldFadeOut = false;
             }
-            SoundController.coinEarned();
             self.mouseCoinView!.fadeIn();
             self.mouseCoinView!.layer.borderColor = UIColor.systemYellow.cgColor;
             Timer.scheduledTimer(withTimeInterval: 1.5, repeats: false, block: { _ in

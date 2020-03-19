@@ -338,6 +338,9 @@ class ViewController: UIViewController, GADInterstitialDelegate, ReachabilityObs
                 self.viruses!.fadeIn();
                 self.boardGame!.fadeIn();
                 self.boardGame!.myLiveMeter!.fadeIn();
+                if (ViewController.aspectRatio! != .ar16by9) {
+                    self.boardGame!.myLiveMeter!.liveMeterView!.fadeIn();
+                }
                 self.boardGame!.opponentLiveMeter!.fadeIn();
                 self.boardGame!.attackMeter!.compiledShow();
                 self.colorOptions!.fadeIn();

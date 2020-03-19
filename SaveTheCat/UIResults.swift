@@ -203,7 +203,6 @@ class UIResults: UICView {
         self.continueButton!.frame = CGRect(x: self.continueButton!.frame.minX - self.continueButton!.frame.width * 0.60, y: self.continueButton!.frame.minY, width: self.continueButton!.frame.width, height: self.continueButton!.frame.height);
         self.continueButton!.secondaryFrame = self.continueButton!.frame;
         self.continueButton!.addTarget(self, action: #selector(adjustRewardAmount), for: .touchUpInside);
-        self.continueButton!.addTarget(self, action: #selector(adjustRewardAmount), for: .touchDown);
     }
     
     @objc func adjustRewardAmount() {
@@ -234,14 +233,12 @@ class UIResults: UICView {
         self.watchAdForXMouseCoins!.titleLabel!.textAlignment = NSTextAlignment.center;
         self.watchAdForXMouseCoins!.setTitle("Watch Ad to\nWin \(UIResults.rewardAmount) ·", for: .normal);
         self.watchAdForXMouseCoins!.addTarget(self, action: #selector(showAd), for: .touchUpInside);
-        self.watchAdForXMouseCoins!.addTarget(self, action: #selector(showAd), for: .touchDown);
         self.watchAdForXMouseCoins!.secondaryFrame = self.watchAdForXMouseCoins!.frame;
         // Setup mouse coin
         let x:CGFloat = watchAdForXMouseCoins!.frame.width * 0.64;
         mouseCoin = UIMouseCoin(parentView: watchAdForXMouseCoins!, x: x, y: watchAdForXMouseCoins!.frame.height * 0.475, width: watchAdForXMouseCoins!.frame.height * 0.4, height: watchAdForXMouseCoins!.frame.height * 0.45);
         mouseCoin!.isSelectable = false;
         mouseCoin!.addTarget(self, action: #selector(mouseCoinSelector), for: .touchUpInside);
-        mouseCoin!.addTarget(self, action: #selector(mouseCoinSelector), for: .touchDown);
     }
     
     @objc func showAd() {

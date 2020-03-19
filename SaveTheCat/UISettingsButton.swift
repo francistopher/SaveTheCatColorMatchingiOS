@@ -43,7 +43,6 @@ class UISettingsButton:UIButton {
         setupSettingsMenu(parentView:parentView);
         setStyle();
         self.addTarget(self, action: #selector(settingsMenuSelector), for: .touchUpInside);
-        self.addTarget(self, action: #selector(settingsMenuSelector), for: .touchDown);
     }
     
     func setIconImage(imageName:String) {
@@ -66,7 +65,7 @@ class UISettingsButton:UIButton {
             if(!isPressed){
                 ViewController.staticMainView!.bringSubviewToFront(settingsMenu!);
                 ViewController.staticMainView!.bringSubviewToFront(self);
-                if (ViewController.aspectRatio! == .ar4by3) {
+                if (ViewController.aspectRatio! != .ar19point5by9) {
                     settingsMenu!.mouseCoin!.mouseCoinView!.fadeOut();
                     settingsMenu!.mouseCoin!.mouseCoinView!.backgroundColor = self.backgroundColor;
                     ViewController.staticMainView!.bringSubviewToFront(settingsMenu!.mouseCoin!.mouseCoinView!);

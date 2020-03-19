@@ -24,7 +24,6 @@ class UILeadBoard: UIButton {
         self.layer.cornerRadius = height / 2.0;
         setStyle();
         self.addTarget(self, action: #selector(statsSelector), for: .touchUpInside);
-        self.addTarget(self, action: #selector(statsSelector), for: .touchDown);
         parentView.addSubview(self);
     }
 

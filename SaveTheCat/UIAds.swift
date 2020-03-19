@@ -24,7 +24,6 @@ class UIAds: UIButton {
         self.layer.cornerRadius = height / 2.0;
         setStyle();
         self.addTarget(self, action: #selector(noAdsSelector), for: .touchUpInside);
-        self.addTarget(self, action: #selector(noAdsSelector), for: .touchDown);
         parentView.addSubview(self);
     }
 

@@ -42,7 +42,6 @@ class UIGlovedPointer:UICButton {
         yTranslation = self.originalFrame!.height / 3.5;
         self.layer.borderWidth = 0.0;
         addTarget(self, action: #selector(selfSelector), for: .touchUpInside);
-        addTarget(self, action: #selector(selfSelector), for: .touchDown);
     }
     
     required init?(coder: NSCoder) {
@@ -57,7 +56,6 @@ class UIGlovedPointer:UICButton {
         }
         self.catButton = catButtons.getCatButtonWith(backgroundColor: colorButton!.originalBackgroundColor!);
         self.colorButton!.addTarget(self, action: #selector(translateGloveToCatButtonCenter), for: .touchUpInside);
-        self.colorButton!.addTarget(self, action: #selector(translateGloveToCatButtonCenter), for: .touchDown);
         resetPositionToFrontOfColorButton();
     }
     

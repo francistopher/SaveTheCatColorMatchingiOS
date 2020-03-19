@@ -63,7 +63,6 @@ class UIBoardGame: UIView, GKMatchDelegate {
         parentView.addSubview(self);
         self.results = UIResults(parentView: parentView);
         self.results!.continueButton!.addTarget(self, action: #selector(continueSelector), for: .touchUpInside);
-        self.results!.continueButton!.addTarget(self, action: #selector(continueSelector), for: .touchDown);
         setupVictoryView();
         setupOpponentLiveMeter();
         setupLivesMeter();
@@ -72,9 +71,7 @@ class UIBoardGame: UIView, GKMatchDelegate {
     
     func setupVictoryView() {
         victoryView = UIVictoryView(parentView: self.superview!, frame: self.frame);
-    
         CenterController.center(childView: victoryView!, parentRect: self.superview!.frame, childRect: victoryView!.frame);
-        
         victoryView!.alpha = 0.0;
     }
     
@@ -83,10 +80,14 @@ class UIBoardGame: UIView, GKMatchDelegate {
         var width:CGFloat = ViewController.staticUnitViewWidth * 6.5;
         var y:CGFloat = ViewController.staticUnitViewHeight * 0.925;
         var x:CGFloat = 0.0;
-        if (ViewController.aspectRatio! == .ar19point5by9 || ViewController.aspectRatio! == .ar16by9){
-            width *= 1.5;
+        if (ViewController.aspectRatio! == .ar19point5by9){
+            width *= 1.4;
             x = (self.superview!.frame.width - width) * 0.5;
             y = myLiveMeter!.frame.maxY + myLiveMeter!.layer.borderWidth;
+        } else if (ViewController.aspectRatio! == .ar16by9) {
+            x = (self.superview!.frame.width - width) * 0.5;
+            x += ViewController.staticUnitViewWidth;
+            width += ViewController.staticUnitViewWidth * 0.5;
         } else {
             x = (self.superview!.frame.width - width) * 0.5;
         }
@@ -105,6 +106,8 @@ class UIBoardGame: UIView, GKMatchDelegate {
 
     func setupLivesMeter() {
         myLiveMeter = UILiveMeter(parentView: self.superview!, frame:  CGRect(x: opponentLiveMeter!.frame.minX, y: opponentLiveMeter!.frame.minY, width: opponentLiveMeter!.frame.width, height: opponentLiveMeter!.frame.height), isOpponent: false);
+        self.superview!.addSubview(opponentLiveMeter!);
+        self.superview!.addSubview(myLiveMeter!);
     }
     
     @objc func continueSelector() {
@@ -175,9 +178,17 @@ class UIBoardGame: UIView, GKMatchDelegate {
     }
     
     func displayOpponentLiveMeter() {
-        let x:CGFloat = self.myLiveMeter!.frame.minX + self.myLiveMeter!.layer.borderWidth - self.myLiveMeter!.frame.width;
+        var x:CGFloat = 0.0;
+        var y:CGFloat = 0.0;
+        if (ViewController.aspectRatio! == .ar4by3 || ViewController.aspectRatio! == .ar19point5by9) {
+            x = self.myLiveMeter!.frame.minX + self.myLiveMeter!.layer.borderWidth - self.myLiveMeter!.frame.width;
+            y = self.opponentLiveMeter!.frame.minY;
+        } else {
+            x = self.opponentLiveMeter!.frame.minX
+            y = self.myLiveMeter!.frame.minY - self.myLiveMeter!.layer.borderWidth + self.myLiveMeter!.frame.height;
+        }
         UIView.animate(withDuration: 1.0, animations: {
-            self.opponentLiveMeter!.frame = CGRect(x: x, y: self.opponentLiveMeter!.frame.minY, width: self.opponentLiveMeter!.frame.width, height: self.opponentLiveMeter!.frame.height);
+            self.opponentLiveMeter!.frame = CGRect(x: x, y: y, width: self.opponentLiveMeter!.frame.width, height: self.opponentLiveMeter!.frame.height);
         })
     }
     
@@ -263,7 +274,6 @@ class UIBoardGame: UIView, GKMatchDelegate {
         singlePlayerButton!.layer.borderWidth = attackMeter!.layer.borderWidth;
         singlePlayerButton!.titleLabel!.font = UIFont.boldSystemFont(ofSize: singlePlayerButton!.frame.height * 0.3);
         singlePlayerButton!.addTarget(self, action: #selector(singlePlayerButtonSelector), for: .touchUpInside);
-        singlePlayerButton!.addTarget(self, action: #selector(singlePlayerButtonSelector), for: .touchDown);
         singlePlayerButton!.shrinked();
         twoPlayerButton = UICButton(parentView: self.superview!, frame: CGRect(x: self.colorOptions!.frame.minX + self.colorOptions!.frame.width * 0.525, y: self.colorOptions!.frame.minY, width: self.colorOptions!.frame.width * 0.425, height: self.colorOptions!.frame.height), backgroundColor: UIColor.clear);
         twoPlayerButton!.setTitle("Two Player", for: .normal);
@@ -272,7 +282,6 @@ class UIBoardGame: UIView, GKMatchDelegate {
         twoPlayerButton!.layer.borderWidth = attackMeter!.layer.borderWidth;
         twoPlayerButton!.titleLabel!.font = UIFont.boldSystemFont(ofSize: twoPlayerButton!.frame.height * 0.3);
         twoPlayerButton!.addTarget(self, action: #selector(twoPlayerButtonSelector), for: .touchUpInside);
-        twoPlayerButton!.addTarget(self, action: #selector(twoPlayerButtonSelector), for: .touchDown);
         twoPlayerButton!.shrinked();
     }
     
@@ -397,9 +406,7 @@ class UIBoardGame: UIView, GKMatchDelegate {
                 catButton.columnIndex = columnIndex;
                 catButton.imageContainerButton!.backgroundColor = UIColor.clear;
                 catButton.imageContainerButton!.addTarget(self, action: #selector(selectCatImageButton), for: .touchUpInside);
-                catButton.imageContainerButton!.addTarget(self, action: #selector(selectCatImageButton), for: .touchDown);
                 catButton.addTarget(self, action: #selector(selectCatButton), for: .touchUpInside);
-                catButton.addTarget(self, action: #selector(selectCatButton), for: .touchDown);
                 x += buttonWidth;
             }
             y += buttonHeight;

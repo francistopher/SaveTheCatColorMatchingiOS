@@ -63,6 +63,7 @@ class UIBoardGame: UIView, GKMatchDelegate {
         parentView.addSubview(self);
         self.results = UIResults(parentView: parentView);
         self.results!.continueButton!.addTarget(self, action: #selector(continueSelector), for: .touchUpInside);
+        self.results!.continueButton!.addTarget(self, action: #selector(continueSelector), for: .touchDown);
         setupVictoryView();
         setupOpponentLiveMeter();
         setupLivesMeter();
@@ -262,6 +263,7 @@ class UIBoardGame: UIView, GKMatchDelegate {
         singlePlayerButton!.layer.borderWidth = attackMeter!.layer.borderWidth;
         singlePlayerButton!.titleLabel!.font = UIFont.boldSystemFont(ofSize: singlePlayerButton!.frame.height * 0.3);
         singlePlayerButton!.addTarget(self, action: #selector(singlePlayerButtonSelector), for: .touchUpInside);
+        singlePlayerButton!.addTarget(self, action: #selector(singlePlayerButtonSelector), for: .touchDown);
         singlePlayerButton!.shrinked();
         twoPlayerButton = UICButton(parentView: self.superview!, frame: CGRect(x: self.colorOptions!.frame.minX + self.colorOptions!.frame.width * 0.525, y: self.colorOptions!.frame.minY, width: self.colorOptions!.frame.width * 0.425, height: self.colorOptions!.frame.height), backgroundColor: UIColor.clear);
         twoPlayerButton!.setTitle("Two Player", for: .normal);
@@ -270,6 +272,7 @@ class UIBoardGame: UIView, GKMatchDelegate {
         twoPlayerButton!.layer.borderWidth = attackMeter!.layer.borderWidth;
         twoPlayerButton!.titleLabel!.font = UIFont.boldSystemFont(ofSize: twoPlayerButton!.frame.height * 0.3);
         twoPlayerButton!.addTarget(self, action: #selector(twoPlayerButtonSelector), for: .touchUpInside);
+        twoPlayerButton!.addTarget(self, action: #selector(twoPlayerButtonSelector), for: .touchDown);
         twoPlayerButton!.shrinked();
     }
     
@@ -394,7 +397,9 @@ class UIBoardGame: UIView, GKMatchDelegate {
                 catButton.columnIndex = columnIndex;
                 catButton.imageContainerButton!.backgroundColor = UIColor.clear;
                 catButton.imageContainerButton!.addTarget(self, action: #selector(selectCatImageButton), for: .touchUpInside);
+                catButton.imageContainerButton!.addTarget(self, action: #selector(selectCatImageButton), for: .touchDown);
                 catButton.addTarget(self, action: #selector(selectCatButton), for: .touchUpInside);
+                catButton.addTarget(self, action: #selector(selectCatButton), for: .touchDown);
                 x += buttonWidth;
             }
             y += buttonHeight;
@@ -562,7 +567,6 @@ class UIBoardGame: UIView, GKMatchDelegate {
         })
         if (UIResults.mouseCoins != 0) {
             ViewController.staticSelf!.settingsButton!.settingsMenu!.mouseCoin!.setMouseCoinValue(newValue: UIResults.mouseCoins - 1);
-            UIResults.absoluteMouseCoins -= 1;
         }
     }
     

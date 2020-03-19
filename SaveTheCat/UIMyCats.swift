@@ -23,6 +23,7 @@ class UIMyCats: UIButton {
         self.backgroundColor = .clear;
         self.layer.cornerRadius = height / 2.0;
         self.addTarget(self, action: #selector(moreCatsSelector), for: .touchUpInside);
+        self.addTarget(self, action: #selector(moreCatsSelector), for: .touchDown);
         self.setStyle();
         parentView.addSubview(self);
     }

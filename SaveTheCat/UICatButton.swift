@@ -8,6 +8,7 @@
 
 import SwiftUI
 import AVFoundation
+import GameKit
 
 enum Cat {
     case fancy
@@ -55,7 +56,6 @@ class UICatButton: UIButton {
         // Generate mouse coin
         let mouseCoin:UIMouseCoin = UIMouseCoin(parentView: self.imageContainerButton!, x: 0.0, y: 0.0, width: self.imageContainerButton!.frame.width / 4.0, height: self.imageContainerButton!.frame.height / 4.0);
         mouseCoin.isSelectable = false;
-        mouseCoin.removeTarget(self, action: #selector(mouseCoin.mouseCoinSelector), for: .touchUpInside);
         CenterController.center(childView: mouseCoin, parentRect: imageContainerButton!.frame, childRect: mouseCoin.frame);
         self.imageContainerButton!.addSubview(mouseCoin);
         // Create new frame for mouse coin on main view
@@ -75,17 +75,21 @@ class UICatButton: UIButton {
         DispatchQueue.main.asyncAfter(deadline: .now() + time) {
             mainView.bringSubviewToFront(mouseCoin);
             UIView.animate(withDuration: 1.0, delay: 0.125, options: [.curveEaseInOut], animations: {
+                var newMouseCoinFrame:CGRect?
                 let settingsButton:UISettingsButton = ViewController.settingsButton!;
                 let settingsMenuFrame:CGRect = settingsButton.settingsMenu!.frame;
                 let settingsMouseCoinFrame:CGRect = settingsButton.settingsMenu!.mouseCoin!.frame;
-                let newMouseCoinFrame:CGRect = CGRect(x: settingsMenuFrame.minX + settingsMouseCoinFrame.minX, y: settingsMenuFrame.minY + settingsMouseCoinFrame.minY, width: settingsMouseCoinFrame.width, height: settingsMouseCoinFrame.height);
-                mouseCoin.frame = newMouseCoinFrame;
+                if (ViewController.staticSelf!.isInternetReachable && GKLocalPlayer.local.isAuthenticated) {
+                    newMouseCoinFrame = CGRect(x: settingsMenuFrame.minX + settingsMouseCoinFrame.minX, y: settingsMenuFrame.minY + settingsMouseCoinFrame.minY, width: settingsMouseCoinFrame.width, height: settingsMouseCoinFrame.height);
+                } else {
+                    let x:CGFloat = CGFloat.random(in: 0.0...ViewController.staticSelf!.mainView.frame.width);
+                    newMouseCoinFrame = CGRect(x: x, y: -settingsMouseCoinFrame.height, width: settingsMouseCoinFrame.width, height: settingsMouseCoinFrame.height);
+                }
+                mouseCoin.frame = newMouseCoinFrame!;
             }, completion: { _ in
-                SoundController.coinEarned();
-                ViewController.staticSelf!.settingsButton!.settingsMenu!.mouseCoin!.setMouseCoinValue(newValue: UIResults.mouseCoins + 1);
-                UIResults.absoluteMouseCoins += 1;
-                if (ViewController.settingsButton!.settingsMenu!.mouseCoin!.mouseCoinView!.alpha == 0.0) {
-                    ViewController.settingsButton!.settingsMenu!.mouseCoin!.sendActions(for: .touchUpInside);
+                if (ViewController.staticSelf!.isInternetReachable && GKLocalPlayer.local.isAuthenticated) {
+                    SoundController.coinEarned();
+                    ViewController.staticSelf!.settingsButton!.settingsMenu!.mouseCoin!.setMouseCoinValue(newValue: UIResults.mouseCoins + 1);
                 }
                 mouseCoin.removeFromSuperview();
             })

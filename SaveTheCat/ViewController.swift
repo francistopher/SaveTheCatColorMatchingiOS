@@ -42,14 +42,8 @@ class ViewController: UIViewController, GADInterstitialDelegate, ReachabilityObs
             gameMessage!.displayInternetConnectionEstablishedMessage();
             // Load ads
             bannerView.load(GADRequest());
-            // Load mouse coins
-            if (UIResults.absoluteMouseCoins != -1) {
-                keyValueStore.set(UIResults.absoluteMouseCoins, forKey: "mouseCoins");
-                keyValueStore.synchronize();
-            }
+            // Load Online Mouse Coins
             settingsButton!.settingsMenu!.mouseCoin!.setMouseCoinValue(newValue: keyValueStore.longLong(forKey: "mouseCoins"));
-            UIResults.absoluteMouseCoins = keyValueStore.longLong(forKey: "mouseCoins");
-            
         } else {
             self.isInternetReachable = false;
             // Step out of multiplayer session
@@ -57,11 +51,7 @@ class ViewController: UIViewController, GADInterstitialDelegate, ReachabilityObs
             // Display no Internet Message
             gameMessage!.displayNoInternetConsequencesMessage();
             // No internet mouse coinds
-            if (UIResults.absoluteMouseCoins == -1) {
-                UIResults.absoluteMouseCoins = keyValueStore.longLong(forKey: "mouseCoins");
-                settingsButton!.settingsMenu!.mouseCoin!.setMouseCoinValue(newValue: keyValueStore.longLong(forKey: "mouseCoins"));
-            }
-            
+            settingsButton!.settingsMenu!.mouseCoin!.setMouseCoinValue(newValue: 0);
         }
     }
     
@@ -506,6 +496,7 @@ class ViewController: UIViewController, GADInterstitialDelegate, ReachabilityObs
         boardGame!.settingsButton = settingsButton!;
         settingsButton!.settingsMenu!.alpha = 0.0;
         settingsButton!.alpha = 0.0;
+        settingsButton!.settingsMenu!.mouseCoin!.amountLabel!.text = "0";
     }
     
     func setStyle() {

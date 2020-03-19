@@ -31,6 +31,7 @@ class UIMouseCoin: UICButton {
         self.layer.cornerRadius = height / 2.0;
         setIconImage(imageName: "mouseCoin.png");
         self.addTarget(self, action: #selector(mouseCoinSelector), for: .touchUpInside);
+        self.addTarget(self, action: #selector(mouseCoinSelector), for: .touchDown);
         setupMouseCoinView();
         mouseCoinView!.alpha = 0.0;
     }

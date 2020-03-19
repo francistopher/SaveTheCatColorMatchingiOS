@@ -76,6 +76,7 @@ class UIColorOptions: UIView {
                 button!.frame = button!.shrunkFrame!;
                 button!.grow();
                 button!.addTarget(self, action: #selector(selectColorOption), for: .touchUpInside);
+                button!.addTarget(self, action: #selector(selectColorOption), for: .touchDown);
                 selectionButtons.append(button!);
                 columnDisplacement += buttonWidth;
             } else {

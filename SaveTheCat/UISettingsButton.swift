@@ -43,6 +43,7 @@ class UISettingsButton:UIButton {
         setupSettingsMenu(parentView:parentView);
         setStyle();
         self.addTarget(self, action: #selector(settingsMenuSelector), for: .touchUpInside);
+        self.addTarget(self, action: #selector(settingsMenuSelector), for: .touchDown);
     }
     
     func setIconImage(imageName:String) {

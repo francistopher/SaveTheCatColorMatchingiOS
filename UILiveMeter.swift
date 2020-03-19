@@ -63,6 +63,7 @@ class UILiveMeter:UICView {
         currentHeartButton!.layer.borderWidth = 0.0;
         currentHeartButton!.setImage(heartImage, for: .normal);
         currentHeartButton!.addTarget(self, action: #selector(heartButtonSelector(sender:)), for: .touchUpInside);
+        currentHeartButton!.addTarget(self, action: #selector(heartButtonSelector(sender:)), for: .touchDown);
         heartInactiveButtons.append(currentHeartButton!);
         currentHeartButton!.alpha = 0.0;
         currentHeartButton!.show();
@@ -81,9 +82,11 @@ class UILiveMeter:UICView {
     func decrementLivesLeftCount() {
         if (livesLeft > 0) {
             livesLeft -= 1;
-            self.livesCountLabel!.text = "\(self.livesLeft)";
-            
-            
+            if (livesLeft == 0) {
+                 self.livesCountLabel!.text = "";
+            } else {
+                 self.livesCountLabel!.text = "\(self.livesLeft)";
+            }
             // Get the last heart button
             let lastHeartButton:UICButton = heartInactiveButtons.last!;
             heartInactiveButtons.removeLast();
@@ -160,11 +163,11 @@ class UILiveMeter:UICView {
         if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1) {
             self.layer.borderColor = UIColor.black.cgColor;
             self.backgroundColor = UIColor.white;
-            self.livesCountLabel!.textColor = UIColor.white;
+            self.livesCountLabel!.textColor = UIColor.black;
         } else {
             self.layer.borderColor = UIColor.white.cgColor;
             self.backgroundColor = UIColor.black;
-            self.livesCountLabel!.textColor = UIColor.black;
+            self.livesCountLabel!.textColor = UIColor.white;
         }
     }
 }

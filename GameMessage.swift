@@ -17,7 +17,6 @@ class UIGameMessage:UIView {
         case noGameCenter
         case noInternet
         case yesInternet
-        case opponent
     }
     
     var messageQueue:[Message] = [];
@@ -79,7 +78,6 @@ class UIGameMessage:UIView {
                     } else {
                         littleLongerCount += 0.125;
                     }
-
                 }
             } else {
                 self.hideMessage();
@@ -97,15 +95,13 @@ class UIGameMessage:UIView {
             messageLabel!.text = "Not logged into iCloud.\n Game data will not be saved!";
         case .noInternet:
             setupImage(named: "noInternet.png");
-            messageLabel!.text = "No Internet Connection! Game experience will be limited!";
+            messageLabel!.text = "No Internet Connection! Game experience is limited!";
         case .yesiCloud:
             setupImage(named: "yesiCloud.png");
             messageLabel!.text = "Logged into iCloud.\n Game data will be saved!";
         case .yesInternet:
             setupImage(named:"yesInternet.png");
             messageLabel!.text = "Connected to the Internet! Game experience is renewable!";
-        case .opponent:
-            displayOpponentImageAndAlias();
         }
     }
     
@@ -168,19 +164,6 @@ class UIGameMessage:UIView {
     func displayInternetConnectionEstablishedMessage() {
         print("MESSAGE: Internet connection established")
         addToMessageQueue(message: .yesInternet);
-    }
-    
-    func displayOpponentInfo(image:UIImage, alias:String) {
-        print("MESSAGE: Opponent with profile image found")
-        self.opponentImage = image;
-        self.opponentAlias = alias;
-        addToMessageQueue(message: .opponent);
-    }
-    
-    func displayOpponentInfo(alias:String) {
-        print("MESSAGE: Opponent without profile image found")
-        self.opponentAlias = alias;
-        addToMessageQueue(message: .opponent);
     }
     
     func setupBlurEffect() {

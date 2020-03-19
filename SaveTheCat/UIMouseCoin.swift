@@ -18,6 +18,8 @@ class UIMouseCoin: UICButton {
     var mouseCoinView:UICView?
     var imageMouseCoinView:UIImageView?
     var amountLabel:UICLabel?
+    var updateMouseCoinValueTimer:Timer?
+    var valueReached:Bool = false;
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -56,6 +58,51 @@ class UIMouseCoin: UICButton {
         self.setImage(iconImage, for: .normal);
         self.imageView!.contentMode = UIView.ContentMode.scaleAspectFit;
     }
+    
+    func setMouseCoinValue(newValue:Int64) {
+        var difference:Int64 = 0;
+        var timeCounter:Double = 0.0;
+        var timeRate:Double = 0.0;
+        
+        func isDifferencePositive() -> Bool {
+            return UIResults.mouseCoins < newValue;
+        }
+        
+        func setDifference() {
+            if (isDifferencePositive()) {
+                difference = newValue - UIResults.mouseCoins;
+            } else {
+                difference =  UIResults.mouseCoins - newValue;
+                
+            }
+        }
+        
+        func setupUpdateMouseCoinValueAnimation() {
+            updateMouseCoinValueTimer?.invalidate();
+            updateMouseCoinValueTimer = nil;
+            updateMouseCoinValueTimer = Timer.scheduledTimer(withTimeInterval: 0.01, repeats: true, block: { _ in
+                if (timeCounter > 1.0 && UIResults.mouseCoins == newValue) {
+                    self.updateMouseCoinValueTimer!.invalidate();
+                } else {
+                    if (isDifferencePositive()) {
+                        UIResults.mouseCoins += 1;
+                    } else {
+                        UIResults.mouseCoins -= 1;
+                    }
+                    self.amountLabel!.text = "\(UIResults.mouseCoins)";
+                }
+                timeCounter += timeRate;
+            })
+        }
+        
+        setDifference();
+        timeRate = 1.0 / Double(difference);
+        timeCounter = timeRate;
+        setupUpdateMouseCoinValueAnimation();
+        print("MESSAGE: REAL VALUE \(newValue)");
+    }
+    
+    
     
     func setupMouseCoinView() {
         self.mouseCoinView = UICView(parentView: self.superview!.superview!, x: 0.0, y: self.superview!.frame.minY, width: ViewController.staticUnitViewWidth * 6.5, height: self.superview!.frame.height, backgroundColor: UIColor.white);

@@ -31,6 +31,8 @@ class UICatButton: UIButton {
     var columnIndex:Int = 0;
     var clearedOutToSolve:Bool = false;
     
+     var keyValueStore:NSUbiquitousKeyValueStore = NSUbiquitousKeyValueStore();
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented");
     }
@@ -80,8 +82,8 @@ class UICatButton: UIButton {
                 mouseCoin.frame = newMouseCoinFrame;
             }, completion: { _ in
                 SoundController.coinEarned();
-                UIResults.mouseCoins += 1;
-                ViewController.settingsButton!.settingsMenu!.mouseCoin!.amountLabel!.text = "\(UIResults.mouseCoins)";
+                ViewController.staticSelf!.settingsButton!.settingsMenu!.mouseCoin!.setMouseCoinValue(newValue: UIResults.mouseCoins + 1);
+                UIResults.absoluteMouseCoins += 1;
                 if (ViewController.settingsButton!.settingsMenu!.mouseCoin!.mouseCoinView!.alpha == 0.0) {
                     ViewController.settingsButton!.settingsMenu!.mouseCoin!.sendActions(for: .touchUpInside);
                 }

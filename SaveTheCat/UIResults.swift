@@ -13,6 +13,7 @@ class UIResults: UICView {
     
     static var selectedCat:Cat = .standard;
     static var mouseCoins:Int64 = 0;
+    static var absoluteMouseCoins:Int64 = -1;
     
     var gameOverLabel:UICLabel?
     
@@ -248,6 +249,7 @@ class UIResults: UICView {
         threshold = 1.0;
         adIsShowing = true;
         // load the ad
+        ViewController.staticSelf!.setupInterstitial();
         ViewController.presentInterstitial();
         // Wait to see if ad will load
         var timer:Timer?
@@ -279,7 +281,6 @@ class UIResults: UICView {
         let availableSpace:CGFloat = totalSpace - unavailableSpace;
         let spaceBetween:CGFloat = availableSpace / CGFloat(UIResults.rewardAmount + 1);
         for index in 0..<UIResults.rewardAmount {
-            UIResults.mouseCoins += 1;
             // Generate mouse coin
             let space:CGFloat = CGFloat(index + 1) * spaceBetween;
             var x:CGFloat = CGFloat(index) * (continueButton!.frame.height * 0.5);
@@ -306,6 +307,8 @@ class UIResults: UICView {
                     mouseCoin.frame = newMouseCoinFrame;
                 }, completion: { _ in
                     SoundController.coinEarned();
+                    ViewController.staticSelf!.settingsButton!.settingsMenu!.mouseCoin!.setMouseCoinValue(newValue: UIResults.mouseCoins + 1);
+                    UIResults.absoluteMouseCoins += 1;
                     mouseCoin.removeFromSuperview();
                 })
             }

@@ -42,18 +42,26 @@ class ViewController: UIViewController, GADInterstitialDelegate, ReachabilityObs
             gameMessage!.displayInternetConnectionEstablishedMessage();
             // Load ads
             bannerView.load(GADRequest());
-        
             // Load mouse coins
-            UIResults.mouseCoins = keyValueStore.longLong(forKey: "mouseCoins");
-            settingsButton!.settingsMenu!.mouseCoin!.amountLabel!.text = "\(UIResults.mouseCoins)";
-            // Restart matchmaking
+            if (UIResults.absoluteMouseCoins != -1) {
+                keyValueStore.set(UIResults.absoluteMouseCoins, forKey: "mouseCoins");
+                keyValueStore.synchronize();
+            }
+            settingsButton!.settingsMenu!.mouseCoin!.setMouseCoinValue(newValue: keyValueStore.longLong(forKey: "mouseCoins"));
+            UIResults.absoluteMouseCoins = keyValueStore.longLong(forKey: "mouseCoins");
+            
         } else {
             self.isInternetReachable = false;
+            // Step out of multiplayer session
+            self.boardGame!.stopSearchingForOpponentEntirely();
             // Display no Internet Message
             gameMessage!.displayNoInternetConsequencesMessage();
-            // Clear mouse coins
-            UIResults.mouseCoins = 0;
-            settingsButton!.settingsMenu!.mouseCoin!.amountLabel!.text = "\(UIResults.mouseCoins)";
+            // No internet mouse coinds
+            if (UIResults.absoluteMouseCoins == -1) {
+                UIResults.absoluteMouseCoins = keyValueStore.longLong(forKey: "mouseCoins");
+                settingsButton!.settingsMenu!.mouseCoin!.setMouseCoinValue(newValue: keyValueStore.longLong(forKey: "mouseCoins"));
+            }
+            
         }
     }
     
@@ -139,6 +147,8 @@ class ViewController: UIViewController, GADInterstitialDelegate, ReachabilityObs
                 self.gameMessage!.displayNotLoggedIntoiCloudMessage();
                 self.gameMessage!.displayGameCenterDirectionsMessage();
                 self.firedITunesStatus = true;
+                // Step out of multiplayer session
+                self.boardGame!.stopSearchingForOpponentEntirely();
             }
             if (isCloudContainerAvailable && self.firedITunesStatus) {
                 self.gameMessage!.displayLoggedIntoiCloudMessage();
@@ -178,11 +188,6 @@ class ViewController: UIViewController, GADInterstitialDelegate, ReachabilityObs
     
     func interstitialDidDismissScreen(_ ad: GADInterstitial) {
         viruses!.sway(immediately: true);
-        setupInterstitial();
-    }
-    
-    func interstitial(_ ad: GADInterstitial, didFailToReceiveAdWithError error: GADRequestError) {
-      print("interstitial:didFailToReceiveAdWithError: \(error.localizedDescription)")
     }
     
     static func presentInterstitial() {
@@ -230,6 +235,8 @@ class ViewController: UIViewController, GADInterstitialDelegate, ReachabilityObs
                     self.gameMessage!.stayALittleLonger = true;
                 } else {
                     self.gameMessage!.displayGameCenterDirectionsMessage();
+                    // Step out of multiplayer session
+                    self.boardGame!.stopSearchingForOpponentEntirely();
                 }
                 self.gameCenterAuthentificationOver = true;
                 print("DISABLE MULTIPLAYER")
@@ -321,7 +328,6 @@ class ViewController: UIViewController, GADInterstitialDelegate, ReachabilityObs
         setupViruses();
         // Set ads
         setupBannerView();
-        setupInterstitial();
         setupBoardMainView();
         // Save the mouse coins from icloud
         setupColorOptionsView();
@@ -360,12 +366,6 @@ class ViewController: UIViewController, GADInterstitialDelegate, ReachabilityObs
     }
     
     @objc func appMovedToBackground() {
-//        if (self.boardGame!.opponent == nil) {
-//            self.boardGame!.clearOpponentSearching();
-//            self.boardGame!.clearMatchSearching(instant: true);
-//            self.boardGame!.clearMatchMakerAndMagnifyGlass(instant: true);
-//        }
-//
         if (self.boardGame!.opponent == nil) {
             self.boardGame!.attackMeter!.pauseVirusMovement();
         }
@@ -375,15 +375,6 @@ class ViewController: UIViewController, GADInterstitialDelegate, ReachabilityObs
     }
     
     @objc func appMovedToForeground() {
-//        if (self.boardGame!.opponent == nil) {
-//            if (!self.boardGame!.continueWithMatchMaking && !self.boardGame!.continueWithMatchSearching && !self.boardGame!.continueWithOpponentSearching) {
-//                self.boardGame!.continueWithOpponentSearching = true;
-//                self.boardGame!.continueWithMatchSearching = true;
-//                self.boardGame!.continueWithMatchMaking = true;
-//                self.boardGame!.searchMagnifyGlass!.transform = .identity;
-//                self.boardGame!.prepareGame();
-//            }
-//        }
         if (self.gameCenterAuthentificationOver){
             self.viruses!.sway(immediately: true);
         }
@@ -515,9 +506,6 @@ class ViewController: UIViewController, GADInterstitialDelegate, ReachabilityObs
         boardGame!.settingsButton = settingsButton!;
         settingsButton!.settingsMenu!.alpha = 0.0;
         settingsButton!.alpha = 0.0;
-        // Get saved mouse coins from icloud
-        UIResults.mouseCoins = keyValueStore.longLong(forKey: "mouseCoins");
-        settingsButton!.settingsMenu!.mouseCoin!.amountLabel!.text = "\(UIResults.mouseCoins)";
     }
     
     func setStyle() {

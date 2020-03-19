@@ -39,10 +39,6 @@ class UIBoardGame: UIView, GKMatchDelegate {
     var matchMakerVC:GKMatchmakerViewController?
     
     var opponentResignationTimer:Timer?
-    
-    var continueWithMatchMaking:Bool = true;
-    var continueWithMatchSearching:Bool = true;
-    var continueWithOpponentSearching:Bool = true;
     var opponentValuePerSecond:Double = 0.0;
     var myValueCounterPerSecond:Double = 0.0;
     
@@ -58,7 +54,7 @@ class UIBoardGame: UIView, GKMatchDelegate {
     }
     
     // Save number of coins
-    var keyValStore:NSUbiquitousKeyValueStore = NSUbiquitousKeyValueStore();
+    var keyValueStore:NSUbiquitousKeyValueStore = NSUbiquitousKeyValueStore();
     
     init(parentView: UIView, x:CGFloat, y:CGFloat, width:CGFloat, height:CGFloat) {
         super.init(frame:CGRect(x: x, y: y, width: width, height: height));
@@ -166,27 +162,15 @@ class UIBoardGame: UIView, GKMatchDelegate {
         self.attackMeter!.didNotInvokeAttackImpulse = true;
         self.attackMeter!.sendVirusToStartAndHold();
         // Invalidate opponent resignation timer and reset value
-        self.opponentValuePerSecond = 0.0;
-        self.myValueCounterPerSecond = 0.0;
-        // Hide and reset opponent live meter
-        self.hideOpponentLiveMeter(instant: false);
-        // Clear match
-        self.currentMatch!.disconnect();
-        self.currentMatch = nil;
-        self.opponent = nil;
+        self.stopSearchingForOpponentEntirely();
     }
     
-    func hideOpponentLiveMeter(instant:Bool) {
-        if (instant) {
+    func hideOpponentLiveMeter() {
+        UIView.animate(withDuration: 1.0, delay: 0.0, options: .curveEaseIn, animations: {
             self.opponentLiveMeter!.frame = self.opponentLiveMeter!.originalFrame!;
+        }, completion: { _ in
             self.opponentLiveMeter!.resetLivesLeftCount();
-        } else {
-            UIView.animate(withDuration: 1.0, delay: 0.0, options: .curveEaseIn, animations: {
-                self.opponentLiveMeter!.frame = self.opponentLiveMeter!.originalFrame!;
-            }, completion: { _ in
-                self.opponentLiveMeter!.resetLivesLeftCount();
-            })
-        }
+        })
     }
     
     func displayOpponentLiveMeter() {
@@ -235,7 +219,7 @@ class UIBoardGame: UIView, GKMatchDelegate {
     }
 
     func startMatchmaking() {
-        if (continueWithMatchMaking) {
+        if (GKLocalPlayer.local.isAuthenticated && ViewController.staticSelf!.isInternetReachable) {
             // Build match maker
             let matchRequest = GKMatchRequest();
             matchRequest.defaultNumberOfPlayers = 2;
@@ -247,32 +231,16 @@ class UIBoardGame: UIView, GKMatchDelegate {
         }
     }
     
-    func clearOpponentSearching() {
-        continueWithOpponentSearching = false;
-        opponentResignationTimer?.invalidate();
-        opponent = nil;
-    }
-           
-    func clearMatchSearching(instant:Bool) {
-        continueWithMatchSearching = false;
+    func stopSearchingForOpponentEntirely() {
+        ViewController.staticSelf!.dismiss(animated: true, completion: nil);
         currentMatch?.disconnect();
         currentMatch = nil;
-        hideOpponentLiveMeter(instant: instant);
-    }
-
-    func clearMatchMakerAndMagnifyGlass() {
-        continueWithMatchMaking = false;
-    }
-    
-    func showOpponentNotification() {
-        opponent!.loadPhoto(for: GKPlayer.PhotoSize.small, withCompletionHandler: { (image:UIImage?, error:Error?) -> Void in
-            // ERROR
-            if (error == nil) {
-                ViewController.staticSelf!.gameMessage!.displayOpponentInfo(image: image!, alias: self.opponent!.alias);
-            } else {
-                ViewController.staticSelf!.gameMessage!.displayOpponentInfo(alias: self.opponent!.alias);
-            }
-        })
+        hideOpponentLiveMeter();
+        opponentResignationTimer?.invalidate();
+        opponentResignationTimer = nil;
+        self.opponentValuePerSecond = 0.0;
+        self.myValueCounterPerSecond = 0.0;
+        opponent = nil;
     }
     
     func buildGame() {
@@ -333,14 +301,6 @@ class UIBoardGame: UIView, GKMatchDelegate {
         if (currentRound == 1) {
             glovePointer!.setColorAndCatButtons(colorButtons: colorOptions!.selectionButtons, catButtons: cats, first: true);
             glovePointer!.grow();
-        }
-    }
-    
-    func prepareGame(){
-        if (GKLocalPlayer.local.isAuthenticated && ViewController.staticSelf!.isInternetReachable) {
-            startMatchmaking();
-        } else {
-            startGameWithoutMatchmaking();
         }
     }
     
@@ -496,8 +456,8 @@ class UIBoardGame: UIView, GKMatchDelegate {
             self.results!.fadeIn();
             // Save coins earned for the use
             if (ViewController.staticSelf!.isInternetReachable) {
-                self.keyValStore.set(UIResults.mouseCoins, forKey: "mouseCoins");
-                self.keyValStore.synchronize();
+                self.keyValueStore.set(UIResults.mouseCoins, forKey: "mouseCoins");
+                self.keyValueStore.synchronize();
             }
         }
     }
@@ -564,11 +524,7 @@ class UIBoardGame: UIView, GKMatchDelegate {
         } else {
             if (currentMatch != nil) {
                 print("MESSAGE: I LOST :(")
-                self.opponentResignationTimer!.invalidate();
-                self.opponentResignationTimer = nil;
-                hideOpponentLiveMeter(instant: false);
-                currentMatch!.disconnect();
-                currentMatch = nil;
+                stopSearchingForOpponentEntirely();
             }
             setAllCatButtonsAsDead();
             gameOverTransition();
@@ -605,8 +561,8 @@ class UIBoardGame: UIView, GKMatchDelegate {
             mouseCoin.removeFromSuperview();
         })
         if (UIResults.mouseCoins != 0) {
-            UIResults.mouseCoins -= 1;
-            settingsButton!.settingsMenu!.mouseCoin!.amountLabel!.text = "\(UIResults.mouseCoins)";
+            ViewController.staticSelf!.settingsButton!.settingsMenu!.mouseCoin!.setMouseCoinValue(newValue: UIResults.mouseCoins - 1);
+            UIResults.absoluteMouseCoins -= 1;
         }
     }
     

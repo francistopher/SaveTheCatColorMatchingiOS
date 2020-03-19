@@ -15,6 +15,7 @@ class UILiveMeter:UICView {
     var heartImage:UIImage?
     var heartInactiveButtonXRange:[CGFloat] = [];
     var currentHeartButton:UICButton?
+    var livesCountLabel:UICLabel?
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -31,7 +32,12 @@ class UILiveMeter:UICView {
         self.layer.borderWidth = self.frame.height / 12.0;
         heartInactiveButtonXRange = [ 0.0, self.frame.width - (self.frame.height * 1.45), self.frame.width - self.frame.height + (self.layer.borderWidth * 0.05)];
         setupHeartInactiveButtons();
+        setupLivesCountLabel();
         setStyle();
+    }
+    
+    func setupLivesCountLabel() {
+        
     }
     
     func setupHeartInactiveButtons() {
@@ -72,9 +78,12 @@ class UILiveMeter:UICView {
     func decrementLivesLeftCount() {
         if (livesLeft > 0) {
             livesLeft -= 1;
+            // Get the last heart button
             let lastHeartButton:UICButton = heartInactiveButtons.last!;
             heartInactiveButtons.removeLast();
-            lastHeartButton.frame = CGRect(x: lastHeartButton.frame.minX, y: lastHeartButton.frame.minY, width: lastHeartButton.frame.width, height: lastHeartButton.frame.height);
+            // Add the last heart button to superview
+            self.superview!.addSubview(lastHeartButton);
+            lastHeartButton.frame = CGRect(x: lastHeartButton.frame.minX + self.frame.minX, y: lastHeartButton.frame.minY + self.frame.minY, width: lastHeartButton.frame.width, height: lastHeartButton.frame.height);
             let randomTargetY:CGFloat = CGFloat.random(in: self.superview!.frame.height...(self.superview!.frame.height + lastHeartButton.frame.height))
             UIView.animate(withDuration: 3.0, delay: 0.125, options: [.curveEaseInOut], animations: {
                 lastHeartButton.transform = lastHeartButton.transform.translatedBy(x: 0.0, y: randomTargetY);
@@ -104,6 +113,9 @@ class UILiveMeter:UICView {
         // Move heart to target frame
         UIView.animate(withDuration: 3.0, delay: 0.125, options: [.curveEaseInOut], animations: {
             self.currentHeartButton!.transform = self.currentHeartButton!.transform.translatedBy(x: targetFrame.minX - newFrame.minX, y: targetFrame.minY - newFrame.minY);
+        }, completion: { _ in
+            self.addSubview(self.currentHeartButton!);
+            self.currentHeartButton!.frame = CGRect(x: targetFrame.minX - self.frame.minX, y: targetFrame.minY - self.frame.minY, width: self.frame.height, height: self.frame.height);
         })
     }
     

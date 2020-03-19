@@ -824,6 +824,9 @@ class UIBoardGame: UIView, GKMatchDelegate {
         }
         // Build board game
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.75) {
+            if (self.iWon) {
+                return;
+            }
             self.currentRound += 1;
             self.buildGame();
             self.startGame();

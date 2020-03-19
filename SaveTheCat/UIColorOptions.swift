@@ -137,12 +137,13 @@ class UIColorOptions: UIView {
         boardGameView!.transitionBackgroundColorOfButtonsToClear();
         for selectionButton in selectionButtons{
             if (selectionButton.isEqual(colorOption)){
-                colorOption.select();
+                selectionButton.select();
+                selectionButton.layer.borderWidth = (sqrt(selectionButton.originalFrame!.width * 0.01) * 10.0) * 0.35;
             } else {
                 selectionButton.unSelect();
+                selectionButton.layer.borderWidth = 0.0;
             }
         }
-        
     }
     
     func loadSelectionButtonsToSelectedButtons(){

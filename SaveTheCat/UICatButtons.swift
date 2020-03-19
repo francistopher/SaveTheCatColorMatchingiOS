@@ -72,6 +72,15 @@ class UICatButtons {
         return true;
     }
     
+    func podAliveOnesAndGiveMouseCoin() {
+        for catButton in presentCollection! {
+            if (catButton.isAlive) {
+                catButton.pod();
+                catButton.giveMouseCoin(withNoise: true);
+            }
+        }
+    }
+    
     func countOfAliveCatButtons() -> Int {
         var count:Int = 0;
         for catButton in presentCollection! {

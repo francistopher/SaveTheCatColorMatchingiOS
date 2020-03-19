@@ -214,7 +214,7 @@ class UIResults: UICView {
             if (UIResults.rewardAmount < 25 && self.threshold < self.rewardAmountRate[UIResults.rewardAmount]!) {
                 UIResults.rewardAmount += 5;
                 self.threshold = 1.0;
-                self.watchAdForXMouseCoins!.setTitle("Watch video\nfor \(UIResults.rewardAmount) " + "·", for: .normal);
+                self.watchAdForXMouseCoins!.setTitle("Watch Ad to\nWin \(UIResults.rewardAmount) " + "·", for: .normal);
                 let x:CGFloat = self.watchAdForXMouseCoins!.frame.width * 0.64 + self.watchAdForXMouseCoins!.frame.width * 0.05;
                 self.mouseCoin!.frame = CGRect(x: x, y: self.mouseCoin!.frame.minY, width: self.mouseCoin!.frame.width, height: self.mouseCoin!.frame.height);
             }
@@ -231,8 +231,8 @@ class UIResults: UICView {
         self.watchAdForXMouseCoins!.titleLabel!.lineBreakMode = NSLineBreakMode.byWordWrapping;
         self.watchAdForXMouseCoins!.titleLabel!.numberOfLines = 2;
         self.watchAdForXMouseCoins!.titleLabel!.textAlignment = NSTextAlignment.center;
-        self.watchAdForXMouseCoins!.setTitle("Watch video\nfor \(UIResults.rewardAmount) ·", for: .normal);
-        self.watchAdForXMouseCoins!.addTarget(nil, action: #selector(showAd), for: .touchUpInside);
+        self.watchAdForXMouseCoins!.setTitle("Watch Ad to\nWin \(UIResults.rewardAmount) ·", for: .normal);
+        self.watchAdForXMouseCoins!.addTarget(self, action: #selector(showAd), for: .touchUpInside);
         self.watchAdForXMouseCoins!.secondaryFrame = self.watchAdForXMouseCoins!.frame;
         // Setup mouse coin
         let x:CGFloat = watchAdForXMouseCoins!.frame.width * 0.64;
@@ -242,6 +242,7 @@ class UIResults: UICView {
     }
     
     @objc func showAd() {
+        print("MESSAGE: IS THE AD ACTAULLY SHOWING")
         // Gathering user selection data
         rewardAmountQuantity[UIResults.rewardAmount]! += 1.0;
         threshold = 1.0;

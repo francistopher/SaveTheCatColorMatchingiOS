@@ -21,14 +21,17 @@ enum AspectRatio {
 class ViewController: UIViewController, GADInterstitialDelegate, ReachabilityObserverDelegate, GKGameCenterControllerDelegate, GKMatchmakerViewControllerDelegate {
     
     func matchmakerViewControllerWasCancelled(_ viewController: GKMatchmakerViewController) {
-        
         viewController.dismiss(animated: true, completion: nil);
     }
     
     func matchmakerViewController(_ viewController: GKMatchmakerViewController, didFailWithError error: Error) {
-        print("Match maker view controller !!!");
+        viewController.dismiss(animated: true, completion: nil);
     }
     
+    func matchmakerViewController(_ viewController: GKMatchmakerViewController, didFind match: GKMatch) {
+        viewController.dismiss(animated: true, completion: nil);
+        self.boardGame!.setupMatch(match: match);
+    }
     
     var firedITunesStatus:Bool = false;
     var isInternetReachable:Bool = false;
@@ -39,7 +42,7 @@ class ViewController: UIViewController, GADInterstitialDelegate, ReachabilityObs
             gameMessage!.displayInternetConnectionEstablishedMessage();
             // Load ads
             bannerView.load(GADRequest());
-            ViewController.interstitial.load(GADRequest());
+        
             // Load mouse coins
             UIResults.mouseCoins = keyValueStore.longLong(forKey: "mouseCoins");
             settingsButton!.settingsMenu!.mouseCoin!.amountLabel!.text = "\(UIResults.mouseCoins)";
@@ -51,27 +54,6 @@ class ViewController: UIViewController, GADInterstitialDelegate, ReachabilityObs
             // Clear mouse coins
             UIResults.mouseCoins = 0;
             settingsButton!.settingsMenu!.mouseCoin!.amountLabel!.text = "\(UIResults.mouseCoins)";
-            // Cancel matchmaking
-//            func clearMatch() {
-//                self.boardGame!.clearOpponentSearching();
-//                self.boardGame!.clearMatchSearching(instant: false);
-//                self.boardGame!.clearMatchMakerAndMagnifyGlass(instant: false);
-//            }
-//
-//            func continueWithMatch() {
-//                self.boardGame!.continueWithMatchMaking = true;
-//                self.boardGame!.continueWithMatchSearching = true;
-//                self.boardGame!.continueWithOpponentSearching = true;
-//            }
-//
-//            if (self.boardGame!.opponent != nil) {
-//                clearMatch();
-//                continueWithMatch();
-//            } else if (self.boardGame!.matchMaker != nil) {
-//                clearMatch();
-//                self.boardGame!.startWithoutMatchmaking();
-//                continueWithMatch();
-//            }
         }
     }
     
@@ -90,7 +72,6 @@ class ViewController: UIViewController, GADInterstitialDelegate, ReachabilityObs
     // Static
     static var staticUnitViewHeight:CGFloat = 0.0;
     static var staticUnitViewWidth:CGFloat = 0.0;
-    static var staticUIViewController:UIViewController?
     static var staticSelf:ViewController?
     static var staticMainView:UIView?
     
@@ -134,7 +115,6 @@ class ViewController: UIViewController, GADInterstitialDelegate, ReachabilityObs
         super.viewDidLoad();
         setupReachability();
         ViewController.staticSelf = self;
-        ViewController.staticUIViewController = self;
         ViewController.staticMainView = mainView;
         setupAspectRatio();
         setupMainViewDimensionProperties();
@@ -181,7 +161,7 @@ class ViewController: UIViewController, GADInterstitialDelegate, ReachabilityObs
     
     // Interstisial
     func setupInterstitial() {
-        ViewController.interstitial = GADInterstitial(adUnitID: "ca-app-pub-9248016465919511/8662589234");
+        ViewController.interstitial = GADInterstitial(adUnitID: "ca-app-pub-3940256099942544/4411468910");
         ViewController.interstitial.delegate = self;
         ViewController.interstitial.load(GADRequest());
     }
@@ -201,9 +181,15 @@ class ViewController: UIViewController, GADInterstitialDelegate, ReachabilityObs
         setupInterstitial();
     }
     
+    func interstitial(_ ad: GADInterstitial, didFailToReceiveAdWithError error: GADRequestError) {
+      print("interstitial:didFailToReceiveAdWithError: \(error.localizedDescription)")
+    }
+    
     static func presentInterstitial() {
         if ViewController.interstitial.isReady {
-            ViewController.interstitial.present(fromRootViewController: ViewController.staticUIViewController!);
+            ViewController.interstitial.present(fromRootViewController: staticSelf!);
+        } else {
+            print("MESSAGE:WHY IS THE INTERSTATIAL NOT READY?")
         }
     }
     
@@ -413,6 +399,7 @@ class ViewController: UIViewController, GADInterstitialDelegate, ReachabilityObs
     }
     
     func setupSounds() {
+        SoundController.setupCuteLaugh();
         SoundController.setupGearSpinning();
         SoundController.setupHeaven();
         SoundController.setupCoinEarned();
@@ -553,7 +540,6 @@ class ViewController: UIViewController, GADInterstitialDelegate, ReachabilityObs
                 settingsButton!.settingsMenu!.mouseCoin!.mouseCoinView!.backgroundColor = UIColor.black;
             }
         }
-        boardGame!.searchMagnifyGlass!.setThisStyle();
         boardGame!.cats.updateUIStyle();
         boardGame!.myLiveMeter!.setStyle();
         boardGame!.results!.setCompiledStyle();

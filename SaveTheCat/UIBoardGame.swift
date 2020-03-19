@@ -33,23 +33,24 @@ class UIBoardGame: UIView, GKMatchDelegate {
     var timer:Timer?
     
     var glovePointer:UIGlovedPointer?
-    var searchMagnifyGlass:UISearchMagnifyGlass?
     
     var opponent:GKPlayer?
     var currentMatch:GKMatch?
     var matchMakerVC:GKMatchmakerViewController?
     
-    var presentLivesTimer:Timer?
-    var findingOpponentTimer:Timer?
+    var opponentResignationTimer:Timer?
     
     var continueWithMatchMaking:Bool = true;
     var continueWithMatchSearching:Bool = true;
     var continueWithOpponentSearching:Bool = true;
-    var findingOpponentCounter:Double = 0.0;
     var opponentValuePerSecond:Double = 0.0;
+    var myValueCounterPerSecond:Double = 0.0;
     
     var singlePlayerButton:UICButton?
     var twoPlayerButton:UICButton?
+    var victoryView:UIVictoryView?
+    
+    var iWon:Bool = false;
     
     
     required init?(coder: NSCoder) {
@@ -66,15 +67,18 @@ class UIBoardGame: UIView, GKMatchDelegate {
         parentView.addSubview(self);
         self.results = UIResults(parentView: parentView);
         self.results!.continueButton!.addTarget(self, action: #selector(continueSelector), for: .touchUpInside);
+        setupVictoryView();
         setupOpponentLiveMeter();
         setupLivesMeter();
         setupAttackMeter();
-        setupSearchMagnifyGlass();
     }
     
-    func setupSearchMagnifyGlass() {
-         let size:CGSize = CGSize(width: self.frame.height * 0.25, height: self.frame.width * 0.25);
-        searchMagnifyGlass = UISearchMagnifyGlass(parentView: self, frame: CGRect(x: (frame.width - size.width) * 0.5, y: (frame.height - size.height) * 0.5, width: size.width, height: size.height));
+    func setupVictoryView() {
+        victoryView = UIVictoryView(parentView: self.superview!, frame: self.frame);
+    
+        CenterController.center(childView: victoryView!, parentRect: self.superview!.frame, childRect: victoryView!.frame);
+        
+        victoryView!.alpha = 0.0;
     }
     
     func setupAttackMeter() {
@@ -133,17 +137,11 @@ class UIBoardGame: UIView, GKMatchDelegate {
         })
     }
     
-    func match(_ match: GKMatch, player: GKPlayer, didChange state: GKPlayerConnectionState) {
-        if (state.rawValue == 1){
-            self.opponent = player;
-        }
-    }
-    
     func match(_ match: GKMatch, didReceive data: Data, fromRemotePlayer player: GKPlayer) {
         if (opponent == nil || opponent != player) {
             return;
         }
-        self.opponentValuePerSecond += 0.2;
+        self.opponentValuePerSecond += 0.1;
         let value = data.withUnsafeBytes {
             $0.load(as: UInt16.self);
         }
@@ -162,13 +160,22 @@ class UIBoardGame: UIView, GKMatchDelegate {
     }
     
     func gameWon() {
+        self.clearBoardGameToDisplayVictoryAnimation();
+        // Show victory view
+        self.victoryView!.fadeIn();
+        self.victoryView!.showVictoryMessageAndGifWith(text: "YOU WON!");
+        // Disappear cats and selection colors
+        // Stop virus from attacking
         self.attackMeter!.didNotInvokeAttackImpulse = true;
         self.attackMeter!.sendVirusToStartAndHold();
-        self.presentLivesTimer!.invalidate();
-        self.presentLivesTimer = nil;
-        self.isUserInteractionEnabled = false;
-        self.colorOptions!.isUserInteractionEnabled = false;
+        // Invalidate opponent resignation timer and reset value
+        self.opponentResignationTimer!.invalidate();
+        self.opponentResignationTimer = nil;
+        self.opponentValuePerSecond = 0.0;
+        self.myValueCounterPerSecond = 0.0;
+        // Hide and reset opponent live meter
         self.hideOpponentLiveMeter(instant: false);
+        // Clear match
         self.currentMatch!.disconnect();
         self.currentMatch = nil;
         self.opponent = nil;
@@ -194,15 +201,44 @@ class UIBoardGame: UIView, GKMatchDelegate {
         })
     }
     
-    func sendLeftMatchValue() {
-        self.findingOpponentTimer!.invalidate();
-        var livesInt:UInt16 = UInt16(65534);
-        let data:Data = Data(bytes: &livesInt, count: MemoryLayout.size(ofValue: livesInt));
-        do {
-            try self.currentMatch!.send(data, to: [self.opponent!], dataMode: GKMatch.SendDataMode.reliable);
-        } catch {
-            print("Error encountered, but we will keep trying!")
-        }
+    func setupMatch(match:GKMatch) {
+        self.currentMatch = match;
+        match.delegate = self;
+        setupOpponent(opponent: match.players[0]);
+   }
+    
+    func setupOpponent(opponent:GKPlayer) {
+        self.opponent = opponent;
+        self.displayOpponentLiveMeter();
+        self.shrinkSinglePlayerAndTwoPlayerButtons();
+        self.startGame();
+        self.setupOpponentResignationTimer();
+        self.attackMeter!.invokeAttackImpulse(delay: 0.0);
+    }
+    
+    func setupOpponentResignationTimer() {
+        self.opponentValuePerSecond = 0.0;
+        self.opponentResignationTimer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true, block: { _ in
+            self.myValueCounterPerSecond += 0.1;
+            if (self.opponent == nil) {
+                self.opponentResignationTimer!.invalidate();
+                return;
+            }
+            var livesInt:UInt16 = UInt16(self.myLiveMeter!.livesLeft);
+            let data:Data = Data(bytes: &livesInt, count: MemoryLayout.size(ofValue: livesInt));
+            do {
+                try self.currentMatch!.send(data, to: [self.opponent!], dataMode: GKMatch.SendDataMode.unreliable);
+            } catch {
+                print("Error encountered, but we will keep trying!")
+            }
+            if (self.myValueCounterPerSecond == 1.0) {
+                if (self.opponentValuePerSecond == 0.0) {
+                    self.gameWon();
+                }
+                self.myValueCounterPerSecond = 0.0;
+                self.opponentValuePerSecond = 0.0;
+            }
+        })
     }
 
     func startMatchmaking() {
@@ -215,87 +251,25 @@ class UIBoardGame: UIView, GKMatchDelegate {
             matchMakerVC = GKMatchmakerViewController(matchRequest: matchRequest);
             matchMakerVC!.matchmakerDelegate = ViewController.staticSelf!;
             ViewController.staticSelf!.present(matchMakerVC!, animated: true, completion: nil);
-//            self.searchMagnifyGlass!.startAnimation();
-//            self.attackMeter!.sendVirusToStartAndHold();
-//            // Start match making
-//            print("MESSAGE: Start finding players for match!")
-//            matchMaker!.findMatch(for: matchRequest, withCompletionHandler: { (match:GKMatch?, error:Error?) -> Void in
-//                if (!self.continueWithMatchSearching) {
-//                    return;
-//                }
-//                if (match != nil) {
-//                    print("MESSAGE: We found a match")
-//                    self.currentMatch = match!;
-//                    match!.delegate = self;
-//                    self.displayOpponentLiveMeter();
-//                    self.searchMagnifyGlass!.stopTransitionAnimation();
-//                    self.findingOpponentTimer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true, block: { _ in
-//                        print("MESSAGE: Finding an opponent!")
-//                        if (!self.continueWithOpponentSearching || self.currentMatch == nil) {
-//                            print("MESSAGE: Invalidate finding an opponent")
-//                             self.findingOpponentTimer!.invalidate();
-//                            return;
-//                        }
-//                        if (self.opponent != nil) {
-//                            // Start hiding search magnify glass
-//                            self.searchMagnifyGlass!.endAnimationAndFadeOut(instant: false);
-//                            self.searchMagnifyGlass!.hide();
-//                            self.attackMeter!.holdVirusAtStart = false;
-//                            print("MESSAGE: Invoking attacks 24/7")
-//                            self.showOpponentNotification();
-//                            self.startGame();
-//                            self.opponentValuePerSecond = 0.0;
-//                            var myValueCounterPerSecond:Double = 0.0;
-//                            self.presentLivesTimer = Timer.scheduledTimer(withTimeInterval: 0.2, repeats: true, block: { _ in
-//                                myValueCounterPerSecond += 0.2;
-//                                if (self.opponent == nil) {
-//                                    self.presentLivesTimer!.invalidate();
-//                                    return;
-//                                }
-//                                var livesInt:UInt16 = UInt16(self.myLiveMeter!.livesLeft);
-//                                print("Lives left", self.myLiveMeter!.livesLeft)
-//                                let data:Data = Data(bytes: &livesInt, count: MemoryLayout.size(ofValue: livesInt));
-//                                do {
-//                                    try self.currentMatch!.send(data, to: [self.opponent!], dataMode: GKMatch.SendDataMode.unreliable);
-//                                } catch {
-//                                    print("Error encountered, but we will keep trying!")
-//                                }
-//                                if (myValueCounterPerSecond == 1.0) {
-//                                    if (self.opponentValuePerSecond < 0.6) {
-//                                        self.gameWon();
-//                                    }
-//                                    myValueCounterPerSecond = 0.0;
-//                                    self.opponentValuePerSecond = 0.0;
-//                                }
-//                            })
-//                            self.findingOpponentTimer!.invalidate();
-//                            self.attackMeter!.invokeAttackImpulse(delay: 0.0);
-//                        }
-//                        self.findingOpponentCounter += 0.1;
-//                        if (self.findingOpponentCounter > 10.0) {
-//                            self.clearOpponentSearching();
-//                            self.clearMatchSearching(instant: false);
-//                            self.continueWithMatchMaking = false;
-//                            self.matchMaker?.cancel();
-//                            self.matchMaker = nil;
-//                            self.searchMagnifyGlass!.endAnimationAndFadeOut(instant: false);
-//                            self.findingOpponentTimer?.invalidate();
-//                            self.findingOpponentCounter = 0.0;
-//                            self.continueWithMatchMaking = true;
-//                            self.continueWithMatchSearching = true;
-//                            self.continueWithOpponentSearching = true;
-//                            self.startMatchmaking();
-//                        }
-//                    })
-//                }
-//            })
+//            if (self.findingOpponentCounter > 10.0) {
+//                self.clearOpponentSearching();
+//                self.clearMatchSearching(instant: false);
+//                self.continueWithMatchMaking = false;
+//                self.matchMaker?.cancel();
+//                self.matchMaker = nil;
+//                self.searchMagnifyGlass!.endAnimationAndFadeOut(instant: false);
+//                self.findingOpponentTimer?.invalidate();
+//                self.findingOpponentCounter = 0.0;
+//                self.continueWithMatchMaking = true;
+//                self.continueWithMatchSearching = true;
+//                self.continueWithOpponentSearching = true;
+//                self.startMatchmaking();
         }
     }
     
     func clearOpponentSearching() {
         continueWithOpponentSearching = false;
-        findingOpponentTimer?.invalidate();
-        presentLivesTimer?.invalidate();
+        opponentResignationTimer?.invalidate();
         opponent = nil;
     }
            
@@ -303,15 +277,15 @@ class UIBoardGame: UIView, GKMatchDelegate {
         continueWithMatchSearching = false;
         currentMatch?.disconnect();
         currentMatch = nil;
-        hideOpponentLiveMeter(instant:instant);
+        hideOpponentLiveMeter(instant: instant);
     }
 
-    func clearMatchMakerAndMagnifyGlass(instant:Bool) {
+    func clearMatchMakerAndMagnifyGlass() {
         continueWithMatchMaking = false;
-
-        matchMakerVC = nil;
-        searchMagnifyGlass!.endAnimationAndFadeOut(instant:instant);
-        searchMagnifyGlass!.hide();
+    }
+    
+    func hideOpponentLivesMeter() {
+       
     }
     
     func showOpponentNotification() {
@@ -620,8 +594,8 @@ class UIBoardGame: UIView, GKMatchDelegate {
                 } catch {
                     print("Error encountered, should have been recieved!")
                 }
-                self.presentLivesTimer!.invalidate();
-                self.presentLivesTimer = nil;
+                self.opponentResignationTimer!.invalidate();
+                self.opponentResignationTimer = nil;
                 hideOpponentLiveMeter(instant: false);
                 currentMatch!.disconnect();
                 currentMatch = nil;
@@ -825,12 +799,29 @@ class UIBoardGame: UIView, GKMatchDelegate {
         }
     }
     
+    func clearBoardGameToDisplayVictoryAnimation() {
+        // Pod alive cats and shrink color options
+        self.iWon = true;
+        SoundController.kittenMeow();
+        self.cats.podAliveOnesAndGiveMouseCoin();
+        self.promote();
+        self.colorOptions!.shrinkColorOptions();
+        self.glovePointer!.shrink();
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+           self.currentRound -= 1;
+           self.colorOptions!.removeSelectedButtons();
+           self.currentRound += 1;
+           self.successGradientLayer!.isHidden = true;
+        }
+    }
+    
     func promote(){
         reset(catsSurvived: true);
-        gridColors = [[UIColor]]();
-        colorOptions!.selectionColors = [UIColor]();
         colorOptions!.shrinkColorOptions();
         colorOptions!.loadSelectionButtonsToSelectedButtons();
+        if (self.iWon) {
+            return;
+        }
         // Build board game
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.75) {
             self.currentRound += 1;
@@ -846,4 +837,64 @@ class UIBoardGame: UIView, GKMatchDelegate {
             self.successGradientLayer!.isHidden = true;
         }
     }
+}
+
+class UIVictoryView:UICView {
+    
+    var label:UICLabel?
+    var unitHeight:CGFloat = 0.0;
+    var imageView:UIImageView?
+    var image:UIImage?
+    
+    init(parentView:UIView, frame:CGRect) {
+        super.init(parentView: parentView, x: frame.minX, y: frame.minY, width: frame.width * 0.95, height: frame.height * 0.95, backgroundColor: UIColor.clear);
+        self.layer.cornerRadius = frame.width / 5.0;
+        self.layer.borderWidth = frame.width * 0.02;
+        unitHeight = frame.height * 0.1;
+        self.clipsToBounds = true;
+        setupLabel();
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    func setupLabel() {
+        label = UICLabel(parentView: self, x: 0.0, y: unitHeight * 7.0, width: frame.width, height: unitHeight * 2.0);
+        label!.font = UIFont.boldSystemFont(ofSize: label!.frame.height * 0.4);
+    }
+    
+    func showVictoryMessageAndGifWith(text:String) {
+        label!.text = text;
+        setupImageView();
+    }
+    
+    func setupImageView() {
+        Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false, block: { _ in
+            SoundController.cuteLaugh();
+        })
+        imageView?.removeFromSuperview();
+        if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1) {
+            imageView = UIImageView(image: UIImage.gifImageWithName("blackBorderGal")!);
+        } else {
+            imageView = UIImageView(image: UIImage.gifImageWithName("whiteBorderGal")!);
+        }
+        imageView!.frame =  CGRect(x: 0.0, y: unitHeight, width: unitHeight * 6.0, height: unitHeight * 6.0);
+        CenterController.centerHorizontally(childView: imageView!, parentRect: self.frame, childRect: imageView!.frame);
+        self.addSubview(imageView!);
+    }
+    
+    func setCompiledStyle() {
+        if (self.alpha > 0.0) {
+            setupImageView();
+        }
+        if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1) {
+            self.backgroundColor = UIColor.white;
+            self.layer.borderColor = UIColor.black.cgColor;
+        } else {
+            self.backgroundColor = UIColor.black;
+            self.layer.borderColor = UIColor.white.cgColor;
+        }
+    }
+    
 }

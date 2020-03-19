@@ -11,6 +11,9 @@ import AVFoundation
 
 class SoundController {
     
+    static var cuteLaughPath:String?
+    static var cuteLaughURL:URL?
+    static var cuteLaughSoundEffect:AVAudioPlayer?
     
     static var gearSpinningPath:String?
     static var gearSpinningURL:URL?
@@ -55,6 +58,20 @@ class SoundController {
     static var chopinPreludePath:String?
     static var chopinPreludeUrl:URL?
     static var chopinPreludeSoundEffect:AVAudioPlayer?
+    
+    static func cuteLaugh() {
+        cuteLaughSoundEffect!.play();
+    }
+    
+    static func setupCuteLaugh() {
+        cuteLaughPath = Bundle.main.path(forResource: "cuteLaugh.mp3", ofType: nil);
+        cuteLaughURL = URL(fileURLWithPath: cuteLaughPath!);
+        do {
+            cuteLaughSoundEffect = try AVAudioPlayer(contentsOf: cuteLaughURL!);
+        } catch {
+            print("Unable to play cuteLaugh sound effect.");
+        }
+    }
     
     static func gearSpinning() {
         gearSpinningSoundEffect!.stop();

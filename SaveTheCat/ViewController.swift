@@ -507,7 +507,7 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, GKMatchm
     
     func setupSettingsButton() {
         let sideLength:CGFloat = (mainView.frame.height * ((1.0/300.0) + 0.08));
-        settingsButton = UISettingsButton(parentView: mainView, x: unitViewWidth, y: unitViewHeight * 0.925, width: sideLength, height: sideLength);
+        settingsButton = UISettingsButton(parentView: mainView, x: unitViewWidth, y: unitViewHeight, width: sideLength, height: sideLength);
         settingsButton!.setBoardGameAndColorOptionsView(boardGameView:boardGame!, colorOptionsView: colorOptions!);
         ViewController.settingsButton = settingsButton!;
         boardGame!.settingsButton = settingsButton!;

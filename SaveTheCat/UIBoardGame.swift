@@ -63,7 +63,6 @@ class UIBoardGame: UIView, GKMatchDelegate {
         self.layer.cornerRadius = width / 5.0;
         parentView.addSubview(self);
         self.results = UIResults(parentView: parentView);
-        self.results!.continueButton!.addTarget(self, action: #selector(continueSelector), for: .touchUpInside);
         setupVictoryView();
         setupOpponentLiveMeter();
         setupLivesMeter();
@@ -79,7 +78,7 @@ class UIBoardGame: UIView, GKMatchDelegate {
     func setupAttackMeter() {
         let height:CGFloat = ViewController.staticMainView!.frame.height * ((1.0/300.0) + 0.08);
         var width:CGFloat = ViewController.staticUnitViewWidth * 6.5;
-        var y:CGFloat = ViewController.staticUnitViewHeight * 0.925;
+        var y:CGFloat = ViewController.staticUnitViewHeight;
         var x:CGFloat = 0.0;
         if (ViewController.aspectRatio! == .ar19point5by9){
             width *= 1.4;
@@ -101,7 +100,7 @@ class UIBoardGame: UIView, GKMatchDelegate {
     func setupOpponentLiveMeter() {
         let height:CGFloat = ViewController.staticMainView!.frame.height * ((1.0/300.0) + 0.08);
         let x:CGFloat = ViewController.staticMainView!.frame.width - height - ViewController.staticUnitViewWidth;
-        opponentLiveMeter = UILiveMeter(parentView: ViewController.staticMainView!, frame: CGRect(x: x, y: ViewController.staticUnitViewHeight * 0.925, width: height, height: height), isOpponent: true);
+        opponentLiveMeter = UILiveMeter(parentView: ViewController.staticMainView!, frame: CGRect(x: x, y: ViewController.staticUnitViewHeight, width: height, height: height), isOpponent: true);
         opponentLiveMeter!.alpha = 0.0;
     }
 
@@ -111,13 +110,13 @@ class UIBoardGame: UIView, GKMatchDelegate {
         self.superview!.addSubview(myLiveMeter!);
     }
     
-    @objc func continueSelector() {
+    func continueSelector() {
         gameOver = false;
         if (settingsButton!.isPressed) {
             settingsButton!.sendActions(for: .touchUpInside);
         }
+        glovePointer!.shrink();
         glovePointer!.adButton = nil;
-        glovePointer!.stopAnimations();
         glovePointer!.isTapping = false;
         glovePointer!.setCompiledStyle();
         glovePointer!.doShrink = false;
@@ -127,10 +126,7 @@ class UIBoardGame: UIView, GKMatchDelegate {
         results!.catsThatDied = 0;
         SoundController.chopinPrelude(play: false);
         SoundController.mozartSonata(play: true, startOver: true);
-        colorOptions!.isTransitioned = false;
-        colorOptions!.selectedColor = UIColor.lightGray;
         attackMeter!.resetCat();
-        restart();
     }
     
     func fadeIn(){
@@ -294,6 +290,10 @@ class UIBoardGame: UIView, GKMatchDelegate {
     }
     
     @objc func singlePlayerButtonSelector() {
+        if (self.results!.alpha == 1.0) {
+            continueSelector();
+            self.fadeIn();
+        }
         if (singlePlayerButton!.notSelectable) {
             return;
         }
@@ -506,10 +506,16 @@ class UIBoardGame: UIView, GKMatchDelegate {
         } else {
             self.glovePointer!.shrink();
         }
+        self.reset(catsSurvived: false);
+        self.colorOptions!.shrinkColorOptions();
+        // Reset color option properties
+        self.colorOptions!.isTransitioned = false;
+        self.colorOptions!.selectedColor = UIColor.lightGray;
+        // Hide board game and restart
+        self.alpha = 0.0;
+        self.restart();
         ViewController.submitCatsSavedScore(catsSaved: self.results!.catsThatLived);
         Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false) { timer in
-            self.reset(catsSurvived: false);
-            self.colorOptions!.shrinkColorOptions();
             // Submit memory capacity score
             ViewController.submitMemoryCapacityScore(memoryCapacity: self.results!.colorMemoryCapacity);
             self.results!.fadeIn();
@@ -748,8 +754,7 @@ class UIBoardGame: UIView, GKMatchDelegate {
     }
     
     func restart(){
-        currentRound = 1
-        glovePointer!.shrink();
+        currentRound = 1;
         colorOptions!.loadSelectionButtonsToSelectedButtons();
         // Build board game
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.75) {

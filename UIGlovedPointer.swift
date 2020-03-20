@@ -129,9 +129,10 @@ class UIGlovedPointer:UICButton {
     
     func shrink() {
         self.superview!.bringSubviewToFront(self);
+        self.stopAnimations();
         UIView.animate(withDuration: 1.0, delay: 0.125, options: .curveEaseInOut, animations: {
             self.frame = self.shrunkFrame!;
-        });
+        })
     }
     
     override func grow() {

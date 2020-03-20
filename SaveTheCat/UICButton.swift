@@ -14,11 +14,17 @@ class UICButton:UIButton {
     var originalFrame:CGRect? = nil;
     var secondaryFrame:CGRect? = nil;
     var shrunkFrame:CGRect? = nil;
+    
     var originalBackgroundColor:UIColor? = nil;
+    
     var shrinkType:shrink = .mid;
+    
     var parentView:UIView? = nil;
+    
     var willBeShrunk:Bool = false;
     var styleBackground:Bool = false;
+    
+    var notSelectable:Bool = false;
     
     var inverted:Bool = false;
     enum shrink {

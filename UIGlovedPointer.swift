@@ -48,12 +48,8 @@ class UIGlovedPointer:UICButton {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func setColorAndCatButtons(colorButtons:[UICButton], catButtons:UICatButtons, first:Bool) {
-        if (first) {
-            self.colorButton = colorButtons[0];
-        } else {
-            self.colorButton = colorButtons[1];
-        }
+    func setColorAndCatButtons(colorButtons:[UICButton], catButtons:UICatButtons) {
+        self.colorButton = colorButtons[0];
         self.catButton = catButtons.getCatButtonWith(backgroundColor: colorButton!.originalBackgroundColor!);
         self.colorButton!.addTarget(self, action: #selector(translateGloveToCatButtonCenter), for: .touchUpInside);
         resetPositionToFrontOfColorButton();
@@ -79,6 +75,7 @@ class UIGlovedPointer:UICButton {
         self.alpha = 1.0;
         Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false, block: { _ in
             self.sway();
+            self.colorButton = nil;
         })
         
     }
@@ -88,7 +85,14 @@ class UIGlovedPointer:UICButton {
             adButton?.sendActions(for: .touchUpInside);
             return;
         }
-        SoundController.kittenMeow();
+        if (colorButton != nil) {
+            colorButton?.sendActions(for: .touchUpInside);
+            return;
+        }
+        if (catButton != nil) {
+            catButton?.sendActions(for: .touchUpInside);
+            return;
+        }
     }
     
     func setCompiledStyle() {

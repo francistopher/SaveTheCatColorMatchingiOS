@@ -8,6 +8,7 @@
 
 import UIKit
 import GoogleMobileAds
+import GameKit
 
 class UIResults: UICView {
     
@@ -52,8 +53,11 @@ class UIResults: UICView {
     // Reward amount
     static var rewardAmount:Int = 5;
     var rewardAmountQuantity:[Int:Double] = [0:0, 5:1.0, 10:0.8, 15:00.6, 20:0.4, 25:0.2]
-    var rewardAmountRate:[Int:Double] = [0:0.0, 5:1.0, 10:0.0, 20:0.0, 25:0.0]
-    var threshold = 0.5
+    var rewardAmountRate:[Int:Double] = [0:0.0, 5:1.0, 10:0.0, 15:0.0, 20:0.0, 25:0.0]
+    var threshold:Double = 0.5;
+    
+    // Save the value of mouse coins
+    var keyValueStore:NSUbiquitousKeyValueStore = NSUbiquitousKeyValueStore();
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -235,7 +239,7 @@ class UIResults: UICView {
         self.watchAdForXMouseCoins!.addTarget(self, action: #selector(showAd), for: .touchUpInside);
         self.watchAdForXMouseCoins!.secondaryFrame = self.watchAdForXMouseCoins!.frame;
         // Setup mouse coin
-        let x:CGFloat = watchAdForXMouseCoins!.frame.width * 0.64;
+        let x:CGFloat = watchAdForXMouseCoins!.frame.width * 0.69;
         mouseCoin = UIMouseCoin(parentView: watchAdForXMouseCoins!, x: x, y: watchAdForXMouseCoins!.frame.height * 0.475, width: watchAdForXMouseCoins!.frame.height * 0.4, height: watchAdForXMouseCoins!.frame.height * 0.45);
         mouseCoin!.isSelectable = false;
         mouseCoin!.addTarget(self, action: #selector(mouseCoinSelector), for: .touchUpInside);
@@ -248,7 +252,6 @@ class UIResults: UICView {
         threshold = 1.0;
         adIsShowing = true;
         // load the ad
-        ViewController.staticSelf!.setupInterstitial();
         ViewController.presentInterstitial();
         // Wait to see if ad will load
         var timer:Timer?
@@ -275,41 +278,47 @@ class UIResults: UICView {
     }
     
     func giveMouseCoins() {
-        let totalSpace:CGFloat = self.frame.width;
-        let unavailableSpace:CGFloat = (continueButton!.frame.height * 0.5) * CGFloat(UIResults.rewardAmount);
-        let availableSpace:CGFloat = totalSpace - unavailableSpace;
-        let spaceBetween:CGFloat = availableSpace / CGFloat(UIResults.rewardAmount + 1);
+        let mainView:UIView = ViewController.staticMainView!;
+        // Set angles
+        let angleIncrements:CGFloat = 360.0 / CGFloat(UIResults.rewardAmount);
+        var currentAngle:CGFloat = -90.0;
+        // Settings views
+        let settingsButton:UISettingsButton = ViewController.settingsButton!;
+        let settingsMenuFrame:CGRect = settingsButton.settingsMenu!.frame;
+        let settingsMouseCoinFrame:CGRect = settingsButton.settingsMenu!.mouseCoin!.frame;
+        // Mouse coin X and Y
+        var mouseCoinX:CGFloat
+        var mouseCoinY:CGFloat
+        // Radially position mouse coins
         for index in 0..<UIResults.rewardAmount {
+            // Set X and Y
+            mouseCoinX = mainView.center.x - (settingsMouseCoinFrame.height * 0.5);
+            mouseCoinY = mainView.center.y - (settingsMouseCoinFrame.width * 0.5);
+            mouseCoinX += (mainView.frame.width * 0.25) * (cos(currentAngle * CGFloat.pi / 180.0));
+            mouseCoinY += (mainView.frame.height * 0.25) * (sin(currentAngle * CGFloat.pi / 180.0));
             // Generate mouse coin
-            let space:CGFloat = CGFloat(index + 1) * spaceBetween;
-            var x:CGFloat = CGFloat(index) * (continueButton!.frame.height * 0.5);
-            x += space;
-            let mouseCoin:UIMouseCoin = UIMouseCoin(parentView: self, x: x, y: continueButton!.frame.minY, width: continueButton!.frame.height * 0.5, height: continueButton!.frame.height * 0.5);
-            // Create frame for mouse coin on view
-            var mouseCoinX = mouseCoin.frame.minX;
-            var mouseCoinY = mouseCoin.frame.minY;
-            mouseCoinX += contentView!.frame.minX + self.frame.minX;
-            mouseCoinY += contentView!.frame.minY + self.frame.minY
-            // Set new frame and superview for mouse coin
-            ViewController.staticMainView!.addSubview(mouseCoin);
-            mouseCoin.frame = CGRect(x: mouseCoinX, y: mouseCoinY, width: mouseCoin.frame.width, height: mouseCoin.frame.height);
+            let mouseCoin:UIMouseCoin = UIMouseCoin(parentView: mainView, x: mouseCoinX, y: mouseCoinY, width: settingsMouseCoinFrame.width, height: settingsMouseCoinFrame.height);
             // Calculate time for translation
             let boardGameFrame:CGRect = self.superview!.frame;
             let time:Double = Double(mouseCoin.frame.minX / (boardGameFrame.minX + boardGameFrame.width));
             DispatchQueue.main.asyncAfter(deadline: .now() + time) {
                 ViewController.staticMainView!.bringSubviewToFront(mouseCoin);
                 UIView.animate(withDuration: 1.0, delay: 0.125, options: [.curveEaseInOut], animations: {
-                    let settingsButton:UISettingsButton = ViewController.settingsButton!;
-                    let settingsMenuFrame:CGRect = settingsButton.settingsMenu!.frame;
-                    let settingsMouseCoinFrame:CGRect = settingsButton.settingsMenu!.mouseCoin!.frame;
                     let newMouseCoinFrame:CGRect = CGRect(x: settingsMenuFrame.minX + settingsMouseCoinFrame.minX, y: settingsMenuFrame.minY + settingsMouseCoinFrame.minY, width: settingsMouseCoinFrame.width, height: settingsMouseCoinFrame.height);
                     mouseCoin.frame = newMouseCoinFrame;
                 }, completion: { _ in
                     SoundController.coinEarned();
-                    ViewController.staticSelf!.settingsButton!.settingsMenu!.mouseCoin!.setMouseCoinValue(newValue: UIResults.mouseCoins + 1);
                     mouseCoin.removeFromSuperview();
+                    if (index == UIResults.rewardAmount - 1) {
+                        ViewController.staticSelf!.settingsButton!.settingsMenu!.mouseCoin!.setMouseCoinValue(newValue: UIResults.mouseCoins + Int64(UIResults.rewardAmount));
+                        self.keyValueStore.set(UIResults.mouseCoins + Int64(UIResults.rewardAmount), forKey: "mouseCoins");
+                        self.keyValueStore.synchronize();
+                        settingsButton.settingsMenu!.mouseCoin!.sendActions(for: .touchUpInside);
+                    }
                 })
             }
+            // Increment angle
+            currentAngle += angleIncrements;
         }
     }
     

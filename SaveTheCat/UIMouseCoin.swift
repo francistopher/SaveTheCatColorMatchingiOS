@@ -32,7 +32,6 @@ class UIMouseCoin: UICButton {
         setIconImage(imageName: "mouseCoin.png");
         self.addTarget(self, action: #selector(mouseCoinSelector), for: .touchUpInside);
         setupMouseCoinView();
-        mouseCoinView!.alpha = 0.0;
     }
     
     @objc func mouseCoinSelector() {
@@ -105,9 +104,11 @@ class UIMouseCoin: UICButton {
         print("MESSAGE: REAL VALUE \(newValue)");
     }
     
-    
-    
     func setupMouseCoinView() {
+        if (ViewController.staticMainView!.isEqual(self.superview!)) {
+            self.isSelectable = false;
+            return;
+        }
         self.mouseCoinView = UICView(parentView: self.superview!.superview!, x: 0.0, y: self.superview!.frame.minY, width: ViewController.staticUnitViewWidth * 6.5, height: self.superview!.frame.height, backgroundColor: UIColor.white);
         CenterController.centerHorizontally(childView: mouseCoinView!, parentRect: mouseCoinView!.superview!.frame, childRect: mouseCoinView!.frame);
         self.mouseCoinView!.originalFrame! = self.mouseCoinView!.frame;
@@ -119,6 +120,7 @@ class UIMouseCoin: UICButton {
         if (ViewController.aspectRatio! == .ar19point5by9) {
             CenterController.center(childView: self.amountLabel!, parentRect: self.mouseCoinView!.frame, childRect: self.amountLabel!.frame);
         }
+        mouseCoinView!.alpha = 0.0;
     }
     
     func setupAmountLabel() {

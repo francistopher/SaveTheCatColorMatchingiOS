@@ -45,6 +45,7 @@ class UIBoardGame: UIView, GKMatchDelegate {
     var singlePlayerButton:UICButton?
     var twoPlayerButton:UICButton?
     var victoryView:UIVictoryView?
+    var gameOver:Bool = false;
     
     var iWon:Bool = false;
     
@@ -111,6 +112,7 @@ class UIBoardGame: UIView, GKMatchDelegate {
     }
     
     @objc func continueSelector() {
+        gameOver = false;
         if (settingsButton!.isPressed) {
             settingsButton!.sendActions(for: .touchUpInside);
         }
@@ -124,7 +126,7 @@ class UIBoardGame: UIView, GKMatchDelegate {
         results!.catsThatLived = 0;
         results!.catsThatDied = 0;
         SoundController.chopinPrelude(play: false);
-        SoundController.mozartSonata(play: true);
+        SoundController.mozartSonata(play: true, startOver: true);
         colorOptions!.isTransitioned = false;
         colorOptions!.selectedColor = UIColor.lightGray;
         attackMeter!.resetCat();
@@ -138,12 +140,15 @@ class UIBoardGame: UIView, GKMatchDelegate {
     }
     
     func match(_ match: GKMatch, didReceive data: Data, fromRemotePlayer player: GKPlayer) {
-        if (opponent == nil || opponent != player) {
-            return;
-        }
-        self.opponentValuePerSecond += 0.1;
         let value = data.withUnsafeBytes {
             $0.load(as: UInt16.self);
+        }
+        if (value == 65535) {
+            gameWon();
+        }
+        self.opponentValuePerSecond += 0.1;
+        if (opponent == nil || opponent != player) {
+            return;
         }
         if (value != opponentLiveMeter!.livesLeft) {
             print("NEW VALUE: \(value) OLD VALUE:\(opponentLiveMeter!.livesLeft)")
@@ -157,11 +162,12 @@ class UIBoardGame: UIView, GKMatchDelegate {
     }
     
     func gameWon() {
+        // Disappear cats and selection colors
+        self.victoryView!.awardAmount = abs(results!.catsThatLived - results!.catsThatDied);
         self.clearBoardGameToDisplayVictoryAnimation();
         // Show victory view
         self.victoryView!.fadeIn();
         self.victoryView!.showVictoryMessageAndGifWith(text: "YOU WIN, CAT SAVER!");
-        // Disappear cats and selection colors
         // Stop virus from attacking
         self.attackMeter!.didNotInvokeAttackImpulse = true;
         self.attackMeter!.sendVirusToStartAndHold();
@@ -201,7 +207,7 @@ class UIBoardGame: UIView, GKMatchDelegate {
     func setupOpponent(opponent:GKPlayer) {
         self.opponent = opponent;
         self.displayOpponentLiveMeter();
-        self.shrinkSinglePlayerAndTwoPlayerButtons();
+        self.hideSingleAndDoublePlayerButtons();
         self.startGame();
         self.setupOpponentResignationTimer();
         self.attackMeter!.invokeAttackImpulse(delay: 0.0);
@@ -274,7 +280,7 @@ class UIBoardGame: UIView, GKMatchDelegate {
         singlePlayerButton!.layer.borderWidth = attackMeter!.layer.borderWidth;
         singlePlayerButton!.titleLabel!.font = UIFont.boldSystemFont(ofSize: singlePlayerButton!.frame.height * 0.3);
         singlePlayerButton!.addTarget(self, action: #selector(singlePlayerButtonSelector), for: .touchUpInside);
-        singlePlayerButton!.shrinked();
+        singlePlayerButton!.alpha = 0.0;
         twoPlayerButton = UICButton(parentView: self.superview!, frame: CGRect(x: self.colorOptions!.frame.minX + self.colorOptions!.frame.width * 0.525, y: self.colorOptions!.frame.minY, width: self.colorOptions!.frame.width * 0.425, height: self.colorOptions!.frame.height), backgroundColor: UIColor.clear);
         twoPlayerButton!.setTitle("Two Player", for: .normal);
         twoPlayerButton!.styleBackground = true;
@@ -282,26 +288,45 @@ class UIBoardGame: UIView, GKMatchDelegate {
         twoPlayerButton!.layer.borderWidth = attackMeter!.layer.borderWidth;
         twoPlayerButton!.titleLabel!.font = UIFont.boldSystemFont(ofSize: twoPlayerButton!.frame.height * 0.3);
         twoPlayerButton!.addTarget(self, action: #selector(twoPlayerButtonSelector), for: .touchUpInside);
-        twoPlayerButton!.shrinked();
+        twoPlayerButton!.alpha = 0.0;
     }
     
     @objc func singlePlayerButtonSelector() {
-        shrinkSinglePlayerAndTwoPlayerButtons();
+        if (singlePlayerButton!.notSelectable) {
+            return;
+        }
+        singlePlayerButton!.notSelectable = true;
         startGameWithoutMatchmaking();
+        twoPlayerButton!.shrink(colorOptionButton: false);
+        UIView.animate(withDuration: 1.0, delay: 0.125, options: .curveEaseOut, animations: {
+            self.singlePlayerButton!.frame = CGRect(x: self.colorOptions!.frame.minX + self.colorOptions!.selectionButtons[0].frame.minX, y: self.colorOptions!.frame.minY + self.colorOptions!.selectionButtons[0].frame.minY, width: self.colorOptions!.selectionButtons[0].frame.width, height: self.colorOptions!.selectionButtons[0].frame.height);
+            self.singlePlayerButton!.backgroundColor = self.colorOptions!.selectionButtons[0].backgroundColor!;
+        }, completion: { _ in
+            UIView.animate(withDuration: 0.75, delay: 0.125, options: .curveEaseOut, animations: {
+                self.singlePlayerButton!.alpha = 0.0;
+            }, completion: { _ in
+                self.singlePlayerButton!.frame = self.singlePlayerButton!.shrunkFrame!;
+                self.singlePlayerButton!.setStyle();
+                self.singlePlayerButton!.notSelectable = false;
+                self.singlePlayerButton!.alpha = 1.0;
+            })
+        })
     }
     
     @objc func twoPlayerButtonSelector() {
         startMatchmaking();
     }
     
-    func growSinglePlayerAndTwoPlayerButtons() {
+    func fadeInSingleAndTwoPlayerButtons() {
         self.superview!.addSubview(singlePlayerButton!);
         self.superview!.addSubview(twoPlayerButton!);
+        singlePlayerButton!.show();
         singlePlayerButton!.grow();
+        twoPlayerButton!.show();
         twoPlayerButton!.grow();
     }
     
-    func shrinkSinglePlayerAndTwoPlayerButtons() {
+    func hideSingleAndDoublePlayerButtons() {
         singlePlayerButton!.shrink(colorOptionButton: false);
         twoPlayerButton!.shrink(colorOptionButton: false);
     }
@@ -311,7 +336,7 @@ class UIBoardGame: UIView, GKMatchDelegate {
         attackMeter!.holdVirusAtStart = false;
         // Set glove pointer
         if (currentRound == 1) {
-            glovePointer!.setColorAndCatButtons(colorButtons: colorOptions!.selectionButtons, catButtons: cats, first: true);
+            glovePointer!.setColorAndCatButtons(colorButtons: colorOptions!.selectionButtons, catButtons: cats);
             glovePointer!.grow();
         }
     }
@@ -414,6 +439,7 @@ class UIBoardGame: UIView, GKMatchDelegate {
     }
     
     func gameOverTransition() {
+        gameOver = true;
         if (!settingsButton!.isPressed) {
             settingsButton!.sendActions(for: .touchUpInside);
         }
@@ -431,7 +457,7 @@ class UIBoardGame: UIView, GKMatchDelegate {
         }
         results!.sessionEndTime = CFAbsoluteTimeGetCurrent();
         results!.setSessionDuration();
-        SoundController.mozartSonata(play: false);
+        SoundController.mozartSonata(play: false, startOver: false);
         SoundController.chopinPrelude(play: true);
         colorOptions!.removeBorderOfSelectionButtons();
         self.myLiveMeter!.removeAllHeartLives();
@@ -536,6 +562,13 @@ class UIBoardGame: UIView, GKMatchDelegate {
         } else {
             if (currentMatch != nil) {
                 print("MESSAGE: I LOST :(")
+                var livesInt:UInt16 = UInt16(65535);
+                let data:Data = Data(bytes: &livesInt, count: MemoryLayout.size(ofValue: livesInt));
+                do {
+                    try self.currentMatch!.send(data, to: [self.opponent!], dataMode: GKMatch.SendDataMode.unreliable);
+                } catch {
+                    print("Error encountered, but we will keep trying!")
+                }
                 stopSearchingForOpponentEntirely();
             }
             setAllCatButtonsAsDead();
@@ -559,21 +592,23 @@ class UIBoardGame: UIView, GKMatchDelegate {
     }
     
     func looseMouseCoin() {
-        let x:CGFloat = settingsButton!.settingsMenu!.frame.minX + settingsButton!.settingsMenu!.mouseCoin!.frame.minX;
-        let y:CGFloat = settingsButton!.settingsMenu!.frame.minY + settingsButton!.settingsMenu!.mouseCoin!.frame.minY;
-        let width:CGFloat = settingsButton!.settingsMenu!.mouseCoin!.frame.width;
-        let height:CGFloat = settingsButton!.settingsMenu!.mouseCoin!.frame.height;
-        let mouseCoin:UIMouseCoin = UIMouseCoin(parentView: self.superview!, x: x, y: y, width: width, height: height);
-        mouseCoin.isSelectable = false;
-        let superViewHeight:CGFloat = self.superview!.frame.height;
-        let targetY:CGFloat = CGFloat.random(in: superViewHeight...(superViewHeight + height));
-        UIView.animate(withDuration: 2.0, delay: 0.125, options: .curveEaseInOut, animations: {
-            mouseCoin.frame = CGRect(x: x, y: targetY, width: width, height: height);
-        }, completion: { _ in
-            mouseCoin.removeFromSuperview();
-        })
-        if (UIResults.mouseCoins != 0) {
-            ViewController.staticSelf!.settingsButton!.settingsMenu!.mouseCoin!.setMouseCoinValue(newValue: UIResults.mouseCoins - 1);
+        if (ViewController.staticSelf!.isInternetReachable && GKLocalPlayer.local.isAuthenticated && ViewController.staticSelf!.isiCloudReachable) {
+            let x:CGFloat = settingsButton!.settingsMenu!.frame.minX + settingsButton!.settingsMenu!.mouseCoin!.frame.minX;
+            let y:CGFloat = settingsButton!.settingsMenu!.frame.minY + settingsButton!.settingsMenu!.mouseCoin!.frame.minY;
+            let width:CGFloat = settingsButton!.settingsMenu!.mouseCoin!.frame.width;
+            let height:CGFloat = settingsButton!.settingsMenu!.mouseCoin!.frame.height;
+            let mouseCoin:UIMouseCoin = UIMouseCoin(parentView: self.superview!, x: x, y: y, width: width, height: height);
+            mouseCoin.isSelectable = false;
+            let superViewHeight:CGFloat = self.superview!.frame.height;
+            let targetY:CGFloat = CGFloat.random(in: superViewHeight...(superViewHeight + height));
+            UIView.animate(withDuration: 2.0, delay: 0.125, options: .curveEaseInOut, animations: {
+                mouseCoin.frame = CGRect(x: x, y: targetY, width: width, height: height);
+            }, completion: { _ in
+                mouseCoin.removeFromSuperview();
+            })
+            if (UIResults.mouseCoins != 0) {
+                ViewController.staticSelf!.settingsButton!.settingsMenu!.mouseCoin!.setMouseCoinValue(newValue: UIResults.mouseCoins - 1);
+            }
         }
     }
     
@@ -698,7 +733,7 @@ class UIBoardGame: UIView, GKMatchDelegate {
         // Build board game
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.75) {
             self.buildGame();
-            self.growSinglePlayerAndTwoPlayerButtons();
+            self.fadeInSingleAndTwoPlayerButtons();
         }
         configureComponentsAfterBoardGameReset();
     }
@@ -784,6 +819,10 @@ class UIVictoryView:UICView {
     var unitHeight:CGFloat = 0.0;
     var imageView:UIImageView?
     var image:UIImage?
+    var awardAmount:Int = 0;
+    
+    // Save number of coins
+    var keyValueStore:NSUbiquitousKeyValueStore = NSUbiquitousKeyValueStore();
     
     init(parentView:UIView, frame:CGRect) {
         super.init(parentView: parentView, x: frame.minX, y: frame.minY, width: frame.width * 0.95, height: frame.height * 0.95, backgroundColor: UIColor.clear);
@@ -811,6 +850,7 @@ class UIVictoryView:UICView {
     func setupImageView() {
         Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false, block: { _ in
             SoundController.cuteLaugh();
+            self.giveMouseCoins();
         })
         imageView?.removeFromSuperview();
         if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1) {
@@ -822,6 +862,52 @@ class UIVictoryView:UICView {
         CenterController.centerHorizontally(childView: imageView!, parentRect: self.frame, childRect: imageView!.frame);
         self.addSubview(imageView!);
     }
+    
+    func giveMouseCoins() {
+        let mainView:UIView = ViewController.staticMainView!;
+        // Set angles
+        let angleIncrements:CGFloat = 360.0 / CGFloat(awardAmount);
+        var currentAngle:CGFloat = -90.0;
+        // Settings views
+        let settingsButton:UISettingsButton = ViewController.settingsButton!;
+        let settingsMenuFrame:CGRect = settingsButton.settingsMenu!.frame;
+        let settingsMouseCoinFrame:CGRect = settingsButton.settingsMenu!.mouseCoin!.frame;
+        // Mouse coin X and Y
+        var mouseCoinX:CGFloat
+        var mouseCoinY:CGFloat
+        // Radially position mouse coins
+        for index in 0..<awardAmount {
+            // Set X and Y
+            mouseCoinX = mainView.center.x - (settingsMouseCoinFrame.height * 0.5);
+            mouseCoinY = mainView.center.y - (settingsMouseCoinFrame.width * 0.5);
+            mouseCoinX += (mainView.frame.width * 0.25) * (cos(currentAngle * CGFloat.pi / 180.0));
+            mouseCoinY += (mainView.frame.height * 0.25) * (sin(currentAngle * CGFloat.pi / 180.0));
+            // Generate mouse coin
+            let mouseCoin:UIMouseCoin = UIMouseCoin(parentView: mainView, x: mouseCoinX, y: mouseCoinY, width: settingsMouseCoinFrame.width, height: settingsMouseCoinFrame.height);
+            // Calculate time for translation
+            let boardGameFrame:CGRect = self.superview!.frame;
+            let time:Double = Double(mouseCoin.frame.minX / (boardGameFrame.minX + boardGameFrame.width));
+            DispatchQueue.main.asyncAfter(deadline: .now() + time) {
+                ViewController.staticMainView!.bringSubviewToFront(mouseCoin);
+                UIView.animate(withDuration: 1.0, delay: 0.125, options: [.curveEaseInOut], animations: {
+                    let newMouseCoinFrame:CGRect = CGRect(x: settingsMenuFrame.minX + settingsMouseCoinFrame.minX, y: settingsMenuFrame.minY + settingsMouseCoinFrame.minY, width: settingsMouseCoinFrame.width, height: settingsMouseCoinFrame.height);
+                    mouseCoin.frame = newMouseCoinFrame;
+                }, completion: { _ in
+                    SoundController.coinEarned();
+                    mouseCoin.removeFromSuperview();
+                    if (index == UIResults.rewardAmount - 1) {
+                        ViewController.staticSelf!.settingsButton!.settingsMenu!.mouseCoin!.setMouseCoinValue(newValue: UIResults.mouseCoins + Int64(UIResults.rewardAmount));
+                        self.keyValueStore.set(UIResults.mouseCoins + Int64(UIResults.rewardAmount), forKey: "mouseCoins");
+                        self.keyValueStore.synchronize();
+                        settingsButton.settingsMenu!.mouseCoin!.sendActions(for: .touchUpInside);
+                    }
+                })
+            }
+            // Increment angle
+            currentAngle += angleIncrements;
+        }
+    }
+    
     
     func setCompiledStyle() {
         if (self.alpha > 0.0) {

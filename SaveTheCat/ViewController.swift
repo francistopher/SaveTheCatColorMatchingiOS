@@ -18,7 +18,7 @@ enum AspectRatio {
     case ar4by3
 }
 
-class ViewController: UIViewController, GADInterstitialDelegate, ReachabilityObserverDelegate, GKGameCenterControllerDelegate, GKMatchmakerViewControllerDelegate {
+class ViewController: UIViewController, ReachabilityObserverDelegate, GKGameCenterControllerDelegate, GKMatchmakerViewControllerDelegate, GADInterstitialDelegate {
     
     func matchmakerViewControllerWasCancelled(_ viewController: GKMatchmakerViewController) {
         viewController.dismiss(animated: true, completion: nil);
@@ -34,6 +34,7 @@ class ViewController: UIViewController, GADInterstitialDelegate, ReachabilityObs
     }
     
     var firedITunesStatus:Bool = false;
+    var isiCloudReachable:Bool = false;
     var isInternetReachable:Bool = false;
     func reachabilityChanged(_ isReachable: Bool) {
         if (isReachable) {
@@ -42,12 +43,17 @@ class ViewController: UIViewController, GADInterstitialDelegate, ReachabilityObs
             gameMessage!.displayInternetConnectionEstablishedMessage();
             // Load ads
             bannerView.load(GADRequest());
+            ViewController.interstitial.load(GADRequest());
+            // Stop autoloading ads
+            bannerView.isAutoloadEnabled = true;
             // Load Online Mouse Coins
             settingsButton!.settingsMenu!.mouseCoin!.setMouseCoinValue(newValue: keyValueStore.longLong(forKey: "mouseCoins"));
         } else {
             self.isInternetReachable = false;
             // Step out of multiplayer session
             self.boardGame!.stopSearchingForOpponentEntirely();
+            // Stop autoloading ads
+            bannerView.isAutoloadEnabled = false;
             // Display no Internet Message
             gameMessage!.displayNoInternetConsequencesMessage();
             // No internet mouse coinds
@@ -103,6 +109,7 @@ class ViewController: UIViewController, GADInterstitialDelegate, ReachabilityObs
     
     // Ads
     var bannerView: GADBannerView!
+    var tempBannerView:GADBannerView?
     private static var interstitial:GADInterstitial!
     static var interstitialWillPresentScreen:Bool = false;
     static var interstitialWillDismissScreen:Bool = false;
@@ -131,16 +138,16 @@ class ViewController: UIViewController, GADInterstitialDelegate, ReachabilityObs
                 return false
             }
         }
-        Timer.scheduledTimer(withTimeInterval: 0.125, repeats: true, block: { _ in
-            let isCloudContainerAvailable:Bool = isICloudContainerAvailable();
-            if (!isCloudContainerAvailable && !self.firedITunesStatus) {
+        Timer.scheduledTimer(withTimeInterval: 0.25, repeats: true, block: { _ in
+            self.isiCloudReachable = isICloudContainerAvailable();
+            if (!self.isiCloudReachable && !self.firedITunesStatus) {
                 self.gameMessage!.displayNotLoggedIntoiCloudMessage();
                 self.gameMessage!.displayGameCenterDirectionsMessage();
                 self.firedITunesStatus = true;
                 // Step out of multiplayer session
                 self.boardGame!.stopSearchingForOpponentEntirely();
             }
-            if (isCloudContainerAvailable && self.firedITunesStatus) {
+            if (self.isiCloudReachable && self.firedITunesStatus) {
                 self.gameMessage!.displayLoggedIntoiCloudMessage();
                 self.firedITunesStatus = false;
             }
@@ -174,6 +181,7 @@ class ViewController: UIViewController, GADInterstitialDelegate, ReachabilityObs
     func interstitialWillDismissScreen(_ ad: GADInterstitial) {
         boardGame!.glovePointer!.reset();
         ViewController.interstitialWillDismissScreen = true;
+        ViewController.staticSelf!.setupInterstitial();
     }
     
     func interstitialDidDismissScreen(_ ad: GADInterstitial) {
@@ -209,6 +217,7 @@ class ViewController: UIViewController, GADInterstitialDelegate, ReachabilityObs
         bannerView.adUnitID = "ca-app-pub-9248016465919511/3503661709";
         bannerView.rootViewController = self;
         bannerView.load(GADRequest());
+        // Save first banner view as temp
         mainView.addSubview(bannerView);
         bannerView!.alpha = 0.0;
     }
@@ -318,13 +327,14 @@ class ViewController: UIViewController, GADInterstitialDelegate, ReachabilityObs
         setupViruses();
         // Set ads
         setupBannerView();
+        ViewController.staticSelf!.setupInterstitial();
         setupBoardMainView();
         // Save the mouse coins from icloud
         setupColorOptionsView();
         setupGlovePointer();
         setupSettingsButton();
         self.setupNotificationCenter();
-        SoundController.mozartSonata(play: true);
+        SoundController.mozartSonata(play: true, startOver: true);
     }
     
     func presentSaveTheCat() {
@@ -347,7 +357,7 @@ class ViewController: UIViewController, GADInterstitialDelegate, ReachabilityObs
                 self.settingsButton!.fadeIn();
                 self.settingsButton!.settingsMenu!.mouseCoin!.mouseCoinView!.fadeIn();
                 self.boardGame!.buildGame();
-                self.boardGame!.growSinglePlayerAndTwoPlayerButtons();
+                self.boardGame!.fadeInSingleAndTwoPlayerButtons();
             }
         }
     }
@@ -364,6 +374,8 @@ class ViewController: UIViewController, GADInterstitialDelegate, ReachabilityObs
         }
         self.viruses!.hide();
         self.boardGame!.cats.suspendCatAnimations();
+        SoundController.chopinPrelude(play: false);
+        SoundController.mozartSonata(play: false, startOver: false);
         print("App backgrounded");
     }
     
@@ -374,6 +386,11 @@ class ViewController: UIViewController, GADInterstitialDelegate, ReachabilityObs
         self.boardGame!.cats.resumeCatAnimations();
         if (!settingsButton!.isPressed) {
             self.boardGame!.attackMeter!.unPauseVirusMovement();
+        }
+        if (boardGame!.gameOver) {
+            SoundController.chopinPrelude(play: true);
+        } else {
+            SoundController.mozartSonata(play: true, startOver: false);
         }
         print("App foregrounded");
     }

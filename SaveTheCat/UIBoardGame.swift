@@ -242,8 +242,10 @@ class UIBoardGame: UIView, GKMatchDelegate {
             matchRequest.defaultNumberOfPlayers = 2;
             matchRequest.minPlayers = 2;
             matchRequest.maxPlayers = 2;
-            matchMakerVC = GKMatchmakerViewController(matchRequest: matchRequest);
-            matchMakerVC!.matchmakerDelegate = ViewController.staticSelf!;
+            if (matchMakerVC == nil) {
+                matchMakerVC = GKMatchmakerViewController(matchRequest: matchRequest);
+                matchMakerVC!.matchmakerDelegate = ViewController.staticSelf!;
+            }
             ViewController.staticSelf!.present(matchMakerVC!, animated: true, completion: nil);
         }
     }
@@ -251,7 +253,6 @@ class UIBoardGame: UIView, GKMatchDelegate {
     func stopSearchingForOpponentEntirely() {
         ViewController.staticSelf!.dismiss(animated: true, completion: nil);
         currentMatch?.disconnect();
-        currentMatch = nil;
         hideOpponentLiveMeter();
         opponentResignationTimer?.invalidate();
         opponentResignationTimer = nil;
@@ -279,6 +280,7 @@ class UIBoardGame: UIView, GKMatchDelegate {
         singlePlayerButton!.layer.borderWidth = attackMeter!.layer.borderWidth;
         singlePlayerButton!.titleLabel!.font = UIFont.boldSystemFont(ofSize: singlePlayerButton!.frame.height * 0.3);
         singlePlayerButton!.addTarget(self, action: #selector(singlePlayerButtonSelector), for: .touchUpInside);
+        singlePlayerButton!.shrinked();
         singlePlayerButton!.alpha = 0.0;
         twoPlayerButton = UICButton(parentView: self.superview!, frame: CGRect(x: self.colorOptions!.frame.minX + self.colorOptions!.frame.width * 0.525, y: self.colorOptions!.frame.minY, width: self.colorOptions!.frame.width * 0.425, height: self.colorOptions!.frame.height), backgroundColor: UIColor.clear);
         twoPlayerButton!.setTitle("Two Player", for: .normal);
@@ -287,6 +289,7 @@ class UIBoardGame: UIView, GKMatchDelegate {
         twoPlayerButton!.layer.borderWidth = attackMeter!.layer.borderWidth;
         twoPlayerButton!.titleLabel!.font = UIFont.boldSystemFont(ofSize: twoPlayerButton!.frame.height * 0.3);
         twoPlayerButton!.addTarget(self, action: #selector(twoPlayerButtonSelector), for: .touchUpInside);
+        twoPlayerButton!.shrinked();
         twoPlayerButton!.alpha = 0.0;
     }
     
@@ -295,19 +298,23 @@ class UIBoardGame: UIView, GKMatchDelegate {
             return;
         }
         singlePlayerButton!.notSelectable = true;
-        startGameWithoutMatchmaking();
+        startGame();
         twoPlayerButton!.shrink(colorOptionButton: false);
         UIView.animate(withDuration: 1.0, delay: 0.125, options: .curveEaseOut, animations: {
-            self.singlePlayerButton!.frame = CGRect(x: self.colorOptions!.frame.minX, y: self.colorOptions!.frame.minY, width: self.colorOptions!.frame.width, height: self.colorOptions!.frame.height);
-            self.singlePlayerButton!.backgroundColor = self.colorOptions!.selectionButtons[0].backgroundColor!;
+            let colorOption:UICButton = self.colorOptions!.selectionButtons[0];
+            self.singlePlayerButton!.frame = CGRect(x: self.colorOptions!.frame.minX + colorOption.frame.minX, y: self.colorOptions!.frame.minY + colorOption.frame.minY, width: colorOption.frame.width, height: colorOption.frame.height);
+            self.singlePlayerButton!.backgroundColor = colorOption.backgroundColor!;
         }, completion: { _ in
             UIView.animate(withDuration: 0.75, delay: 0.125, options: .curveEaseOut, animations: {
                 self.singlePlayerButton!.alpha = 0.0;
+                self.twoPlayerButton!.alpha = 0.0;
             }, completion: { _ in
-                self.singlePlayerButton!.frame = self.singlePlayerButton!.shrunkFrame!;
+                self.attackMeter!.invokeAttackImpulse(delay: 0.0);
+                self.singlePlayerButton!.frame = self.singlePlayerButton!.originalFrame!;
+                self.singlePlayerButton!.shrinked();
+                self.singlePlayerButton!.backgroundColor = self.singlePlayerButton!.originalBackgroundColor!;
                 self.singlePlayerButton!.setStyle();
                 self.singlePlayerButton!.notSelectable = false;
-                self.singlePlayerButton!.alpha = 1.0;
             })
         })
     }
@@ -320,17 +327,19 @@ class UIBoardGame: UIView, GKMatchDelegate {
             twoPlayerButton!.notSelectable = true;
             singlePlayerButton!.shrink(colorOptionButton: false);
             UIView.animate(withDuration: 0.75 , delay: 0.0, options: .curveEaseOut, animations: {
-                self.twoPlayerButton!.frame = CGRect(x: self.colorOptions!.frame.minX, y: self.colorOptions!.frame.minY, width: self.colorOptions!.frame.width, height: self.colorOptions!.frame.height);
-                self.twoPlayerButton!.backgroundColor = self.colorOptions!.selectionButtons[0].backgroundColor!;
+                let colorOption:UICButton = self.colorOptions!.selectionButtons[0];
+                self.twoPlayerButton!.frame = CGRect(x: self.colorOptions!.frame.minX + colorOption.frame.minX, y: self.colorOptions!.frame.minY + colorOption.frame.minY, width: colorOption.frame.width, height: colorOption.frame.height);
+                self.twoPlayerButton!.backgroundColor = colorOption.backgroundColor!;
             }, completion: { _ in
-                UIView.animate(withDuration: 0.75, delay: 0.125, options: .curveEaseOut, animations: {
+                UIView.animate(withDuration: 0.75, delay: 0.25, options: .curveEaseOut, animations: {
                     self.twoPlayerButton!.alpha = 0.0;
                 }, completion: { _ in
                     self.attackMeter!.invokeAttackImpulse(delay: 0.0);
-                    self.twoPlayerButton!.frame = self.twoPlayerButton!.shrunkFrame!;
+                    self.twoPlayerButton!.frame = self.twoPlayerButton!.originalFrame!;
+                    self.twoPlayerButton!.shrinked();
+                    self.twoPlayerButton!.backgroundColor = self.twoPlayerButton!.originalBackgroundColor!;
                     self.twoPlayerButton!.setStyle();
                     self.twoPlayerButton!.notSelectable = false;
-                    self.twoPlayerButton!.alpha = 1.0;
                 })
             })
         } else {
@@ -338,18 +347,13 @@ class UIBoardGame: UIView, GKMatchDelegate {
         }
     }
     
-    func fadeInSingleAndTwoPlayerButtons() {
+    func showSingleAndTwoPlayerButtons() {
         self.superview!.addSubview(singlePlayerButton!);
         self.superview!.addSubview(twoPlayerButton!);
         singlePlayerButton!.show();
         singlePlayerButton!.grow();
         twoPlayerButton!.show();
         twoPlayerButton!.grow();
-    }
-    
-    func hideSingleAndDoublePlayerButtons() {
-        singlePlayerButton!.shrink(colorOptionButton: false);
-        twoPlayerButton!.shrink(colorOptionButton: false);
     }
     
     func startGame() {
@@ -361,11 +365,7 @@ class UIBoardGame: UIView, GKMatchDelegate {
             glovePointer!.grow();
         }
     }
-    
-    func startGameWithoutMatchmaking() {
-        attackMeter!.invokeAttackImpulse(delay: 1.0);
-        startGame();
-    }
+   
     
     func buildGridColors(){
         gridColors = Array(repeating: Array(repeating: UIColor.lightGray, count: rowAndColumnNums[1]), count: rowAndColumnNums[0]);
@@ -581,6 +581,8 @@ class UIBoardGame: UIView, GKMatchDelegate {
                 verifyThatRemainingCatsArePodded(catButton:catButton);
             }
         } else {
+            setAllCatButtonsAsDead();
+            gameOverTransition();
             if (currentMatch != nil) {
                 print("MESSAGE: I LOST :(")
                 var livesInt:UInt16 = UInt16(65535);
@@ -592,8 +594,6 @@ class UIBoardGame: UIView, GKMatchDelegate {
                 }
                 stopSearchingForOpponentEntirely();
             }
-            setAllCatButtonsAsDead();
-            gameOverTransition();
         }
         
     }
@@ -754,7 +754,7 @@ class UIBoardGame: UIView, GKMatchDelegate {
         // Build board game
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.75) {
             self.buildGame();
-            self.fadeInSingleAndTwoPlayerButtons();
+            self.showSingleAndTwoPlayerButtons();
         }
         configureComponentsAfterBoardGameReset();
     }

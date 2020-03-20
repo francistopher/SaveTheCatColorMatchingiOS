@@ -141,7 +141,7 @@ class UILiveMeter:UICView {
         currentHeartButton!.frame = newFrame;
         self.superview!.bringSubviewToFront(currentHeartButton!);
         // Move heart to target frame
-        UIView.animate(withDuration: 3.0, delay: 0.125, options: [.curveEaseInOut], animations: {
+        UIView.animate(withDuration: 2.5, delay: 0.125, options: [.curveEaseInOut], animations: {
             self.currentHeartButton!.transform = self.currentHeartButton!.transform.translatedBy(x: targetFrame.minX - newFrame.minX, y: targetFrame.minY - newFrame.minY);
         }, completion: { _ in
             self.addSubview(self.currentHeartButton!);

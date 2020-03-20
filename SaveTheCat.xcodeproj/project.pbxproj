@@ -112,6 +112,7 @@
 		B8403244241439210020D9EA /* multiPlayer.png in Resources */ = {isa = PBXBuildFile; fileRef = B8403242241439210020D9EA /* multiPlayer.png */; };
 		B840324724143B540020D9EA /* darkLeaderBoard.png in Resources */ = {isa = PBXBuildFile; fileRef = B840324524143B540020D9EA /* darkLeaderBoard.png */; };
 		B840324824143B540020D9EA /* lightLeaderBoard.png in Resources */ = {isa = PBXBuildFile; fileRef = B840324624143B540020D9EA /* lightLeaderBoard.png */; };
+		B8B01A412425487800155D9B /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B8B01A402425487800155D9B /* WebKit.framework */; };
 		B8F6C9B7242164FC00CD668C /* darkCatIntro.png in Resources */ = {isa = PBXBuildFile; fileRef = B8F6C9B5242164FC00CD668C /* darkCatIntro.png */; };
 		B8F6C9B8242164FC00CD668C /* lightCatIntro.png in Resources */ = {isa = PBXBuildFile; fileRef = B8F6C9B6242164FC00CD668C /* lightCatIntro.png */; };
 		B8F6C9BA242168C300CD668C /* UIIntroCatAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8F6C9B9242168C300CD668C /* UIIntroCatAnimation.swift */; };
@@ -231,6 +232,7 @@
 		B8403242241439210020D9EA /* multiPlayer.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = multiPlayer.png; path = SaveTheCat/multiPlayer.png; sourceTree = "<group>"; };
 		B840324524143B540020D9EA /* darkLeaderBoard.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = darkLeaderBoard.png; path = SaveTheCat/darkLeaderBoard.png; sourceTree = "<group>"; };
 		B840324624143B540020D9EA /* lightLeaderBoard.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = lightLeaderBoard.png; path = SaveTheCat/lightLeaderBoard.png; sourceTree = "<group>"; };
+		B8B01A402425487800155D9B /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		B8F6C9B5242164FC00CD668C /* darkCatIntro.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = darkCatIntro.png; path = SaveTheCat/darkCatIntro.png; sourceTree = "<group>"; };
 		B8F6C9B6242164FC00CD668C /* lightCatIntro.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = lightCatIntro.png; path = SaveTheCat/lightCatIntro.png; sourceTree = "<group>"; };
 		B8F6C9B9242168C300CD668C /* UIIntroCatAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIIntroCatAnimation.swift; sourceTree = "<group>"; };
@@ -248,6 +250,7 @@
 			files = (
 				B83BC3F7241ACDF90026D7F6 /* CloudKit.framework in Frameworks */,
 				B83B03DE241160FD00EC4BAD /* GameKit.framework in Frameworks */,
+				B8B01A412425487800155D9B /* WebKit.framework in Frameworks */,
 				16CF995035758E55123640B3 /* Pods_SaveTheCat.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -512,6 +515,7 @@
 		B83B03D9241160D600EC4BAD /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				B8B01A402425487800155D9B /* WebKit.framework */,
 				B83BC3F6241ACDF90026D7F6 /* CloudKit.framework */,
 				B83B03DA241160D600EC4BAD /* GameKit.framework */,
 				55C6E4EB948AE2FD3FA22E3A /* Pods_SaveTheCat.framework */,

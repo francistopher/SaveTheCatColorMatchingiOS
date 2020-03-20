@@ -91,7 +91,11 @@ class UICButton:UIButton {
             x = self.parentView!.frame.width;
         }
         UIView.animate(withDuration: duration, delay: 0.0, options: .curveEaseIn, animations: {
-            self.frame = CGRect(x: x, y: self.frame.minY, width: 0.0, height: self.frame.height);
+            if (!colorOptionButton) {
+                self.frame = CGRect(x: self.originalFrame!.midX, y: self.originalFrame!.midY, width: 0.0, height: 0.0);
+            } else {
+                self.frame = CGRect(x: x, y: self.frame.minY, width: 0.0, height: self.frame.height);
+            }
         }, completion: { _ in
             if (!colorOptionButton) {
                 self.removeFromSuperview();

@@ -298,12 +298,12 @@ class UIResults: UICView {
             mouseCoinY += (mainView.frame.height * 0.25) * (sin(currentAngle * CGFloat.pi / 180.0));
             // Generate mouse coin
             let mouseCoin:UIMouseCoin = UIMouseCoin(parentView: mainView, x: mouseCoinX, y: mouseCoinY, width: settingsMouseCoinFrame.width, height: settingsMouseCoinFrame.height);
-            // Calculate time for translation
-            let boardGameFrame:CGRect = self.superview!.frame;
-            let time:Double = Double(mouseCoin.frame.minX / (boardGameFrame.minX + boardGameFrame.width));
-            DispatchQueue.main.asyncAfter(deadline: .now() + time) {
-                ViewController.staticMainView!.bringSubviewToFront(mouseCoin);
-                UIView.animate(withDuration: 1.0, delay: 0.125, options: [.curveEaseInOut], animations: {
+            mouseCoin.alpha = 0.0;
+            ViewController.staticMainView!.bringSubviewToFront(mouseCoin);
+            UIView.animate(withDuration: 1.5, delay: 0.0, options: .curveEaseIn, animations: {
+                mouseCoin.alpha = 1.0;
+            }, completion: { _ in
+                UIView.animate(withDuration: 1.0, delay: 1.0, options: [.curveEaseInOut], animations: {
                     let newMouseCoinFrame:CGRect = CGRect(x: settingsMenuFrame.minX + settingsMouseCoinFrame.minX, y: settingsMenuFrame.minY + settingsMouseCoinFrame.minY, width: settingsMouseCoinFrame.width, height: settingsMouseCoinFrame.height);
                     mouseCoin.frame = newMouseCoinFrame;
                 }, completion: { _ in
@@ -316,7 +316,7 @@ class UIResults: UICView {
                         settingsButton.settingsMenu!.mouseCoin!.sendActions(for: .touchUpInside);
                     }
                 })
-            }
+            })
             // Increment angle
             currentAngle += angleIncrements;
         }

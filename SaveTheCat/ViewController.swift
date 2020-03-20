@@ -10,7 +10,6 @@ import UIKit
 import AVFoundation
 import GameKit
 import GoogleMobileAds
-import CoreBluetooth
 
 enum AspectRatio {
     case ar19point5by9
@@ -18,7 +17,7 @@ enum AspectRatio {
     case ar4by3
 }
 
-class ViewController: UIViewController, ReachabilityObserverDelegate, GKGameCenterControllerDelegate, GKMatchmakerViewControllerDelegate, GADInterstitialDelegate {
+class ViewController: UIViewController, GKGameCenterControllerDelegate, GKMatchmakerViewControllerDelegate, ReachabilityObserverDelegate, GADInterstitialDelegate, GADBannerViewDelegate {
     
     func matchmakerViewControllerWasCancelled(_ viewController: GKMatchmakerViewController) {
         viewController.dismiss(animated: true, completion: nil);
@@ -29,8 +28,9 @@ class ViewController: UIViewController, ReachabilityObserverDelegate, GKGameCent
     }
     
     func matchmakerViewController(_ viewController: GKMatchmakerViewController, didFind match: GKMatch) {
-        viewController.dismiss(animated: true, completion: nil);
         self.boardGame!.setupMatch(match: match);
+        viewController.dismiss(animated: true, completion: nil);
+        print("A match was found????")
     }
     
     var firedITunesStatus:Bool = false;
@@ -41,9 +41,6 @@ class ViewController: UIViewController, ReachabilityObserverDelegate, GKGameCent
             self.isInternetReachable = true;
             // Display Internet Message
             gameMessage!.displayInternetConnectionEstablishedMessage();
-            // Load ads
-            bannerView.load(GADRequest());
-            ViewController.interstitial.load(GADRequest());
             // Stop autoloading ads
             bannerView.isAutoloadEnabled = true;
             // Load Online Mouse Coins
@@ -60,8 +57,6 @@ class ViewController: UIViewController, ReachabilityObserverDelegate, GKGameCent
             settingsButton!.settingsMenu!.mouseCoin!.setMouseCoinValue(newValue: 0);
         }
     }
-    
-    var manager:CBCentralManager!
     
     func gameCenterViewControllerDidFinish(_ gameCenterViewController: GKGameCenterViewController) {
         gameCenterViewController.dismiss(animated: true, completion: nil);
@@ -166,9 +161,16 @@ class ViewController: UIViewController, ReachabilityObserverDelegate, GKGameCent
         }
     }
     
+    // Ads
+    func setupAdvertisement() {
+        GADMobileAds.sharedInstance().requestConfiguration.testDeviceIdentifiers = ["2077ef9a63d2b398840261c8221a0c9b"];
+        setupBannerView();
+        setupInterstitial();
+    }
+    
     // Interstisial
     func setupInterstitial() {
-        ViewController.interstitial = GADInterstitial(adUnitID: "ca-app-pub-3940256099942544/4411468910");
+        ViewController.interstitial = GADInterstitial(adUnitID: "ca-app-pub-3940256099942544/5135589807");
         ViewController.interstitial.delegate = self;
         ViewController.interstitial.load(GADRequest());
     }
@@ -219,7 +221,7 @@ class ViewController: UIViewController, ReachabilityObserverDelegate, GKGameCent
         bannerView.load(GADRequest());
         // Save first banner view as temp
         mainView.addSubview(bannerView);
-        bannerView!.alpha = 0.0;
+        
     }
     
     // Game Center Authentication
@@ -325,9 +327,7 @@ class ViewController: UIViewController, ReachabilityObserverDelegate, GKGameCent
         setupIntroCatAnimatio();
         setupSuccessGradientViewAndLayer();
         setupViruses();
-        // Set ads
-        setupBannerView();
-        ViewController.staticSelf!.setupInterstitial();
+        setupAdvertisement();
         setupBoardMainView();
         // Save the mouse coins from icloud
         setupColorOptionsView();
@@ -341,9 +341,6 @@ class ViewController: UIViewController, ReachabilityObserverDelegate, GKGameCent
         DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
             self.introCatAnimation!.fadeOut();
             DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-                UIView.animate(withDuration: 1.0, delay: 0.125, options: .curveEaseIn, animations: {
-                    self.bannerView!.alpha = 1.0;
-                })
                 self.viruses!.sway(immediately: false);
                 self.viruses!.fadeIn();
                 self.boardGame!.fadeIn();
@@ -357,7 +354,7 @@ class ViewController: UIViewController, ReachabilityObserverDelegate, GKGameCent
                 self.settingsButton!.fadeIn();
                 self.settingsButton!.settingsMenu!.mouseCoin!.mouseCoinView!.fadeIn();
                 self.boardGame!.buildGame();
-                self.boardGame!.fadeInSingleAndTwoPlayerButtons();
+                self.boardGame!.showSingleAndTwoPlayerButtons();
             }
         }
     }
@@ -533,6 +530,8 @@ class ViewController: UIViewController, ReachabilityObserverDelegate, GKGameCent
                 settingsButton!.settingsMenu!.mouseCoin!.mouseCoinView!.backgroundColor = UIColor.black;
             }
         }
+        boardGame!.singlePlayerButton!.setStyle();
+        boardGame!.twoPlayerButton!.setStyle();
         boardGame!.cats.updateUIStyle();
         boardGame!.myLiveMeter!.setCompiledStyle();
         boardGame!.opponentLiveMeter!.setCompiledStyle();

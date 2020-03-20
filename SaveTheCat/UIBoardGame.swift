@@ -207,10 +207,9 @@ class UIBoardGame: UIView, GKMatchDelegate {
     func setupOpponent(opponent:GKPlayer) {
         self.opponent = opponent;
         self.displayOpponentLiveMeter();
-        self.hideSingleAndDoublePlayerButtons();
         self.startGame();
         self.setupOpponentResignationTimer();
-        self.attackMeter!.invokeAttackImpulse(delay: 0.0);
+        self.twoPlayerButtonSelector(noMatchMaking: true);
     }
     
     func setupOpponentResignationTimer() {
@@ -299,7 +298,7 @@ class UIBoardGame: UIView, GKMatchDelegate {
         startGameWithoutMatchmaking();
         twoPlayerButton!.shrink(colorOptionButton: false);
         UIView.animate(withDuration: 1.0, delay: 0.125, options: .curveEaseOut, animations: {
-            self.singlePlayerButton!.frame = CGRect(x: self.colorOptions!.frame.minX + self.colorOptions!.selectionButtons[0].frame.minX, y: self.colorOptions!.frame.minY + self.colorOptions!.selectionButtons[0].frame.minY, width: self.colorOptions!.selectionButtons[0].frame.width, height: self.colorOptions!.selectionButtons[0].frame.height);
+            self.singlePlayerButton!.frame = CGRect(x: self.colorOptions!.frame.minX, y: self.colorOptions!.frame.minY, width: self.colorOptions!.frame.width, height: self.colorOptions!.frame.height);
             self.singlePlayerButton!.backgroundColor = self.colorOptions!.selectionButtons[0].backgroundColor!;
         }, completion: { _ in
             UIView.animate(withDuration: 0.75, delay: 0.125, options: .curveEaseOut, animations: {
@@ -313,8 +312,30 @@ class UIBoardGame: UIView, GKMatchDelegate {
         })
     }
     
-    @objc func twoPlayerButtonSelector() {
-        startMatchmaking();
+    @objc func twoPlayerButtonSelector(noMatchMaking:Bool) {
+        if (noMatchMaking) {
+            if (twoPlayerButton!.notSelectable) {
+                return;
+            }
+            twoPlayerButton!.notSelectable = true;
+            singlePlayerButton!.shrink(colorOptionButton: false);
+            UIView.animate(withDuration: 0.75 , delay: 0.0, options: .curveEaseOut, animations: {
+                self.twoPlayerButton!.frame = CGRect(x: self.colorOptions!.frame.minX, y: self.colorOptions!.frame.minY, width: self.colorOptions!.frame.width, height: self.colorOptions!.frame.height);
+                self.twoPlayerButton!.backgroundColor = self.colorOptions!.selectionButtons[0].backgroundColor!;
+            }, completion: { _ in
+                UIView.animate(withDuration: 0.75, delay: 0.125, options: .curveEaseOut, animations: {
+                    self.twoPlayerButton!.alpha = 0.0;
+                }, completion: { _ in
+                    self.attackMeter!.invokeAttackImpulse(delay: 0.0);
+                    self.twoPlayerButton!.frame = self.twoPlayerButton!.shrunkFrame!;
+                    self.twoPlayerButton!.setStyle();
+                    self.twoPlayerButton!.notSelectable = false;
+                    self.twoPlayerButton!.alpha = 1.0;
+                })
+            })
+        } else {
+            startMatchmaking();
+        }
     }
     
     func fadeInSingleAndTwoPlayerButtons() {

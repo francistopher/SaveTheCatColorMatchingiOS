@@ -15,7 +15,7 @@ enum Virus{
 
 class UIVirus:UIButton {
     
-    var originalFrame:CGRect? = nil;
+    var originalFrame:CGRect?
     var selectedVirus:Virus = .standard;
         
     required init?(coder: NSCoder) {
@@ -35,8 +35,10 @@ class UIVirus:UIButton {
         alpha = 0.0;
     }
     
+    var iconImage:UIImage?
     func setupVirusImage() {
-        let iconImage:UIImage? = UIImage(named: getVirusFileName());
+        iconImage = nil;
+        iconImage = UIImage(named: getVirusFileName());
         self.setImage(iconImage, for: .normal);
         self.imageView!.contentMode = UIView.ContentMode.scaleAspectFit;
     }
@@ -88,9 +90,7 @@ class UIVirus:UIButton {
     
     func translateToAndBackAt(xTarget:CGFloat, yTarget:CGFloat) {
         UIView.animate(withDuration: 0.25, delay:0.0, options: [.curveEaseInOut], animations: {
-            let xDistance:CGFloat = xTarget - self.frame.midX;
-            let yDistance:CGFloat = yTarget - self.frame.midY;
-            self.transform = self.transform.translatedBy(x: xDistance, y: yDistance);
+            self.transform = self.transform.translatedBy(x: xTarget - self.frame.midX, y: yTarget - self.frame.midY);
         }, completion: { _ in
             UIView.animate(withDuration: 1.0, delay:0.125, options: [.curveEaseInOut], animations: {
                 self.frame = self.originalFrame!;

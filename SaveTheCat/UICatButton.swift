@@ -52,48 +52,47 @@ class UICatButton: UIButton {
         self.setStyle();
     }
     
+
+    var mouseCoin:UIMouseCoin?
+    var settingsButton:UISettingsButton?
+    var settingsMenuFrame:CGRect?
+    var settingsMouseCoinFrame:CGRect?
+    
+    var mainView:UIView?
+    var newMouseCoinFrame:CGRect?
+    var mouseCoinX:CGFloat?
+    var mouseCoinY:CGFloat?
+    
+    
     func giveMouseCoin(withNoise:Bool) {
         // Generate mouse coin
-        let mouseCoin:UIMouseCoin = UIMouseCoin(parentView: self.imageContainerButton!, x: 0.0, y: 0.0, width: self.imageContainerButton!.frame.width / 4.0, height: self.imageContainerButton!.frame.height / 4.0);
-        mouseCoin.isSelectable = false;
-        CenterController.center(childView: mouseCoin, parentRect: imageContainerButton!.frame, childRect: mouseCoin.frame);
-        self.imageContainerButton!.addSubview(mouseCoin);
+        mouseCoin = UIMouseCoin(parentView: self.imageContainerButton!, x: 0.0, y: 0.0, width: self.imageContainerButton!.frame.width / 4.0, height: self.imageContainerButton!.frame.height / 4.0);
+        mouseCoin!.isSelectable = false;
+        CenterController.center(childView: mouseCoin!, parentRect: imageContainerButton!.frame, childRect: mouseCoin!.frame);
+        self.imageContainerButton!.addSubview(mouseCoin!);
         // Create new frame for mouse coin on main view
-        let mainView:UIView = self.superview!.superview!;
-        var mouseCoinX = mouseCoin.frame.minX;
-        var mouseCoinY = mouseCoin.frame.minY;
-        mouseCoinX += self.frame.minX;
-        mouseCoinY += self.frame.minY;
-        mouseCoinX += self.superview!.frame.minX;
-        mouseCoinY += self.superview!.frame.minY;
+        mainView = self.superview!.superview!;
+        mouseCoinX = mouseCoin!.frame.minX + self.frame.minX + self.superview!.frame.minX;
+        mouseCoinY = mouseCoin!.frame.minY + self.frame.minY + self.superview!.frame.minY;
         // Reposition mouse coin
-        mainView.addSubview(mouseCoin);
-        mouseCoin.frame = CGRect(x: mouseCoinX, y: mouseCoinY, width: mouseCoin.frame.width, height: mouseCoin.frame.height);
-        // Calculate time for translation
-        let boardGameFrame:CGRect = self.superview!.frame;
-        let time:Double = Double(mouseCoin.frame.minX / (boardGameFrame.minX + boardGameFrame.width));
-        DispatchQueue.main.asyncAfter(deadline: .now() + time) {
-            mainView.bringSubviewToFront(mouseCoin);
-            UIView.animate(withDuration: 1.0, delay: 0.125, options: [.curveEaseInOut], animations: {
-                var newMouseCoinFrame:CGRect?
-                let settingsButton:UISettingsButton = ViewController.settingsButton!;
-                let settingsMenuFrame:CGRect = settingsButton.settingsMenu!.frame;
-                let settingsMouseCoinFrame:CGRect = settingsButton.settingsMenu!.mouseCoin!.frame;
-                if (ViewController.staticSelf!.isInternetReachable && GKLocalPlayer.local.isAuthenticated) {
-                    newMouseCoinFrame = CGRect(x: settingsMenuFrame.minX + settingsMouseCoinFrame.minX, y: settingsMenuFrame.minY + settingsMouseCoinFrame.minY, width: settingsMouseCoinFrame.width, height: settingsMouseCoinFrame.height);
-                } else {
-                    let x:CGFloat = CGFloat.random(in: 0.0...ViewController.staticSelf!.mainView.frame.width);
-                    newMouseCoinFrame = CGRect(x: x, y: -settingsMouseCoinFrame.height, width: settingsMouseCoinFrame.width, height: settingsMouseCoinFrame.height);
-                }
-                mouseCoin.frame = newMouseCoinFrame!;
-            }, completion: { _ in
-                if (ViewController.staticSelf!.isInternetReachable && GKLocalPlayer.local.isAuthenticated) {
-                    SoundController.coinEarned();
-                    ViewController.staticSelf!.settingsButton!.settingsMenu!.mouseCoin!.setMouseCoinValue(newValue: UIResults.mouseCoins + 1);
-                }
-                mouseCoin.removeFromSuperview();
-            })
-        }
+        mainView!.addSubview(mouseCoin!);
+        mouseCoin!.frame = CGRect(x: mouseCoinX!, y: mouseCoinY!, width: mouseCoin!.frame.width, height: mouseCoin!.frame.height);
+        self.mainView!.bringSubviewToFront(self.mouseCoin!);
+        UIView.animate(withDuration: 1.0, delay: 0.125, options: [.curveEaseInOut], animations: {
+            if (ViewController.staticSelf!.isInternetReachable && GKLocalPlayer.local.isAuthenticated) {
+                self.newMouseCoinFrame = CGRect(x: self.settingsMenuFrame!.minX + self.settingsMouseCoinFrame!.minX, y: self.settingsMenuFrame!.minY + self.settingsMouseCoinFrame!.minY, width: self.settingsMouseCoinFrame!.width, height: self.settingsMouseCoinFrame!.height);
+            } else {
+                self.newMouseCoinFrame = CGRect(x: CGFloat.random(in: 0.0...ViewController.staticSelf!.mainView.frame.width), y: -self.settingsMouseCoinFrame!.height, width: self.settingsMouseCoinFrame!.width, height: self.settingsMouseCoinFrame!.height);
+            }
+            self.mouseCoin!.frame = self.newMouseCoinFrame!;
+        }, completion: { _ in
+            if (ViewController.staticSelf!.isInternetReachable && GKLocalPlayer.local.isAuthenticated) {
+                SoundController.coinEarned();
+                ViewController.staticSelf!.settingsButton!.settingsMenu!.mouseCoin!.setMouseCoinValue(newValue: UIResults.mouseCoins + 1);
+            }
+            self.mouseCoin!.removeFromSuperview();
+            self.mouseCoin = nil;
+        })
     }
     
     func configureImageContainerButton() {
@@ -155,6 +154,7 @@ class UICatButton: UIButton {
         self.imageContainerButton!.frame = self.imageContainerButton!.originalFrame!;
     }
     
+    var iconImage:UIImage?
     func setCat(named:String, stage:Int){
         // Save non empty strings only
         if (named != "" && named != "updateStyle") {
@@ -174,8 +174,9 @@ class UICatButton: UIButton {
             self.backgroundColor = UIColor.clear;
         }
         // Configure the image icon
-        let iconImage:UIImage? = UIImage(named: previousFileName);
-        self.imageContainerButton!.setImage(iconImage, for: .normal);
+        iconImage = nil;
+        iconImage = UIImage(named: previousFileName);
+        self.imageContainerButton!.setImage(iconImage!, for: .normal);
         self.imageContainerButton!.imageView!.contentMode = UIView.ContentMode.scaleAspectFill;
         if (named == "updateStyle") {
             return;
@@ -223,19 +224,20 @@ class UICatButton: UIButton {
         });
     }
     
+    var randomAnimationSelection:Int?
     func setRandomCatAnimation() {
-        let randomAnimationSelection:Int = Int.random(in: 0...3);
-        if (randomAnimationSelection > 2){
+        randomAnimationSelection = Int.random(in: 0...3);
+        if (randomAnimationSelection! > 2){
             self.imageContainerButton!.imageView!.transform = self.imageContainerButton!.imageView!.transform.rotated(by:-CGFloat.pi / 2.0);
             UIView.animate(withDuration: 1.75, delay: 0.0, options:[.curveEaseInOut, .repeat, .autoreverse], animations: {
                 self.imageContainerButton!.imageView!.transform = self.imageContainerButton!.imageView!.transform.rotated(by:-CGFloat.pi);
             });
-        } else if (randomAnimationSelection > 1) {
+        } else if (randomAnimationSelection! > 1) {
             self.imageContainerButton!.imageView!.transform = self.imageContainerButton!.imageView!.transform.rotated(by:CGFloat.pi / 2.0);
             UIView.animate(withDuration: 1.75, delay: 0.0, options:[.curveEaseInOut, .repeat, .autoreverse], animations: {
                 self.imageContainerButton!.imageView!.transform = self.imageContainerButton!.imageView!.transform.rotated(by:-CGFloat.pi);
             });
-        } else if (randomAnimationSelection > 0) {
+        } else if (randomAnimationSelection! > 0) {
             UIView.animate(withDuration: 1.75, delay: 0.0, options:[.curveEaseInOut, .repeat, .autoreverse], animations: {
                 self.imageContainerButton!.imageView!.transform = self.imageContainerButton!.imageView!.transform.rotated(by:-CGFloat.pi);
             });
@@ -248,15 +250,8 @@ class UICatButton: UIButton {
     }
     
     func displaceBoundsOntoMainView() {
-        // Save the new displaced bounds of the grid button
-        let x:CGFloat = self.frame.minX + self.superview!.frame.minX;
-        let y:CGFloat = self.frame.minY + self.superview!.frame.minY;
-        let width:CGFloat = self.frame.width;
-        let height:CGFloat = self.frame.height;
-        // Save a frame representing the displacement
-        let displacedFrame:CGRect = CGRect(x: x, y: y, width: width, height: height);
         // Displace the frame onto the main view controller
-        self.frame = displacedFrame;
+        self.frame = CGRect(x: self.frame.minX + self.superview!.frame.minX, y: self.frame.minY + self.superview!.frame.minY, width: self.frame.width, height: self.frame.height);
         self.superview!.superview!.addSubview(self);
     }
     
@@ -273,27 +268,22 @@ class UICatButton: UIButton {
     
     func disperseRadially() {
         self.backgroundColor = UIColor.clear;
-        let targetPointX:CGFloat = getRadialXTargetPoint(parentFrame: self.superview!.frame, childFrame: self.frame);
-        let targetPointY:CGFloat = getRadialYTargetPoint(parentFrame: self.superview!.frame, childFrame: self.frame);
         ViewController.staticMainView!.insertSubview(self, at: 1);
         UIView.animate(withDuration: 3.0, delay: 0.0, options: .curveEaseInOut, animations: {
             self.imageContainerButton!.transform =  self.imageContainerButton!.transform.rotated(by: CGFloat.pi);
-            let newFrame:CGRect = CGRect(x: targetPointX, y:targetPointY, width: 1.0, height: 1.0);
-            self.frame = newFrame;
+             self.frame = CGRect(x: self.getRadialXTargetPoint(parentFrame: self.superview!.frame, childFrame: self.frame), y: self.getRadialYTargetPoint(parentFrame: self.superview!.frame, childFrame: self.frame), width: 1.0, height: 1.0);
         }, completion: { _ in
             self.removeFromSuperview();
         });
     }
 
+    var angle:CGFloat?
     func disperseVertically() {
         displaceBoundsOntoMainView();
         self.setCat(named: "CheeringCat", stage: 1);
-        let angle:CGFloat = CGFloat(Int.random(in: 0..<30));
-        let targetPointX:CGFloat = generateElevatedTargetX(parentFrame:self.superview!.frame, childFrame:self.frame, angle:angle);
-        let targetPointY:CGFloat = generateElevatedTargetY(parentFrame:self.superview!.frame, childFrame:self.frame, angle:angle);
+        angle = CGFloat(Int.random(in: 0..<30));
         UIView.animate(withDuration: 2.5, delay: 0.125, options: .curveEaseIn, animations: {
-            let newFrame:CGRect = CGRect(x: targetPointX, y:targetPointY, width: self.frame.width, height: self.frame.height);
-            self.frame = newFrame;
+            self.frame = CGRect(x: self.generateElevatedTargetX(parentFrame:self.superview!.frame, childFrame:self.frame, angle:self.angle!), y: self.generateElevatedTargetY(parentFrame:self.superview!.frame, childFrame:self.frame, angle:self.angle!), width: self.frame.width, height: self.frame.height);
         }, completion: { _ in
             self.removeFromSuperview();
         });
@@ -301,18 +291,14 @@ class UICatButton: UIButton {
     
     func pod() {
         SoundController.kittenMeow();
-        // New radius and frames
-        let newCornerRadius:CGFloat = self.frame.height * 0.5;
-        let newCatButtonFrame:CGRect = CGRect(x: self.frame.minX + self.imageContainerButton!.frame.minX, y: self.frame.minY, width: self.imageContainerButton!.frame.width, height: self.frame.height);
-        let newImageButtonFrame:CGRect = CGRect(x: 0.0, y: 0.0, width: self.frame.height, height: self.frame.height);
         UIView.animate(withDuration: 0.5, delay: 0.125, options: [.curveEaseInOut], animations: {
             // Adjust frames if necessary
             if (self.frame.width > self.frame.height) {
-                self.frame = newCatButtonFrame;
-                self.imageContainerButton!.frame = newImageButtonFrame;
+                self.frame = CGRect(x: self.frame.minX + self.imageContainerButton!.frame.minX, y: self.frame.minY, width: self.imageContainerButton!.frame.width, height: self.frame.height);
+                self.imageContainerButton!.frame = CGRect(x: 0.0, y: 0.0, width: self.frame.height, height: self.frame.height);
             }
             self.backgroundColor = self.originalBackgroundColor;
-            self.layer.cornerRadius = newCornerRadius;
+            self.layer.cornerRadius = self.frame.height * 0.5;
             self.imageContainerButton!.layer.borderWidth = 0.0;
             self.layer.borderWidth = (sqrt(self.frame.width * 0.01) * 10.0) * 0.35;
         })
@@ -335,30 +321,35 @@ class UICatButton: UIButton {
         return targetY;
     }
     
+    var angleDegree:CGFloat?
+    var angleRadian:CGFloat?
+    var targetX:CGFloat?
+    var targetY:CGFloat?
+    
     func getRadialXTargetPoint(parentFrame:CGRect, childFrame:CGRect) -> CGFloat {
-        let angleDegree:CGFloat = CGFloat.random(in: 0.0...45.0);
-        let angleRadian:CGFloat = cos((CGFloat.pi * angleDegree) / 180.0);
-        var targetX:CGFloat = ((Int.random(in: 0...1) == 1) ? 1 : -1);
-        if (targetX > 0.0) {
-            targetX *= (parentFrame.width - childFrame.minX) * 1.42;
+        angleDegree = CGFloat.random(in: 0.0...45.0);
+        angleRadian = cos((CGFloat.pi * angleDegree!) / 180.0);
+        targetX = ((Int.random(in: 0...1) == 1) ? 1 : -1);
+        if (targetX! > 0.0) {
+            targetX! *= (parentFrame.width - childFrame.minX) * 1.42;
         } else {
-            targetX *= (childFrame.maxX) * 1.42;
+            targetX! *= (childFrame.maxX) * 1.42;
         }
-        targetX *= angleRadian;
-        return targetX;
+        targetX! *= angleRadian!;
+        return targetX!;
     }
     
     func getRadialYTargetPoint(parentFrame:CGRect, childFrame:CGRect) -> CGFloat {
-        let angleDegree:CGFloat = CGFloat.random(in: 45.0...90.0);
-        let angleRadian:CGFloat = sin((CGFloat.pi * angleDegree) / 180.0);
-        var targetY:CGFloat = ((Int.random(in: 0...1) == 1) ? 1 : -1);
-        if (targetY > 0.0) {
-            targetY *= (parentFrame.height - childFrame.minY) * 1.42;
+        angleDegree = CGFloat.random(in: 45.0...90.0);
+        angleRadian = sin((CGFloat.pi * angleDegree!) / 180.0);
+         targetY = ((Int.random(in: 0...1) == 1) ? 1 : -1);
+        if (targetY! > 0.0) {
+            targetY! *= (parentFrame.height - childFrame.minY) * 1.42;
         } else {
-            targetY *= (childFrame.maxY + childFrame.height) * 1.42;
+            targetY! *= (childFrame.maxY + childFrame.height) * 1.42;
         }
-        targetY *= angleRadian;
-        return targetY;
+        targetY! *= angleRadian!;
+        return targetY!;
     }
     
     func animate(AgainWithoutDelay:Bool) {

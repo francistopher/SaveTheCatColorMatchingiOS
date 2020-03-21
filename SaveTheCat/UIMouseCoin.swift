@@ -13,7 +13,7 @@ class UIMouseCoin: UICButton {
     
     var boardGame:UIBoardGame?
     
-    var reducedFrame:CGRect? = nil;
+    var reducedFrame:CGRect?
     var isSelectable:Bool = true;
     var mouseCoinView:UICView?
     var imageMouseCoinView:UIImageView?
@@ -55,8 +55,10 @@ class UIMouseCoin: UICButton {
         }
     }
     
+    var iconImage:UIImage?
     func setIconImage(imageName:String) {
-        let iconImage:UIImage? = UIImage(named:imageName);
+        iconImage = nil;
+        iconImage = UIImage(named:imageName);
         self.setImage(iconImage, for: .normal);
         self.imageView!.contentMode = UIView.ContentMode.scaleAspectFit;
     }

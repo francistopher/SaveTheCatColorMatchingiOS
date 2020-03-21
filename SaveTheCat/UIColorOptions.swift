@@ -12,10 +12,10 @@ class UIColorOptions: UIView {
     
     var colors:[UIColor] = [UIColor.systemGreen, UIColor.systemYellow, UIColor.systemOrange, UIColor.systemPink, UIColor.systemPurple, UIColor.systemBlue];
     var selectedColor:UIColor = UIColor.lightGray;
-    var selectionButtons:[UICButton] = [UICButton]();
-    var selectedButtons:[UICButton] = [UICButton]();
-    var selectionColors:[UIColor] = [UIColor]();
-    var boardGameView:UIBoardGame? = nil;
+    var selectionButtons:[UICButton]?
+    var selectedButtons:[UICButton]?
+    var selectionColors:[UIColor]?
+    var boardGameView:UIBoardGame?
     var isTransitioned:Bool = false;
     
     required init?(coder: NSCoder) {
@@ -26,6 +26,9 @@ class UIColorOptions: UIView {
         super.init(frame:CGRect(x: x, y: y, width: width, height: height));
         self.layer.cornerRadius = height / 5.0;
         parentView.addSubview(self);
+        selectionButtons = [UICButton]();
+        selectedButtons = [UICButton]();
+        selectionColors = [UIColor]();
         setStyle();
     }
 
@@ -36,7 +39,7 @@ class UIColorOptions: UIView {
     }
     
     func shrinkColorOptions() {
-        for selectionButton in selectionButtons {
+        for selectionButton in selectionButtons! {
             selectionButton.shrinkType = .mid;
             selectionButton.shrink(colorOptionButton: true);
         }
@@ -45,16 +48,16 @@ class UIColorOptions: UIView {
     func selectSelectionColors(){
         selectionColors =  [UIColor.systemGreen, UIColor.systemYellow, UIColor.systemOrange, UIColor.systemRed, UIColor.systemPurple, UIColor.systemBlue];
         repeat {
-            let index:Int = Int.random(in: 0..<selectionColors.count);
-            selectionColors.remove(at: index);
-            if (selectionColors.count == boardGameView!.rowAndColumnNums[0] || selectionColors.count == 6) {
+            let index:Int = Int.random(in: 0..<selectionColors!.count);
+            selectionColors!.remove(at: index);
+            if (selectionColors!.count == boardGameView!.rowAndColumnNums[0] || selectionColors!.count == 6) {
                 break;
             }
         } while(true);
     }
     
     func removeBorderOfSelectionButtons() {
-        for selectionButton in selectionButtons {
+        for selectionButton in selectionButtons! {
             selectionButton.layer.borderWidth = 0.0;
         }
     }
@@ -76,10 +79,10 @@ class UIColorOptions: UIView {
                 button!.frame = button!.shrunkFrame!;
                 button!.grow();
                 button!.addTarget(self, action: #selector(selectColorOption), for: .touchUpInside);
-                selectionButtons.append(button!);
+                selectionButtons!.append(button!);
                 columnDisplacement += buttonWidth;
             } else {
-                let revisitedButton:UICButton = selectionButtons[index];
+                let revisitedButton:UICButton = selectionButtons![index];
                 if (colorCount != 0) {
                     columnDisplacement += columnGap;
                     var newFrame:CGRect = CGRect(x: columnDisplacement, y: rowGap, width: buttonWidth, height: buttonHeight);
@@ -95,7 +98,7 @@ class UIColorOptions: UIView {
                     // Select another unshrunk
                     if (revisitedButton.isSelected) {
                         revisitedButton.willBeShrunk = true;
-                        for selectionButton in selectionButtons.reversed() {
+                        for selectionButton in selectionButtons!.reversed() {
                             if (!selectionButton.willBeShrunk) {
                                 selectionButton.sendActions(for: .touchUpInside);
                             }
@@ -135,7 +138,7 @@ class UIColorOptions: UIView {
         }
         selectedColor = colorOption.backgroundColor!;
         boardGameView!.transitionBackgroundColorOfButtonsToClear();
-        for selectionButton in selectionButtons{
+        for selectionButton in selectionButtons!{
             if (selectionButton.isEqual(colorOption)){
                 selectionButton.select();
                 selectionButton.layer.borderWidth = (sqrt(selectionButton.originalFrame!.width * 0.01) * 10.0) * 0.35;
@@ -147,26 +150,28 @@ class UIColorOptions: UIView {
     }
     
     func loadSelectionButtonsToSelectedButtons(){
-        for selectionButtons in selectionButtons{
-            selectedButtons.append(selectionButtons);
+        for selectionButtons in selectionButtons!{
+            selectedButtons!.append(selectionButtons);
             selectionButtons.shrinkType = .mid;
             selectionButtons.shrink(colorOptionButton: true);
         }
+        selectionButtons = nil;
         selectionButtons = [UICButton]();
     }
     
     func removeSelectedButtons(){
-        for selectedButtons in selectedButtons{
+        for selectedButtons in selectedButtons!{
             selectedButtons.removeFromSuperview();
         }
+        selectedButtons = nil;
         selectedButtons = [UICButton]();
     }
     
     func setStyle() {
-        for selectionButton in selectionButtons {
+        for selectionButton in selectionButtons! {
             selectionButton.setStyle();
         }
-        for selectedButton in selectedButtons {
+        for selectedButton in selectedButtons! {
             selectedButton.setStyle();
         }
     }

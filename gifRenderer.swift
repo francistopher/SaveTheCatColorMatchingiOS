@@ -143,7 +143,6 @@ extension UIImage {
             if let image = CGImageSourceCreateImageAtIndex(source, i, nil) {
                 images.append(image)
             }
-            
             let delaySeconds = UIImage.delayForImageAtIndex(Int(i),
                 source: source)
             delays.append(Int(delaySeconds * 1000.0)) // Seconds to ms

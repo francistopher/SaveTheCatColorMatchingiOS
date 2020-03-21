@@ -17,19 +17,21 @@ class UICatButtons {
         presentCollection = [UICatButton]();
     }
     
+    var catButton:UICatButton?
     func buildCatButton(parent:UIView, frame:CGRect, backgroundColor:UIColor) -> UICatButton {
-        let catButton:UICatButton = UICatButton(parentView: parent, x: frame.minX, y: frame.minY, width: frame.width, height: frame.height, backgroundColor: backgroundColor);
-        catButton.grow();
-        catButton.imageContainerButton!.grow();
-        catButton.setCat(named: "SmilingCat", stage:0);
+        catButton = UICatButton(parentView: parent, x: frame.minX, y: frame.minY, width: frame.width, height: frame.height, backgroundColor: backgroundColor);
+        catButton!.settingsButton = ViewController.settingsButton!;
+        catButton!.settingsMenuFrame = ViewController.settingsButton!.settingsMenu!.frame;
+        catButton!.settingsMouseCoinFrame = ViewController.settingsButton!.settingsMenu!.mouseCoin!.frame;
+        catButton!.grow();
+        catButton!.imageContainerButton!.grow();
+        catButton!.setCat(named: "SmilingCat", stage:0);
         if (ViewController.settingsButton!.isPressed) {
-            catButton.fadeBackgroundOut();
+            catButton!.fadeBackgroundOut();
         }
-        presentCollection!.append(catButton);
-        return catButton;
+        presentCollection!.append(catButton!);
+        return catButton!;
     }
-    
-    
     
     func oneIsNeitherPoddedOrDead() -> Bool {
         for catButton in presentCollection! {
@@ -109,6 +111,7 @@ class UICatButtons {
     }
     
     func loadPreviousCats() {
+        previousCollection = nil;
         previousCollection = [UICatButton]();
         for cat in presentCollection! {
             previousCollection!.append(cat);
@@ -226,20 +229,22 @@ class UICatButtons {
         }
     }
     
+    var randomCatButton:UICatButton?
     func getRandomCatThatIsAlive() -> UICatButton {
         while (true) {
-            let randomCatButton:UICatButton = presentCollection!.randomElement()!;
-            if (randomCatButton.isAlive && !randomCatButton.isPodded) {
-                return randomCatButton;
+            randomCatButton = presentCollection!.randomElement()!;
+            if (randomCatButton!.isAlive && !randomCatButton!.isPodded) {
+                return randomCatButton!;
             }
         }
     }
     
     func clearCatButtons() {
-        print(presentCollection!.count);
         for catButton in presentCollection! {
             if (!catButton.isPodded && !catButton.clearedOutToSolve) {
-                catButton.imageContainerButton!.backgroundColor = UIColor.clear;
+                if (catButton.imageContainerButton != nil) {
+                    catButton.imageContainerButton!.backgroundColor = UIColor.clear;
+                }
                 catButton.fadeBackgroundIn(color: UIColor.clear, duration: 0.5, delay: 0.125);
             }
         }

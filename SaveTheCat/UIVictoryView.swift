@@ -12,6 +12,14 @@ import UIKit
 
 class UIVictoryView:UICView {
     
+
+    let mainView:UIView = ViewController.staticMainView!;
+
+    // Settings views
+    var settingsButton:UISettingsButton?
+    var settingsMenuFrame:CGRect?
+    var settingsMouseCoinFrame:CGRect?
+    
     var label:UICLabel?
     var unitHeight:CGFloat = 0.0;
     var imageView:UIImageView?
@@ -45,9 +53,36 @@ class UIVictoryView:UICView {
     
     func setupWatchAdForMouseCoinButton() {
         watchAdButton = UICButton(parentView: self, frame: CGRect(x: 0.0, y: unitHeight * 7.6, width: unitHeight * 6.5, height: unitHeight * 1.25), backgroundColor: UIColor.clear);
+        watchAdButton?.setTitle("Watch Short Ad to Win + ····· s", for: .normal);
         watchAdButton!.layer.cornerRadius = watchAdButton!.frame.width * 0.08
         CenterController.centerHorizontally(childView: watchAdButton!, parentRect: self.frame, childRect: watchAdButton!.frame);
-        
+        watchAdButton!.addTarget(self, action: #selector(watchAdButtonSelector), for: .touchUpInside)
+    }
+    
+    @objc func watchAdButtonSelector() {
+        ViewController.presentInterstitial();
+        var timer:Timer?
+        timer = Timer.scheduledTimer(withTimeInterval: 0.01, repeats: true, block: { _ in
+            if (ViewController.interstitialWillPresentScreen) {
+                ViewController.interstitialWillPresentScreen = false;
+                SoundController.mozartSonata(play: false, startOver: false);
+                timer!.invalidate();
+                // Wait for the ad to be dismissed
+                timer = Timer.scheduledTimer(withTimeInterval: 0.01, repeats: true, block: { _ in
+                    if (ViewController.interstitialWillDismissScreen) {
+                        ViewController.interstitialWillDismissScreen = false;
+                        SoundController.mozartSonata(play: true, startOver: false);
+                        timer!.invalidate();
+                        // Give mouse coins and hide mouse coin and label
+                        self.awardAmount = 5;
+                        self.giveMouseCoins();
+                        self.watchAdButton!.titleLabel!.alpha = 0.0;
+//                        self.mouseCoin!.alpha = 0.0;
+                        self.watchAdButton!.isUserInteractionEnabled = false;
+                    }
+                })
+            }
+        })
     }
     
     func showVictoryMessageAndGifWith(text:String) {
@@ -61,6 +96,7 @@ class UIVictoryView:UICView {
             self.giveMouseCoins();
         })
         imageView?.removeFromSuperview();
+        imageView = nil;
         if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1) {
             imageView = UIImageView(image: UIImage.gifImageWithName("blackBorderGal")!);
         } else {
@@ -71,48 +107,41 @@ class UIVictoryView:UICView {
         self.addSubview(imageView!);
     }
     
+    var angleIncrements:CGFloat?
+    var currentAngle:CGFloat?
+    var mouseCoinX:CGFloat?
+    var mouseCoinY:CGFloat?
+    var mouseCoin:UIMouseCoin?
+    
     func giveMouseCoins() {
-        let mainView:UIView = ViewController.staticMainView!;
         // Set angles
-        let angleIncrements:CGFloat = 360.0 / CGFloat(awardAmount);
-        var currentAngle:CGFloat = -90.0;
-        // Settings views
-        let settingsButton:UISettingsButton = ViewController.settingsButton!;
-        let settingsMenuFrame:CGRect = settingsButton.settingsMenu!.frame;
-        let settingsMouseCoinFrame:CGRect = settingsButton.settingsMenu!.mouseCoin!.frame;
+        angleIncrements = 360.0 / CGFloat(awardAmount);
+        currentAngle = -90.0;
         // Mouse coin X and Y
-        var mouseCoinX:CGFloat
-        var mouseCoinY:CGFloat
         // Radially position mouse coins
         for index in 0..<awardAmount {
             // Set X and Y
-            mouseCoinX = mainView.center.x - (settingsMouseCoinFrame.height * 0.5);
-            mouseCoinY = mainView.center.y - (settingsMouseCoinFrame.width * 0.5);
-            mouseCoinX += (mainView.frame.width * 0.25) * (cos(currentAngle * CGFloat.pi / 180.0));
-            mouseCoinY += (mainView.frame.height * 0.25) * (sin(currentAngle * CGFloat.pi / 180.0));
+            mouseCoinX = mainView.center.x - (settingsMouseCoinFrame!.height * 0.5) + (mainView.frame.width * 0.25) * (cos(currentAngle! * CGFloat.pi / 180.0));
+            mouseCoinY = mainView.center.y - (settingsMouseCoinFrame!.width * 0.5) + (mainView.frame.height * 0.25) * (sin(currentAngle! * CGFloat.pi / 180.0));
             // Generate mouse coin
-            let mouseCoin:UIMouseCoin = UIMouseCoin(parentView: mainView, x: mouseCoinX, y: mouseCoinY, width: settingsMouseCoinFrame.width, height: settingsMouseCoinFrame.height);
+            mouseCoin  = UIMouseCoin(parentView: mainView, x: mouseCoinX!, y: mouseCoinY!, width: settingsMouseCoinFrame!.width, height: settingsMouseCoinFrame!.height);
             // Calculate time for translation
-            let boardGameFrame:CGRect = self.superview!.frame;
-            let time:Double = Double(mouseCoin.frame.minX / (boardGameFrame.minX + boardGameFrame.width));
-            DispatchQueue.main.asyncAfter(deadline: .now() + time) {
-                ViewController.staticMainView!.bringSubviewToFront(mouseCoin);
-                UIView.animate(withDuration: 1.0, delay: 0.125, options: [.curveEaseInOut], animations: {
-                    let newMouseCoinFrame:CGRect = CGRect(x: settingsMenuFrame.minX + settingsMouseCoinFrame.minX, y: settingsMenuFrame.minY + settingsMouseCoinFrame.minY, width: settingsMouseCoinFrame.width, height: settingsMouseCoinFrame.height);
-                    mouseCoin.frame = newMouseCoinFrame;
-                }, completion: { _ in
-                    SoundController.coinEarned();
-                    mouseCoin.removeFromSuperview();
-                    if (index == UIResults.rewardAmount - 1) {
-                        ViewController.staticSelf!.settingsButton!.settingsMenu!.mouseCoin!.setMouseCoinValue(newValue: UIResults.mouseCoins + Int64(UIResults.rewardAmount));
-                        self.keyValueStore.set(UIResults.mouseCoins + Int64(UIResults.rewardAmount), forKey: "mouseCoins");
-                        self.keyValueStore.synchronize();
-                        settingsButton.settingsMenu!.mouseCoin!.sendActions(for: .touchUpInside);
-                    }
-                })
-            }
+            ViewController.staticMainView!.bringSubviewToFront(mouseCoin!);
+            UIView.animate(withDuration: 1.0, delay: 0.125, options: [.curveEaseInOut], animations: {
+               self.mouseCoin!.frame = CGRect(x: self.settingsMenuFrame!.minX + self.settingsMouseCoinFrame!.minX, y: self.settingsMenuFrame!.minY + self.settingsMouseCoinFrame!.minY, width: self.settingsMouseCoinFrame!.width, height: self.settingsMouseCoinFrame!.height);
+            }, completion: { _ in
+                SoundController.coinEarned();
+                self.mouseCoin!.removeFromSuperview();
+                self.mouseCoin = nil;
+                if (index == UIResults.rewardAmount - 1) {
+                    ViewController.staticSelf!.settingsButton!.settingsMenu!.mouseCoin!.setMouseCoinValue(newValue: UIResults.mouseCoins + Int64(UIResults.rewardAmount));
+                    self.keyValueStore.set(UIResults.mouseCoins + Int64(UIResults.rewardAmount), forKey: "mouseCoins");
+                    self.keyValueStore.synchronize();
+                    self.settingsButton!.settingsMenu!.mouseCoin!.sendActions(for: .touchUpInside);
+                }
+            })
             // Increment angle
-            currentAngle += angleIncrements;
+            currentAngle! += angleIncrements!;
         }
     }
     

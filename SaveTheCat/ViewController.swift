@@ -267,10 +267,12 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, GKMatchm
     }
     
     // Game center memory capacity score submission
+    static var bestMemoryCapacityScore:GKScore?
     static func submitMemoryCapacityScore(memoryCapacity:Int) {
-        let bestMemoryCapacityScore = GKScore(leaderboardIdentifier: "topColorMemorizers");
-        bestMemoryCapacityScore.value = Int64(memoryCapacity);
-        GKScore.report([bestMemoryCapacityScore]) { (error) in
+        bestMemoryCapacityScore = nil;
+        bestMemoryCapacityScore = GKScore(leaderboardIdentifier: "topColorMemorizers");
+        bestMemoryCapacityScore!.value = Int64(memoryCapacity);
+        GKScore.report([bestMemoryCapacityScore!]) { (error) in
             if error != nil {
                 print(error!.localizedDescription)
             } else {
@@ -280,11 +282,17 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, GKMatchm
     }
     
     // Game center saved cats score
+    static var bestCatSaverScore:GKScore?
+    static var leaderBoard:GKLeaderboard?
+    static var leaderBoardScore:Int64?
     static func submitCatsSavedScore(catsSaved:Int) {
         func submitScore(score:Int64) {
-            let bestCatSaverScore = GKScore(leaderboardIdentifier: "topCatSavers");
-            bestCatSaverScore.value = score;
-            GKScore.report([bestCatSaverScore], withCompletionHandler: { (error) in
+            bestCatSaverScore = nil;
+            leaderBoard = nil;
+            leaderBoardScore = nil;
+            bestCatSaverScore = GKScore(leaderboardIdentifier: "topCatSavers");
+            bestCatSaverScore!.value = score;
+            GKScore.report([bestCatSaverScore!], withCompletionHandler: { (error) in
                 if error != nil {
                     print(error!.localizedDescription)
                 } else {
@@ -292,15 +300,15 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, GKMatchm
                 }
             })
         }
-        let leaderBoard:GKLeaderboard = GKLeaderboard();
-        leaderBoard.identifier = "topCatSavers";
+        leaderBoard = GKLeaderboard();
+        leaderBoard!.identifier = "topCatSavers";
         // UNEXPECTED ERROR
-        leaderBoard.loadScores(completionHandler: { scores, error in
+        leaderBoard!.loadScores(completionHandler: { scores, error in
             if error == nil {
-                if (leaderBoard.localPlayerScore != nil) {
-                    let score = Int64(catsSaved) + leaderBoard.localPlayerScore!.value;
-                    print("Now the score should be this", score);
-                    submitScore(score:score);
+                if (leaderBoard!.localPlayerScore != nil) {
+                    leaderBoardScore = Int64(catsSaved) + leaderBoard!.localPlayerScore!.value;
+                    print("Now the score should be this", leaderBoardScore!);
+                    submitScore(score:leaderBoardScore!);
                 } else {
                     submitScore(score:Int64(catsSaved));
                 }
@@ -309,11 +317,14 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, GKMatchm
     }
     
     // Game center leaderboard
+    var gameCenterVC:GKGameCenterViewController?
     func checkMemoryCapacityLeaderBoard() {
-        let gcVC = GKGameCenterViewController()
-        gcVC.gameCenterDelegate = self;
-        gcVC.viewState = .leaderboards;
-        present(gcVC, animated: true, completion: nil)
+        if (gameCenterVC == nil) {
+            gameCenterVC = GKGameCenterViewController()
+            gameCenterVC!.gameCenterDelegate = self;
+            gameCenterVC!.viewState = .leaderboards;
+        }
+        present(gameCenterVC!, animated: true, completion: nil)
     }
     
     func setupGameCenterMessage() {
@@ -514,6 +525,10 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, GKMatchm
         settingsButton!.settingsMenu!.alpha = 0.0;
         settingsButton!.alpha = 0.0;
         settingsButton!.settingsMenu!.mouseCoin!.amountLabel!.text = "0";
+        // Settings button for victory view
+        self.boardGame!.victoryView!.settingsButton = settingsButton!;
+        self.boardGame!.victoryView!.settingsMenuFrame = settingsButton!.settingsMenu!.frame;
+        self.boardGame!.victoryView!.settingsMouseCoinFrame = settingsButton!.settingsMenu!.mouseCoin!.frame;
     }
     
     func setStyle() {

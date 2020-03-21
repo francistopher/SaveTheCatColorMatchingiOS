@@ -12,19 +12,18 @@ import GameKit
 
 class UIBoardGame: UIView, GKMatchDelegate {
     
-    var colorOptions:UIColorOptions? = nil;
-    
+    var colorOptions:UIColorOptions?
     var gridColorsCount:[CGColor:Int] = [:]
-    var gridColors:[[UIColor]]? = nil;
+    var gridColors:[[UIColor]]?
     
     var currentRound:Int = 1;
     var rowAndColumnNums:[Int] = [];
     
     let cats:UICatButtons = UICatButtons();
     
-    var successGradientLayer:CAGradientLayer? = nil;
+    var successGradientLayer:CAGradientLayer?
     
-    var settingsButton:UISettingsButton? = nil;
+    var settingsButton:UISettingsButton?
     var myLiveMeter:UILiveMeter?
     var opponentLiveMeter:UILiveMeter?
     var results:UIResults?
@@ -136,8 +135,9 @@ class UIBoardGame: UIView, GKMatchDelegate {
         })
     }
     
+    var value:UInt16?
     func match(_ match: GKMatch, didReceive data: Data, fromRemotePlayer player: GKPlayer) {
-        let value = data.withUnsafeBytes {
+        value = data.withUnsafeBytes {
             $0.load(as: UInt16.self);
         }
         if (value == 65535) {
@@ -147,12 +147,12 @@ class UIBoardGame: UIView, GKMatchDelegate {
         if (opponent == nil || opponent != player) {
             return;
         }
-        if (value != opponentLiveMeter!.livesLeft) {
-            print("NEW VALUE: \(value) OLD VALUE:\(opponentLiveMeter!.livesLeft)")
-            if (value > opponentLiveMeter!.livesLeft) {
+        if (value! != opponentLiveMeter!.livesLeft) {
+            print("NEW VALUE: \(value!) OLD VALUE:\(opponentLiveMeter!.livesLeft)")
+            if (value! > opponentLiveMeter!.livesLeft) {
                 opponentLiveMeter!.incrementLivesLeftCount(catButton: attackMeter!.cat!, forOpponent: true);
             }
-            if (value < opponentLiveMeter!.livesLeft) {
+            if (value! < opponentLiveMeter!.livesLeft) {
                 opponentLiveMeter!.decrementLivesLeftCount();
             }
         }
@@ -213,14 +213,16 @@ class UIBoardGame: UIView, GKMatchDelegate {
         self.twoPlayerButtonSelector(noMatchMaking: true);
     }
     
+    var data:Data?
     func setupOpponentResignationTimer() {
         self.opponentResignationTimer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true, block: { _ in
             print("MESSAGE: Sending value counter")
             self.myValueCounterPerSecond += 0.1;
             var livesInt:UInt16 = UInt16(self.myLiveMeter!.livesLeft);
-            let data:Data = Data(bytes: &livesInt, count: MemoryLayout.size(ofValue: livesInt));
+            self.data = nil;
+            self.data = Data(bytes: &livesInt, count: MemoryLayout.size(ofValue: livesInt));
             do {
-                try self.currentMatch!.send(data, to: [self.opponent!], dataMode: GKMatch.SendDataMode.unreliable);
+                try self.currentMatch!.send(self.data!, to: [self.opponent!], dataMode: GKMatch.SendDataMode.unreliable);
             } catch {
                 print("Error encountered, but we will keep trying!")
             }
@@ -236,15 +238,18 @@ class UIBoardGame: UIView, GKMatchDelegate {
         })
     }
 
+    var matchRequest:GKMatchRequest?
     func startMatchmaking() {
         if (GKLocalPlayer.local.isAuthenticated && ViewController.staticSelf!.isInternetReachable) {
             // Build match maker
-            let matchRequest = GKMatchRequest();
-            matchRequest.defaultNumberOfPlayers = 2;
-            matchRequest.minPlayers = 2;
-            matchRequest.maxPlayers = 2;
+            if (matchRequest == nil) {
+                matchRequest = GKMatchRequest();
+                matchRequest!.defaultNumberOfPlayers = 2;
+                matchRequest!.minPlayers = 2;
+                matchRequest!.maxPlayers = 2;
+            }
             if (matchMakerVC == nil) {
-                matchMakerVC = GKMatchmakerViewController(matchRequest: matchRequest);
+                matchMakerVC = GKMatchmakerViewController(matchRequest: matchRequest!);
                 matchMakerVC!.matchmakerDelegate = ViewController.staticSelf!;
             }
             ViewController.staticSelf!.present(matchMakerVC!, animated: true, completion: nil);
@@ -254,6 +259,7 @@ class UIBoardGame: UIView, GKMatchDelegate {
     func stopSearchingForOpponentEntirely() {
         ViewController.staticSelf!.dismiss(animated: true, completion: nil);
         currentMatch?.disconnect();
+        currentMatch = nil;
         hideOpponentLiveMeter();
         opponentResignationTimer?.invalidate();
         opponentResignationTimer = nil;
@@ -294,12 +300,14 @@ class UIBoardGame: UIView, GKMatchDelegate {
         twoPlayerButton!.alpha = 0.0;
     }
     
+    var colorOption:UICButton?
     @objc func singlePlayerButtonSelector() {
         if (singlePlayerButton!.notSelectable) {
             return;
         }
         singlePlayerButton!.notSelectable = true;
         if (self.victoryView!.alpha > 0.0) {
+            self.cats.resumeCatAnimations();
             self.iWon = false;
             self.victoryView!.fadeOut();
             self.myLiveMeter!.resetLivesLeftCount();
@@ -313,9 +321,9 @@ class UIBoardGame: UIView, GKMatchDelegate {
         startGame();
         twoPlayerButton!.shrink(colorOptionButton: false);
         UIView.animate(withDuration: 1.0, delay: 0.125, options: .curveEaseOut, animations: {
-            let colorOption:UICButton = self.colorOptions!.selectionButtons[0];
-            self.singlePlayerButton!.frame = CGRect(x: self.colorOptions!.frame.minX + colorOption.frame.minX, y: self.colorOptions!.frame.minY + colorOption.frame.minY, width: colorOption.frame.width, height: colorOption.frame.height);
-            self.singlePlayerButton!.backgroundColor = colorOption.backgroundColor!;
+            self.colorOption = self.colorOptions!.selectionButtons![0];
+            self.singlePlayerButton!.frame = CGRect(x: self.colorOptions!.frame.minX + self.colorOption!.frame.minX, y: self.colorOptions!.frame.minY + self.colorOption!.frame.minY, width: self.colorOption!.frame.width, height: self.colorOption!.frame.height);
+            self.singlePlayerButton!.backgroundColor = self.colorOption!.backgroundColor!;
         }, completion: { _ in
             UIView.animate(withDuration: 0.75, delay: 0.125, options: .curveEaseOut, animations: {
                 self.singlePlayerButton!.alpha = 0.0;
@@ -350,9 +358,9 @@ class UIBoardGame: UIView, GKMatchDelegate {
             twoPlayerButton!.notSelectable = true;
             singlePlayerButton!.shrink(colorOptionButton: false);
             UIView.animate(withDuration: 0.75 , delay: 0.25, options: .curveEaseOut, animations: {
-                let colorOption:UICButton = self.colorOptions!.selectionButtons[0];
-                self.twoPlayerButton!.frame = CGRect(x: self.colorOptions!.frame.minX + colorOption.frame.minX, y: self.colorOptions!.frame.minY + colorOption.frame.minY, width: colorOption.frame.width, height: colorOption.frame.height);
-                self.twoPlayerButton!.backgroundColor = colorOption.backgroundColor!;
+                self.colorOption = self.colorOptions!.selectionButtons![0];
+                self.twoPlayerButton!.frame = CGRect(x: self.colorOptions!.frame.minX + self.colorOption!.frame.minX, y: self.colorOptions!.frame.minY + self.colorOption!.frame.minY, width: self.colorOption!.frame.width, height: self.colorOption!.frame.height);
+                self.twoPlayerButton!.backgroundColor = self.colorOption!.backgroundColor!;
             }, completion: { _ in
                 UIView.animate(withDuration: 0.75, delay: 0.25, options: .curveEaseOut, animations: {
                     self.twoPlayerButton!.alpha = 0.0;
@@ -384,36 +392,40 @@ class UIBoardGame: UIView, GKMatchDelegate {
         attackMeter!.holdVirusAtStart = false;
         // Set glove pointer
         if (currentRound == 1) {
-            glovePointer!.setColorAndCatButtons(colorButtons: colorOptions!.selectionButtons, catButtons: cats);
+            glovePointer!.setColorAndCatButtons(colorButtons: colorOptions!.selectionButtons!, catButtons: cats);
             glovePointer!.grow();
         }
     }
    
+    var gridColorRowIndex:Int?
+    var gridColorColumnIndex:Int?
+    var gridRandomColor:UIColor?
+    var previousGridColumnColor:UIColor?
+    var previousGridRowColor:UIColor?
     
     func buildGridColors(){
         gridColors = Array(repeating: Array(repeating: UIColor.lightGray, count: rowAndColumnNums[1]), count: rowAndColumnNums[0]);
-        var rowIndex:Int = 0;
-        while (rowIndex < gridColors!.count) {
-            var columnIndex:Int = 0;
-            while (columnIndex < gridColors![0].count) {
-                let randomInt:Int = Int.random(in: 0...2);
-                let randomColor:UIColor = colorOptions!.selectionColors.randomElement()!;
-                if (rowIndex > 0) {
-                    let previousColumnColor:UIColor = gridColors![rowIndex - 1][columnIndex];
-                    if (previousColumnColor.cgColor == randomColor.cgColor) {
-                        rowIndex -= 1;
+        gridColorRowIndex = 0;
+        while (gridColorRowIndex! < gridColors!.count) {
+            gridColorColumnIndex = 0;
+            while (gridColorColumnIndex! < gridColors![0].count) {
+                gridRandomColor = colorOptions!.selectionColors!.randomElement()!;
+                if (gridColorRowIndex! > 0) {
+                    previousGridColumnColor = gridColors![gridColorRowIndex! - 1][gridColorColumnIndex!];
+                    if (previousGridColumnColor!.cgColor == gridRandomColor!.cgColor) {
+                        gridColorRowIndex! -= 1;
                     }
                 }
-                if (columnIndex > 0) {
-                    let previousRowColor:UIColor = gridColors![rowIndex][columnIndex - 1];
-                    if (previousRowColor.cgColor == randomColor.cgColor && randomInt > 1){
-                        columnIndex -= 1;
+                if (gridColorColumnIndex! > 0) {
+                    previousGridRowColor = gridColors![gridColorRowIndex!][gridColorColumnIndex! - 1];
+                    if (previousGridRowColor!.cgColor == gridRandomColor!.cgColor && Int.random(in: 0...2) > 1){
+                        gridColorColumnIndex! -= 1;
                     }
                 }
-                gridColors![rowIndex][columnIndex] = randomColor;
-                columnIndex += 1;
+                gridColors![gridColorRowIndex!][gridColorColumnIndex!] = gridRandomColor!;
+                gridColorColumnIndex! += 1;
             }
-            rowIndex += 1;
+            gridColorRowIndex! += 1;
         }
     }
     
@@ -427,14 +439,15 @@ class UIBoardGame: UIView, GKMatchDelegate {
         return nonZeroCount;
     }
     
+    var recordedColor:CGColor?
     func recordGridColorsUsed(){
         gridColorsCount = [:];
         for catButton in cats.presentCollection! {
-            let color:CGColor = catButton.originalBackgroundColor.cgColor;
-            if (gridColorsCount[color] == nil) {
-                gridColorsCount[color] = 1;
+            recordedColor = catButton.originalBackgroundColor.cgColor;
+            if (gridColorsCount[recordedColor!] == nil) {
+                gridColorsCount[recordedColor!] = 1;
             } else {
-                gridColorsCount[color]! += 1;
+                gridColorsCount[recordedColor!]! += 1;
             }
         }
     }
@@ -455,30 +468,37 @@ class UIBoardGame: UIView, GKMatchDelegate {
         return [rows, columns];
     }
     
+    var gridButtonRowGap:CGFloat?
+    var gridButtonColumnGap:CGFloat?
+    var gridButtonHeight:CGFloat?
+    var gridButtonWidth:CGFloat?
+    var gridButtonX:CGFloat?
+    var gridButtonY:CGFloat?
+    var gridCatButton:UICatButton?
+    
     func buildGridButtons(){
-        let rowGap:CGFloat = self.frame.height * 0.1 / CGFloat(rowAndColumnNums[0] + 1);
-        let columnGap:CGFloat = self.frame.width * 0.1 / CGFloat(rowAndColumnNums[1] + 1);
+        gridButtonRowGap = self.frame.height * 0.1 / CGFloat(rowAndColumnNums[0] + 1);
+        gridButtonColumnGap = self.frame.width * 0.1 / CGFloat(rowAndColumnNums[1] + 1);
         // Sizes
-        let buttonHeight:CGFloat = self.frame.width * 0.90 / CGFloat(rowAndColumnNums[0]);
-        let buttonWidth:CGFloat = self.frame.height * 0.90 / CGFloat(rowAndColumnNums[1]);
+        gridButtonHeight = self.frame.width * 0.90 / CGFloat(rowAndColumnNums[0]);
+        gridButtonWidth = self.frame.height * 0.90 / CGFloat(rowAndColumnNums[1]);
         // Points
-        var x:CGFloat = 0.0;
-        var y:CGFloat = 0.0;
+        gridButtonX = 0.0;
+        gridButtonY = 0.0;
         for rowIndex in 0..<rowAndColumnNums[0] {
-            y += rowGap;
-            x = 0.0;
+            gridButtonY! += gridButtonRowGap!;
+            gridButtonX = 0.0;
             for columnIndex in 0..<rowAndColumnNums[1] {
-                x += columnGap;
-                let frame:CGRect = CGRect(x: x, y: y, width: buttonWidth, height: buttonHeight);
-                let catButton:UICatButton = cats.buildCatButton(parent: self, frame: frame, backgroundColor: gridColors![rowIndex][columnIndex]);
-                catButton.rowIndex = rowIndex;
-                catButton.columnIndex = columnIndex;
-                catButton.imageContainerButton!.backgroundColor = UIColor.clear;
-                catButton.imageContainerButton!.addTarget(self, action: #selector(selectCatImageButton), for: .touchUpInside);
-                catButton.addTarget(self, action: #selector(selectCatButton), for: .touchUpInside);
-                x += buttonWidth;
+                gridButtonX! += gridButtonColumnGap!;
+                gridCatButton = cats.buildCatButton(parent: self, frame: CGRect(x: gridButtonX!, y: gridButtonY!, width: gridButtonWidth!, height: gridButtonHeight!), backgroundColor: gridColors![rowIndex][columnIndex]);
+                gridCatButton!.rowIndex = rowIndex;
+                gridCatButton!.columnIndex = columnIndex;
+                gridCatButton!.imageContainerButton!.backgroundColor = UIColor.clear;
+                gridCatButton!.imageContainerButton!.addTarget(self, action: #selector(selectCatImageButton), for: .touchUpInside);
+                gridCatButton!.addTarget(self, action: #selector(selectCatButton), for: .touchUpInside);
+                gridButtonX! += gridButtonWidth!;
             }
-            y += buttonHeight;
+            gridButtonY! += gridButtonHeight!;
         }
     }
     
@@ -565,12 +585,13 @@ class UIBoardGame: UIView, GKMatchDelegate {
         interaction(catButton: catButton, catImageButton: catButton.imageContainerButton!);
     }
     
+    var catButton:UICatButton?
     @objc func selectCatImageButton(catImageButton:UICButton){
         if (self.attackMeter!.attackStarted){
             return;
         }
-        let catButton:UICatButton = catImageButton.superview! as! UICatButton;
-        interaction(catButton: catButton, catImageButton: catImageButton);
+        catButton = (catImageButton.superview! as! UICatButton);
+        interaction(catButton: catButton!, catImageButton: catImageButton);
     }
     
     @objc func interaction(catButton:UICatButton, catImageButton:UICButton){
@@ -604,6 +625,7 @@ class UIBoardGame: UIView, GKMatchDelegate {
                 setCatButtonAsDead(catButton: catButton, disperseDownwardOnly:false);
             }
         }
+        
     }
     
     func attackCatButton(catButton:UICatButton) {
@@ -623,9 +645,9 @@ class UIBoardGame: UIView, GKMatchDelegate {
             if (currentMatch != nil) {
                 print("MESSAGE: I LOST :(")
                 var livesInt:UInt16 = UInt16(65535);
-                let data:Data = Data(bytes: &livesInt, count: MemoryLayout.size(ofValue: livesInt));
+                data = Data(bytes: &livesInt, count: MemoryLayout.size(ofValue: livesInt));
                 do {
-                    try self.currentMatch!.send(data, to: [self.opponent!], dataMode: GKMatch.SendDataMode.unreliable);
+                    try self.currentMatch!.send(data!, to: [self.opponent!], dataMode: GKMatch.SendDataMode.unreliable);
                 } catch {
                     print("Error encountered, but we will keep trying!")
                 }
@@ -649,20 +671,24 @@ class UIBoardGame: UIView, GKMatchDelegate {
         SoundController.kittenDie();
     }
     
+    var mouseCoinLossX:CGFloat?
+    var mouseCoinLossY:CGFloat?
+    var mouseCoinLossSideLength:CGFloat?
+    var mouseCoinLoss:UIMouseCoin?
+    var mouseCoinLossTargetY:CGFloat?
+    
     func looseMouseCoin() {
         if (ViewController.staticSelf!.isInternetReachable && GKLocalPlayer.local.isAuthenticated && ViewController.staticSelf!.isiCloudReachable) {
-            let x:CGFloat = settingsButton!.settingsMenu!.frame.minX + settingsButton!.settingsMenu!.mouseCoin!.frame.minX;
-            let y:CGFloat = settingsButton!.settingsMenu!.frame.minY + settingsButton!.settingsMenu!.mouseCoin!.frame.minY;
-            let width:CGFloat = settingsButton!.settingsMenu!.mouseCoin!.frame.width;
-            let height:CGFloat = settingsButton!.settingsMenu!.mouseCoin!.frame.height;
-            let mouseCoin:UIMouseCoin = UIMouseCoin(parentView: self.superview!, x: x, y: y, width: width, height: height);
-            mouseCoin.isSelectable = false;
-            let superViewHeight:CGFloat = self.superview!.frame.height;
-            let targetY:CGFloat = CGFloat.random(in: superViewHeight...(superViewHeight + height));
+            mouseCoinLossX = settingsButton!.settingsMenu!.frame.minX + settingsButton!.settingsMenu!.mouseCoin!.frame.minX;
+            mouseCoinLossY = settingsButton!.settingsMenu!.frame.minY + settingsButton!.settingsMenu!.mouseCoin!.frame.minY;
+            mouseCoinLossSideLength = settingsButton!.settingsMenu!.mouseCoin!.frame.width;
+            mouseCoinLoss = UIMouseCoin(parentView: self.superview!, x: mouseCoinLossX!, y: mouseCoinLossY!, width: mouseCoinLossSideLength!, height: mouseCoinLossSideLength!);
+            mouseCoinLoss!.isSelectable = false;
+            mouseCoinLossTargetY = CGFloat.random(in: self.superview!.frame.height...(self.superview!.frame.height + mouseCoinLossSideLength!));
             UIView.animate(withDuration: 2.0, delay: 0.125, options: .curveEaseInOut, animations: {
-                mouseCoin.frame = CGRect(x: x, y: targetY, width: width, height: height);
+                self.mouseCoinLoss!.frame = CGRect(x: self.mouseCoinLossX!, y: self.mouseCoinLossTargetY!, width: self.mouseCoinLossSideLength!, height: self.mouseCoinLossSideLength!);
             }, completion: { _ in
-                mouseCoin.removeFromSuperview();
+                self.mouseCoinLoss!.removeFromSuperview();
             })
             if (UIResults.mouseCoins != 0) {
                 ViewController.staticSelf!.settingsButton!.settingsMenu!.mouseCoin!.setMouseCoinValue(newValue: UIResults.mouseCoins - 1);
@@ -705,11 +731,12 @@ class UIBoardGame: UIView, GKMatchDelegate {
         }
     }
     
+    var rowOfAliveCats:[UICatButton]?
     func displaceArea(ofCatButton:UICatButton) {
-        let rowOfAliveCats:[UICatButton] = cats.getRowOfAliveCats(rowIndex: ofCatButton.rowIndex);
+        rowOfAliveCats = cats.getRowOfAliveCats(rowIndex: ofCatButton.rowIndex);
         // Row is still occupied
-        if (rowOfAliveCats.count > 0) {
-            disperseRow(aliveCats: rowOfAliveCats);
+        if (rowOfAliveCats!.count > 0) {
+            disperseRow(aliveCats: rowOfAliveCats!);
         } else {
             // If all cats are alive
             disperseColumns();
@@ -789,6 +816,7 @@ class UIBoardGame: UIView, GKMatchDelegate {
         colorOptions!.loadSelectionButtonsToSelectedButtons();
         // Build board game
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.75) {
+            self.attackMeter!.cats = self.cats;
             self.buildGame();
             self.showSingleAndTwoPlayerButtons();
         }

@@ -10,8 +10,8 @@ import SwiftUI
 
 class UIMyCats: UIButton {
    
-    var originalFrame:CGRect? = nil;
-    var reducedFrame:CGRect? = nil;
+    var originalFrame:CGRect?
+    var reducedFrame:CGRect?
 
     required init?(coder: NSCoder) {
        fatalError("init(coder:) has not been implemented")
@@ -31,8 +31,10 @@ class UIMyCats: UIButton {
        print("Testing: More Cats!");
     }
        
+    var iconImage:UIImage?
     func setIconImage(named:String) {
-        let iconImage:UIImage? = UIImage(named: named);
+        iconImage = nil;
+        iconImage = UIImage(named: named);
         self.setImage(iconImage, for: .normal);
         self.imageView!.contentMode = UIView.ContentMode.scaleAspectFit;
     }

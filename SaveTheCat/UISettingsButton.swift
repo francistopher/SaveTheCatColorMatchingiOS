@@ -16,15 +16,15 @@ class UISettingsButton:UIButton {
     
     var settingsMenu:UISettingsMenu?
     
-    var originalFrame:CGRect? = nil;
-    var shrunkFrame:CGRect? = nil;
-    var originalBackgroundColor:UIColor? = nil;
+    var originalFrame:CGRect?
+    var shrunkFrame:CGRect?
+    var originalBackgroundColor:UIColor?
     static var staticIsPressed:Bool = false;
     var isPressed:Bool = false;
     var isPressable:Bool = true;
     
-    var colorOptionsView:UIColorOptions? = nil;
-    var boardGame:UIBoardGame? = nil;
+    var colorOptionsView:UIColorOptions?
+    var boardGame:UIBoardGame?
     
     var showContentAnimation:UIViewPropertyAnimator?
     var hideContentAnimation:UIViewPropertyAnimator?
@@ -44,8 +44,9 @@ class UISettingsButton:UIButton {
         self.addTarget(self, action: #selector(settingsMenuSelector), for: .touchUpInside);
     }
     
+    var iconImage:UIImage?
     func setIconImage(imageName:String) {
-        let iconImage:UIImage? = UIImage(named:imageName);
+         iconImage = UIImage(named:imageName);
         self.setImage(iconImage, for: .normal);
         self.imageView!.contentMode = UIView.ContentMode.scaleAspectFit;
     }

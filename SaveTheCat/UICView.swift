@@ -12,8 +12,8 @@ import UIKit
 
  class UICView:UIView {
     
-    var originalFrame:CGRect? = nil;
-    var reducedFrame:CGRect? = nil;
+    var originalFrame:CGRect?
+    var reducedFrame:CGRect? 
     var isFadedOut:Bool = false;
     
     var invertColor:Bool = false;

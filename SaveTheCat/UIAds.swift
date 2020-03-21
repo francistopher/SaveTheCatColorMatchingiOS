@@ -10,8 +10,8 @@ import SwiftUI
 
 class UIAds: UIButton {
     
-    var originalFrame:CGRect? = nil;
-    var reducedFrame:CGRect? = nil;
+    var originalFrame:CGRect?
+    var reducedFrame:CGRect?
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -32,8 +32,10 @@ class UIAds: UIButton {
     }
 
 
+    var iconImage:UIImage?
     func setIconImage(imageName:String) {
-        let iconImage:UIImage? = UIImage(named:imageName);
+        iconImage = nil;
+        iconImage = UIImage(named:imageName);
         self.setImage(iconImage, for: .normal);
         self.imageView!.contentMode = UIView.ContentMode.scaleAspectFit;
     }

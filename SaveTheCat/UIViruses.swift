@@ -11,7 +11,7 @@ import SwiftUI
 class UIViruses {
     
     var virusCollection:[UIVirus]?
-    var mainView:UIView? = nil;
+    var mainView:UIView?
     
     init(mainView:UIView, unitView:CGFloat){
         self.mainView = mainView;
@@ -19,29 +19,37 @@ class UIViruses {
         buildViruses(unitView: unitView);
     }
     
+    var virusSideLength:CGFloat?
+    var totalWidthSpacing:CGFloat?
+    var totalHeightSpacing:CGFloat?
+    var virusWidthSpacing:CGFloat?
+    var virusHeightSpacing:CGFloat?
+    var x:CGFloat?
+    var y:CGFloat?
+    
     func buildViruses(unitView:CGFloat) {
         // Calculate side and spacing lengths of virus
-        let virusSideLength:CGFloat = unitView * 2.0;
+        virusSideLength = unitView * 2.0;
         // Total Spacing Available
-        let totalWidthSpacing:CGFloat = mainView!.frame.width - (virusSideLength * 3.0);
-        let totalHeightSpacing:CGFloat = mainView!.frame.height - (virusSideLength * 4.0);
+        totalWidthSpacing = mainView!.frame.width - (virusSideLength! * 3.0);
+        totalHeightSpacing = mainView!.frame.height - (virusSideLength! * 4.0);
         // Virus Spacing Length
-        let virusWidthSpacing:CGFloat = totalWidthSpacing / 2.625;
-        let virusHeightSpacing:CGFloat = totalHeightSpacing / 4.0;
+        virusWidthSpacing = totalWidthSpacing! / 2.625;
+        virusHeightSpacing = totalHeightSpacing! / 4.0;
         // Initial starting coordinates
-        var x:CGFloat = -virusWidthSpacing * 0.70125;
-        var y:CGFloat = -virusHeightSpacing * 0.45;
+        x = -virusWidthSpacing! * 0.70125;
+        y = -virusHeightSpacing! * 0.45;
         // Plot and build viruses
         for _ in 0..<3 {
-            x += virusWidthSpacing;
+            x! += virusWidthSpacing!;
             for _ in 0..<4 {
-                y += virusHeightSpacing;
-                let virus = UIVirus(parentView: mainView!, frame:CGRect(x: x, y: y, width: virusSideLength, height: virusSideLength));
+                y! += virusHeightSpacing!;
+                let virus = UIVirus(parentView: mainView!, frame:CGRect(x: x!, y: y!, width: virusSideLength!, height: virusSideLength!));
                 virusCollection!.append(virus);
-                y += virusSideLength;
+                y! += virusSideLength!;
             }
-            x += virusSideLength;
-            y = -virusHeightSpacing * 0.45;
+            x! += virusSideLength!;
+            y! = -virusHeightSpacing! * 0.45;
         }
     }
     

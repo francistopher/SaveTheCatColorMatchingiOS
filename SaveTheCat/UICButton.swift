@@ -11,15 +11,15 @@ import UIKit
 
 class UICButton:UIButton {
     
-    var originalFrame:CGRect? = nil;
-    var secondaryFrame:CGRect? = nil;
-    var shrunkFrame:CGRect? = nil;
+    var originalFrame:CGRect?
+    var secondaryFrame:CGRect?
+    var shrunkFrame:CGRect?
     
-    var originalBackgroundColor:UIColor? = nil;
+    var originalBackgroundColor:UIColor?
     
     var shrinkType:shrink = .mid;
     
-    var parentView:UIView? = nil;
+    weak var parentView:UIView?
     
     var willBeShrunk:Bool = false;
     var styleBackground:Bool = false;
@@ -184,7 +184,6 @@ class UICButton:UIButton {
                 }
             }
         }
-        
     }
 }
 

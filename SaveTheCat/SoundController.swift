@@ -59,11 +59,16 @@ class SoundController {
     static var chopinPreludeUrl:URL?
     static var chopinPreludeSoundEffect:AVAudioPlayer?
     
+    static var timeInterval:TimeInterval?
+    
     static func cuteLaugh() {
         cuteLaughSoundEffect!.play();
     }
     
     static func setupCuteLaugh() {
+        cuteLaughPath = nil;
+        cuteLaughURL = nil;
+        cuteLaughSoundEffect = nil;
         cuteLaughPath = Bundle.main.path(forResource: "cuteLaugh.mp3", ofType: nil);
         cuteLaughURL = URL(fileURLWithPath: cuteLaughPath!);
         do {
@@ -79,6 +84,9 @@ class SoundController {
     }
     
     static func setupGearSpinning() {
+        gearSpinningPath = nil;
+        gearSpinningURL = nil;
+        gearSpinningSoundEffect = nil;
         gearSpinningPath = Bundle.main.path(forResource: "gearSpinning.mp3", ofType: nil);
         gearSpinningURL = URL(fileURLWithPath: gearSpinningPath!);
         do {
@@ -94,6 +102,9 @@ class SoundController {
     }
     
     static func setupHeaven() {
+        heavenPath = nil;
+        heavenUrl = nil;
+        heavenSoundEffect = nil;
         heavenPath = Bundle.main.path(forResource: "heaven.mp3", ofType: nil);
         heavenUrl = URL(fileURLWithPath: heavenPath!);
         do {
@@ -112,6 +123,9 @@ class SoundController {
     }
     
     static func setupCoinEarned() {
+        coinEarnedPath = nil;
+        coinEarnedUrl = nil;
+        coinEarnedSoundEffect = nil;
         coinEarnedPath = Bundle.main.path(forResource: "coinEarned.mp3", ofType: nil);
         coinEarnedUrl = URL(fileURLWithPath: coinEarnedPath!);
         do {
@@ -122,23 +136,29 @@ class SoundController {
     }
     
     static func setupCoinEarned2() {
-       coinEarnedPath2 = Bundle.main.path(forResource: "coinEarned.mp3", ofType: nil);
-       coinEarnedUrl2 = URL(fileURLWithPath: coinEarnedPath2!);
-       do {
+        coinEarnedPath2 = nil;
+        coinEarnedUrl2 = nil;
+        coinEarnedSoundEffect2 = nil;
+        coinEarnedPath2 = Bundle.main.path(forResource: "coinEarned.mp3", ofType: nil);
+        coinEarnedUrl2 = URL(fileURLWithPath: coinEarnedPath2!);
+        do {
            coinEarnedSoundEffect2 = try AVAudioPlayer(contentsOf: coinEarnedUrl2!);
-       } catch {
+        } catch {
            print("Unable to play coin earned");
-       }
+        }
     }
     
     static func setupCoinEarned3() {
-       coinEarnedPath3 = Bundle.main.path(forResource: "coinEarned.mp3", ofType: nil);
-       coinEarnedUrl3 = URL(fileURLWithPath: coinEarnedPath3!);
-       do {
+        coinEarnedPath3 = nil;
+        coinEarnedUrl3 =  nil;
+        coinEarnedSoundEffect3 = nil;
+        coinEarnedPath3 = Bundle.main.path(forResource: "coinEarned.mp3", ofType: nil);
+        coinEarnedUrl3 = URL(fileURLWithPath: coinEarnedPath3!);
+        do {
            coinEarnedSoundEffect3 = try AVAudioPlayer(contentsOf: coinEarnedUrl3!);
-       } catch {
+        } catch {
            print("Unable to play coin earned");
-       }
+        }
    }
     
     static func kittenMeow() {
@@ -154,6 +174,9 @@ class SoundController {
     }
     
     static func setupKittenMeow() {
+        kittenMeowPath = nil;
+        kittenMeowUrl =  nil;
+        kittenMeowSoundEffect = nil;
         kittenMeowPath = Bundle.main.path(forResource: "kittenMeow.mp3", ofType: nil);
         kittenMeowUrl = URL(fileURLWithPath: kittenMeowPath!);
         do {
@@ -165,6 +188,9 @@ class SoundController {
     }
     
     static func setupKittenMeow2() {
+        kittenMeowPath2 = nil;
+        kittenMeowUrl2 = nil;
+        kittenMeowSoundEffect2 = nil;
         kittenMeowPath2 = Bundle.main.path(forResource: "kittenMeow.mp3", ofType: nil);
         kittenMeowUrl2 = URL(fileURLWithPath: kittenMeowPath2!);
         do {
@@ -176,6 +202,9 @@ class SoundController {
     }
     
     static func setupKittenMeow3() {
+        kittenMeowPath3 = nil;
+        kittenMeowUrl3 = nil;
+        kittenMeowSoundEffect3 = nil;
         kittenMeowPath3 = Bundle.main.path(forResource: "kittenMeow.mp3", ofType: nil);
         kittenMeowUrl3 = URL(fileURLWithPath: kittenMeowPath3!);
         do {
@@ -194,6 +223,9 @@ class SoundController {
     }
     
     static func setupKittenDie() {
+        kittenDiePath = nil;
+        kittenDieUrl = nil;
+        kittenDieSoundEffect = nil;
         kittenDiePath = Bundle.main.path(forResource: "kittenDie.mp3", ofType: nil);
         kittenDieUrl = URL(fileURLWithPath: kittenDiePath!);
         do {
@@ -210,16 +242,19 @@ class SoundController {
                 setupMozartSonata();
                 mozartSonataSoundEffect!.play();
             } else {
-                let timeInterval:TimeInterval = TimeInterval(0.5);
-                mozartSonataSoundEffect!.setVolume(1.0, fadeDuration: timeInterval);
+                timeInterval = TimeInterval(0.5);
+                mozartSonataSoundEffect!.setVolume(1.0, fadeDuration: timeInterval!);
             }
         } else {
-            let timeInterval:TimeInterval = TimeInterval(0.5);
-            mozartSonataSoundEffect!.setVolume(0.0, fadeDuration: timeInterval);
+            timeInterval = TimeInterval(0.5);
+            mozartSonataSoundEffect!.setVolume(0.0, fadeDuration: timeInterval!);
         }
     }
     
     static func setupMozartSonata() {
+        mozartSonataPath = nil;
+        mozartSonataUrl = nil;
+        mozartSonataSoundEffect = nil;
         mozartSonataPath = Bundle.main.path(forResource: "mozartSonata.mp3", ofType: nil);
         mozartSonataUrl = URL(fileURLWithPath: mozartSonataPath!);
         do {
@@ -236,8 +271,8 @@ class SoundController {
             setupChopinPrelude();
             chopinPreludeSoundEffect!.play();
         } else {
-            let timeInterval:TimeInterval = TimeInterval(0.5);
-            chopinPreludeSoundEffect!.setVolume(0.0, fadeDuration: timeInterval);
+            timeInterval = TimeInterval(0.5);
+            chopinPreludeSoundEffect!.setVolume(0.0, fadeDuration: timeInterval!);
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                 chopinPreludeSoundEffect!.stop();
                 setupChopinPrelude();
@@ -246,6 +281,9 @@ class SoundController {
     }
     
     static func setupChopinPrelude() {
+        chopinPreludePath = nil;
+        chopinPreludeUrl = nil;
+        chopinPreludeSoundEffect = nil;
         chopinPreludePath = Bundle.main.path(forResource: "chopinPrelude.mp3", ofType: nil);
         chopinPreludeUrl = URL(fileURLWithPath: chopinPreludePath!);
         do {

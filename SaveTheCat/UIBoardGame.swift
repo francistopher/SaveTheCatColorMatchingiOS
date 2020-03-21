@@ -295,15 +295,21 @@ class UIBoardGame: UIView, GKMatchDelegate {
     }
     
     @objc func singlePlayerButtonSelector() {
-        if (self.results!.alpha == 1.0) {
-            self.cats.resumeCatAnimations();
-            continueSelector();
-            self.fadeIn();
-        }
         if (singlePlayerButton!.notSelectable) {
             return;
         }
         singlePlayerButton!.notSelectable = true;
+        if (self.victoryView!.alpha > 0.0) {
+            self.iWon = false;
+            self.victoryView!.fadeOut();
+            self.myLiveMeter!.resetLivesLeftCount();
+            self.fadeIn();
+        }
+        if (self.results!.alpha > 0.0) {
+            self.cats.resumeCatAnimations();
+            continueSelector();
+            self.fadeIn();
+        }
         startGame();
         twoPlayerButton!.shrink(colorOptionButton: false);
         UIView.animate(withDuration: 1.0, delay: 0.125, options: .curveEaseOut, animations: {
@@ -330,8 +336,15 @@ class UIBoardGame: UIView, GKMatchDelegate {
             if (twoPlayerButton!.notSelectable) {
                 return;
             }
-            if (self.results!.alpha == 1.0) {
+            twoPlayerButton!.notSelectable = true;
+            if (self.results!.alpha >= 0.0) {
                 continueSelector();
+                self.fadeIn();
+            }
+            if (self.victoryView!.alpha > 0.0) {
+                self.iWon = false;
+                self.victoryView!.fadeOut();
+                self.myLiveMeter!.resetLivesLeftCount();
                 self.fadeIn();
             }
             twoPlayerButton!.notSelectable = true;
@@ -819,9 +832,8 @@ class UIBoardGame: UIView, GKMatchDelegate {
         self.iWon = true;
         SoundController.kittenMeow();
         self.cats.podAliveOnesAndGiveMouseCoin();
-        self.promote();
-        self.colorOptions!.shrinkColorOptions();
         self.glovePointer!.shrink();
+        self.promote();
         DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
            self.currentRound -= 1;
            self.colorOptions!.removeSelectedButtons();
@@ -835,11 +847,29 @@ class UIBoardGame: UIView, GKMatchDelegate {
         colorOptions!.shrinkColorOptions();
         colorOptions!.loadSelectionButtonsToSelectedButtons();
         if (self.iWon) {
+            self.alpha = 0.0;
+            self.attackMeter!.attack = false;
+            self.attackMeter!.attackStarted = false;
+            self.results!.colorMemoryCapacity = 0;
+            self.colorOptions!.removeBorderOfSelectionButtons();
+            self.attackMeter!.previousDisplacementDuration = 3.5;
+            self.colorOptions!.isTransitioned = false;
+            self.colorOptions!.selectedColor = UIColor.lightGray;
+            self.restart();
             return;
         }
         // Build board game
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.75) {
             if (self.iWon) {
+                self.alpha = 0.0;
+                self.attackMeter!.attack = false;
+                self.attackMeter!.attackStarted = false;
+                self.results!.colorMemoryCapacity = 0;
+                self.colorOptions!.removeBorderOfSelectionButtons();
+                self.attackMeter!.previousDisplacementDuration = 3.5;
+                self.colorOptions!.isTransitioned = false;
+                self.colorOptions!.selectedColor = UIColor.lightGray;
+                self.restart();
                 return;
             }
             self.currentRound += 1;

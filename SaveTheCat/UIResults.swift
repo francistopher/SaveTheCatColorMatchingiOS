@@ -222,9 +222,11 @@ class UIResults: UICView {
         // Setup mouse coin
         var x:CGFloat = 0.0;
         if (ViewController.aspectRatio! == .ar4by3) {
-           x = watchAdForXMouseCoins!.frame.width * 0.8;
+            x = watchAdForXMouseCoins!.frame.width * 0.8;
         } else if (ViewController.aspectRatio! == .ar16by9) {
             x = watchAdForXMouseCoins!.frame.width * 0.82225;
+        } else {
+            x = watchAdForXMouseCoins!.frame.width * 0.8025;
         }
         mouseCoin = UIMouseCoin(parentView: watchAdForXMouseCoins!, x: x, y: watchAdForXMouseCoins!.frame.height * 0.15, width: watchAdForXMouseCoins!.frame.height * 0.7, height: watchAdForXMouseCoins!.frame.height * 0.7);
         mouseCoin!.isSelectable = false;

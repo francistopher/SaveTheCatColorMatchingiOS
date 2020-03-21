@@ -126,7 +126,9 @@ class UIBoardGame: UIView, GKMatchDelegate {
         results!.catsThatDied = 0;
         SoundController.chopinPrelude(play: false);
         SoundController.mozartSonata(play: true, startOver: true);
-        attackMeter!.resetCat();
+        if (attackMeter!.cat!.frame != attackMeter!.cat!.originalFrame!) {
+            attackMeter!.resetCat();
+        }
     }
     
     func fadeIn(){
@@ -173,6 +175,17 @@ class UIBoardGame: UIView, GKMatchDelegate {
             self.stopSearchingForOpponentEntirely();
             // Show single and two player
             self.showSingleAndTwoPlayerButtons();
+            // Translate glove pointer to victory view
+            self.glovePointer!.adButton = victoryView!.watchAdButton!;
+            let buttonSuperview:UIView = victoryView!;
+            let x:CGFloat = self.glovePointer!.adButton!.frame.minX + buttonSuperview.frame.minX + glovePointer!.originalFrame!.width * 0.35;
+            let y:CGFloat = self.glovePointer!.adButton!.frame.minY + buttonSuperview.frame.minY + glovePointer!.originalFrame!.height * 0.2;
+            let newFrame:CGRect = CGRect(x: x, y: y, width: glovePointer!.originalFrame!.width * 0.9, height: glovePointer!.originalFrame!.width * 0.9);
+            self.glovePointer!.translate(newOriginalFrame: newFrame);
+            self.glovePointer!.alpha = 1.0;
+            Timer.scheduledTimer(withTimeInterval: 1.25, repeats: false, block: { _ in
+                self.glovePointer!.sway();
+            })
         }
     }
     

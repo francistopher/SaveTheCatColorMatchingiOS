@@ -62,8 +62,6 @@ class UICatButton: UIButton {
     var newMouseCoinFrame:CGRect?
     var mouseCoinX:CGFloat?
     var mouseCoinY:CGFloat?
-    
-    
     func giveMouseCoin(withNoise:Bool) {
         // Generate mouse coin
         mouseCoin = UIMouseCoin(parentView: self.imageContainerButton!, x: 0.0, y: 0.0, width: self.imageContainerButton!.frame.width / 4.0, height: self.imageContainerButton!.frame.height / 4.0);

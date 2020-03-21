@@ -7,10 +7,9 @@
 //
 
 import Foundation
-import SwiftUI
+import UIKit
 
 class UISettingsMenu:UICView {
-    
     
     var advertisement:UIAds?
     var leaderBoard:UILeadBoard?

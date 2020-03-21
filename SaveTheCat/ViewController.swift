@@ -384,7 +384,7 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, GKMatchm
         if (!settingsButton!.isPressed) {
             self.boardGame!.attackMeter!.unPauseVirusMovement();
         }
-        if (boardGame!.gameOver) {
+        if (boardGame!.iLost) {
             SoundController.chopinPrelude(play: true);
         } else {
             SoundController.mozartSonata(play: true, startOver: false);

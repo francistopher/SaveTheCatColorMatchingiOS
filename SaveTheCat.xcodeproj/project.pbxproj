@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		16CF995035758E55123640B3 /* Pods_SaveTheCat.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55C6E4EB948AE2FD3FA22E3A /* Pods_SaveTheCat.framework */; };
+		B80C9A2F2425A61100B4E229 /* UIVictoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B80C9A2E2425A61100B4E229 /* UIVictoryView.swift */; };
 		B83B0331241153E900EC4BAD /* UIMouseCoin.swift in Sources */ = {isa = PBXBuildFile; fileRef = B83B032A241153E800EC4BAD /* UIMouseCoin.swift */; };
 		B83B0332241153E900EC4BAD /* UIMultiplayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B83B032B241153E800EC4BAD /* UIMultiplayer.swift */; };
 		B83B0333241153E900EC4BAD /* UISettingsButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B83B032C241153E800EC4BAD /* UISettingsButton.swift */; };
@@ -125,6 +126,7 @@
 /* Begin PBXFileReference section */
 		4CABDC3DBB7B48F0E0215922 /* Pods-SaveTheCat.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SaveTheCat.release.xcconfig"; path = "Target Support Files/Pods-SaveTheCat/Pods-SaveTheCat.release.xcconfig"; sourceTree = "<group>"; };
 		55C6E4EB948AE2FD3FA22E3A /* Pods_SaveTheCat.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SaveTheCat.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B80C9A2E2425A61100B4E229 /* UIVictoryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UIVictoryView.swift; path = SaveTheCat/UIVictoryView.swift; sourceTree = "<group>"; };
 		B83B032A241153E800EC4BAD /* UIMouseCoin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UIMouseCoin.swift; path = SaveTheCat/UIMouseCoin.swift; sourceTree = "<group>"; };
 		B83B032B241153E800EC4BAD /* UIMultiplayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UIMultiplayer.swift; path = SaveTheCat/UIMultiplayer.swift; sourceTree = "<group>"; };
 		B83B032C241153E800EC4BAD /* UISettingsButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UISettingsButton.swift; path = SaveTheCat/UISettingsButton.swift; sourceTree = "<group>"; };
@@ -457,6 +459,7 @@
 		B83B03A2241159AB00EC4BAD /* Particular View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				B80C9A2E2425A61100B4E229 /* UIVictoryView.swift */,
 				B83B03B324115A0C00EC4BAD /* Character */,
 				B83B03AA241159F900EC4BAD /* UIBoardGame.swift */,
 				B83BC3ED241948E40026D7F6 /* UIGlovedPointer.swift */,
@@ -814,6 +817,7 @@
 				B83B0331241153E900EC4BAD /* UIMouseCoin.swift in Sources */,
 				B83B0333241153E900EC4BAD /* UISettingsButton.swift in Sources */,
 				B83B03A1241158FC00EC4BAD /* UICTextField.swift in Sources */,
+				B80C9A2F2425A61100B4E229 /* UIVictoryView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

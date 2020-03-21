@@ -45,8 +45,8 @@ class UIBoardGame: UIView, GKMatchDelegate {
     var singlePlayerButton:UICButton?
     var twoPlayerButton:UICButton?
     var victoryView:UIVictoryView?
-    var gameOver:Bool = false;
     
+    var gameOver:Bool = false;
     var iWon:Bool = false;
     
     
@@ -158,17 +158,19 @@ class UIBoardGame: UIView, GKMatchDelegate {
     }
     
     func gameWon() {
-        // Disappear cats and selection colors
-        self.victoryView!.awardAmount = abs(results!.catsThatLived - results!.catsThatDied);
-        self.clearBoardGameToDisplayVictoryAnimation();
-        // Show victory view
-        self.victoryView!.fadeIn();
-        self.victoryView!.showVictoryMessageAndGifWith(text: "YOU WIN, CAT SAVER!");
-        // Stop virus from attacking
-        self.attackMeter!.didNotInvokeAttackImpulse = true;
-        self.attackMeter!.sendVirusToStartAndHold();
-        // Invalidate opponent resignation timer and reset value
-        self.stopSearchingForOpponentEntirely();
+        if (!gameOver) {
+            // Disappear cats and selection colors
+            self.victoryView!.awardAmount = abs(results!.catsThatLived - results!.catsThatDied);
+            self.clearBoardGameToDisplayVictoryAnimation();
+            // Show victory view
+            self.victoryView!.fadeIn();
+            self.victoryView!.showVictoryMessageAndGifWith(text: "YOU WIN, CAT SAVER!");
+            // Stop virus from attacking
+            self.attackMeter!.didNotInvokeAttackImpulse = true;
+            self.attackMeter!.sendVirusToStartAndHold();
+            // Invalidate opponent resignation timer and reset value
+            self.stopSearchingForOpponentEntirely();
+        }
     }
     
     func hideOpponentLiveMeter() {
@@ -269,7 +271,7 @@ class UIBoardGame: UIView, GKMatchDelegate {
     }
     
     func setupSingleAndTwoPlayerButtons() {
-        singlePlayerButton = UICButton(parentView: self.superview!, frame: CGRect(x: self.colorOptions!.frame.minX + self.colorOptions!.frame.width * 0.05, y: self.colorOptions!.frame.minY, width: self.frame.width * 0.425, height: self.colorOptions!.frame.height), backgroundColor: UIColor.clear);
+        singlePlayerButton = UICButton(parentView: self.superview!, frame: CGRect(x: self.colorOptions!.frame.minX + self.colorOptions!.frame.width * 0.05, y: self.colorOptions!.frame.minY + self.colorOptions!.frame.height * 0.1, width: self.frame.width * 0.425, height: self.colorOptions!.frame.height * 0.8), backgroundColor: UIColor.clear);
         singlePlayerButton!.setTitle("Single Player", for: .normal);
         singlePlayerButton!.styleBackground = true;
         singlePlayerButton!.setStyle();
@@ -278,7 +280,7 @@ class UIBoardGame: UIView, GKMatchDelegate {
         singlePlayerButton!.addTarget(self, action: #selector(singlePlayerButtonSelector), for: .touchUpInside);
         singlePlayerButton!.shrinked();
         singlePlayerButton!.alpha = 0.0;
-        twoPlayerButton = UICButton(parentView: self.superview!, frame: CGRect(x: self.colorOptions!.frame.minX + self.colorOptions!.frame.width * 0.525, y: self.colorOptions!.frame.minY, width: self.colorOptions!.frame.width * 0.425, height: self.colorOptions!.frame.height), backgroundColor: UIColor.clear);
+        twoPlayerButton = UICButton(parentView: self.superview!, frame: CGRect(x: self.colorOptions!.frame.minX + self.colorOptions!.frame.width * 0.525, y: self.colorOptions!.frame.minY + self.colorOptions!.frame.height * 0.1, width: self.colorOptions!.frame.width * 0.425, height: self.colorOptions!.frame.height * 0.8), backgroundColor: UIColor.clear);
         twoPlayerButton!.setTitle("Two Player", for: .normal);
         twoPlayerButton!.styleBackground = true;
         twoPlayerButton!.setStyle();
@@ -324,9 +326,13 @@ class UIBoardGame: UIView, GKMatchDelegate {
             if (twoPlayerButton!.notSelectable) {
                 return;
             }
+            if (self.results!.alpha == 1.0) {
+                continueSelector();
+                self.fadeIn();
+            }
             twoPlayerButton!.notSelectable = true;
             singlePlayerButton!.shrink(colorOptionButton: false);
-            UIView.animate(withDuration: 0.75 , delay: 0.0, options: .curveEaseOut, animations: {
+            UIView.animate(withDuration: 0.75 , delay: 0.25, options: .curveEaseOut, animations: {
                 let colorOption:UICButton = self.colorOptions!.selectionButtons[0];
                 self.twoPlayerButton!.frame = CGRect(x: self.colorOptions!.frame.minX + colorOption.frame.minX, y: self.colorOptions!.frame.minY + colorOption.frame.minY, width: colorOption.frame.width, height: colorOption.frame.height);
                 self.twoPlayerButton!.backgroundColor = colorOption.backgroundColor!;
@@ -489,23 +495,31 @@ class UIBoardGame: UIView, GKMatchDelegate {
         // Prepare glove pointer and
         self.glovePointer!.isTapping = false;
         self.glovePointer!.setCompiledStyle();
-        let buttons = self.results!.update();
-        if (buttons.count == 1) {
-            let button:UICButton = buttons[0];
+        // Show glove, watch ad button, and mouse coin
+        let updateResult:(UICButton, UIMouseCoin) = self.results!.update();
+        let button:UICButton = updateResult.0;
+        let mouseCoin:UIMouseCoin = updateResult.1;
+        if (ViewController.staticSelf!.isInternetReachable) {
+            button.isUserInteractionEnabled = true;
+            button.titleLabel!.alpha = 1.0;
+            mouseCoin.alpha = 1.0;
             self.glovePointer!.adButton = button;
             let buttonSuperview:UIView = button.superview!;
             let buttonSuperview2:UIView = button.superview!.superview!;
             let x:CGFloat = button.frame.minX + buttonSuperview.frame.minX + buttonSuperview2.frame.minX - glovePointer!.originalFrame!.width * 0.35;
             let y:CGFloat = button.frame.minY + buttonSuperview.frame.minY + buttonSuperview2.frame.minY - glovePointer!.originalFrame!.height * 0.2;
-            let newFrame:CGRect = CGRect(x: x, y: y, width: glovePointer!.originalFrame!.width, height: glovePointer!.originalFrame!.width);
+            let newFrame:CGRect = CGRect(x: x, y: y, width: glovePointer!.originalFrame!.width * 0.9, height: glovePointer!.originalFrame!.width * 0.9);
             self.glovePointer!.translate(newOriginalFrame: newFrame);
             self.glovePointer!.alpha = 1.0;
             Timer.scheduledTimer(withTimeInterval: 1.25, repeats: false, block: { _ in
                 self.glovePointer!.sway();
             })
         } else {
-            self.glovePointer!.shrink();
+            button.isUserInteractionEnabled = false;
+            button.titleLabel!.alpha = 0.0;
+            mouseCoin.alpha = 0.0;
         }
+        // Housekeeping
         self.reset(catsSurvived: false);
         self.colorOptions!.shrinkColorOptions();
         // Reset color option properties

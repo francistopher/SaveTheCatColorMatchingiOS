@@ -203,9 +203,6 @@ class UIResults: UICView {
             if (UIResults.rewardAmount < 25 && self.threshold < self.rewardAmountRate[UIResults.rewardAmount]!) {
                 UIResults.rewardAmount += 5;
                 self.threshold = 1.0;
-                self.watchAdForXMouseCoins!.setTitle("Watch Ad to\nWin \(UIResults.rewardAmount) " + "·", for: .normal);
-                let x:CGFloat = self.watchAdForXMouseCoins!.frame.width * 0.64 + self.watchAdForXMouseCoins!.frame.width * 0.05;
-                self.mouseCoin!.frame = CGRect(x: x, y: self.mouseCoin!.frame.minY, width: self.mouseCoin!.frame.width, height: self.mouseCoin!.frame.height);
             }
         })
         adIsShowing = false;
@@ -213,17 +210,22 @@ class UIResults: UICView {
     
     var mouseCoin:UIMouseCoin?
     func setupWatchAdForXMouseCoins() {
-        self.watchAdForXMouseCoins = UICButton(parentView: contentView!, frame: CGRect(x: 0.0, y: self.frame.height - (unitHeight! * 1.3125), width: contentView!.frame.width * 0.35, height: unitHeight!), backgroundColor: .clear);
-        watchAdForXMouseCoins!.titleLabel!.font = UIFont.boldSystemFont(ofSize:watchAdForXMouseCoins!.frame.height * 0.45);
+        self.watchAdForXMouseCoins = UICButton(parentView: contentView!, frame: CGRect(x: 0.0, y: self.frame.height - (unitHeight! * 1.3125), width: contentView!.frame.width * 0.35, height: unitHeight! * 1.25), backgroundColor: .clear);
+        watchAdForXMouseCoins!.titleLabel!.font = UIFont.boldSystemFont(ofSize:watchAdForXMouseCoins!.frame.height * 0.35);
         watchAdForXMouseCoins!.layer.cornerRadius = watchAdForXMouseCoins!.frame.width * 0.1;
         self.watchAdForXMouseCoins!.frame = CGRect(x: 0.0, y: unitHeight! * 7.0, width: self.frame.width * 0.8, height: unitHeight!);
         CenterController.centerHorizontally(childView: watchAdForXMouseCoins!, parentRect: self.frame, childRect: watchAdForXMouseCoins!.frame);
         self.watchAdForXMouseCoins!.titleLabel!.textAlignment = NSTextAlignment.center;
-        self.watchAdForXMouseCoins!.setTitle("Watch Ad to Win ····· !", for: .normal);
+        self.watchAdForXMouseCoins!.setTitle("Watch Short Ad to Win ····· !", for: .normal);
         self.watchAdForXMouseCoins!.addTarget(self, action: #selector(showAd), for: .touchUpInside);
         self.watchAdForXMouseCoins!.secondaryFrame = self.watchAdForXMouseCoins!.frame;
         // Setup mouse coin
-        let x:CGFloat = watchAdForXMouseCoins!.frame.width * 0.71;
+        var x:CGFloat = 0.0;
+        if (ViewController.aspectRatio! == .ar4by3) {
+           x = watchAdForXMouseCoins!.frame.width * 0.8;
+        } else if (ViewController.aspectRatio! == .ar16by9) {
+            x = watchAdForXMouseCoins!.frame.width * 0.82225;
+        }
         mouseCoin = UIMouseCoin(parentView: watchAdForXMouseCoins!, x: x, y: watchAdForXMouseCoins!.frame.height * 0.15, width: watchAdForXMouseCoins!.frame.height * 0.7, height: watchAdForXMouseCoins!.frame.height * 0.7);
         mouseCoin!.isSelectable = false;
         mouseCoin!.addTarget(self, action: #selector(mouseCoinSelector), for: .touchUpInside);
@@ -250,10 +252,11 @@ class UIResults: UICView {
                         ViewController.interstitialWillDismissScreen = false;
                         SoundController.chopinPrelude(play: true);
                         timer!.invalidate();
-                        // Reformat the buttons
-                        self.watchAdForXMouseCoins!.alpha = 0.0;
-                        // Give mouse coins
+                        // Give mouse coins and hide mouse coin and label
                         self.giveMouseCoins();
+                        self.watchAdForXMouseCoins!.titleLabel!.alpha = 0.0;
+                        self.mouseCoin!.alpha = 0.0;
+                        self.watchAdForXMouseCoins!.isUserInteractionEnabled = false;
                     }
                 })
             }
@@ -322,15 +325,10 @@ class UIResults: UICView {
     }
     
     func isAdButtonAdvertised() -> Bool {
-        if (CFloat.random(in:0.0...1.0) > 0.15) {
-            print("Ad button is advertised")
-            return true;
-        }
-        print("Ad button not advertised")
-        return false;
+        return true;
     }
     
-    func update() -> [UICButton] {
+    func update() -> (UICButton, UIMouseCoin) {
         catsLivedAmountLabel!.text = String(catsThatLived);
         catsDiedAmountLabel!.text = String(catsThatDied);
         stagesRangeLabel!.text = "\(colorMemoryCapacity)";
@@ -338,18 +336,9 @@ class UIResults: UICView {
         // Adjust reward amount
         setAmountRate();
         // Determine whether to show ad
-        if (!ViewController.staticSelf!.isInternetReachable) {
-            watchAdForXMouseCoins!.hide();
-            return [];
-        }
-        if (CGFloat.random(in: 0...1) > 0.15) {
-            watchAdForXMouseCoins!.frame = watchAdForXMouseCoins!.secondaryFrame!;
-            watchAdForXMouseCoins!.alpha = 1.0
-            return [watchAdForXMouseCoins!];
-        } else {
-            watchAdForXMouseCoins!.hide();
-            return [];
-        }
+        watchAdForXMouseCoins!.frame = watchAdForXMouseCoins!.secondaryFrame!;
+        watchAdForXMouseCoins!.alpha = 1.0
+        return (watchAdForXMouseCoins!, mouseCoin!);
     }
     
     func setCompiledStyle() {

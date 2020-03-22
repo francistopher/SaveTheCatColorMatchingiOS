@@ -12,8 +12,7 @@ class UIMoreCats: UIButton {
    
     var originalFrame:CGRect?
     var reducedFrame:CGRect?
-    var moreCatsView:UICView?
-    var moreCatsViewIsPresented:Bool = false;
+    var moreCatsVC:MoreCatsViewController?
 
     required init?(coder: NSCoder) {
        fatalError("init(coder:) has not been implemented")
@@ -25,60 +24,28 @@ class UIMoreCats: UIButton {
         parentView.addSubview(self);
         self.backgroundColor = .clear;
         self.layer.cornerRadius = height / 2.0;
-        self.addTarget(self, action: #selector(moreCatsSelector), for: .touchUpInside);
-        self.setupMoreCatsView();
+        self.setupMoreCatsVC();
         self.setStyle();
+        self.addTarget(self, action: #selector(moreCatsSelector), for: .touchUpInside);
     }
     
-    var moreCatsWidth:CGFloat?
-    var moreCatsHeight:CGFloat?
-    var moreCatsY:CGFloat?
-    func setupMoreCatsView() {
-        if (ViewController.aspectRatio! == .ar4by3) {
-            moreCatsY = self.superview!.frame.minY * 2.0 + self.superview!.frame.height;
-            moreCatsWidth = ViewController.staticMainView!.frame.width * 0.755;
-            moreCatsHeight = ViewController.staticMainView!.frame.height * 0.66;
-        }
-        moreCatsView = UICView(parentView: ViewController.staticMainView!, x: 0.0, y: moreCatsY!, width: moreCatsWidth!, height: moreCatsHeight!, backgroundColor: UIColor.red);
-        CenterController.centerHorizontally(childView: moreCatsView!, parentRect: ViewController.staticMainView!.frame, childRect: moreCatsView!.frame);
-        moreCatsView!.layer.borderWidth = moreCatsWidth! * 0.015;
-        moreCatsView!.layer.cornerRadius = moreCatsWidth! * 0.1;
-        moreCatsView!.alpha = 0.0;
-        setupPresentationCat();
-    }
-    
-    var presentationCatButton:UICatButton?
-    var presentationCatButtonX:CGFloat?
-    var presentationCatButtonY:CGFloat?
-    var presentationCatButtonSideLength:CGFloat?
-    func setupPresentationCat() {
-        presentationCatButtonSideLength = moreCatsWidth! * 0.7;
-        presentationCatButtonX = (self.moreCatsView!.frame.width - presentationCatButtonSideLength!) * 0.5;
-        presentationCatButtonY = (self.moreCatsView!.frame.height - presentationCatButtonSideLength!) * 0.5;
-        presentationCatButton = UICatButton(parentView: moreCatsView!, x: presentationCatButtonX!, y: presentationCatButtonY!, width: presentationCatButtonSideLength!, height: presentationCatButtonSideLength!, backgroundColor: UIColor.systemRed);
-        CenterController.center(childView: presentationCatButton!, parentRect: moreCatsView!.frame, childRect: presentationCatButton!.frame);
-        presentationCatButton!.imageContainerButton!.addTarget(self, action: #selector(presentationCatButtonSelector), for: .touchUpInside);
-        presentationCatButton!.setCat(named: "SmilingCat", stage: 4);
-        presentationCatButton!.randomAnimationSelection = 1;
-        presentationCatButton!.setRandomCatAnimation();
-    }
-    
-    @objc func presentationCatButtonSelector() {
-        SoundController.kittenMeow();
+    func setupMoreCatsVC() {
+        moreCatsVC = MoreCatsViewController();
+        moreCatsVC!.modalPresentationStyle = .overFullScreen;
     }
 
     @objc func moreCatsSelector() {
-        ViewController.staticMainView!.bringSubviewToFront(moreCatsView!);
-        if (moreCatsViewIsPresented) {
-            moreCatsView!.fadeOut();
-            moreCatsViewIsPresented = false;
-        } else {
-            print("Should have been presented?", moreCatsView!.frame)
-            moreCatsView!.fadeIn();
-            moreCatsViewIsPresented = true;
-            presentationCatButton!.grow();
-            presentationCatButton!.imageContainerButton!.grow();
-        }
+//        ViewController.staticMainView!.bringSubviewToFront(moreCatsView!);
+//            moreCatsView!.fadeOut();
+//            print("Should have been presented?", moreCatsView!.frame)
+//            moreCatsView!.fadeIn();
+        ViewController.staticSelf!.present(moreCatsVC!, animated: true, completion: {
+            self.moreCatsVC!.presentCatButton();
+        });
+        UIView.animate(withDuration: 0.25, animations: {
+            ViewController.staticSelf!.view.alpha = 0.5;
+        })
+
     }
        
     var iconImage:UIImage?
@@ -96,4 +63,86 @@ class UIMoreCats: UIButton {
             setIconImage(named: "lightMoreCats.png");
         }
     }
+}
+
+class MoreCatsViewController:UIViewController {
+    
+    var contentView:UICView?
+    var hideButton:UICButton?
+    override func viewDidLoad() {
+        super.viewDidLoad();
+        setupMainView()
+        setupContentView()
+        setupHideButton()
+        setupPresentationCat()
+        setupCatLabelName();
+    }
+    
+    func setupMainView() {
+        view.backgroundColor = UIColor.clear;
+    }
+    
+    func setupContentView() {
+        contentView = UICView(parentView: view, x: 0.0, y: 0.0, width: view.frame.width * 0.7, height: view.frame.height * 0.65, backgroundColor: UIColor.red);
+        CenterController.center(childView: contentView!, parentRect: view.frame, childRect: contentView!.frame);
+        contentView!.layer.borderWidth = contentView!.frame.width * 0.0125;
+        contentView!.layer.cornerRadius = contentView!.frame.width * 0.1
+        contentView!.clipsToBounds = true;
+    }
+    
+    func setupHideButton() {
+        hideButton = UICButton(parentView: contentView!, frame: CGRect(x: contentView!.frame.width * 0.75, y: 0.0, width: contentView!.frame.width * 0.25, height: contentView!.frame.width * 0.125), backgroundColor: UIColor.red);
+        hideButton!.addTarget(self, action: #selector(hideButtonSelector), for: .touchUpInside);
+        hideButton!.setTitle("Done", for: .normal);
+        hideButton!.setTitleColor(UIColor.white, for: .normal);
+        hideButton!.layer.cornerRadius = hideButton!.frame.height * 0.5;
+        hideButton!.layer.borderWidth = contentView!.layer.borderWidth;
+        hideButton!.titleLabel!.font = UIFont.boldSystemFont(ofSize: hideButton!.frame.height * 0.4)
+        hideButton!.layer.maskedCorners = [ .layerMinXMaxYCorner]
+    }
+    
+    func setupCatLabelName() {
+        
+    }
+    
+    @objc func hideButtonSelector() {
+        self.dismiss(animated: true, completion: nil);
+        self.hideCatButton();
+        UIView.animate(withDuration: 0.25, animations: {
+            ViewController.staticSelf!.view.alpha = 1.0;
+        })
+    }
+    
+    var presentationCatButton:UICatButton?
+    var presentationCatButtonX:CGFloat?
+    var presentationCatButtonY:CGFloat?
+    var presentationCatButtonSideLength:CGFloat?
+    func setupPresentationCat() {
+        presentationCatButtonSideLength = contentView!.frame.width * 0.7;
+        presentationCatButtonX = (self.contentView!.frame.width - presentationCatButtonSideLength!) * 0.5;
+        presentationCatButtonY = (self.contentView!.frame.height - presentationCatButtonSideLength!) * 0.5;
+        presentationCatButton = UICatButton(parentView: contentView!, x: presentationCatButtonX!, y: presentationCatButtonY!, width: presentationCatButtonSideLength!, height: presentationCatButtonSideLength!, backgroundColor: UIColor.systemRed);
+        CenterController.center(childView: presentationCatButton!, parentRect: contentView!.frame, childRect: presentationCatButton!.frame);
+        presentationCatButton!.imageContainerButton!.addTarget(self, action: #selector(presentationCatButtonSelector), for: .touchUpInside);
+    }
+    
+    func presentCatButton() {
+        presentationCatButton!.setCat(named: "SmilingCat", stage: 3);
+        presentationCatButton!.randomAnimationSelection = 0;
+        presentationCatButton!.setRandomCatAnimation();
+        presentationCatButton!.grow();
+        presentationCatButton!.imageContainerButton!.grow();
+    }
+    
+    func hideCatButton() {
+        presentationCatButton!.imageContainerButton!.layer.removeAllAnimations();
+        presentationCatButton!.imageContainerButton!.transform = .identity;
+        presentationCatButton!.imageContainerButton!.shrunked();
+        presentationCatButton!.shrunk();
+    }
+    
+    @objc func presentationCatButtonSelector() {
+        SoundController.kittenMeow();
+    }
+    
 }

@@ -48,6 +48,10 @@ class UICButton:UIButton {
         self.setStyle();
     }
     
+    func shrunked() {
+        self.frame = self.shrunkFrame!;
+    }
+    
     func translate(newOriginalFrame:CGRect) {
         UIView.animate(withDuration: 1.0, delay: 0.125, options: .curveEaseInOut, animations: {
             self.frame = newOriginalFrame;

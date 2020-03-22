@@ -84,7 +84,7 @@ class UIMouseCoin: UICButton {
         func setupUpdateMouseCoinValueAnimation() {
             updateMouseCoinValueTimer?.invalidate();
             updateMouseCoinValueTimer = nil;
-            updateMouseCoinValueTimer = Timer.scheduledTimer(withTimeInterval: 0.01, repeats: true, block: { _ in
+            updateMouseCoinValueTimer = Timer.scheduledTimer(withTimeInterval: 0.001, repeats: true, block: { _ in
                 if (timeCounter > 1.0 && UIResults.mouseCoins == newValue) {
                     self.updateMouseCoinValueTimer!.invalidate();
                 } else {

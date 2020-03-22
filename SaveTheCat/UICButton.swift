@@ -19,8 +19,6 @@ class UICButton:UIButton {
     
     var shrinkType:shrink = .mid;
     
-    weak var parentView:UIView?
-    
     var willBeShrunk:Bool = false;
     var styleBackground:Bool = false;
     
@@ -39,7 +37,6 @@ class UICButton:UIButton {
     
     init(parentView: UIView, frame:CGRect, backgroundColor:UIColor) {
         super.init(frame:frame);
-        self.parentView = parentView;
         originalFrame = frame;
         originalBackgroundColor = backgroundColor;
         self.backgroundColor = backgroundColor;
@@ -88,7 +85,7 @@ class UICButton:UIButton {
             duration = 0.50;
         case .right:
             duration = 0.75;
-            x = self.parentView!.frame.width;
+            x = self.superview!.frame.width;
         }
         UIView.animate(withDuration: duration, delay: 0.0, options: .curveEaseIn, animations: {
             if (!colorOptionButton) {

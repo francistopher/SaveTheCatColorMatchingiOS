@@ -15,6 +15,7 @@ class UICatButtons {
     
     init() {
         presentCollection = [UICatButton]();
+        previousCollection = [UICatButton]();
     }
     
     var catButton:UICatButton?
@@ -111,8 +112,6 @@ class UICatButtons {
     }
     
     func loadPreviousCats() {
-        previousCollection = nil;
-        previousCollection = [UICatButton]();
         for cat in presentCollection! {
             previousCollection!.append(cat);
         }
@@ -223,9 +222,12 @@ class UICatButtons {
     
     func transitionCatButtonBackgroundToClear() {
         for catButton in presentCollection! {
-            catButton.imageContainerButton!.backgroundColor = UIColor.clear;
             catButton.fadeBackgroundIn(color: UIColor.clear, duration: 0.5, delay: 0.125);
             catButton.clearedOutToSolve = true;
+            if (catButton.imageContainerButton != nil) {
+                catButton.imageContainerButton!.backgroundColor = UIColor.clear;
+            }
+            
         }
     }
     

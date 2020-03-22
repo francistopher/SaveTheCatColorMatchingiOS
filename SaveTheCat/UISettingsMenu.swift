@@ -14,7 +14,7 @@ class UISettingsMenu:UICView {
     var advertisement:UIAds?
     var leaderBoard:UILeadBoard?
     var multiplayer:UIMultiplayer?
-    var myCats:UIMyCats?
+    var myCats:UIMoreCats?
     var mouseCoin:UIMouseCoin?
     
     var spaceBetween:CGFloat = 0.0;
@@ -80,7 +80,7 @@ class UISettingsMenu:UICView {
     }
 
     func setupMoreCatsButton() {
-        myCats = UIMyCats(parentView: self, x: 0.0, y: 0.0, width: self.frame.height, height: self.frame.height);
+        myCats = UIMoreCats(parentView: self, x: 0.0, y: 0.0, width: self.frame.height, height: self.frame.height);
         if (ViewController.aspectRatio! == .ar19point5by9) {
             myCats!.transform = myCats!.transform.scaledBy(x: 0.5, y: 0.5);
         } else if (ViewController.aspectRatio! == .ar16by9) {

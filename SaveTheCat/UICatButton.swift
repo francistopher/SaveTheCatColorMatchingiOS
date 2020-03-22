@@ -57,7 +57,6 @@ class UICatButton: UIButton {
     var settingsButton:UISettingsButton?
     var settingsMenuFrame:CGRect?
     var settingsMouseCoinFrame:CGRect?
-    
     var mainView:UIView?
     var newMouseCoinFrame:CGRect?
     var mouseCoinX:CGFloat?
@@ -89,7 +88,6 @@ class UICatButton: UIButton {
                 ViewController.staticSelf!.settingsButton!.settingsMenu!.mouseCoin!.setMouseCoinValue(newValue: UIResults.mouseCoins + 1);
             }
             self.mouseCoin!.removeFromSuperview();
-            self.mouseCoin = nil;
         })
     }
     
@@ -209,6 +207,7 @@ class UICatButton: UIButton {
                 });
             }
             if (self.animationStage == 0){
+                self.randomAnimationSelection = Int.random(in: 0...3);
                 self.setRandomCatAnimation();
             }
         }
@@ -224,7 +223,6 @@ class UICatButton: UIButton {
     
     var randomAnimationSelection:Int?
     func setRandomCatAnimation() {
-        randomAnimationSelection = Int.random(in: 0...3);
         if (randomAnimationSelection! > 2){
             self.imageContainerButton!.imageView!.transform = self.imageContainerButton!.imageView!.transform.rotated(by:-CGFloat.pi / 2.0);
             UIView.animate(withDuration: 1.75, delay: 0.0, options:[.curveEaseInOut, .repeat, .autoreverse], animations: {
@@ -271,6 +269,7 @@ class UICatButton: UIButton {
             self.imageContainerButton!.transform =  self.imageContainerButton!.transform.rotated(by: CGFloat.pi);
              self.frame = CGRect(x: self.getRadialXTargetPoint(parentFrame: self.superview!.frame, childFrame: self.frame), y: self.getRadialYTargetPoint(parentFrame: self.superview!.frame, childFrame: self.frame), width: 1.0, height: 1.0);
         }, completion: { _ in
+            self.imageContainerButton = nil;
             self.removeFromSuperview();
         });
     }
@@ -283,6 +282,7 @@ class UICatButton: UIButton {
         UIView.animate(withDuration: 2.5, delay: 0.125, options: .curveEaseIn, animations: {
             self.frame = CGRect(x: self.generateElevatedTargetX(parentFrame:self.superview!.frame, childFrame:self.frame, angle:self.angle!), y: self.generateElevatedTargetY(parentFrame:self.superview!.frame, childFrame:self.frame, angle:self.angle!), width: self.frame.width, height: self.frame.height);
         }, completion: { _ in
+            self.imageContainerButton = nil;
             self.removeFromSuperview();
         });
     }

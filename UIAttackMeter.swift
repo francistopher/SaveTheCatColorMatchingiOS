@@ -418,7 +418,6 @@ class UIAttackMeter:UICView {
     }
     
     func resetCat() {
-        cat!.setCat(named: "DeadCat", stage: 5);
         setupCat();
         cat!.setCat(named: "SmilingCat", stage: 5);
         virus!.superview!.bringSubviewToFront(virus!);
@@ -427,10 +426,10 @@ class UIAttackMeter:UICView {
     }
     
     func setupCat() {
+        cat = nil;
         cat = UICatButton(parentView: self, x: self.frame.width - self.frame.height, y: 0.0, width: self.frame.height, height: self.frame.height, backgroundColor: UIColor.clear);
         cat!.grown();
-        let newCatFrame:CGRect = CGRect(x: self.frame.minX + cat!.frame.minX, y: self.frame.minY + cat!.frame.minY, width: self.frame.height, height: self.frame.height);
-        cat!.frame = newCatFrame;
+        cat!.frame = CGRect(x: self.frame.minX + cat!.frame.minX, y: self.frame.minY + cat!.frame.minY, width: self.frame.height, height: self.frame.height);
         cat!.originalFrame = cat!.frame;
         self.superview!.addSubview(cat!);
         cat!.layer.borderWidth = 0.0;

@@ -14,7 +14,7 @@ class UISettingsMenu:UICView {
     var advertisement:UIAds?
     var leaderBoard:UILeadBoard?
     var multiplayer:UIMultiplayer?
-    var myCats:UIMoreCats?
+    var moreCats:UIMoreCats?
     var mouseCoin:UIMouseCoin?
     
     var spaceBetween:CGFloat = 0.0;
@@ -80,16 +80,16 @@ class UISettingsMenu:UICView {
     }
 
     func setupMoreCatsButton() {
-        myCats = UIMoreCats(parentView: self, x: 0.0, y: 0.0, width: self.frame.height, height: self.frame.height);
+        moreCats = UIMoreCats(parentView: self, x: 0.0, y: 0.0, width: self.frame.height, height: self.frame.height);
         if (ViewController.aspectRatio! == .ar19point5by9) {
-            myCats!.transform = myCats!.transform.scaledBy(x: 0.5, y: 0.5);
+            moreCats!.transform = moreCats!.transform.scaledBy(x: 0.5, y: 0.5);
         } else if (ViewController.aspectRatio! == .ar16by9) {
-            myCats!.transform = myCats!.transform.scaledBy(x: 0.55, y: 0.55);
+            moreCats!.transform = moreCats!.transform.scaledBy(x: 0.55, y: 0.55);
         } else {
-            myCats!.transform = myCats!.transform.scaledBy(x: 0.75, y: 0.75);
+            moreCats!.transform = moreCats!.transform.scaledBy(x: 0.75, y: 0.75);
         }
-        myCats!.originalFrame = myCats!.frame;
-        myCats!.reducedFrame = CGRect(x: self.frame.height * 0.5, y: self.frame.height * 0.5, width: 0.1, height: 0.1);
+        moreCats!.originalFrame = moreCats!.frame;
+        moreCats!.reducedFrame = CGRect(x: self.frame.height * 0.5, y: self.frame.height * 0.5, width: 0.1, height: 0.1);
     }
     
     func setupMouseCoinButton(){
@@ -104,7 +104,7 @@ class UISettingsMenu:UICView {
         self.advertisement!.frame = self.advertisement!.reducedFrame!;
         self.leaderBoard!.frame = self.leaderBoard!.reducedFrame!;
         self.multiplayer!.frame = self.multiplayer!.reducedFrame!;
-        self.myCats!.frame = self.myCats!.reducedFrame!;
+        self.moreCats!.frame = self.moreCats!.reducedFrame!;
         self.mouseCoin!.frame = self.mouseCoin!.reducedFrame!;
     }
     
@@ -113,7 +113,7 @@ class UISettingsMenu:UICView {
         self.advertisement!.frame = self.advertisement!.originalFrame!;
         self.leaderBoard!.frame = self.leaderBoard!.originalFrame!;
         self.multiplayer!.frame = self.multiplayer!.originalFrame!;
-        self.myCats!.frame = self.myCats!.originalFrame!;
+        self.moreCats!.frame = self.moreCats!.originalFrame!;
         self.mouseCoin!.frame = self.mouseCoin!.originalFrame!;
     }
     
@@ -124,8 +124,8 @@ class UISettingsMenu:UICView {
         leaderBoard!.originalFrame = leaderBoard!.frame;
         multiplayer!.frame = CGRect(x: self.advertisement!.frame.maxX + self.multiplayer!.frame.width + (spaceBetween * 2.0) - (self.layer.borderWidth * 0.5), y: self.multiplayer!.frame.minY, width: self.multiplayer!.frame.width, height: self.multiplayer!.frame.height);
         multiplayer!.originalFrame = multiplayer!.frame;
-        myCats!.frame = CGRect(x: self.advertisement!.frame.maxX + (self.multiplayer!.frame.width * 2.0) + (spaceBetween * 3.0) - (self.layer.borderWidth * 0.5), y: self.myCats!.frame.minY, width: self.myCats!.frame.width, height: self.myCats!.frame.height);
-        myCats!.originalFrame = myCats!.frame;
+        moreCats!.frame = CGRect(x: self.advertisement!.frame.maxX + (self.multiplayer!.frame.width * 2.0) + (spaceBetween * 3.0) - (self.layer.borderWidth * 0.5), y: self.moreCats!.frame.minY, width: self.moreCats!.frame.width, height: self.moreCats!.frame.height);
+        moreCats!.originalFrame = moreCats!.frame;
     }
     
     func setStyleAndElementsStyle() {

@@ -377,6 +377,9 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, GKMatchm
     }
     
     @objc func appMovedToBackground() {
+        if (self.settingsButton!.settingsMenu!.moreCats!.moreCatsVC!.isViewLoaded) {
+            self.settingsButton!.settingsMenu!.moreCats!.moreCatsVC!.hideCatButton();
+        }
         if (self.boardGame!.opponent == nil) {
             self.boardGame!.attackMeter!.pauseVirusMovement();
         }
@@ -388,6 +391,9 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, GKMatchm
     }
     
     @objc func appMovedToForeground() {
+        if (self.settingsButton!.settingsMenu!.moreCats!.moreCatsVC!.isViewLoaded) {
+            self.settingsButton!.settingsMenu!.moreCats!.moreCatsVC!.presentCatButton();
+        }
         if (self.gameCenterAuthentificationOver){
             self.viruses!.sway(immediately: true);
         }
@@ -538,6 +544,7 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, GKMatchm
         setSuccessGradientLayerStyle();
         settingsButton!.setStyle();
         settingsButton!.settingsMenu!.multiplayer!.setStyle();
+        settingsButton!.settingsMenu!.moreCats!.setCompiledStyle();
         if (settingsButton!.settingsMenu!.mouseCoin!.mouseCoinView!.backgroundColor!.cgColor != UIColor.clear.cgColor) {
             if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1){
                 settingsButton!.settingsMenu!.mouseCoin!.mouseCoinView!.backgroundColor = UIColor.white;

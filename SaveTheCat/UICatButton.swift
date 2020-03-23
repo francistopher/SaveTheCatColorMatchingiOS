@@ -11,12 +11,13 @@ import AVFoundation
 import GameKit
 
 enum Cat {
-    case fancy
     case standard
-    case ninja
+    case breading
 }
 
 class UICatButton: UIButton {
+    
+    static var selectedCat:Cat = .breading;
     
     var originalFrame:CGRect?;
     var previousFileName:String = "";
@@ -50,6 +51,22 @@ class UICatButton: UIButton {
         configureImageContainerButton();
         shrunk();
         self.setStyle();
+    }
+    
+    static func getCatFileName(named:String) -> String {
+        // Build cat directory string
+        var namedCatImage:String = "";
+        if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1){
+            namedCatImage += "light";
+        } else{
+            namedCatImage += "dark";
+        }
+        switch (selectedCat) {
+        case Cat.standard:
+            return namedCatImage + named;
+        case Cat.breading:
+            return namedCatImage + "Breading" + named;
+        }
     }
     
 
@@ -154,7 +171,7 @@ class UICatButton: UIButton {
     func setCat(named:String, stage:Int){
         // Save non empty strings only
         if (named != "" && named != "updateStyle") {
-            previousFileName = UIResults.getCatFileName(named:named) + ".png";
+            previousFileName = UICatButton.getCatFileName(named:named) + ".png";
         }
         if (named == "updateStyle") {
             if (previousFileName.contains("light")) {

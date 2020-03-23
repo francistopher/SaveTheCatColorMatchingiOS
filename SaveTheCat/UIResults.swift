@@ -12,7 +12,7 @@ import GameKit
 
 class UIResults: UICView {
     
-    static var selectedCat:Cat = .standard;
+    
     static var mouseCoins:Int64 = 0;
     
     var gameOverLabel:UICLabel?
@@ -96,24 +96,6 @@ class UIResults: UICView {
         contentView!.roundCorners(radius: contentView!.frame.width * 0.5, [.topLeft, .topRight], lineWidth: 0.0)
     }
     
-    static func getCatFileName(named:String) -> String {
-        // Build cat directory string
-        var namedCatImage:String = "";
-        if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1){
-            namedCatImage += "light";
-        } else{
-            namedCatImage += "dark";
-        }
-        switch (UIResults.selectedCat) {
-        case Cat.fancy:
-            return namedCatImage + "Fancy" + named;
-        case Cat.ninja:
-            return namedCatImage + "Ninja" + named;
-        case Cat.standard:
-            return namedCatImage + named;
-        }
-    }
-    
     func setupGameOverLabel() {
         self.gameOverLabel = UICLabel(parentView: contentView!, x: 0.0, y: 0.0, width: contentView!.frame.width + (self.frame.width / 4.0), height: unitHeight! * 2.0);
         gameOverLabel!.font = UIFont.boldSystemFont(ofSize: gameOverLabel!.frame.height * 0.40);
@@ -140,7 +122,7 @@ class UIResults: UICView {
     func setupLivedCatImage() {
         self.livedCatImageButton = UICButton(parentView: catsLivedLabel!, frame:CGRect( x: 0.0, y: 0.0, width: catsLivedLabel!.frame.width, height: catsLivedLabel!.frame.height * 1.30), backgroundColor: UIColor.clear);
         livedCatImageButton!.layer.borderWidth = 0.0;
-        livedCatImageButton!.setImage(UIImage(named: UIResults.getCatFileName(named:"CheeringCat.png")), for: .normal);
+        livedCatImageButton!.setImage(UIImage(named: UICatButton.getCatFileName(named:"CheeringCat.png")), for: .normal);
         livedCatImageButton!.imageView!.contentMode = UIView.ContentMode.scaleAspectFill;
         CenterController.center(childView: livedCatImageButton!, parentRect: catsLivedLabel!.frame, childRect: livedCatImageButton!.frame);
     }
@@ -162,7 +144,7 @@ class UIResults: UICView {
     func setupDeadCatImage() {
         self.deadCatImageButton = UICButton(parentView: catsDiedLabel!, frame:CGRect( x: 0.0, y: 0.0, width: catsDiedLabel!.frame.width, height: catsDiedLabel!.frame.height * 1.30), backgroundColor: UIColor.clear);
         deadCatImageButton!.layer.borderWidth = 0.0;
-        deadCatImageButton!.setImage(UIImage(named: UIResults.getCatFileName(named: "DeadCat.png")), for: .normal);
+        deadCatImageButton!.setImage(UIImage(named: UICatButton.getCatFileName(named: "DeadCat.png")), for: .normal);
         deadCatImageButton!.imageView!.contentMode = UIView.ContentMode.scaleAspectFill;
         CenterController.center(childView: deadCatImageButton!, parentRect: catsDiedLabel!.frame, childRect: deadCatImageButton!.frame);
     }
@@ -355,8 +337,8 @@ class UIResults: UICView {
             self.backgroundColor = UIColor.black;
             self.contentView!.backgroundColor = UIColor.white;
             self.gameOverLabel!.setStyle();
-            self.livedCatImageButton!.setImage(UIImage(named: UIResults.getCatFileName(named:"CheeringCat.png")), for: .normal);
-            self.deadCatImageButton!.setImage(UIImage(named: UIResults.getCatFileName(named: "DeadCat.png")), for: .normal);
+            self.livedCatImageButton!.setImage(UIImage(named: UICatButton.getCatFileName(named:"CheeringCat.png")), for: .normal);
+            self.deadCatImageButton!.setImage(UIImage(named: UICatButton.getCatFileName(named: "DeadCat.png")), for: .normal);
             self.catsLivedAmountLabel!.textColor = UIColor.black;
             self.catsDiedAmountLabel!.textColor = UIColor.black;
             self.stagesLabel!.textColor = UIColor.black;
@@ -369,8 +351,8 @@ class UIResults: UICView {
             self.backgroundColor = UIColor.white;
             self.contentView!.backgroundColor = UIColor.black;
             self.gameOverLabel!.setStyle();
-            self.livedCatImageButton!.setImage(UIImage(named: UIResults.getCatFileName(named:"CheeringCat.png")), for: .normal);
-            self.deadCatImageButton!.setImage(UIImage(named: UIResults.getCatFileName(named: "DeadCat.png")), for: .normal);
+            self.livedCatImageButton!.setImage(UIImage(named: UICatButton.getCatFileName(named:"CheeringCat.png")), for: .normal);
+            self.deadCatImageButton!.setImage(UIImage(named: UICatButton.getCatFileName(named: "DeadCat.png")), for: .normal);
             self.catsLivedAmountLabel!.textColor = UIColor.white;
             self.catsDiedAmountLabel!.textColor = UIColor.white;
             self.stagesLabel!.textColor = UIColor.white;

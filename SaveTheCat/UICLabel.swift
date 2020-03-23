@@ -12,6 +12,7 @@ import UIKit
 class UICLabel:UILabel {
     
     var isInverted:Bool = false;
+    var originalFrame:CGRect?
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -19,9 +20,10 @@ class UICLabel:UILabel {
     
     init(parentView:UIView, x:CGFloat, y:CGFloat, width:CGFloat, height:CGFloat){
         super.init(frame: CGRect(x: x, y: y, width: width, height: height))
+        parentView.addSubview(self);
+        self.originalFrame = frame;
         self.textAlignment = NSTextAlignment.center;
         self.setStyle()
-        parentView.addSubview(self);
     }
     
     func shrink() {

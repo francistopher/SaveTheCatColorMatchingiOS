@@ -68,14 +68,27 @@ class UIMoreCats: UIButton {
 class MoreCatsViewController:UIViewController {
     
     var contentView:UICView?
+    var catViewHandler:UICView?
+    var catLabelName:UICLabel?
+    
+    
     var hideButton:UICButton?
+    var infoButton:UICButton?
+    var previousButton:UICButton?
+    var nextButton:UICButton?
+    
     override func viewDidLoad() {
         super.viewDidLoad();
         setupMainView()
         setupContentView()
         setupHideButton()
+        setupInfoButton()
+        setupPreviousButton();
+        setupNextButton();
         setupPresentationCat()
+        setupCatViewHandler();
         setupCatLabelName();
+        setupPresentLabelNameAnimation();
     }
     
     func setupMainView() {
@@ -91,18 +104,14 @@ class MoreCatsViewController:UIViewController {
     }
     
     func setupHideButton() {
-        hideButton = UICButton(parentView: contentView!, frame: CGRect(x: contentView!.frame.width * 0.75, y: 0.0, width: contentView!.frame.width * 0.25, height: contentView!.frame.width * 0.125), backgroundColor: UIColor.red);
+        hideButton = UICButton(parentView: contentView!, frame: CGRect(x: contentView!.frame.width * 0.8, y: 0.0, width: contentView!.frame.width * 0.2, height: contentView!.frame.width * 0.12), backgroundColor: UIColor.red);
         hideButton!.addTarget(self, action: #selector(hideButtonSelector), for: .touchUpInside);
-        hideButton!.setTitle("Done", for: .normal);
+        hideButton!.setTitle("x", for: .normal);
         hideButton!.setTitleColor(UIColor.white, for: .normal);
         hideButton!.layer.cornerRadius = hideButton!.frame.height * 0.5;
         hideButton!.layer.borderWidth = contentView!.layer.borderWidth;
-        hideButton!.titleLabel!.font = UIFont.boldSystemFont(ofSize: hideButton!.frame.height * 0.4)
+        hideButton!.titleLabel!.font = UIFont.boldSystemFont(ofSize: hideButton!.frame.height * 0.75)
         hideButton!.layer.maskedCorners = [ .layerMinXMaxYCorner]
-    }
-    
-    func setupCatLabelName() {
-        
     }
     
     @objc func hideButtonSelector() {
@@ -113,6 +122,51 @@ class MoreCatsViewController:UIViewController {
         })
     }
     
+    func setupInfoButton() {
+        infoButton = UICButton(parentView: contentView!, frame: CGRect(x: 0.0, y: 0.0, width: contentView!.frame.width * 0.2, height: contentView!.frame.width * 0.12), backgroundColor: UIColor.systemBlue);
+        infoButton!.addTarget(self, action: #selector(infoButtonSelector), for: .touchUpInside);
+        infoButton!.setTitle("i", for: .normal);
+        infoButton!.setTitleColor(UIColor.white, for: .normal);
+        infoButton!.layer.cornerRadius = infoButton!.frame.height * 0.5;
+        infoButton!.layer.borderWidth = contentView!.layer.borderWidth;
+        infoButton!.titleLabel!.font = UIFont.boldSystemFont(ofSize: infoButton!.frame.height * 0.75)
+        infoButton!.layer.maskedCorners = [.layerMaxXMaxYCorner]
+    }
+    
+    @objc func infoButtonSelector() {
+        print("Selecting info button")
+    }
+    
+    func setupNextButton() {
+        nextButton = UICButton(parentView: contentView!, frame: CGRect(x:contentView!.frame.width * 0.8, y: contentView!.frame.height - contentView!.frame.width * 0.12, width: contentView!.frame.width * 0.2, height: contentView!.frame.width * 0.12), backgroundColor: UIColor.black);
+        nextButton!.addTarget(self, action: #selector(nextButtonSelector), for: .touchUpInside);
+        nextButton!.setTitle(">", for: .normal);
+        nextButton!.setTitleColor(UIColor.white, for: .normal);
+        nextButton!.layer.cornerRadius = nextButton!.frame.height * 0.5;
+        nextButton!.layer.borderWidth = contentView!.layer.borderWidth;
+        nextButton!.titleLabel!.font = UIFont.boldSystemFont(ofSize: nextButton!.frame.height * 0.75)
+        nextButton!.layer.maskedCorners = [.layerMinXMinYCorner]
+    }
+    
+    @objc func nextButtonSelector() {
+        print("Next button selected")
+    }
+    
+    func setupPreviousButton() {
+        previousButton = UICButton(parentView: contentView!, frame: CGRect(x: 0.0, y: contentView!.frame.height - contentView!.frame.width * 0.12, width: contentView!.frame.width * 0.2, height:  contentView!.frame.width * 0.12), backgroundColor: UIColor.black);
+        previousButton!.addTarget(self, action: #selector(previousButtonSelector), for: .touchUpInside);
+        previousButton!.setTitle("<", for: .normal);
+        previousButton!.setTitleColor(UIColor.white, for: .normal);
+        previousButton!.layer.cornerRadius = previousButton!.frame.height * 0.5;
+        previousButton!.layer.borderWidth = contentView!.layer.borderWidth;
+        previousButton!.titleLabel!.font = UIFont.boldSystemFont(ofSize: previousButton!.frame.height * 0.75)
+        previousButton!.layer.maskedCorners = [.layerMaxXMinYCorner]
+    }
+    
+    @objc func previousButtonSelector() {
+        print("Previous button selected")
+    }
+
     var presentationCatButton:UICatButton?
     var presentationCatButtonX:CGFloat?
     var presentationCatButtonY:CGFloat?
@@ -122,8 +176,43 @@ class MoreCatsViewController:UIViewController {
         presentationCatButtonX = (self.contentView!.frame.width - presentationCatButtonSideLength!) * 0.5;
         presentationCatButtonY = (self.contentView!.frame.height - presentationCatButtonSideLength!) * 0.5;
         presentationCatButton = UICatButton(parentView: contentView!, x: presentationCatButtonX!, y: presentationCatButtonY!, width: presentationCatButtonSideLength!, height: presentationCatButtonSideLength!, backgroundColor: UIColor.systemRed);
-        CenterController.center(childView: presentationCatButton!, parentRect: contentView!.frame, childRect: presentationCatButton!.frame);
         presentationCatButton!.imageContainerButton!.addTarget(self, action: #selector(presentationCatButtonSelector), for: .touchUpInside);
+        presentationCatButton!.clipsToBounds = true;
+    }
+    
+    func setupCatViewHandler() {
+        catViewHandler = UICView(parentView: contentView!, x: 0.0, y: presentationCatButton!.originalFrame!.minY, width: presentationCatButton!.originalFrame!.width, height: presentationCatButton!.originalFrame!.width, backgroundColor: UIColor.white);
+        catViewHandler!.layer.cornerRadius = presentationCatButton!.layer.cornerRadius * 0.75;
+        catViewHandler!.backgroundColor = UIColor.white;
+        CenterController.centerHorizontally(childView: catViewHandler!, parentRect: contentView!.frame, childRect: catViewHandler!.frame);
+        contentView!.bringSubviewToFront(presentationCatButton!);
+    }
+    
+    func setupCatLabelName() {
+        catLabelName = UICLabel(parentView: catViewHandler!, x: 0.0, y: presentationCatButton!.layer.borderWidth * 0.75, width: catViewHandler!.frame.width, height: (self.hideButton!.frame.height));
+        CenterController.centerHorizontally(childView: catLabelName!, parentRect: catViewHandler!.frame, childRect: catLabelName!.frame);
+        catLabelName!.layer.cornerRadius = catViewHandler!.layer.cornerRadius;
+        catLabelName!.backgroundColor = UIColor.white;
+        catLabelName!.text = "Standard Cat";
+        catLabelName!.clipsToBounds = true;
+        catLabelName!.font = UIFont.boldSystemFont(ofSize: catLabelName!.frame.height * 0.6);
+    }
+    
+    var presentLabelNameTimer:Timer?
+    var presentLabelNameAnimation:UIViewPropertyAnimator?
+    func setupPresentLabelNameAnimation () {
+        self.presentLabelNameAnimation = UIViewPropertyAnimator.init(duration: 1.0, curve: .easeOut, animations: {
+            self.catLabelName!.textColor = UIColor.black;
+            self.catLabelName!.layer.cornerRadius = self.catViewHandler!.layer.cornerRadius;
+            self.catViewHandler!.frame = CGRect(x: self.catViewHandler!.frame.minX, y: self.presentationCatButton!.frame.minY - (self.hideButton!.frame.height), width: self.presentationCatButton!.frame.width, height: self.presentationCatButton!.frame.height + (self.hideButton!.frame.height) * 2.0);
+            self.catViewHandler!.layer.cornerRadius = self.presentationCatButton!.layer.cornerRadius * 0.75;
+        })
+    }
+    
+    func setupPresentLabelNameTimer() {
+        presentLabelNameTimer = Timer.scheduledTimer(withTimeInterval: 1.125, repeats: false, block: { _ in
+            self.presentLabelNameAnimation!.startAnimation();
+        })
     }
     
     func presentCatButton() {
@@ -132,6 +221,7 @@ class MoreCatsViewController:UIViewController {
         presentationCatButton!.setRandomCatAnimation();
         presentationCatButton!.grow();
         presentationCatButton!.imageContainerButton!.grow();
+        setupPresentLabelNameTimer();
     }
     
     func hideCatButton() {

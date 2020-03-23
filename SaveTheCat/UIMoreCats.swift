@@ -76,6 +76,7 @@ class MoreCatsViewController:UIViewController {
     var infoButton:UICButton?
     var previousButton:UICButton?
     var nextButton:UICButton?
+    var controlButton:UICButton?
     
     override func viewDidLoad() {
         super.viewDidLoad();
@@ -83,11 +84,13 @@ class MoreCatsViewController:UIViewController {
         setupContentView()
         setupHideButton()
         setupInfoButton()
+        
+        setupPresentationCat()
+        setupCatViewHandler()
+        setupCatLabelName();
         setupPreviousButton();
         setupNextButton();
-        setupPresentationCat()
-        setupCatViewHandler();
-        setupCatLabelName();
+        setupControlButton();
         setupPresentLabelNameAnimation();
     }
     
@@ -198,14 +201,33 @@ class MoreCatsViewController:UIViewController {
         catLabelName!.font = UIFont.boldSystemFont(ofSize: catLabelName!.frame.height * 0.6);
     }
     
+    func setupControlButton() {
+        controlButton = UICButton(parentView: catViewHandler!, frame:CGRect(x: 0.0, y: catViewHandler!.frame.height - (presentationCatButton!.layer.borderWidth * 0.75) - self.catLabelName!.frame.height, width: catViewHandler!.frame.width * 0.8, height: self.hideButton!.frame.height), backgroundColor: UIColor.systemGreen);
+        CenterController.centerHorizontally(childView: controlButton!, parentRect: catViewHandler!.frame, childRect: controlButton!.frame);
+        controlButton!.layer.cornerRadius =  catViewHandler!.layer.cornerRadius * 0.5;
+        controlButton!.clipsToBounds = true;
+        controlButton!.titleLabel!.font = UIFont.boldSystemFont(ofSize: controlButton!.frame.height * 0.5);
+        controlButton!.addTarget(self, action: #selector(controlButtonSelector), for: .touchUpInside);
+        controlButton!.setTitle("Meow", for: .normal);
+        controlButton!.alpha = 0.0;
+    }
+    
+    @objc func controlButtonSelector() {
+        SoundController.kittenMeow();
+    }
+    
     var presentLabelNameTimer:Timer?
     var presentLabelNameAnimation:UIViewPropertyAnimator?
     func setupPresentLabelNameAnimation () {
         self.presentLabelNameAnimation = UIViewPropertyAnimator.init(duration: 1.0, curve: .easeOut, animations: {
             self.catLabelName!.textColor = UIColor.black;
-            self.catLabelName!.layer.cornerRadius = self.catViewHandler!.layer.cornerRadius;
             self.catViewHandler!.frame = CGRect(x: self.catViewHandler!.frame.minX, y: self.presentationCatButton!.frame.minY - (self.hideButton!.frame.height), width: self.presentationCatButton!.frame.width, height: self.presentationCatButton!.frame.height + (self.hideButton!.frame.height) * 2.0);
             self.catViewHandler!.layer.cornerRadius = self.presentationCatButton!.layer.cornerRadius * 0.75;
+            // Crap
+            self.controlButton!.setTitleColor(UIColor.black, for: .normal);
+            self.controlButton!.frame = CGRect(x: self.controlButton!.frame.minX, y: self.catViewHandler!.frame.height - (self.presentationCatButton!.layer.borderWidth * 0.75) - self.catLabelName!.frame.height + self.catViewHandler!.layer.borderWidth, width: self.catViewHandler!.frame.width * 0.8, height: self.hideButton!.frame.height * 1.05);
+            self.controlButton!.layer.cornerRadius =  self.catViewHandler!.layer.cornerRadius * 0.5;
+            self.controlButton!.alpha = 1.0;
         })
     }
     

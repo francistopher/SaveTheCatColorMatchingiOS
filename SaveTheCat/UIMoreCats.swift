@@ -274,11 +274,6 @@ class MoreCatsViewController:UIViewController {
         previousButton!.setStyle();
         nextButton!.setStyle();
         controlButton!.setStyle();
-        if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1) {
-            controlButton!.setTitleColor(UIColor.white, for: .normal);
-        } else {
-            controlButton!.setTitleColor(UIColor.black, for: .normal);
-        }
     }
     
 }

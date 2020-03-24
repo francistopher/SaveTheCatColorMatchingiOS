@@ -13,11 +13,13 @@ import GameKit
 enum Cat {
     case standard
     case breading
+    case taco
+    case egyptian
 }
 
 class UICatButton: UIButton {
     
-    static var selectedCat:Cat = .breading;
+    static var selectedCat:Cat = .egyptian;
     
     var originalFrame:CGRect?;
     var previousFileName:String = "";
@@ -66,6 +68,10 @@ class UICatButton: UIButton {
             return namedCatImage + named;
         case Cat.breading:
             return namedCatImage + "Breading" + named;
+        case Cat.taco:
+            return namedCatImage + "Taco" + named;
+        case Cat.egyptian:
+            return namedCatImage + "Egyptian" + named;
         }
     }
     

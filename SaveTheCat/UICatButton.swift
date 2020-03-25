@@ -15,11 +15,12 @@ enum Cat {
     case breading
     case taco
     case egyptian
+    case supeR
 }
 
 class UICatButton: UIButton {
     
-    static var selectedCat:Cat = .egyptian;
+    static var selectedCat:Cat = .supeR;
     
     var originalFrame:CGRect?;
     var previousFileName:String = "";
@@ -72,6 +73,8 @@ class UICatButton: UIButton {
             return namedCatImage + "Taco" + named;
         case Cat.egyptian:
             return namedCatImage + "Egyptian" + named;
+        case Cat.supeR:
+            return namedCatImage + "Super" + named;
         }
     }
     

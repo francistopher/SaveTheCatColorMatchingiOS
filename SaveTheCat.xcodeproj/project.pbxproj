@@ -113,6 +113,12 @@
 		B83EAA6F242A6B630041CE31 /* lightEgyptianSmilingCat.png in Resources */ = {isa = PBXBuildFile; fileRef = B83EAA69242A6B630041CE31 /* lightEgyptianSmilingCat.png */; };
 		B83EAA70242A6B630041CE31 /* darkEgyptianSmilingCat.png in Resources */ = {isa = PBXBuildFile; fileRef = B83EAA6A242A6B630041CE31 /* darkEgyptianSmilingCat.png */; };
 		B83EAA71242A6B630041CE31 /* darkEgyptianDeadCat.png in Resources */ = {isa = PBXBuildFile; fileRef = B83EAA6B242A6B630041CE31 /* darkEgyptianDeadCat.png */; };
+		B83EAA79242AA5FB0041CE31 /* darkSuperSmilingCat.png in Resources */ = {isa = PBXBuildFile; fileRef = B83EAA73242AA5FB0041CE31 /* darkSuperSmilingCat.png */; };
+		B83EAA7A242AA5FB0041CE31 /* lightSuperSmilingCat.png in Resources */ = {isa = PBXBuildFile; fileRef = B83EAA74242AA5FB0041CE31 /* lightSuperSmilingCat.png */; };
+		B83EAA7B242AA5FB0041CE31 /* darkSuperDeadCat.png in Resources */ = {isa = PBXBuildFile; fileRef = B83EAA75242AA5FB0041CE31 /* darkSuperDeadCat.png */; };
+		B83EAA7C242AA5FB0041CE31 /* darkSuperCheeringCat.png in Resources */ = {isa = PBXBuildFile; fileRef = B83EAA76242AA5FB0041CE31 /* darkSuperCheeringCat.png */; };
+		B83EAA7D242AA5FB0041CE31 /* lightSuperCheeringCat.png in Resources */ = {isa = PBXBuildFile; fileRef = B83EAA77242AA5FB0041CE31 /* lightSuperCheeringCat.png */; };
+		B83EAA7E242AA5FB0041CE31 /* lightSuperDeadCat.png in Resources */ = {isa = PBXBuildFile; fileRef = B83EAA78242AA5FB0041CE31 /* lightSuperDeadCat.png */; };
 		B84032382414150D0020D9EA /* UISettingsMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = B84032372414150D0020D9EA /* UISettingsMenu.swift */; };
 		B840323C241437C30020D9EA /* UIAds.swift in Sources */ = {isa = PBXBuildFile; fileRef = B840323B241437C30020D9EA /* UIAds.swift */; };
 		B840323F241438780020D9EA /* UILeadBoard.swift in Sources */ = {isa = PBXBuildFile; fileRef = B840323D241438780020D9EA /* UILeadBoard.swift */; };
@@ -251,6 +257,12 @@
 		B83EAA69242A6B630041CE31 /* lightEgyptianSmilingCat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = lightEgyptianSmilingCat.png; path = SaveTheCat/lightEgyptianSmilingCat.png; sourceTree = "<group>"; };
 		B83EAA6A242A6B630041CE31 /* darkEgyptianSmilingCat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = darkEgyptianSmilingCat.png; path = SaveTheCat/darkEgyptianSmilingCat.png; sourceTree = "<group>"; };
 		B83EAA6B242A6B630041CE31 /* darkEgyptianDeadCat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = darkEgyptianDeadCat.png; path = SaveTheCat/darkEgyptianDeadCat.png; sourceTree = "<group>"; };
+		B83EAA73242AA5FB0041CE31 /* darkSuperSmilingCat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = darkSuperSmilingCat.png; path = SaveTheCat/darkSuperSmilingCat.png; sourceTree = "<group>"; };
+		B83EAA74242AA5FB0041CE31 /* lightSuperSmilingCat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = lightSuperSmilingCat.png; path = SaveTheCat/lightSuperSmilingCat.png; sourceTree = "<group>"; };
+		B83EAA75242AA5FB0041CE31 /* darkSuperDeadCat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = darkSuperDeadCat.png; path = SaveTheCat/darkSuperDeadCat.png; sourceTree = "<group>"; };
+		B83EAA76242AA5FB0041CE31 /* darkSuperCheeringCat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = darkSuperCheeringCat.png; path = SaveTheCat/darkSuperCheeringCat.png; sourceTree = "<group>"; };
+		B83EAA77242AA5FB0041CE31 /* lightSuperCheeringCat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = lightSuperCheeringCat.png; path = SaveTheCat/lightSuperCheeringCat.png; sourceTree = "<group>"; };
+		B83EAA78242AA5FB0041CE31 /* lightSuperDeadCat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = lightSuperDeadCat.png; path = SaveTheCat/lightSuperDeadCat.png; sourceTree = "<group>"; };
 		B84032372414150D0020D9EA /* UISettingsMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UISettingsMenu.swift; path = SaveTheCat/UISettingsMenu.swift; sourceTree = "<group>"; };
 		B840323B241437C30020D9EA /* UIAds.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UIAds.swift; path = SaveTheCat/UIAds.swift; sourceTree = "<group>"; };
 		B840323D241438780020D9EA /* UILeadBoard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UILeadBoard.swift; path = SaveTheCat/UILeadBoard.swift; sourceTree = "<group>"; };
@@ -369,6 +381,7 @@
 		B83B038B241155AF00EC4BAD /* Cats */ = {
 			isa = PBXGroup;
 			children = (
+				B83EAA72242AA5DB0041CE31 /* Super */,
 				B83EAA65242A6B4B0041CE31 /* Egyptian */,
 				B8415051242976C900B24F84 /* Taco */,
 				B83B038E2411566F00EC4BAD /* Standard */,
@@ -602,6 +615,19 @@
 			name = Egyptian;
 			sourceTree = "<group>";
 		};
+		B83EAA72242AA5DB0041CE31 /* Super */ = {
+			isa = PBXGroup;
+			children = (
+				B83EAA76242AA5FB0041CE31 /* darkSuperCheeringCat.png */,
+				B83EAA75242AA5FB0041CE31 /* darkSuperDeadCat.png */,
+				B83EAA73242AA5FB0041CE31 /* darkSuperSmilingCat.png */,
+				B83EAA77242AA5FB0041CE31 /* lightSuperCheeringCat.png */,
+				B83EAA78242AA5FB0041CE31 /* lightSuperDeadCat.png */,
+				B83EAA74242AA5FB0041CE31 /* lightSuperSmilingCat.png */,
+			);
+			name = Super;
+			sourceTree = "<group>";
+		};
 		B841504024290A3300B24F84 /* Heart */ = {
 			isa = PBXGroup;
 			children = (
@@ -749,6 +775,7 @@
 				B841504B242924C400B24F84 /* lightBreadingDeadCat.png in Resources */,
 				B83BC3E32416B1C30026D7F6 /* darkGlovePointer.png in Resources */,
 				B8F6C9B8242164FC00CD668C /* lightCatIntro.png in Resources */,
+				B83EAA7A242AA5FB0041CE31 /* lightSuperSmilingCat.png in Resources */,
 				B83B037E2411551300EC4BAD /* lightDeadCat.png in Resources */,
 				B83B03FB2411877E00EC4BAD /* Icon-60@3x.png in Resources */,
 				B83B03F32411877E00EC4BAD /* Icon-29@1x.png in Resources */,
@@ -758,6 +785,7 @@
 				B841504D242924C400B24F84 /* lightBreadingCheeringCat.png in Resources */,
 				B80C9A392427D82F00B4E229 /* darkMoreCats.png in Resources */,
 				B83B037B2411551300EC4BAD /* lightNinjaSmilingCat.png in Resources */,
+				B83EAA7E242AA5FB0041CE31 /* lightSuperDeadCat.png in Resources */,
 				B83B03782411551300EC4BAD /* lightNoAds.png in Resources */,
 				B83B033E241154B500EC4BAD /* coinEarned.mp3 in Resources */,
 				B83B03752411551300EC4BAD /* lightFancyCheeringCat.png in Resources */,
@@ -767,6 +795,7 @@
 				B83B03F92411877E00EC4BAD /* Icon-58@2x.png in Resources */,
 				B8403244241439210020D9EA /* multiPlayer.png in Resources */,
 				B83B04022413221E00EC4BAD /* gameCenter.png in Resources */,
+				B83EAA7B242AA5FB0041CE31 /* darkSuperDeadCat.png in Resources */,
 				B83B03EF2411877E00EC4BAD /* Icon-40@1x.png in Resources */,
 				B83B035B241154EB00EC4BAD /* darkNinjaSmilingCat.png in Resources */,
 				B83B035A241154EB00EC4BAD /* darkNinjaDeadCat.png in Resources */,
@@ -786,6 +815,7 @@
 				B83B03802411551300EC4BAD /* heart.png in Resources */,
 				B83B03F62411877E00EC4BAD /* Icon-76@1x.png in Resources */,
 				B83B03862411551300EC4BAD /* lightFancyDeadCat.png in Resources */,
+				B83EAA79242AA5FB0041CE31 /* darkSuperSmilingCat.png in Resources */,
 				B83B034C241154D700EC4BAD /* darkFancyDeadCat.png in Resources */,
 				B840324724143B540020D9EA /* darkLeaderBoard.png in Resources */,
 				B8F6C9C32423177A00CD668C /* cuteLaugh.mp3 in Resources */,
@@ -809,6 +839,8 @@
 				B83B03D024115C9500EC4BAD /* Assets.xcassets in Resources */,
 				B83BC3E52416B1C30026D7F6 /* lightGloveTap.png in Resources */,
 				B841504F242924C400B24F84 /* lightBreadingSmilingCat.png in Resources */,
+				B83EAA7D242AA5FB0041CE31 /* lightSuperCheeringCat.png in Resources */,
+				B83EAA7C242AA5FB0041CE31 /* darkSuperCheeringCat.png in Resources */,
 				B83BC405241BEAC30026D7F6 /* yesiCloud.png in Resources */,
 				B83B034E241154D700EC4BAD /* darkFancySmilingCat.png in Resources */,
 				B83B03F22411877E00EC4BAD /* Icon-120@2x.png in Resources */,

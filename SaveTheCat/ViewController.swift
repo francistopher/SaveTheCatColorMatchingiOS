@@ -33,10 +33,12 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, GKMatchm
         print("A match was found????")
     }
     
+    var myCats:[Cat:Int8] = [.standard:1, .breading:0, .taco:0, .egyptian:0, .supeR:0, .chicken:0, .cool:0, .ninja:0, .fat:0]
     var firedITunesStatus:Bool = false;
     var isiCloudReachable:Bool = false;
     var isInternetReachable:Bool = false;
     func reachabilityChanged(_ isReachable: Bool) {
+        print("INTERNET CONNECTIVITY CHECKED")
         if (isReachable) {
             self.isInternetReachable = true;
             // Display Internet Message
@@ -56,6 +58,10 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, GKMatchm
             // No internet mouse coinds
             settingsButton!.settingsMenu!.mouseCoin!.setMouseCoinValue(newValue: 0);
         }
+    }
+    
+    static func getRandomCat() -> Cat {
+        return ViewController.staticSelf!.myCats.filter{$1 > 0}.randomElement()!.0;
     }
     
     func gameCenterViewControllerDidFinish(_ gameCenterViewController: GKGameCenterViewController) {

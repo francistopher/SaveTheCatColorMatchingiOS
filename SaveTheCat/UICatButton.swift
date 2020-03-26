@@ -24,8 +24,7 @@ enum Cat {
 
 class UICatButton: UIButton {
     
-    static var selectedCat:Cat = .fat;
-    
+    var selectedCat:Cat = ViewController.getRandomCat();
     var originalFrame:CGRect?;
     var previousFileName:String = "";
     var animationStage:Int = 0;
@@ -60,32 +59,34 @@ class UICatButton: UIButton {
         self.setStyle();
     }
     
-    static func getCatFileName(named:String) -> String {
+    static func getCatFileName(named:String, selectedCat:Cat) -> String {
         // Build cat directory string
         var namedCatImage:String = "";
+        // Select current style
         if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1){
             namedCatImage += "light";
         } else{
             namedCatImage += "dark";
         }
+        // Selecting the cat image
         switch (selectedCat) {
-        case Cat.standard:
+        case .standard:
             return namedCatImage + named;
-        case Cat.breading:
+        case .breading:
             return namedCatImage + "Breading" + named;
-        case Cat.taco:
+        case .taco:
             return namedCatImage + "Taco" + named;
-        case Cat.egyptian:
+        case .egyptian:
             return namedCatImage + "Egyptian" + named;
-        case Cat.supeR:
+        case .supeR:
             return namedCatImage + "Super" + named;
-        case Cat.chicken:
+        case .chicken:
             return namedCatImage + "Chicken" + named;
-        case Cat.cool:
+        case .cool:
             return namedCatImage + "Cool" + named;
-        case Cat.ninja:
+        case .ninja:
             return namedCatImage + "Ninja" + named;
-        case Cat.fat:
+        case .fat:
             return namedCatImage + "Fat" + named;
         }
     }
@@ -192,7 +193,7 @@ class UICatButton: UIButton {
     func setCat(named:String, stage:Int){
         // Save non empty strings only
         if (named != "" && named != "updateStyle") {
-            previousFileName = UICatButton.getCatFileName(named:named) + ".png";
+            previousFileName = UICatButton.getCatFileName(named:named, selectedCat: selectedCat) + ".png";
         }
         if (named == "updateStyle") {
             if (previousFileName.contains("light")) {

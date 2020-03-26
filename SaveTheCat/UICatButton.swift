@@ -102,6 +102,7 @@ class UICatButton: UIButton {
     var mouseCoinY:CGFloat?
     func giveMouseCoin(withNoise:Bool) {
         // Generate mouse coin
+        settingsMouseCoinFrame = ViewController.settingsButton!.settingsMenu!.mouseCoin!.frame;
         mouseCoin = UIMouseCoin(parentView: self.imageContainerButton!, x: 0.0, y: 0.0, width: self.imageContainerButton!.frame.width / 4.0, height: self.imageContainerButton!.frame.height / 4.0);
         mouseCoin!.isSelectable = false;
         CenterController.center(childView: mouseCoin!, parentRect: imageContainerButton!.frame, childRect: mouseCoin!.frame);

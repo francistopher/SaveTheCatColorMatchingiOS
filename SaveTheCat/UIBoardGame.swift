@@ -761,6 +761,7 @@ class UIBoardGame: UIView, GKMatchDelegate {
                 promote();
                 return;
             } else {
+                myLiveMeter!.incrementLivesLeftCount(catButton: catButton, forOpponent: false);
                 self.attackMeter!.sendVirusToStart();
                 maintain();
                 return;
@@ -866,11 +867,11 @@ class UIBoardGame: UIView, GKMatchDelegate {
     func maintain() {
         let countOfAliveCatButtons:Int = cats.countOfAliveCatButtons();
         var newRound:Int = 1;
-        while (newRound != currentRound) {
+        while (true) {
             let newRoundRowsAndColumns:[Int] = getRowsAndColumns(currentStage: newRound);
             let product:Int = newRoundRowsAndColumns[0] * newRoundRowsAndColumns[1];
-            if (product == countOfAliveCatButtons) {
-                currentRound = newRound;
+            if (countOfAliveCatButtons < product) {
+                currentRound = newRound - 1;
                 break;
             }
             newRound += 1;

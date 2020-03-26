@@ -60,6 +60,14 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, GKMatchm
         }
     }
     
+    static func unSelectSelectedCat() {
+        for (cat, value) in ViewController.staticSelf!.myCats {
+            if (value > 0) {
+                ViewController.staticSelf!.myCats[cat] = -value;
+            }
+        }
+    }
+    
     static func getSelectedCatsCount() -> Int {
         return ViewController.staticSelf!.myCats.filter{$1 > 0}.count;
     }

@@ -23,7 +23,6 @@ class UICatButtons {
         catButton = UICatButton(parentView: parent, x: frame.minX, y: frame.minY, width: frame.width, height: frame.height, backgroundColor: backgroundColor);
         catButton!.settingsButton = ViewController.settingsButton!;
         catButton!.settingsMenuFrame = ViewController.settingsButton!.settingsMenu!.frame;
-        catButton!.settingsMouseCoinFrame = ViewController.settingsButton!.settingsMenu!.mouseCoin!.frame;
         catButton!.grow();
         catButton!.imageContainerButton!.grow();
         catButton!.setCat(named: "SmilingCat", stage:0);

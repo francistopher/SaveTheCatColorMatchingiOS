@@ -85,7 +85,7 @@ class UIMouseCoin: UICButton {
             updateMouseCoinValueTimer = nil;
             updateMouseCoinValueTimer = Timer.scheduledTimer(withTimeInterval: timeRate, repeats: true, block: { _ in
                 if (timeCounter > 1.0 && UIResults.mouseCoins == newValue) {
-                    if (ViewController.settingsButton!.isPressed) {
+                    if (ViewController.settingsButton!.isPressed && ViewController.settingsButton!.settingsMenu!.moreCats!.moreCatsVC!.isViewLoaded) {
                         self.mouseCoinView!.alpha = 0.99;
                         ViewController.settingsButton!.settingsMenu!.mouseCoin!.sendActions(for: .touchUpInside);
                     }

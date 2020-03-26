@@ -69,7 +69,7 @@ class UIMoreCats: UIButton {
 class MoreCatsViewController:UIViewController {
     var displayedCatIndex:Int = -1;
     var catNames:[String] = ["Standard Cat", "Cat Breading", "Taco Cat", "Egyptian Cat", "Super Cat", "Chicken Cat", "Cool Cat", "Ninja Cat", "Fat Cat"];
-    var catPrices:[Int] = [0, 720, 720, 720, 720, 720, 720, 720, 360];
+    var catPrices:[Int] = [0, 360, 360, 360, 360, 360, 360, 360, 360];
     var catTypes:[Cat] = [.standard, .breading, .taco, .egyptian, .supeR, .chicken, .cool, .ninja, .fat];
     var contentView:UICView?
     var catViewHandler:UICView?
@@ -106,16 +106,17 @@ class MoreCatsViewController:UIViewController {
         purchaseAlert!.addAction(UIAlertAction(title: "Buy", style: .default, handler: { _ in
             self.currentSelectionValue = ViewController.staticSelf!.myCats[self.catTypes[self.displayedCatIndex]]!;
             if (self.currentSelectionValue == 0) {
-                ViewController.staticSelf!.myCats[self.catTypes[self.displayedCatIndex]] = -1;
-                self.updateCatImageNameAndStatus();
+                // Send purchase only if the internet exists
                 if (ViewController.staticSelf!.isInternetReachable) {
+                    // Set the value to hidden selected
+                    ViewController.staticSelf!.myCats[self.catTypes[self.displayedCatIndex]] = -1;
+                    // Update my cat purchase status
+                    self.updateCatImageNameAndStatus();
+                    // Update mouse coin value
                     ViewController.settingsButton!.settingsMenu!.mouseCoin!.setMouseCoinValue(newValue: UIResults.mouseCoins - Int64(self.catPrices[self.displayedCatIndex]));
                 }
                 ViewController.settingsButton!.settingsMenu!.mouseCoin!.mouseCoinView!.fadeIn();
             }
-            
-            
-            
         }))
         purchaseAlert!.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil));
     }
@@ -248,13 +249,13 @@ class MoreCatsViewController:UIViewController {
             if (currentSelectionValue! > 0) {
                 ViewController.staticSelf!.myCats[cat] = -1 * currentSelectionValue!;
             }
-            // Set current cat value to positive
-            currentSelectionValue = ViewController.staticSelf!.myCats[catTypes[displayedCatIndex]]!;
-            ViewController.staticSelf!.myCats[catTypes[displayedCatIndex]] = abs(currentSelectionValue!);
-            // Update selection button
-            selectionButton!.backgroundColor = UIColor.systemRed;
-            selectionButton!.setTitle("Unselect", for: .normal);
         }
+        // Set current cat value to positive
+        currentSelectionValue = ViewController.staticSelf!.myCats[catTypes[displayedCatIndex]]!;
+        ViewController.staticSelf!.myCats[catTypes[displayedCatIndex]] = abs(currentSelectionValue!);
+        // Update display
+        updateCatImageNameAndStatus();
+        ViewController.staticSelf!.boardGame!.cats.updateUIStyle();
         
     }
     

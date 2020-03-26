@@ -81,9 +81,11 @@ class MoreCatsViewController:UIViewController {
     var nextButton:UICButton?
     var selectionButton:UICButton?
     
+    var purchaseAlert:UIAlertController?
+    var keyValueStore:NSUbiquitousKeyValueStore = NSUbiquitousKeyValueStore();
+    
     override func viewDidLoad() {
         super.viewDidLoad();
-        setupCatTypesDict();
         setupMainView()
         setupContentView()
         setupHideButton()
@@ -95,13 +97,28 @@ class MoreCatsViewController:UIViewController {
         setupNextButton();
         setupSelectionButton();
         setupPresentLabelNameAnimation();
+        setupPurchaseAlert();
         setCompiledStyle();
     }
     
-    func setupCatTypesDict() {
-        
+    func setupPurchaseAlert() {
+        purchaseAlert = UIAlertController(title: "Cat Purchase", message: "", preferredStyle: .alert);
+        purchaseAlert!.addAction(UIAlertAction(title: "Buy", style: .default, handler: { _ in
+            self.currentSelectionValue = ViewController.staticSelf!.myCats[self.catTypes[self.displayedCatIndex]]!;
+            if (self.currentSelectionValue == 0) {
+                ViewController.staticSelf!.myCats[self.catTypes[self.displayedCatIndex]] = -1;
+                self.updateCatImageNameAndStatus();
+                if (ViewController.staticSelf!.isInternetReachable) {
+                    ViewController.settingsButton!.settingsMenu!.mouseCoin!.setMouseCoinValue(newValue: UIResults.mouseCoins - Int64(self.catPrices[self.displayedCatIndex]));
+                }
+                ViewController.settingsButton!.settingsMenu!.mouseCoin!.mouseCoinView!.fadeIn();
+            }
+            
+            
+            
+        }))
+        purchaseAlert!.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil));
     }
-    
     
     func setupMainView() {
         view.backgroundColor = UIColor.clear;
@@ -167,9 +184,9 @@ class MoreCatsViewController:UIViewController {
     }
     
     func updateCatImageNameAndStatus() {
-        catLabelName!.text = catNames[displayedCatIndex];
+        
         setPresentationCat(cat: catTypes[displayedCatIndex]);
-        setSelectionButtonText();
+        
     }
     
     var currentSelectionValue:Int8?
@@ -183,11 +200,20 @@ class MoreCatsViewController:UIViewController {
             selectionButton!.setTitle(repositionMouseCoinAndGetOffer(), for: .normal);
             selectionButton!.backgroundColor = UIColor.systemOrange;
             mouseCoin!.alpha = 1.0;
+            setPurchaseAlertMessage();
         } else {
             selectionButton!.setTitle("Select", for: .normal);
             selectionButton!.backgroundColor = UIColor.systemGreen;
             mouseCoin!.alpha = 0.0;
         }
+    }
+    
+    var purchaseAlertMessage:String?
+    func setPurchaseAlertMessage() {
+        purchaseAlertMessage = "Do you want to buy ";
+        purchaseAlertMessage! += "\(catNames[displayedCatIndex])"
+        purchaseAlertMessage! += " for \(catPrices[displayedCatIndex]) Mouse Coins?"
+        purchaseAlert!.message = purchaseAlertMessage!;
     }
     
     var offer:String?
@@ -313,6 +339,7 @@ class MoreCatsViewController:UIViewController {
             unselectCat();
         } else {
             print("Get cat for x mouse coins!!!");
+            self.present(purchaseAlert!, animated: true, completion: nil);
         }
     }
     
@@ -337,6 +364,8 @@ class MoreCatsViewController:UIViewController {
         displayedCatIndex = catTypes.firstIndex(of: cat)!;
         catLabelName!.text = catNames[displayedCatIndex];
         presentationCatButton!.setCat(named: "SmilingCat", stage: 3);
+        catLabelName!.text = catNames[displayedCatIndex];
+        setSelectionButtonText();
     }
     
     func presentCatButton() {

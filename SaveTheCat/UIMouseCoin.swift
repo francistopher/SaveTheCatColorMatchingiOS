@@ -64,7 +64,6 @@ class UIMouseCoin: UICButton {
     }
     
     func setMouseCoinValue(newValue:Int64) {
-        var difference:Int64 = 0;
         var timeCounter:Double = 0.0;
         var timeRate:Double = 0.0;
         
@@ -72,11 +71,11 @@ class UIMouseCoin: UICButton {
             return UIResults.mouseCoins < newValue;
         }
         
-        func setDifference() {
+        func getDifference() -> Int64 {
             if (isDifferencePositive()) {
-                difference = newValue - UIResults.mouseCoins;
+                return newValue - UIResults.mouseCoins;
             } else {
-                difference =  UIResults.mouseCoins - newValue;
+                return UIResults.mouseCoins - newValue;
                 
             }
         }
@@ -84,23 +83,38 @@ class UIMouseCoin: UICButton {
         func setupUpdateMouseCoinValueAnimation() {
             updateMouseCoinValueTimer?.invalidate();
             updateMouseCoinValueTimer = nil;
-            updateMouseCoinValueTimer = Timer.scheduledTimer(withTimeInterval: 0.001, repeats: true, block: { _ in
+            updateMouseCoinValueTimer = Timer.scheduledTimer(withTimeInterval: timeRate, repeats: true, block: { _ in
                 if (timeCounter > 1.0 && UIResults.mouseCoins == newValue) {
+                    if (ViewController.settingsButton!.isPressed) {
+                        self.mouseCoinView!.alpha = 0.99;
+                        ViewController.settingsButton!.settingsMenu!.mouseCoin!.sendActions(for: .touchUpInside);
+                    }
                     self.updateMouseCoinValueTimer!.invalidate();
                 } else {
                     if (isDifferencePositive()) {
-                        UIResults.mouseCoins += 1;
+                        if (getDifference() > 10) {
+                            UIResults.mouseCoins += 10;
+                        } else {
+                            UIResults.mouseCoins += 1;
+                        }
+                        
                     } else {
-                        UIResults.mouseCoins -= 1;
+                        if (getDifference() > 10) {
+                            UIResults.mouseCoins -= 10;
+                        } else {
+                            UIResults.mouseCoins -= 1;
+                        }
                     }
                     self.amountLabel!.text = "\(UIResults.mouseCoins)";
                 }
                 timeCounter += timeRate;
             })
         }
-        
-        setDifference();
-        timeRate = 1.0 / Double(difference);
+        if (getDifference() > 10) {
+            timeRate = 1.0 / Double(getDifference()) * 10.0;
+        } else {
+            timeRate = 1.0 / Double(getDifference());
+        }
         timeCounter = timeRate;
         setupUpdateMouseCoinValueAnimation();
         print("MESSAGE: REAL VALUE \(newValue)");

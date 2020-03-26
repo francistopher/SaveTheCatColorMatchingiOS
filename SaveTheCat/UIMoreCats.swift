@@ -369,7 +369,9 @@ class MoreCatsViewController:UIViewController {
     }
     
     func presentCatButton() {
-        setPresentationCat(cat: ViewController.getRandomCat());
+        if (displayedCatIndex == -1) {
+            setPresentationCat(cat: ViewController.getRandomCat());
+        }
         presentationCatButton!.randomAnimationSelection = 0;
         presentationCatButton!.setRandomCatAnimation();
         presentationCatButton!.grow();

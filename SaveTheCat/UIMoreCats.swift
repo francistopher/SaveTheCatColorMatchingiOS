@@ -68,8 +68,9 @@ class UIMoreCats: UIButton {
 
 class MoreCatsViewController:UIViewController {
     var displayedCatIndex:Int = -1;
-    var catNames:[String] = ["Standard Cat", "Cat Breading", "Taco Cat", "Egyptian Cat", "Super Cat", "Chicken Cat", "Cool Cat", "Ninja Cat", "Fat Cat"]
-    var catTypes:[Cat] = [.standard, .breading, .taco, .egyptian, .supeR, .chicken, .cool, .ninja, .fat]
+    var catNames:[String] = ["Standard Cat", "Cat Breading", "Taco Cat", "Egyptian Cat", "Super Cat", "Chicken Cat", "Cool Cat", "Ninja Cat", "Fat Cat"];
+    var catPrices:[Int] = [0, 720, 720, 720, 720, 720, 720, 720, 360];
+    var catTypes:[Cat] = [.standard, .breading, .taco, .egyptian, .supeR, .chicken, .cool, .ninja, .fat];
     var contentView:UICView?
     var catViewHandler:UICView?
     var catLabelName:UICLabel?
@@ -177,13 +178,30 @@ class MoreCatsViewController:UIViewController {
         if (currentSelectionValue! > 0) {
             selectionButton!.setTitle("Unselect", for: .normal);
             selectionButton!.backgroundColor = UIColor.systemRed;
+            mouseCoin!.alpha = 0.0;
         } else if (currentSelectionValue! == 0) {
-            selectionButton!.setTitle("Get for x MCs", for: .normal);
+            selectionButton!.setTitle(repositionMouseCoinAndGetOffer(), for: .normal);
             selectionButton!.backgroundColor = UIColor.systemOrange;
+            mouseCoin!.alpha = 1.0;
         } else {
             selectionButton!.setTitle("Select", for: .normal);
             selectionButton!.backgroundColor = UIColor.systemGreen;
+            mouseCoin!.alpha = 0.0;
         }
+    }
+    
+    var offer:String?
+    var price:String?
+    func repositionMouseCoinAndGetOffer() -> String {
+        offer = "Get for "
+        price = "\(catPrices[displayedCatIndex])";
+        mouseCoin!.frame = mouseCoin!.originalFrame!;
+        offer! += price! + " "
+        for _ in 0..<price!.count {
+            mouseCoin!.transform = mouseCoin!.transform.translatedBy(x: selectionButton!.frame.width * 0.069, y: 0.0);
+        }
+        offer! += "·····"
+        return offer!;
     }
     
     func unselectCat() {
@@ -267,6 +285,7 @@ class MoreCatsViewController:UIViewController {
         catLabelName!.font = UIFont.boldSystemFont(ofSize: catLabelName!.frame.height * 0.6);
     }
     
+    var mouseCoin:UIMouseCoin?
     func setupSelectionButton() {
         selectionButton = UICButton(parentView: catViewHandler!, frame:CGRect(x: 0.0, y: catViewHandler!.frame.height - (presentationCatButton!.layer.borderWidth * 0.5) - self.catLabelName!.frame.height, width: catViewHandler!.frame.width * 0.75, height: self.hideButton!.frame.height * 1.025), backgroundColor: UIColor.systemRed);
         CenterController.centerHorizontally(childView: selectionButton!, parentRect: catViewHandler!.frame, childRect: selectionButton!.frame);
@@ -276,6 +295,15 @@ class MoreCatsViewController:UIViewController {
         selectionButton!.titleLabel!.font = UIFont.boldSystemFont(ofSize: selectionButton!.frame.height * 0.5);
         selectionButton!.addTarget(self, action: #selector(selectionButtonSelector), for: .touchUpInside);
         selectionButton!.setTitle("Unselect", for: .normal);
+        setupMouseCoin();
+    }
+    
+    func setupMouseCoin() {
+        mouseCoin = UIMouseCoin(parentView: selectionButton!, x: selectionButton!.frame.width * 0.51, y: 0.0, width: selectionButton!.frame.height * 0.7, height: selectionButton!.frame.height * 0.7);
+        CenterController.centerVertically(childView: mouseCoin!, parentRect: selectionButton!.frame, childRect: mouseCoin!.frame);
+        mouseCoin!.originalFrame = mouseCoin!.frame;
+        mouseCoin!.isSelectable = false;
+        mouseCoin!.alpha = 0.0;
     }
     
     @objc func selectionButtonSelector() {

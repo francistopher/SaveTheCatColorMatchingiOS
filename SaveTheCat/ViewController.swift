@@ -33,7 +33,7 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, GKMatchm
         print("A match was found????")
     }
     
-    var myCats:[Cat:Int8] = [.standard:1, .breading:0, .taco:0, .egyptian:-1, .supeR:0, .chicken:-1, .cool:0, .ninja:0, .fat:0]
+    var myCats:[Cat:Int8] = [.standard:1, .breading:0, .taco:0, .egyptian:0, .supeR:0, .chicken:0, .cool:0, .ninja:0, .fat:0];
     var firedITunesStatus:Bool = false;
     var isiCloudReachable:Bool = false;
     var isInternetReachable:Bool = false;

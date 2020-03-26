@@ -329,6 +329,9 @@ class UIBoardGame: UIView, GKMatchDelegate {
         if (singlePlayerButton!.notSelectable) {
             return;
         }
+        if (settingsButton!.isPressed) {
+            settingsButton!.sendActions(for: .touchUpInside);
+        }
         singlePlayerButton!.notSelectable = true;
         if (self.victoryView!.alpha > 0.0) {
             self.cats.resumeCatAnimations();
@@ -367,6 +370,9 @@ class UIBoardGame: UIView, GKMatchDelegate {
         if (noMatchMaking) {
             if (twoPlayerButton!.notSelectable) {
                 return;
+            }
+            if (settingsButton!.isPressed) {
+                settingsButton!.sendActions(for: .touchUpInside);
             }
             twoPlayerButton!.notSelectable = true;
             if (self.results!.alpha >= 0.0) {
@@ -577,7 +583,7 @@ class UIBoardGame: UIView, GKMatchDelegate {
                 iLostButtonSuperView = iLostWatchAdButton!.superview!;
                 iLostButtonSuperView2 = iLostWatchAdButton!.superview!.superview!;
                 iLostX = iLostWatchAdButton!.frame.minX + iLostButtonSuperView!.frame.minX + iLostButtonSuperView2!.frame.minX - glovePointer!.originalFrame!.width * 0.35;
-                iLostY = iLostWatchAdButton!.frame.minY + iLostButtonSuperView!.frame.minY + iLostButtonSuperView2!.frame.minY - glovePointer!.originalFrame!.height * 0.3;
+                iLostY = iLostWatchAdButton!.frame.minY + iLostButtonSuperView!.frame.minY + iLostButtonSuperView2!.frame.minY - glovePointer!.originalFrame!.height * 0.175;
             }
             self.glovePointer!.translate(newOriginalFrame: CGRect(x: iLostX!, y: iLostY!, width: glovePointer!.originalFrame!.width * 0.9, height: glovePointer!.originalFrame!.width * 0.9));
             self.glovePointer!.alpha = 1.0;

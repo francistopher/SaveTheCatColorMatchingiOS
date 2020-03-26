@@ -98,10 +98,10 @@ class UIResults: UICView {
     
     func setupGameOverLabel() {
         self.gameOverLabel = UICLabel(parentView: contentView!, x: 0.0, y: 0.0, width: contentView!.frame.width + (self.frame.width / 4.0), height: unitHeight! * 2.0);
-        gameOverLabel!.font = UIFont.boldSystemFont(ofSize: gameOverLabel!.frame.height * 0.40);
+        gameOverLabel!.font = UIFont.boldSystemFont(ofSize: gameOverLabel!.frame.height * 0.375);
         gameOverLabel!.layer.borderWidth = self.layer.borderWidth;
         gameOverLabel!.setStyle();
-        gameOverLabel!.text = "R I P";
+        gameOverLabel!.text = "Game Over";
         CenterController.centerHorizontally(childView: gameOverLabel!, parentRect: self.frame, childRect: gameOverLabel!.frame);
     }
     

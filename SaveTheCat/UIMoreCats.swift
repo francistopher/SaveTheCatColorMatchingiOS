@@ -68,7 +68,8 @@ class UIMoreCats: UIButton {
 
 class MoreCatsViewController:UIViewController {
     var displayedCatIndex:Int = -1;
-    var catTypesArray:[Cat] = [.standard, .breading, .taco, .egyptian, .supeR, .chicken, .cool, .ninja, .fat]
+    var catNames:[String] = ["Standard Cat", "Cat Breading", "Taco Cat", "Egyptian Cat", "Super Cat", "Chicken Cat", "Cool Cat", "Ninja Cat", "Fat Cat"]
+    var catTypes:[Cat] = [.standard, .breading, .taco, .egyptian, .supeR, .chicken, .cool, .ninja, .fat]
     var contentView:UICView?
     var catViewHandler:UICView?
     var catLabelName:UICLabel?
@@ -156,7 +157,61 @@ class MoreCatsViewController:UIViewController {
     }
     
     @objc func nextButtonSelector() {
-        print("Next button selected")
+        if (displayedCatIndex == 8) {
+            displayedCatIndex = 0;
+        } else {
+            displayedCatIndex += 1;
+        }
+        updateCatImageNameAndStatus();
+    }
+    
+    func updateCatImageNameAndStatus() {
+        catLabelName!.text = catNames[displayedCatIndex];
+        setPresentationCat(cat: catTypes[displayedCatIndex]);
+        setSelectionButtonText();
+    }
+    
+    var currentSelectionValue:Int8?
+    func setSelectionButtonText() {
+        currentSelectionValue = ViewController.staticSelf!.myCats[catTypes[displayedCatIndex]]!;
+        if (currentSelectionValue! > 0) {
+            selectionButton!.setTitle("Unselect", for: .normal);
+            selectionButton!.backgroundColor = UIColor.systemRed;
+        } else if (currentSelectionValue! == 0) {
+            selectionButton!.setTitle("Get for x MCs", for: .normal);
+            selectionButton!.backgroundColor = UIColor.systemOrange;
+        } else {
+            selectionButton!.setTitle("Select", for: .normal);
+            selectionButton!.backgroundColor = UIColor.systemGreen;
+        }
+    }
+    
+    func unselectCat() {
+        if (ViewController.getSelectedCatsCount() == 1) {
+            print("Must maintain at least one cat selected!");
+        } else {
+            currentSelectionValue = ViewController.staticSelf!.myCats[catTypes[displayedCatIndex]]!;
+            ViewController.staticSelf!.myCats[catTypes[displayedCatIndex]] = -1 * currentSelectionValue!;
+            // Update selection button
+           selectionButton!.backgroundColor = UIColor.systemGreen;
+           selectionButton!.setTitle("Select", for: .normal);
+        }
+    }
+    
+    func selectCat() {
+        for cat in catTypes {
+            currentSelectionValue = ViewController.staticSelf!.myCats[cat]!;
+            if (currentSelectionValue! > 0) {
+                ViewController.staticSelf!.myCats[cat] = -1 * currentSelectionValue!;
+            }
+            // Set current cat value to positive
+            currentSelectionValue = ViewController.staticSelf!.myCats[catTypes[displayedCatIndex]]!;
+            ViewController.staticSelf!.myCats[catTypes[displayedCatIndex]] = abs(currentSelectionValue!);
+            // Update selection button
+            selectionButton!.backgroundColor = UIColor.systemRed;
+            selectionButton!.setTitle("Unselect", for: .normal);
+        }
+        
     }
     
     func setupPreviousButton() {
@@ -170,7 +225,12 @@ class MoreCatsViewController:UIViewController {
     }
     
     @objc func previousButtonSelector() {
-        print("Previous button selected")
+        if (displayedCatIndex == 0) {
+            displayedCatIndex = 8;
+        } else {
+            displayedCatIndex -= 1;
+        }
+        updateCatImageNameAndStatus();
     }
 
     var presentationCatButton:UICatButton?
@@ -208,7 +268,7 @@ class MoreCatsViewController:UIViewController {
     }
     
     func setupSelectionButton() {
-        selectionButton = UICButton(parentView: catViewHandler!, frame:CGRect(x: 0.0, y: catViewHandler!.frame.height - (presentationCatButton!.layer.borderWidth * 0.5) - self.catLabelName!.frame.height, width: catViewHandler!.frame.width * 0.75, height: self.hideButton!.frame.height * 1.025), backgroundColor: UIColor.systemPink);
+        selectionButton = UICButton(parentView: catViewHandler!, frame:CGRect(x: 0.0, y: catViewHandler!.frame.height - (presentationCatButton!.layer.borderWidth * 0.5) - self.catLabelName!.frame.height, width: catViewHandler!.frame.width * 0.75, height: self.hideButton!.frame.height * 1.025), backgroundColor: UIColor.systemRed);
         CenterController.centerHorizontally(childView: selectionButton!, parentRect: catViewHandler!.frame, childRect: selectionButton!.frame);
         selectionButton!.originalFrame = selectionButton!.frame;
         selectionButton!.layer.cornerRadius =  catViewHandler!.layer.cornerRadius * 0.4;
@@ -219,7 +279,13 @@ class MoreCatsViewController:UIViewController {
     }
     
     @objc func selectionButtonSelector() {
-        print(displayedCatIndex, "Displayed cat index")
+        if (selectionButton!.titleLabel!.text == "Select") {
+            selectCat();
+        } else if (selectionButton!.titleLabel!.text == "Unselect") {
+            unselectCat();
+        } else {
+            print("Get cat for x mouse coins!!!");
+        }
     }
     
     var presentLabelNameTimer:Timer?
@@ -238,11 +304,15 @@ class MoreCatsViewController:UIViewController {
         })
     }
     
-    func presentCatButton() {
-        let randomlySelectedCat:Cat = ViewController.getRandomCat();
-        presentationCatButton!.selectedCat = randomlySelectedCat;
-        displayedCatIndex = catTypesArray.firstIndex(of: randomlySelectedCat)!;
+    func setPresentationCat(cat:Cat) {
+        presentationCatButton!.selectedCat = cat;
+        displayedCatIndex = catTypes.firstIndex(of: cat)!;
+        catLabelName!.text = catNames[displayedCatIndex];
         presentationCatButton!.setCat(named: "SmilingCat", stage: 3);
+    }
+    
+    func presentCatButton() {
+        setPresentationCat(cat: ViewController.getRandomCat());
         presentationCatButton!.randomAnimationSelection = 0;
         presentationCatButton!.setRandomCatAnimation();
         presentationCatButton!.grow();

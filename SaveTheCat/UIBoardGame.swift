@@ -309,7 +309,7 @@ class UIBoardGame: UIView, GKMatchDelegate {
         singlePlayerButton!.styleBackground = true;
         singlePlayerButton!.setStyle();
         singlePlayerButton!.layer.borderWidth = attackMeter!.layer.borderWidth;
-        singlePlayerButton!.titleLabel!.font = UIFont.boldSystemFont(ofSize: singlePlayerButton!.frame.height * 0.3);
+        singlePlayerButton!.titleLabel!.font = UIFont.boldSystemFont(ofSize: singlePlayerButton!.frame.height * 0.35);
         singlePlayerButton!.addTarget(self, action: #selector(singlePlayerButtonSelector), for: .touchUpInside);
         singlePlayerButton!.shrinked();
         singlePlayerButton!.alpha = 0.0;
@@ -318,7 +318,7 @@ class UIBoardGame: UIView, GKMatchDelegate {
         twoPlayerButton!.styleBackground = true;
         twoPlayerButton!.setStyle();
         twoPlayerButton!.layer.borderWidth = attackMeter!.layer.borderWidth;
-        twoPlayerButton!.titleLabel!.font = UIFont.boldSystemFont(ofSize: twoPlayerButton!.frame.height * 0.3);
+        twoPlayerButton!.titleLabel!.font = UIFont.boldSystemFont(ofSize: twoPlayerButton!.frame.height * 0.35);
         twoPlayerButton!.addTarget(self, action: #selector(twoPlayerButtonSelector), for: .touchUpInside);
         twoPlayerButton!.shrinked();
         twoPlayerButton!.alpha = 0.0;
@@ -663,7 +663,7 @@ class UIBoardGame: UIView, GKMatchDelegate {
     func setAllCatButtonsAsDead() {
         for catButton in cats.presentCollection! {
             if (catButton.isAlive) {
-                setCatButtonAsDead(catButton: catButton, disperseDownwardOnly:false);
+                setCatButtonAsDead(catButton: catButton, singleDeath:false);
             }
         }
         
@@ -672,7 +672,7 @@ class UIBoardGame: UIView, GKMatchDelegate {
     func attackCatButton(catButton:UICatButton) {
         self.attackMeter!.updateDuration(change: -0.75);
         if (myLiveMeter!.livesLeft - 1 > 0) {
-            setCatButtonAsDead(catButton: catButton, disperseDownwardOnly:true);
+            setCatButtonAsDead(catButton: catButton, singleDeath:true);
             myLiveMeter!.decrementLivesLeftCount();
             if (cats.areAllCatsDead()) {
                 self.attackMeter!.sendVirusToStart();
@@ -698,14 +698,15 @@ class UIBoardGame: UIView, GKMatchDelegate {
         
     }
     
-    func setCatButtonAsDead(catButton:UICatButton, disperseDownwardOnly:Bool) {
-        if (disperseDownwardOnly) {
+    func setCatButtonAsDead(catButton:UICatButton, singleDeath:Bool) {
+        if (singleDeath) {
             looseMouseCoin();
+            
         }
         results!.catsThatDied += 1;
         gridColorsCount[catButton.originalBackgroundColor.cgColor]? -= 1;
         colorOptions!.buildColorOptionButtons(setup: false);
-        catButton.isDead();
+        catButton.isDead()
         self.viruses!.translateToCatAndBack(catButton:catButton);
         catButton.disperseRadially();
         displaceArea(ofCatButton: catButton);

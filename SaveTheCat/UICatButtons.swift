@@ -115,13 +115,7 @@ class UICatButtons {
             previousCollection!.append(cat);
         }
     }
-    
-    func areNowDead() {
-        for catButton in presentCollection! {
-            catButton.isDead();
-        }
-    }
-    
+
     func areAllCatsDead() -> Bool {
         for catButton in presentCollection! {
             if (catButton.isAlive) {
@@ -168,7 +162,7 @@ class UICatButtons {
     }
     
     var previousFileName:String = "";
-    func updateCat() {
+    func updateCatType() {
         for catButton in presentCollection! {
             catButton.selectedCat = ViewController.getRandomCat();
             previousFileName = catButton.previousFileName;

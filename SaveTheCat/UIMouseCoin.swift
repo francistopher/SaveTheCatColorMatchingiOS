@@ -80,7 +80,12 @@ class UIMouseCoin: UICButton {
             }
         }
         if (getDifference() == 1) {
-            UIResults.mouseCoins += 1
+            if (isDifferencePositive() && UIResults.mouseCoins > 0) {
+                UIResults.mouseCoins += 1
+            } else {
+                UIResults.mouseCoins -= 1;
+            }
+            
             self.amountLabel!.text = "\(UIResults.mouseCoins)";
             return;
         }

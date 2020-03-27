@@ -79,9 +79,10 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, GKMatchm
             }
             myCatsStringSection = "";
         }
-        NSUbiquitousKeyValueStore.default.set(myCatsString, forKey: "myCats");
+        print("My Cats", myCatsString)
+        keyValueStore.set(myCatsString, forKey: "myCats");
+        keyValueStore.synchronize();
         myCatsString = ""
-
     }
     
     var myCatsTempString:String = "";
@@ -124,8 +125,9 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, GKMatchm
                 }
                 myCatsTempString = String(myCatsTempString.suffix(myCatsTempString.count - 5));
             }
-            print(myCats!, "These are my cats!!!");
         }
+        self.myCats = myCatsTempDict!;
+        self.boardGame!.cats.updateCatType();
     }
     
     func updateCatValue(cat:Cat, stringValue:String) {
@@ -136,7 +138,6 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, GKMatchm
         } else {
             self.myCats[cat] = Int8(stringValue);
         }
-        
     }
     
     static func unSelectSelectedCat() {
@@ -313,7 +314,7 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, GKMatchm
         CenterController.centerHorizontally(childView: bannerView, parentRect: mainView.frame, childRect: bannerView.frame);
         // Configure for ad to display
         // myBannerID
-        bannerView.adUnitID = "ca-app-pub-9248016465919511/3503661709";
+        bannerView.adUnitID = "ca-app-pub-3940256099942544/2934735716";
         bannerView.rootViewController = self;
         bannerView.load(GADRequest());
         // Save first banner view as temp
@@ -436,7 +437,7 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, GKMatchm
         setupSuccessGradientViewAndLayer();
         setupViruses();
         setupAdvertisement();
-        setupBoardMainView();
+        setupBoardGameView();
         // Save the mouse coins from icloud
         setupColorOptionsView();
         setupGlovePointer();
@@ -591,7 +592,7 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, GKMatchm
         }
     }
     
-    func setupBoardMainView(){
+    func setupBoardGameView(){
         let boardGameWidth:CGFloat = unitViewHeight * 8.5;
         boardGame = UIBoardGame(parentView: mainView, x: 0.0, y: 0.0, width: boardGameWidth, height:boardGameWidth);
         CenterController.center(childView: boardGame!, parentRect: mainView.frame, childRect: boardGame!.frame);

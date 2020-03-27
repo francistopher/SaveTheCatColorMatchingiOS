@@ -298,12 +298,10 @@ class UICatButton: UIButton {
         self.setCat(named: "DeadCat", stage: 2);
         self.imageContainerButton!.imageView!.layer.removeAllAnimations();
         self.imageContainerButton!.backgroundColor = self.imageContainerButton!.originalBackgroundColor;
-        self.backgroundColor = UIColor.clear;
         displaceBoundsOntoMainView();
     }
     
     func disperseRadially() {
-        self.backgroundColor = UIColor.clear;
         ViewController.staticMainView!.insertSubview(self, at: 1);
         UIView.animate(withDuration: 3.0, delay: 0.0, options: .curveEaseInOut, animations: {
             self.imageContainerButton!.transform =  self.imageContainerButton!.transform.rotated(by: CGFloat.pi);

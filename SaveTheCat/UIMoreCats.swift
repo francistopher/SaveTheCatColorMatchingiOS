@@ -69,7 +69,7 @@ class UIMoreCats: UIButton {
 class MoreCatsViewController:UIViewController {
     var displayedCatIndex:Int = -1;
     var catNames:[String] = ["Standard Cat", "Cat Breading", "Taco Cat", "Egyptian Cat", "Super Cat", "Chicken Cat", "Cool Cat", "Ninja Cat", "Fat Cat"];
-    var catPrices:[Int] = [0, 360, 360, 360, 360, 360, 360, 360, 360];
+    var catPrices:[Int] = [0, 720, 720, 720, 720, 720, 720, 720, 720];
     var catTypes:[Cat] = [.standard, .breading, .taco, .egyptian, .supeR, .chicken, .cool, .ninja, .fat];
     var contentView:UICView?
     var catViewHandler:UICView?
@@ -263,13 +263,13 @@ class MoreCatsViewController:UIViewController {
         // Set current cat value to positive
         currentSelectionValue = ViewController.staticSelf!.myCats[catTypes[displayedCatIndex]]!;
         ViewController.staticSelf!.myCats[catTypes[displayedCatIndex]] = abs(currentSelectionValue!);
+        // Apply changes across ui
+        ViewController.staticSelf!.boardGame!.cats.updateCatType();
+        ViewController.staticSelf!.boardGame!.cats.suspendCatAnimations();
+        ViewController.staticSelf!.boardGame!.cats.resumeCatAnimations();
         // Update display
         updateCatImageNameAndStatus();
         saveMyCatsDictAsString();
-        // Apply changes across ui
-        ViewController.staticSelf!.boardGame!.cats.updateCat();
-        ViewController.staticSelf!.boardGame!.cats.suspendCatAnimations();
-        ViewController.staticSelf!.boardGame!.cats.resumeCatAnimations();
     }
     
     func setupPreviousButton() {

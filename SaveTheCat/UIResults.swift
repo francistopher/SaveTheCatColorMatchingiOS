@@ -85,7 +85,7 @@ class UIResults: UICView {
     }
     
     func setupGameOverLabel() {
-        self.gameOverLabel = UICLabel(parentView: contentView!, x: 0.0, y: 0.0, width: contentView!.frame.width + (self.frame.width / 4.0), height: unitHeight! * 2.0);
+        self.gameOverLabel = UICLabel(parentView: contentView!, x: 0.0, y: unitHeight! * 0.25, width: contentView!.frame.width + (self.frame.width / 4.0), height: unitHeight! * 2.0);
         gameOverLabel!.font = UIFont.boldSystemFont(ofSize: gameOverLabel!.frame.height * 0.375);
         gameOverLabel!.layer.borderWidth = self.layer.borderWidth;
         gameOverLabel!.setStyle();
@@ -94,7 +94,7 @@ class UIResults: UICView {
     }
     
     func setupCheeringCatLabel() {
-        self.catsLivedLabel = UICLabel(parentView: contentView!, x: self.frame.width * 0.02875, y: gameOverLabel!.frame.maxY, width: contentView!.frame.width * 0.5, height: unitHeight! * 2.0);
+        self.catsLivedLabel = UICLabel(parentView: contentView!, x: self.frame.width * 0.02875, y: gameOverLabel!.frame.maxY * 0.9, width: contentView!.frame.width * 0.5, height: contentView!.frame.width * 0.5);
         catsLivedLabel!.backgroundColor = UIColor.clear;
         setupLivedCatImage();
         setupCatsLivedAmount();
@@ -102,7 +102,7 @@ class UIResults: UICView {
     
     func setupCatsLivedAmount() {
         self.catsLivedAmountLabel = UICLabel(parentView: contentView!, x: self.frame.width * 0.02875, y: catsLivedLabel!.frame.maxY, width: contentView!.frame.width * 0.5, height: unitHeight!);
-        catsLivedAmountLabel!.font = UIFont.boldSystemFont(ofSize: catsLivedAmountLabel!.frame.height * 0.40);
+        catsLivedAmountLabel!.font = UIFont.boldSystemFont(ofSize: catsLivedAmountLabel!.frame.height * 0.5);
         catsLivedAmountLabel!.backgroundColor = UIColor.clear;
         catsLivedAmountLabel!.textColor = UIColor.black;
     }
@@ -118,7 +118,7 @@ class UIResults: UICView {
     }
     
     func setupDeadCatLabel() {
-        self.catsDiedLabel = UICLabel(parentView: contentView!, x: contentView!.frame.width * 0.5, y: gameOverLabel!.frame.maxY, width: contentView!.frame.width * 0.5, height: unitHeight! * 2.0);
+        self.catsDiedLabel = UICLabel(parentView: contentView!, x: contentView!.frame.width * 0.5, y: gameOverLabel!.frame.maxY * 0.9, width: contentView!.frame.width * 0.5, height: contentView!.frame.width * 0.5);
         catsDiedLabel!.backgroundColor = UIColor.clear;
         setupDeadCatImage();
         setupCatsDiedAmount();
@@ -126,7 +126,7 @@ class UIResults: UICView {
     
     func setupCatsDiedAmount() {
         self.catsDiedAmountLabel = UICLabel(parentView: contentView!, x: contentView!.frame.width * 0.5, y: catsDiedLabel!.frame.maxY, width: contentView!.frame.width * 0.5, height: unitHeight!);
-        catsDiedAmountLabel!.font = UIFont.boldSystemFont(ofSize: catsDiedAmountLabel!.frame.height * 0.40);
+        catsDiedAmountLabel!.font = UIFont.boldSystemFont(ofSize: catsDiedAmountLabel!.frame.height * 0.5);
         catsDiedAmountLabel!.backgroundColor = UIColor.clear;
         catsDiedAmountLabel!.textColor = UIColor.black;
     }

@@ -205,10 +205,6 @@ class UICatButton: UIButton {
                 self.layer.borderColor = UIColor.black.cgColor;
             }
         }
-        // Clear background if cat dies
-        if (stage == 2) {
-            self.backgroundColor = UIColor.clear;
-        }
         // Configure the image icon
         iconImage = nil;
         iconImage = UIImage(named: previousFileName);

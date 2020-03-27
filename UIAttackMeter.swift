@@ -419,6 +419,7 @@ class UIAttackMeter:UICView {
     
     func resetCat() {
         setupCat();
+        cat!.selectedCat = .standard;
         cat!.setCat(named: "SmilingCat", stage: 5);
         virus!.superview!.bringSubviewToFront(virus!);
         virus!.superview!.bringSubviewToFront(boardGame!.settingsButton!.settingsMenu!);
@@ -440,7 +441,10 @@ class UIAttackMeter:UICView {
         setStyle();
         self.layer.borderColor = UIColor.systemYellow.cgColor;
         virus!.setupVirusImage();
-        cat!.setCat(named: "SmilingCat", stage: 5);
+        if (cat!.imageContainerButton != nil) {
+            cat!.setCat(named: "SmilingCat", stage: 5);
+        }
+        
     }
     
     func comiledHide() {

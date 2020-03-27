@@ -59,6 +59,8 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, GKMatchm
             // No internet mouse coinds
             loadMyCats(myCats: nil);
             settingsButton!.settingsMenu!.mouseCoin!.setMouseCoinValue(newValue: 0);
+            settingsButton!.settingsMenu!.moreCats!.moreCatsVC!.hideCatButton();
+            mainView.alpha = 1.0;
         }
     }
     
@@ -79,7 +81,6 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, GKMatchm
             }
             myCatsStringSection = "";
         }
-        print("My Cats", myCatsString)
         keyValueStore.set(myCatsString, forKey: "myCats");
         keyValueStore.synchronize();
         myCatsString = ""
@@ -98,9 +99,6 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, GKMatchm
             while (myCatsTempString.count > 0) {
                 myCatsStringSection = String(myCatsTempString.prefix(5));
                 myCatValue = String(myCatsStringSection.suffix(2));
-                if (myCatValue.contains("+")) {
-                    myCatValue = String(myCatValue.suffix(1));
-                }
                 switch(myCatsStringSection.prefix(3)) {
                 case "sdd":
                     updateCatValue(cat: .standard, stringValue: myCatValue);
@@ -126,17 +124,18 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, GKMatchm
                 myCatsTempString = String(myCatsTempString.suffix(myCatsTempString.count - 5));
             }
         }
-        self.myCats = myCatsTempDict!;
         self.boardGame!.cats.updateCatType();
     }
     
     func updateCatValue(cat:Cat, stringValue:String) {
         if (stringValue == "00") {
             self.myCats[cat] = 0;
-        } else if (stringValue.contains("-")) {
-            self.myCats[cat] = Int8(stringValue);
         } else {
-            self.myCats[cat] = Int8(stringValue);
+            if (stringValue.contains("-")) {
+                self.myCats[cat] = Int8(String(stringValue).suffix(1))! * -1;
+            } else {
+                self.myCats[cat] = Int8(String(stringValue).suffix(1));
+            }
         }
     }
     
@@ -319,6 +318,7 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, GKMatchm
         bannerView.load(GADRequest());
         // Save first banner view as temp
         mainView.addSubview(bannerView);
+        bannerView.alpha = 0.0;
         
     }
     
@@ -360,21 +360,6 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, GKMatchm
                     print("PLAYER AUTHENTICATED!")
                     self.presentSaveTheCat();
                 }
-            }
-        }
-    }
-    
-    // Game center memory capacity score submission
-    static var bestMemoryCapacityScore:GKScore?
-    static func submitMemoryCapacityScore(memoryCapacity:Int) {
-        bestMemoryCapacityScore = nil;
-        bestMemoryCapacityScore = GKScore(leaderboardIdentifier: "topColorMemorizers");
-        bestMemoryCapacityScore!.value = Int64(memoryCapacity);
-        GKScore.report([bestMemoryCapacityScore!]) { (error) in
-            if error != nil {
-                print(error!.localizedDescription)
-            } else {
-                print("Memory Capacity score submitted to your Leaderboard!");
             }
         }
     }
@@ -464,6 +449,9 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, GKMatchm
                 self.settingsButton!.settingsMenu!.mouseCoin!.mouseCoinView!.fadeIn();
                 self.boardGame!.buildGame();
                 self.boardGame!.showSingleAndTwoPlayerButtons();
+                UIView.animate(withDuration: 1.0, delay: 0.125, options: .curveEaseOut, animations: {
+                    self.bannerView.alpha = 1.0;
+                })
             }
         }
     }

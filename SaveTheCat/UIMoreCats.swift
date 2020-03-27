@@ -35,6 +35,10 @@ class UIMoreCats: UIButton {
     }
 
     @objc func moreCatsSelector() {
+        if (!ViewController.staticSelf!.isInternetReachable) {
+            ViewController.staticSelf!.gameMessage!.addToMessageQueue(message: .noInternet);
+            return;
+        }
         firstTime = true;
         ViewController.staticSelf!.present(moreCatsVC!, animated: true, completion: {
             self.moreCatsVC!.presentCatButton();
@@ -69,7 +73,7 @@ class UIMoreCats: UIButton {
 class MoreCatsViewController:UIViewController {
     var displayedCatIndex:Int = -1;
     var catNames:[String] = ["Standard Cat", "Cat Breading", "Taco Cat", "Egyptian Cat", "Super Cat", "Chicken Cat", "Cool Cat", "Ninja Cat", "Fat Cat"];
-    var catPrices:[Int] = [0, 720, 720, 720, 720, 720, 720, 720, 720];
+    var catPrices:[Int] = [0, 420, 420, 420, 420, 420, 420, 420, 420];
     var catTypes:[Cat] = [.standard, .breading, .taco, .egyptian, .supeR, .chicken, .cool, .ninja, .fat];
     var contentView:UICView?
     var catViewHandler:UICView?
@@ -118,8 +122,10 @@ class MoreCatsViewController:UIViewController {
                     // Update mouse coin value
                     ViewController.settingsButton!.settingsMenu!.mouseCoin!.setMouseCoinValue(newValue: UIResults.mouseCoins - Int64(self.catPrices[self.displayedCatIndex]));
                     ViewController.settingsButton!.settingsMenu!.mouseCoin!.mouseCoinView!.fadeIn();
+                    self.keyValueStore.set(UIResults.mouseCoins - Int64(self.catPrices[self.displayedCatIndex]), forKey: "mouseCoins");
+                    self.keyValueStore.synchronize();
+                    self.saveMyCatsDictAsString();
                 }
-                self.saveMyCatsDictAsString();
             }
         }))
         purchaseAlert!.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil));
@@ -228,13 +234,20 @@ class MoreCatsViewController:UIViewController {
     
     var offer:String?
     var price:String?
+    var translationCoefficient:CGFloat = 0.0;
     func repositionMouseCoinAndGetOffer() -> String {
-        offer = "Get for "
-        price = "\(catPrices[displayedCatIndex])";
         mouseCoin!.frame = mouseCoin!.originalFrame!;
-        offer! += price! + " "
-        for _ in 0..<price!.count {
-            mouseCoin!.transform = mouseCoin!.transform.translatedBy(x: selectionButton!.frame.width * 0.069, y: 0.0);
+        if (catPrices[displayedCatIndex] <= UIResults.mouseCoins) {
+            offer = "Get for "
+            price = "\(catPrices[displayedCatIndex])";
+            offer! += price! + " "
+            translationCoefficient = 0.069;
+        } else {
+            offer = "Not enough "
+            translationCoefficient = 0.07;
+        }
+        for _ in 0..<3 {
+            mouseCoin!.transform = mouseCoin!.transform.translatedBy(x: selectionButton!.frame.width * translationCoefficient, y: 0.0);
         }
         offer! += "·····"
         return offer!;
@@ -341,9 +354,14 @@ class MoreCatsViewController:UIViewController {
     func setupMouseCoin() {
         mouseCoin = UIMouseCoin(parentView: selectionButton!, x: selectionButton!.frame.width * 0.51, y: 0.0, width: selectionButton!.frame.height * 0.7, height: selectionButton!.frame.height * 0.7);
         CenterController.centerVertically(childView: mouseCoin!, parentRect: selectionButton!.frame, childRect: mouseCoin!.frame);
+        mouseCoin!.addTarget(self, action: #selector(mouseCoinSelector), for: .touchUpInside);
         mouseCoin!.originalFrame = mouseCoin!.frame;
         mouseCoin!.isSelectable = false;
         mouseCoin!.alpha = 0.0;
+    }
+    
+    @objc func mouseCoinSelector() {
+        SoundController.coinEarned();
     }
     
     @objc func selectionButtonSelector() {
@@ -352,8 +370,9 @@ class MoreCatsViewController:UIViewController {
         } else if (selectionButton!.titleLabel!.text == "Unselect") {
             unselectCat();
         } else {
-            print("Get cat for x mouse coins!!!");
-            self.present(purchaseAlert!, animated: true, completion: nil);
+            if (catPrices[displayedCatIndex] <= UIResults.mouseCoins) {
+                self.present(purchaseAlert!, animated: true, completion: nil);
+            }
         }
     }
     
@@ -391,9 +410,8 @@ class MoreCatsViewController:UIViewController {
     }
     
     func hideCatButton() {
-        // Save my cats string
-        ViewController.staticSelf!.saveMyCatsDictAsString(catTypes: catTypes);
         // Reset more cats view
+        if (catLabelName != nil) {
         catLabelName!.frame = catLabelName!.originalFrame!;
         selectionButton!.frame = selectionButton!.originalFrame!;
         catViewHandler!.frame = catViewHandler!.originalFrame!;
@@ -404,6 +422,7 @@ class MoreCatsViewController:UIViewController {
         presentationCatButton!.imageContainerButton!.imageView!.layer.removeAllAnimations();
         presentationCatButton!.imageContainerButton!.imageView!.transform = .identity;
         setupPresentLabelNameAnimation();
+        }
     }
     
     @objc func presentationCatButtonSelector() {

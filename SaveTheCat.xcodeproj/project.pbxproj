@@ -98,8 +98,6 @@
 		B83BC404241BEAC30026D7F6 /* noiCloud.png in Resources */ = {isa = PBXBuildFile; fileRef = B83BC402241BEAC30026D7F6 /* noiCloud.png */; };
 		B83BC405241BEAC30026D7F6 /* yesiCloud.png in Resources */ = {isa = PBXBuildFile; fileRef = B83BC403241BEAC30026D7F6 /* yesiCloud.png */; };
 		B83BC407241BF9930026D7F6 /* GameMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B83BC406241BF9930026D7F6 /* GameMessage.swift */; };
-		B83BC40C241D65050026D7F6 /* lightMagnifyGlass.png in Resources */ = {isa = PBXBuildFile; fileRef = B83BC40A241D65050026D7F6 /* lightMagnifyGlass.png */; };
-		B83BC40D241D65050026D7F6 /* darkMagnifyGlass.png in Resources */ = {isa = PBXBuildFile; fileRef = B83BC40B241D65050026D7F6 /* darkMagnifyGlass.png */; };
 		B83BC411241D9DD00026D7F6 /* opponentHeart.png in Resources */ = {isa = PBXBuildFile; fileRef = B83BC410241D9DD00026D7F6 /* opponentHeart.png */; };
 		B83EAA6C242A6B630041CE31 /* darkEgyptianCheeringCat.png in Resources */ = {isa = PBXBuildFile; fileRef = B83EAA66242A6B630041CE31 /* darkEgyptianCheeringCat.png */; };
 		B83EAA6D242A6B630041CE31 /* lightEgyptianCheeringCat.png in Resources */ = {isa = PBXBuildFile; fileRef = B83EAA67242A6B630041CE31 /* lightEgyptianCheeringCat.png */; };
@@ -254,8 +252,6 @@
 		B83BC402241BEAC30026D7F6 /* noiCloud.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = noiCloud.png; path = SaveTheCat/noiCloud.png; sourceTree = "<group>"; };
 		B83BC403241BEAC30026D7F6 /* yesiCloud.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = yesiCloud.png; path = SaveTheCat/yesiCloud.png; sourceTree = "<group>"; };
 		B83BC406241BF9930026D7F6 /* GameMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameMessage.swift; sourceTree = "<group>"; };
-		B83BC40A241D65050026D7F6 /* lightMagnifyGlass.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = lightMagnifyGlass.png; path = SaveTheCat/lightMagnifyGlass.png; sourceTree = "<group>"; };
-		B83BC40B241D65050026D7F6 /* darkMagnifyGlass.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = darkMagnifyGlass.png; path = SaveTheCat/darkMagnifyGlass.png; sourceTree = "<group>"; };
 		B83BC410241D9DD00026D7F6 /* opponentHeart.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = opponentHeart.png; path = SaveTheCat/opponentHeart.png; sourceTree = "<group>"; };
 		B83EAA66242A6B630041CE31 /* darkEgyptianCheeringCat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = darkEgyptianCheeringCat.png; path = SaveTheCat/darkEgyptianCheeringCat.png; sourceTree = "<group>"; };
 		B83EAA67242A6B630041CE31 /* lightEgyptianCheeringCat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = lightEgyptianCheeringCat.png; path = SaveTheCat/lightEgyptianCheeringCat.png; sourceTree = "<group>"; };
@@ -387,7 +383,6 @@
 			isa = PBXGroup;
 			children = (
 				B841504324290A9400B24F84 /* Video */,
-				B841504224290A6D00B24F84 /* Magnifying Glass */,
 				B841504124290A6300B24F84 /* Message */,
 				B841504024290A3300B24F84 /* Heart */,
 				B8F6C9B024214F8F00CD668C /* Cat Shape */,
@@ -701,15 +696,6 @@
 			name = Message;
 			sourceTree = "<group>";
 		};
-		B841504224290A6D00B24F84 /* Magnifying Glass */ = {
-			isa = PBXGroup;
-			children = (
-				B83BC40B241D65050026D7F6 /* darkMagnifyGlass.png */,
-				B83BC40A241D65050026D7F6 /* lightMagnifyGlass.png */,
-			);
-			name = "Magnifying Glass";
-			sourceTree = "<group>";
-		};
 		B841504324290A9400B24F84 /* Video */ = {
 			isa = PBXGroup;
 			children = (
@@ -865,7 +851,6 @@
 				B83EAA70242A6B630041CE31 /* darkEgyptianSmilingCat.png in Resources */,
 				B83B034A241154D700EC4BAD /* darkDeadCat.png in Resources */,
 				B841504E242924C400B24F84 /* darkBreadingDeadCat.png in Resources */,
-				B83BC40D241D65050026D7F6 /* darkMagnifyGlass.png in Resources */,
 				B83B03F72411877E00EC4BAD /* Icon-40@2x.png in Resources */,
 				B83EAAB1242BF4DD0041CE31 /* lightFatCheeringCat.png in Resources */,
 				B8415058242976E800B24F84 /* darkTacoSmilingCat.png in Resources */,
@@ -915,7 +900,6 @@
 				B83B03772411551300EC4BAD /* lightGear.png in Resources */,
 				B83B03FA2411877E00EC4BAD /* Icon-20@1x.png in Resources */,
 				B8F6C9C1242314B300CD668C /* whiteBorderGal.gif in Resources */,
-				B83BC40C241D65050026D7F6 /* lightMagnifyGlass.png in Resources */,
 				B83BC404241BEAC30026D7F6 /* noiCloud.png in Resources */,
 				B83EAA6C242A6B630041CE31 /* darkEgyptianCheeringCat.png in Resources */,
 				B83B034D241154D700EC4BAD /* darkGear.png in Resources */,

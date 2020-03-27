@@ -24,10 +24,6 @@ class UIResults: UICView {
     var livedCatImageButton:UICButton?
     var deadCatImageButton:UICButton?
     
-    var stagesLabel:UICLabel?
-    var stagesRangeLabel:UICLabel?
-    var durationLabel:UICLabel?
-    var durationTimeLabel:UICLabel?
     var watchAdButton:UICButton?
     var adIsShowing:Bool = false;
     
@@ -38,12 +34,6 @@ class UIResults: UICView {
     var entiretyOfCatsThatSurvived:Int = 0;
     var catsThatDied:Int = 0;
     var catsThatLived:Int = 0;
-    
-    // Gameplay session time
-    var sessionStartTime:Double = 0.0;
-    var sessionEndTime:Double = 0.0;
-    var sessionDuration:Double = 0.0;
-    var colorMemoryCapacity:Int = 0;
     
     // Content panel
     var contentView:UICView?
@@ -79,8 +69,6 @@ class UIResults: UICView {
         setupGameOverLabel();
         setupCheeringCatLabel();
         setupDeadCatLabel();
-        setupStagesLabel();
-        setupDurationLabel();
         setupWatchAdForXMouseCoins();
         super.invertColor = true;
         self.setCompiledStyle();
@@ -149,38 +137,6 @@ class UIResults: UICView {
         deadCatImageButton!.setImage(UIImage(named: UICatButton.getCatFileName(named: "DeadCat.png", selectedCat:selectedCat)), for: .normal);
         deadCatImageButton!.imageView!.contentMode = UIView.ContentMode.scaleAspectFill;
         CenterController.center(childView: deadCatImageButton!, parentRect: catsDiedLabel!.frame, childRect: deadCatImageButton!.frame);
-    }
-    
-    func setupStagesLabel() {
-        self.stagesLabel = UICLabel(parentView: contentView!, x: self.frame.width * 0.02875, y: catsLivedAmountLabel!.frame.maxY, width: contentView!.frame.width * 0.5, height: unitHeight!);
-        stagesLabel!.lineBreakMode = NSLineBreakMode.byWordWrapping;
-        stagesLabel!.numberOfLines = 2;
-        stagesLabel!.text = "Color\nCapacity";
-        stagesLabel!.font = UIFont.boldSystemFont(ofSize: stagesLabel!.frame.height * 0.40);
-        stagesLabel!.backgroundColor = UIColor.clear;
-        setupStagesRangeLabel();
-    }
-    
-    func setupStagesRangeLabel() {
-        self.stagesRangeLabel = UICLabel(parentView: contentView!, x: self.frame.width * 0.02875, y:stagesLabel!.frame.maxY, width: contentView!.frame.width * 0.5, height: unitHeight!);
-        stagesRangeLabel!.font = UIFont.boldSystemFont(ofSize: stagesRangeLabel!.frame.height * 0.35);
-        stagesRangeLabel!.backgroundColor = UIColor.clear;
-    }
-    
-    func setupDurationLabel() {
-        self.durationLabel = UICLabel(parentView: contentView!, x: contentView!.frame.width * 0.5, y: catsDiedAmountLabel!.frame.maxY, width: contentView!.frame.width * 0.5, height: unitHeight!);
-        durationLabel!.lineBreakMode = NSLineBreakMode.byWordWrapping;
-        durationLabel!.numberOfLines = 2;
-        durationLabel!.text = "Seconds\nTime";
-        durationLabel!.font = UIFont.boldSystemFont(ofSize: durationLabel!.frame.height * 0.40);
-        durationLabel!.backgroundColor = UIColor.clear;
-        setupDurationTimeLabel();
-    }
-    
-    func setupDurationTimeLabel() {
-        self.durationTimeLabel = UICLabel(parentView: contentView!, x: contentView!.frame.width * 0.5, y: durationLabel!.frame.maxY, width: contentView!.frame.width * 0.5, height: unitHeight!);
-        durationTimeLabel!.font = UIFont.boldSystemFont(ofSize: durationTimeLabel!.frame.height * 0.35);
-        durationTimeLabel!.backgroundColor = UIColor.clear;
     }
     
     @objc func adjustRewardAmount() {
@@ -305,11 +261,6 @@ class UIResults: UICView {
         SoundController.coinEarned();
         watchAdButton!.sendActions(for: .touchUpInside);
     }
-
-    func setSessionDuration() {
-        sessionDuration = sessionEndTime - sessionStartTime;
-        sessionDuration = Double(floor(10 * sessionDuration) / 10)
-    }
     
     func setAmountRate() {
         let total:Double = rewardAmountQuantity[0]! + rewardAmountQuantity[UIResults.rewardAmount]!;
@@ -324,8 +275,6 @@ class UIResults: UICView {
     func update() -> (UICButton, UIMouseCoin) {
         catsLivedAmountLabel!.text = String(catsThatLived);
         catsDiedAmountLabel!.text = String(catsThatDied);
-        stagesRangeLabel!.text = "\(colorMemoryCapacity)";
-        durationTimeLabel!.text = "\(Int(floor(sessionDuration)))";
         // Adjust reward amount
         setAmountRate();
         // Determine whether to show ad
@@ -343,10 +292,6 @@ class UIResults: UICView {
             self.deadCatImageButton!.setImage(UIImage(named: UICatButton.getCatFileName(named: "DeadCat.png", selectedCat: selectedCat)), for: .normal);
             self.catsLivedAmountLabel!.textColor = UIColor.black;
             self.catsDiedAmountLabel!.textColor = UIColor.black;
-            self.stagesLabel!.textColor = UIColor.black;
-            self.stagesRangeLabel!.textColor = UIColor.black;
-            self.durationLabel!.textColor = UIColor.black;
-            self.durationTimeLabel!.textColor = UIColor.black;
             self.watchAdButton!.setTitleColor(UIColor.black, for: .normal);
             self.watchAdButton!.layer.borderColor = UIColor.black.cgColor;
         } else {
@@ -357,10 +302,6 @@ class UIResults: UICView {
             self.deadCatImageButton!.setImage(UIImage(named: UICatButton.getCatFileName(named: "DeadCat.png", selectedCat:selectedCat)), for: .normal);
             self.catsLivedAmountLabel!.textColor = UIColor.white;
             self.catsDiedAmountLabel!.textColor = UIColor.white;
-            self.stagesLabel!.textColor = UIColor.white;
-            self.stagesRangeLabel!.textColor = UIColor.white;
-            self.durationLabel!.textColor = UIColor.white;
-            self.durationTimeLabel!.textColor = UIColor.white;
             self.watchAdButton!.setTitleColor(UIColor.white, for: .normal);
             self.watchAdButton!.layer.borderColor = UIColor.white.cgColor;
         }

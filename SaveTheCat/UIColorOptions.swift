@@ -127,9 +127,6 @@ class UIColorOptions: UIView {
                 index += 1;
             }
         }
-        if (setup && boardGameView!.currentRound == 1) {
-            boardGameView!.results!.sessionStartTime = CFAbsoluteTimeGetCurrent();
-        }
     }
     
     @objc func selectColorOption(colorOption:UICButton!){

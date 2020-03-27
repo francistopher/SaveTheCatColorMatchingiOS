@@ -532,7 +532,6 @@ class UIBoardGame: UIView, GKMatchDelegate {
         }
     }
     
-    var gameOverRowsAndColumns:[Int]?
     var iLostUpdateResult:(UICButton, UIMouseCoin)?
     var iLostWatchAdButton:UICButton?
     var iLostMouseCoinButton:UIMouseCoin?
@@ -547,14 +546,7 @@ class UIBoardGame: UIView, GKMatchDelegate {
         }
         self.attackMeter!.attack = false;
         self.attackMeter!.attackStarted = false;
-        if (self.currentRound == 1 && self.results!.catsThatLived > 1) {
-            results!.colorMemoryCapacity = 1;
-        } else if (self.currentRound == 1) {
-            results!.colorMemoryCapacity = 0;
-        } else {
-            gameOverRowsAndColumns = getRowsAndColumns(currentStage: currentRound - 1);
-            results!.colorMemoryCapacity = gameOverRowsAndColumns![0] * gameOverRowsAndColumns![1];
-        }
+       
         SoundController.mozartSonata(play: false, startOver: false);
         SoundController.chopinPrelude(play: true);
         colorOptions!.removeBorderOfSelectionButtons();
@@ -567,8 +559,6 @@ class UIBoardGame: UIView, GKMatchDelegate {
         self.glovePointer!.isTapping = false;
         self.glovePointer!.setCompiledStyle();
         // Show glove, watch ad button, and mouse coin
-        results!.sessionEndTime = CFAbsoluteTimeGetCurrent();
-        results!.setSessionDuration();
         if (iLostUpdateResult == nil) {
             iLostUpdateResult = self.results!.update();
             iLostWatchAdButton = iLostUpdateResult!.0;
@@ -607,7 +597,6 @@ class UIBoardGame: UIView, GKMatchDelegate {
         ViewController.submitCatsSavedScore(catsSaved: self.results!.catsThatLived);
         Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false) { timer in
             // Submit memory capacity score
-            ViewController.submitMemoryCapacityScore(memoryCapacity: self.results!.colorMemoryCapacity);
             self.results!.fadeIn();
             // Save coins earned for the use
             if (ViewController.staticSelf!.isInternetReachable) {
@@ -672,7 +661,7 @@ class UIBoardGame: UIView, GKMatchDelegate {
     func attackCatButton(catButton:UICatButton) {
         self.attackMeter!.updateDuration(change: -0.75);
         if (myLiveMeter!.livesLeft - 1 > 0) {
-            setCatButtonAsDead(catButton: catButton, singleDeath:true);
+            setCatButtonAsDead(catButton: catButton, singleDeath:false);
             myLiveMeter!.decrementLivesLeftCount();
             if (cats.areAllCatsDead()) {
                 self.attackMeter!.sendVirusToStart();
@@ -921,7 +910,6 @@ class UIBoardGame: UIView, GKMatchDelegate {
             self.alpha = 0.0;
             self.attackMeter!.attack = false;
             self.attackMeter!.attackStarted = false;
-            self.results!.colorMemoryCapacity = 0;
             self.colorOptions!.removeBorderOfSelectionButtons();
             self.attackMeter!.previousDisplacementDuration = 3.5;
             self.colorOptions!.isTransitioned = false;
@@ -935,7 +923,6 @@ class UIBoardGame: UIView, GKMatchDelegate {
                 self.alpha = 0.0;
                 self.attackMeter!.attack = false;
                 self.attackMeter!.attackStarted = false;
-                self.results!.colorMemoryCapacity = 0;
                 self.colorOptions!.removeBorderOfSelectionButtons();
                 self.attackMeter!.previousDisplacementDuration = 3.5;
                 self.colorOptions!.isTransitioned = false;

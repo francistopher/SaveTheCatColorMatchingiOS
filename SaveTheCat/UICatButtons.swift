@@ -167,6 +167,21 @@ class UICatButtons {
         return rowOfAliveCats;
     }
     
+    var previousFileName:String = "";
+    func updateCat() {
+        for catButton in presentCollection! {
+            catButton.selectedCat = ViewController.getRandomCat();
+            previousFileName = catButton.previousFileName;
+            if (previousFileName.contains(String("Smiling"))) {
+                catButton.setCat(named: "SmilingCat", stage: 3);
+            } else if (previousFileName.contains(String("Cheering"))) {
+                catButton.setCat(named: "CheeringCat", stage: 3);
+            } else {
+                catButton.setCat(named: "DeadCat", stage: 3);
+            }
+        }
+    }
+    
     func getIndexesOfRowsWithAliveCatsCount() -> [Int:Int] {
         var indexesOfRowsWithAliveCatsCount:[Int:Int] = [:];
         for catButton in presentCollection! {

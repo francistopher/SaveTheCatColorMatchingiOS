@@ -96,6 +96,9 @@ class MoreCatsViewController:UIViewController {
         setupPreviousButton();
         setupNextButton();
         setupSelectionButton();
+        if (displayedCatIndex == -1) {
+            setPresentationCat(cat: ViewController.getRandomCat());
+        }
         setupPresentLabelNameAnimation();
         setupPurchaseAlert();
         setCompiledStyle();
@@ -262,8 +265,11 @@ class MoreCatsViewController:UIViewController {
         ViewController.staticSelf!.myCats[catTypes[displayedCatIndex]] = abs(currentSelectionValue!);
         // Update display
         updateCatImageNameAndStatus();
-        ViewController.staticSelf!.boardGame!.cats.resumeCatAnimations();
         saveMyCatsDictAsString();
+        // Apply changes across ui
+        ViewController.staticSelf!.boardGame!.cats.updateCat();
+        ViewController.staticSelf!.boardGame!.cats.suspendCatAnimations();
+        ViewController.staticSelf!.boardGame!.cats.resumeCatAnimations();
     }
     
     func setupPreviousButton() {
@@ -377,9 +383,6 @@ class MoreCatsViewController:UIViewController {
     }
     
     func presentCatButton() {
-        if (displayedCatIndex == -1) {
-            setPresentationCat(cat: ViewController.getRandomCat());
-        }
         presentationCatButton!.randomAnimationSelection = 0;
         presentationCatButton!.setRandomCatAnimation();
         presentationCatButton!.grow();

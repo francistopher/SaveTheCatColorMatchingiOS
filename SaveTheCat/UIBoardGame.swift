@@ -47,6 +47,8 @@ class UIBoardGame: UIView, GKMatchDelegate {
     
     var iLost:Bool = false;
     var iWon:Bool = false;
+    var catsSavedLabel:UICLabel?
+    var catsSavedCount:Int = 0;
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented");
@@ -65,6 +67,29 @@ class UIBoardGame: UIView, GKMatchDelegate {
         setupOpponentLiveMeter();
         setupLivesMeter();
         setupAttackMeter();
+        setupCatsSavedLabel();
+    }
+    
+    func setupCatsSavedLabel() {
+        catsSavedLabel = UICLabel(parentView: self.superview!, x: self.frame.minX, y: self.frame.minY, width: self.superview!.frame.width, height: self.frame.height);
+        CenterController.center(childView: catsSavedLabel!, parentRect: self.superview!.frame, childRect: catsSavedLabel!.frame);
+        catsSavedLabel!.font = UIFont.boldSystemFont(ofSize: catsSavedLabel!.frame.height * 0.4);
+        catsSavedLabel!.backgroundColor = UIColor.clear;
+        catsSavedLabel!.layer.borderColor = UIColor.clear.cgColor;
+        catsSavedLabel!.alpha = 0.0;
+    }
+    
+    var catsSavedCountTimer:Timer?
+    func flashCatsSavedCount() {
+        catsSavedLabel!.alpha = 1.0;
+        catsSavedCount += 1;
+        catsSavedLabel!.text = "\(catsSavedCount)";
+        catsSavedCountTimer?.invalidate();
+        catsSavedCountTimer = nil;
+        self.superview!.bringSubviewToFront(catsSavedLabel!);
+        catsSavedCountTimer = Timer.scheduledTimer(withTimeInterval: 0.25, repeats: false, block: { _ in
+            self.catsSavedLabel!.alpha = 0.0;
+        })
     }
     
     func setupVictoryView() {
@@ -540,6 +565,10 @@ class UIBoardGame: UIView, GKMatchDelegate {
     var iLostX:CGFloat?
     var iLostY:CGFloat?
     func gameOverTransition() {
+        // Flash cats saved count last time
+        catsSavedCount = results!.catsThatLived - 1;
+        flashCatsSavedCount();
+        
         iLost = true;
         if (!settingsButton!.isPressed) {
             settingsButton!.sendActions(for: .touchUpInside);
@@ -606,6 +635,7 @@ class UIBoardGame: UIView, GKMatchDelegate {
             self.results!.catsThatLived = 0;
             self.results!.catsThatDied = 0;
         }
+        self.catsSavedCount = 0;
     }
     
     @objc func selectCatButton(catButton:UICatButton) {
@@ -636,6 +666,7 @@ class UIBoardGame: UIView, GKMatchDelegate {
                     catButton.isPodded = true;
                     catButton.giveMouseCoin(withNoise: true);
                     verifyThatRemainingCatsArePodded(catButton:catButton);
+                    self.flashCatsSavedCount();
                 }
             } else {
                 if (!catButton.isPodded) {

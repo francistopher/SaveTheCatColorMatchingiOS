@@ -645,6 +645,9 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, GKMatchm
         boardGame!.opponentLiveMeter!.setCompiledStyle();
         boardGame!.results!.setCompiledStyle();
         boardGame!.attackMeter!.setCompiledStyle();
+        boardGame!.catsSavedLabel!.setStyle();
+        boardGame!.catsSavedLabel!.backgroundColor = UIColor.clear;
+        boardGame!.catsSavedLabel!.layer.borderColor = UIColor.clear.cgColor;
         colorOptions!.setStyle();
     }
     

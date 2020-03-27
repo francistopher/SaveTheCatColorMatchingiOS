@@ -90,7 +90,6 @@ class MoreCatsViewController:UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad();
-        setupMainView()
         setupContentView()
         setupHideButton()
         setupInfoButton()
@@ -138,15 +137,30 @@ class MoreCatsViewController:UIViewController {
         }
     }
     
-    func setupMainView() {
-        view.backgroundColor = UIColor.clear;
-    }
-    
+    var contentViewFrame:CGRect?
+    var contentViewBorderWidth:CGFloat?
+    var contentViewCornerRadius:CGFloat?
     func setupContentView() {
-        contentView = UICView(parentView: view, x: 0.0, y: 0.0, width: view.frame.width * 0.7, height: view.frame.height * 0.65, backgroundColor: UIColor.red);
-        CenterController.center(childView: contentView!, parentRect: view.frame, childRect: contentView!.frame);
-        contentView!.layer.borderWidth = contentView!.frame.width * 0.0125;
-        contentView!.layer.cornerRadius = contentView!.frame.width * 0.1
+        if (ViewController.aspectRatio! == .ar4by3) {
+            view.backgroundColor = UIColor.clear;
+            contentViewFrame = CGRect(x: 0.0, y: 0.0, width: view.frame.width * 0.7, height: view.frame.height * 0.65)
+            contentViewBorderWidth = view.frame.width * 0.7 * 0.0125;
+            contentViewCornerRadius = view.frame.width * 0.7 * 0.1;
+        } else if (ViewController.aspectRatio! == .ar16by9) {
+            contentViewFrame = CGRect(x: 0.0, y: view.frame.height * 0.0275, width: view.frame.width, height: view.frame.height * 0.9725)
+            contentViewBorderWidth = view.frame.width * 0.0125;
+            contentViewCornerRadius = 0.0;
+        } else {
+            contentViewFrame = CGRect(x: 0.0, y: view.frame.height * 0.0525, width: view.frame.width, height: view.frame.height * 0.9475)
+            contentViewBorderWidth = view.frame.width * 0.0125;
+            contentViewCornerRadius = view.frame.width * 0.7 * 0.145;
+        }
+        contentView = UICView(parentView: view, x: contentViewFrame!.minX, y: contentViewFrame!.minY, width: contentViewFrame!.width, height: contentViewFrame!.height, backgroundColor: UIColor.clear);
+        contentView!.layer.borderWidth = contentViewBorderWidth!;
+        contentView!.layer.cornerRadius = contentViewCornerRadius!;
+        if (ViewController.aspectRatio! == .ar4by3) {
+            CenterController.center(childView: contentView!, parentRect: view.frame, childRect: contentView!.frame);
+        }
         contentView!.clipsToBounds = true;
     }
     
@@ -209,8 +223,8 @@ class MoreCatsViewController:UIViewController {
     func setSelectionButtonText() {
         currentSelectionValue = ViewController.staticSelf!.myCats[catTypes[displayedCatIndex]]!;
         if (currentSelectionValue! > 0) {
-            selectionButton!.setTitle("Unselect", for: .normal);
-            selectionButton!.backgroundColor = UIColor.systemRed;
+            selectionButton!.setTitle("Selected", for: .normal);
+            selectionButton!.backgroundColor = UIColor.systemPink;
             mouseCoin!.alpha = 0.0;
         } else if (currentSelectionValue! == 0) {
             selectionButton!.setTitle(repositionMouseCoinAndGetOffer(), for: .normal);
@@ -255,7 +269,7 @@ class MoreCatsViewController:UIViewController {
     
     func unselectCat() {
         if (ViewController.getSelectedCatsCount() == 1) {
-            print("Must maintain at least one cat selected!");
+            
         } else {
             currentSelectionValue = ViewController.staticSelf!.myCats[catTypes[displayedCatIndex]]!;
             ViewController.staticSelf!.myCats[catTypes[displayedCatIndex]] = -1 * currentSelectionValue!;
@@ -367,7 +381,7 @@ class MoreCatsViewController:UIViewController {
     @objc func selectionButtonSelector() {
         if (selectionButton!.titleLabel!.text == "Select") {
             selectCat();
-        } else if (selectionButton!.titleLabel!.text == "Unselect") {
+        } else if (selectionButton!.titleLabel!.text == "Selected") {
             unselectCat();
         } else {
             if (catPrices[displayedCatIndex] <= UIResults.mouseCoins) {
@@ -430,6 +444,15 @@ class MoreCatsViewController:UIViewController {
     }
     
     func setCompiledStyle() {
+        if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1) {
+            if (ViewController.aspectRatio! != .ar4by3) {
+                view.backgroundColor = UIColor.white;
+            }
+        } else {
+            if (ViewController.aspectRatio! == .ar16by9) {
+                view.backgroundColor = UIColor.black;
+            }
+        }
         presentationCatButton!.setStyle();
         presentationCatButton!.setCat(named: "SmilingCat", stage: 5);
         if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1) {

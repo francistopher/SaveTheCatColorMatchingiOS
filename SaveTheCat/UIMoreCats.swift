@@ -114,11 +114,19 @@ class MoreCatsViewController:UIViewController {
                     self.updateCatImageNameAndStatus();
                     // Update mouse coin value
                     ViewController.settingsButton!.settingsMenu!.mouseCoin!.setMouseCoinValue(newValue: UIResults.mouseCoins - Int64(self.catPrices[self.displayedCatIndex]));
+                    ViewController.settingsButton!.settingsMenu!.mouseCoin!.mouseCoinView!.fadeIn();
                 }
-                ViewController.settingsButton!.settingsMenu!.mouseCoin!.mouseCoinView!.fadeIn();
+                self.saveMyCatsDictAsString();
             }
         }))
         purchaseAlert!.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil));
+    }
+    
+    func saveMyCatsDictAsString() {
+        if (ViewController.staticSelf!.isInternetReachable) {
+            // Save my cats string
+            ViewController.staticSelf!.saveMyCatsDictAsString(catTypes: self.catTypes);
+        }
     }
     
     func setupMainView() {
@@ -185,9 +193,7 @@ class MoreCatsViewController:UIViewController {
     }
     
     func updateCatImageNameAndStatus() {
-        
         setPresentationCat(cat: catTypes[displayedCatIndex]);
-        
     }
     
     var currentSelectionValue:Int8?
@@ -241,6 +247,7 @@ class MoreCatsViewController:UIViewController {
            selectionButton!.backgroundColor = UIColor.systemGreen;
            selectionButton!.setTitle("Select", for: .normal);
         }
+        saveMyCatsDictAsString();
     }
     
     func selectCat() {
@@ -255,8 +262,8 @@ class MoreCatsViewController:UIViewController {
         ViewController.staticSelf!.myCats[catTypes[displayedCatIndex]] = abs(currentSelectionValue!);
         // Update display
         updateCatImageNameAndStatus();
-        ViewController.staticSelf!.boardGame!.cats.updateUIStyle();
-        
+        ViewController.staticSelf!.boardGame!.cats.resumeCatAnimations();
+        saveMyCatsDictAsString();
     }
     
     func setupPreviousButton() {
@@ -381,6 +388,9 @@ class MoreCatsViewController:UIViewController {
     }
     
     func hideCatButton() {
+        // Save my cats string
+        ViewController.staticSelf!.saveMyCatsDictAsString(catTypes: catTypes);
+        // Reset more cats view
         catLabelName!.frame = catLabelName!.originalFrame!;
         selectionButton!.frame = selectionButton!.originalFrame!;
         catViewHandler!.frame = catViewHandler!.originalFrame!;

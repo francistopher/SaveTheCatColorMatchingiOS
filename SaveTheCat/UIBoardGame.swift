@@ -761,7 +761,6 @@ class UIBoardGame: UIView, GKMatchDelegate {
                 promote();
                 return;
             } else {
-                myLiveMeter!.incrementLivesLeftCount(catButton: catButton, forOpponent: false);
                 self.attackMeter!.sendVirusToStart();
                 maintain();
                 return;

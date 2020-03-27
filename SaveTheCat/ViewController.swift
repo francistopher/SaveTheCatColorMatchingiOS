@@ -45,7 +45,8 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, GKMatchm
             gameMessage!.displayInternetConnectionEstablishedMessage();
             // Stop autoloading ads
             bannerView.isAutoloadEnabled = true;
-            // Load Online Mouse Coins
+            // Load Online Mouse Coins and cats
+            myCats = myCatsStringToDict(myCats: keyValueStore.string(forKey: "myCats"))
             settingsButton!.settingsMenu!.mouseCoin!.setMouseCoinValue(newValue: keyValueStore.longLong(forKey: "mouseCoins"));
         } else {
             self.isInternetReachable = false;
@@ -56,7 +57,39 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, GKMatchm
             // Display no Internet Message
             gameMessage!.displayNoInternetConsequencesMessage();
             // No internet mouse coinds
+            myCats = myCatsStringToDict(myCats: nil);
             settingsButton!.settingsMenu!.mouseCoin!.setMouseCoinValue(newValue: 0);
+        }
+    }
+    
+    var myCatsString:String = "";
+    var myCatsStringSection:String = "";
+    func saveMyCatsDictAsString(catTypes:[Cat]) {
+        for cat in catTypes {
+            myCatsStringSection = "\(cat)";
+            myCatsString += myCatsStringSection.prefix(1);
+            myCatsString += String(Array(myCatsStringSection)[(myCatsStringSection.count / 2)]);
+            myCatsString += myCatsStringSection.suffix(1);
+            if (myCats[cat]! > 0) {
+                myCatsString += "+\(myCats[cat]!)"
+            } else if (myCats[cat]! == 0) {
+                myCatsString += "00"
+            }  else {
+                myCatsString += "\(myCats[cat]!)"
+            }
+            myCatsStringSection = "";
+        }
+        NSUbiquitousKeyValueStore.default.set(myCatsString, forKey: "myCats");
+        myCatsString = ""
+
+    }
+    
+    func myCatsStringToDict(myCats:String?) -> [Cat:Int8] {
+        if (myCats == nil) {
+            return [.standard:1, .breading:0, .taco:0, .egyptian:0, .supeR:0, .chicken:0, .cool:0, .ninja:0, .fat:0]
+        } else {
+            print(myCats!, "These are my cats!!!");
+            return [.standard:1, .breading:0, .taco:0, .egyptian:0, .supeR:0, .chicken:0, .cool:0, .ninja:0, .fat:0]
         }
     }
     

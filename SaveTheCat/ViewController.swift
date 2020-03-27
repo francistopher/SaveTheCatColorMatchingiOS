@@ -46,7 +46,7 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, GKMatchm
             // Stop autoloading ads
             bannerView.isAutoloadEnabled = true;
             // Load Online Mouse Coins and cats
-            myCats = myCatsStringToDict(myCats: keyValueStore.string(forKey: "myCats"))
+            loadMyCats(myCats: keyValueStore.string(forKey: "myCats"));
             settingsButton!.settingsMenu!.mouseCoin!.setMouseCoinValue(newValue: keyValueStore.longLong(forKey: "mouseCoins"));
         } else {
             self.isInternetReachable = false;
@@ -57,7 +57,7 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, GKMatchm
             // Display no Internet Message
             gameMessage!.displayNoInternetConsequencesMessage();
             // No internet mouse coinds
-            myCats = myCatsStringToDict(myCats: nil);
+            loadMyCats(myCats: nil);
             settingsButton!.settingsMenu!.mouseCoin!.setMouseCoinValue(newValue: 0);
         }
     }
@@ -84,13 +84,59 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, GKMatchm
 
     }
     
-    func myCatsStringToDict(myCats:String?) -> [Cat:Int8] {
+    var myCatsTempString:String = "";
+    var myCatsTempStringSection:String = "";
+    var myCatsTempDict:[Cat:Int8]?
+    var myCatValue:String = "";
+    func loadMyCats(myCats:String?){
+        myCatsTempDict = [.standard:1, .breading:0, .taco:0, .egyptian:0, .supeR:0, .chicken:0, .cool:0, .ninja:0, .fat:0];
         if (myCats == nil) {
-            return [.standard:1, .breading:0, .taco:0, .egyptian:0, .supeR:0, .chicken:0, .cool:0, .ninja:0, .fat:0]
+            self.myCats = myCatsTempDict!;
         } else {
+            myCatsTempString = myCats!;
+            while (myCatsTempString.count > 0) {
+                myCatsStringSection = String(myCatsTempString.prefix(5));
+                myCatValue = String(myCatsStringSection.suffix(2));
+                if (myCatValue.contains("+")) {
+                    myCatValue = String(myCatValue.suffix(1));
+                }
+                switch(myCatsStringSection.prefix(3)) {
+                case "sdd":
+                    updateCatValue(cat: .standard, stringValue: myCatValue);
+                case "bdg":
+                    updateCatValue(cat: .breading, stringValue: myCatValue);
+                case "tco":
+                    updateCatValue(cat: .taco, stringValue: myCatValue);
+                case "etn":
+                    updateCatValue(cat: .egyptian, stringValue: myCatValue);
+                case "spR":
+                    updateCatValue(cat: .supeR, stringValue: myCatValue);
+                case "ccn":
+                    updateCatValue(cat: .chicken, stringValue: myCatValue);
+                case "col":
+                    updateCatValue(cat: .cool, stringValue: myCatValue);
+                case "nna":
+                    updateCatValue(cat: .ninja, stringValue: myCatValue);
+                case "fat":
+                    updateCatValue(cat: .fat, stringValue: myCatValue);
+                default:
+                    print("?")
+                }
+                myCatsTempString = String(myCatsTempString.suffix(myCatsTempString.count - 5));
+            }
             print(myCats!, "These are my cats!!!");
-            return [.standard:1, .breading:0, .taco:0, .egyptian:0, .supeR:0, .chicken:0, .cool:0, .ninja:0, .fat:0]
         }
+    }
+    
+    func updateCatValue(cat:Cat, stringValue:String) {
+        if (stringValue == "00") {
+            self.myCats[cat] = 0;
+        } else if (stringValue.contains("-")) {
+            self.myCats[cat] = Int8(stringValue);
+        } else {
+            self.myCats[cat] = Int8(stringValue);
+        }
+        
     }
     
     static func unSelectSelectedCat() {

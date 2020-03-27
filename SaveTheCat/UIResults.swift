@@ -305,6 +305,7 @@ class UIResults: UICView {
             self.watchAdButton!.setTitleColor(UIColor.white, for: .normal);
             self.watchAdButton!.layer.borderColor = UIColor.white.cgColor;
         }
+        self.watchAdButton!.layer.borderColor = UIColor.red.cgColor;
     }
     
 }

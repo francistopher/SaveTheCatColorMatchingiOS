@@ -25,7 +25,7 @@ class UIResults: UICView {
     var deadCatImageButton:UICButton?
     
     var watchAdButton:UICButton?
-    var adIsShowing:Bool = false;
+    static var adIsShowing:Bool = false;
     
     var unitHeight:CGFloat?
     
@@ -137,12 +137,12 @@ class UIResults: UICView {
     }
     
     func adjustRewardAmount() {
-        if (!adIsShowing) {
+        if (!UIResults.adIsShowing) {
             if (UIResults.rewardAmount > 5) {
                 UIResults.rewardAmount -= 1;
             }
         }
-        adIsShowing = false;
+        UIResults.adIsShowing = false;
     }
     
     var mouseCoin:UIMouseCoin?
@@ -175,7 +175,7 @@ class UIResults: UICView {
     @objc func showAd() {
         print("MESSAGE: IS THE AD ACTAULLY SHOWING")
         // Gathering user selection data
-        adIsShowing = true;
+        UIResults.adIsShowing = true;
         // load the ad
         ViewController.presentInterstitial();
         // Wait to see if ad will load

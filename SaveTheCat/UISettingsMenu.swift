@@ -13,7 +13,7 @@ class UISettingsMenu:UICView {
     
     var advertisement:UIAds?
     var leaderBoard:UILeadBoard?
-    var multiplayer:UIMultiplayer?
+    var multiplayer:UIVolume?
     var moreCats:UIMoreCats?
     var mouseCoin:UIMouseCoin?
     
@@ -67,7 +67,7 @@ class UISettingsMenu:UICView {
     }
 
     func setupMultiPlayerButton() {
-        multiplayer = UIMultiplayer(parentView: self, x: 0.0, y: 0.0, width: self.frame.height, height: self.frame.height);
+        multiplayer = UIVolume(parentView: self, x: 0.0, y: 0.0, width: self.frame.height, height: self.frame.height);
         if (ViewController.aspectRatio! == .ar19point5by9) {
             multiplayer!.transform = multiplayer!.transform.scaledBy(x: 0.5, y: 0.5);
         } else if (ViewController.aspectRatio! == .ar16by9) {

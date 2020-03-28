@@ -141,6 +141,8 @@ class UIBoardGame: UIView, GKMatchDelegate {
     }
     
     func continueSelector() {
+        victoryView!.mouseCoin!.alpha = 0.0;
+        victoryView!.watchAdButton!.alpha = 0.0;
         results!.adjustRewardAmount();
         iLost = false;
         if (settingsButton!.isPressed) {
@@ -197,12 +199,12 @@ class UIBoardGame: UIView, GKMatchDelegate {
         if (!iLost) {
             // Disappear cats and selection colors
             self.victoryView!.awardAmount = abs(results!.catsThatLived - results!.catsThatDied);
-            self.results!.catsThatLived = 0;
-            self.results!.catsThatDied = 0;
             self.clearBoardGameToDisplayVictoryAnimation();
             // Show victory view
             self.victoryView!.fadeIn();
-            self.victoryView!.showVictoryMessageAndGifWith(text: "YOU WIN! YOU ARE\nMY ULTIMATE CAT SAVER!");
+            self.victoryView!.showVictoryMessageAndGiveMouseCoins(catsSaved: results!.catsThatLived, catsDied: results!.catsThatDied);
+            self.results!.catsThatLived = 0;
+            self.results!.catsThatDied = 0;
             // Stop enemy from attacking
             self.attackMeter!.didNotInvokeAttackImpulse = true;
             self.attackMeter!.sendEnemyToStartAndHold();

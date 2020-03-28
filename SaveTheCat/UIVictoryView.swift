@@ -22,11 +22,15 @@ class UIVictoryView:UICView {
     
     var label:UICLabel?
     var unitHeight:CGFloat = 0.0;
-    var imageView:UIImageView?
-    var image:UIImage?
     var awardAmount:Int = 0;
     var watchAdButton:UICButton?
     var mouseCoin:UIMouseCoin?
+    
+    var deadCat:UIImageView?
+    var cheeringCat:UIImageView?
+    var catsSavedCountLabel:UICLabel?
+    var catsDeadCountLabel:UICLabel?
+    var catImage:UIImage?
     
     // Save number of coins
     var keyValueStore:NSUbiquitousKeyValueStore = NSUbiquitousKeyValueStore();
@@ -37,8 +41,9 @@ class UIVictoryView:UICView {
         self.layer.borderWidth = frame.width * 0.02;
         unitHeight = frame.height * 0.1;
         self.clipsToBounds = true;
-        setupImageView();
         setupLabel();
+        setupCheeringCat();
+        setupDeadCat();
         setupWatchAdForMouseCoinButton();
     }
     
@@ -48,9 +53,38 @@ class UIVictoryView:UICView {
     
     func setupLabel() {
         label = UICLabel(parentView: self, x: 0.0, y: unitHeight * 0.25, width: frame.width, height: unitHeight * 2.0);
-        label!.font = UIFont.boldSystemFont(ofSize: label!.frame.height * 0.3);
-        label!.lineBreakMode = NSLineBreakMode.byWordWrapping;
-        label!.numberOfLines = 2;
+        label!.font = UIFont.boldSystemFont(ofSize: label!.frame.height * 0.375);
+        label!.text = "Winner Winner!";
+    }
+    
+    func setupCheeringCat() {
+        cheeringCat = UIImageView(frame: CGRect(x: frame.width * 0.04, y: unitHeight * 1.75, width: frame.width * 0.5, height: unitHeight * 4.5));
+        cheeringCat!.image = UIImage(named: UICatButton.getCatFileName(named: "SmilingCat", selectedCat: .standard));
+        cheeringCat!.contentMode = UIView.ContentMode.scaleAspectFit;
+        cheeringCat!.transform = cheeringCat!.transform.scaledBy(x: 1.25, y: 1.25);
+        self.addSubview(cheeringCat!);
+        setupCatsLivedLabel();
+    }
+    
+    func setupCatsLivedLabel() {
+        catsSavedCountLabel = UICLabel(parentView: self, x: cheeringCat!.frame.minX, y: cheeringCat!.frame.maxY - unitHeight * 0.6, width: cheeringCat!.frame.width, height: unitHeight);
+        catsSavedCountLabel!.font = UIFont.boldSystemFont(ofSize: catsSavedCountLabel!.frame.height * 0.6);
+        catsSavedCountLabel!.text = "0";
+    }
+    
+    func setupDeadCat() {
+        deadCat = UIImageView(frame: CGRect(x: frame.width * 0.46, y: unitHeight * 1.75, width: frame.width * 0.5, height: unitHeight * 4.5));
+        deadCat!.image =  UIImage(named: UICatButton.getCatFileName(named: "DeadCat", selectedCat: .standard));
+        deadCat!.contentMode = UIView.ContentMode.scaleAspectFit;
+        deadCat!.transform = deadCat!.transform.scaledBy(x: 1.25, y: 1.25);
+        self.addSubview(deadCat!);
+        setupCatsDeadLabel();
+    }
+    
+    func setupCatsDeadLabel() {
+        catsDeadCountLabel = UICLabel(parentView: self, x: deadCat!.frame.minX, y: deadCat!.frame.maxY - unitHeight * 0.6, width: deadCat!.frame.width, height: unitHeight);
+        catsDeadCountLabel!.font = UIFont.boldSystemFont(ofSize: catsDeadCountLabel!.frame.height * 0.6);
+        catsDeadCountLabel!.text = "0";
     }
     
     func setupWatchAdForMouseCoinButton() {
@@ -61,6 +95,8 @@ class UIVictoryView:UICView {
         watchAdButton!.layer.cornerRadius = watchAdButton!.frame.width * 0.05;
         CenterController.centerHorizontally(childView: watchAdButton!, parentRect: self.frame, childRect: watchAdButton!.frame);
         watchAdButton!.addTarget(self, action: #selector(watchAdButtonSelector), for: .touchUpInside);
+        watchAdButton!.layer.borderColor = UIColor.systemYellow.cgColor;
+        watchAdButton!.alpha = 0.0;
         setupMouseCoin();
     }
     
@@ -83,9 +119,11 @@ class UIVictoryView:UICView {
         }
         mouseCoin = UIMouseCoin(parentView: watchAdButton!, x: x!, y: y!, width: sideLength!, height: sideLength!);
         mouseCoin!.addTarget(self, action: #selector(watchAdButtonSelector), for: .touchUpInside);
+        mouseCoin!.alpha = 0.0;
     }
     
     @objc func watchAdButtonSelector() {
+        UIResults.adIsShowing = true;
         ViewController.presentInterstitial();
         var timer:Timer?
         timer = Timer.scheduledTimer(withTimeInterval: 0.01, repeats: true, block: { _ in
@@ -100,8 +138,11 @@ class UIVictoryView:UICView {
                         SoundController.mozartSonata(play: true, startOver: false);
                         timer!.invalidate();
                         // Give mouse coins and hide mouse coin and label
-                        self.awardAmount = 5;
+                        self.awardAmount = UIResults.rewardAmount;
                         self.giveMouseCoins();
+                        if (UIResults.rewardAmount < 20) {
+                            UIResults.rewardAmount += 1;
+                        }
                         self.watchAdButton!.titleLabel!.alpha = 0.0;
                         self.mouseCoin!.alpha = 0.0;
                         self.watchAdButton!.isUserInteractionEnabled = false;
@@ -111,20 +152,21 @@ class UIVictoryView:UICView {
         })
     }
     
-    func showVictoryMessageAndGifWith(text:String) {
-        label!.text = text;
-        self.mouseCoin!.alpha = 1.0;
-        Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false, block: { _ in
-            SoundController.cuteLaugh();
-            self.giveMouseCoins();
+    var giveMouseCoinsTimer:Timer?
+    func showVictoryMessageAndGiveMouseCoins(catsSaved:Int, catsDied:Int) {
+        catsSavedCountLabel!.text = "\(catsSaved)";
+        catsDeadCountLabel!.text = "\(catsDied)";
+        giveMouseCoinsTimer?.invalidate();
+        giveMouseCoinsTimer = nil;
+        giveMouseCoinsTimer = Timer.scheduledTimer(withTimeInterval: 0.01, repeats: true, block: { _ in
+            if (self.alpha == 1.0) {
+                self.giveMouseCoins();
+                self.mouseCoin!.alpha = 1.0;
+                self.watchAdButton!.alpha = 1.0;
+                self.giveMouseCoinsTimer!.invalidate();
+                print("YESS")
+            }
         })
-    }
-    
-    func setupImageView() {
-        imageView = UIImageView(image: UIImage.gifImageWithName("whiteBorderGal")!);
-        imageView!.frame =  CGRect(x: 0.0, y: unitHeight * 2.25, width: unitHeight * 5.0, height: unitHeight * 5.0);
-        CenterController.centerHorizontally(childView: imageView!, parentRect: self.frame, childRect: imageView!.frame);
-        self.addSubview(imageView!);
     }
     
     var angleIncrements:CGFloat?
@@ -165,6 +207,8 @@ class UIVictoryView:UICView {
     
     
     func setCompiledStyle() {
+        watchAdButton!.setStyle();
+        watchAdButton!.layer.borderColor = UIColor.systemYellow.cgColor;
         if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1) {
             self.backgroundColor = UIColor.white;
             self.layer.borderColor = UIColor.black.cgColor;
@@ -172,6 +216,7 @@ class UIVictoryView:UICView {
             self.backgroundColor = UIColor.black;
             self.layer.borderColor = UIColor.white.cgColor;
         }
+        
     }
     
 }

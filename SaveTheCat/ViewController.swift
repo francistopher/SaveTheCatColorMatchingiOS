@@ -319,7 +319,6 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, GKMatchm
         // Save first banner view as temp
         mainView.addSubview(bannerView);
         bannerView.alpha = 0.0;
-        
     }
     
     // Game Center Authentication
@@ -496,7 +495,6 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, GKMatchm
     }
     
     func setupSounds() {
-        SoundController.setupCuteLaugh();
         SoundController.setupGearSpinning();
         SoundController.setupHeaven();
         SoundController.setupCoinEarned();
@@ -646,6 +644,7 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, GKMatchm
         boardGame!.results!.setCompiledStyle();
         boardGame!.attackMeter!.setCompiledStyle();
         boardGame!.catsSavedLabel!.setStyle();
+        boardGame!.victoryView!.setCompiledStyle();
         boardGame!.catsSavedLabel!.backgroundColor = UIColor.clear;
         boardGame!.catsSavedLabel!.layer.borderColor = UIColor.clear.cgColor;
         colorOptions!.setStyle();

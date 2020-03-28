@@ -11,10 +11,6 @@ import AVFoundation
 
 class SoundController {
     
-    static var cuteLaughPath:String?
-    static var cuteLaughURL:URL?
-    static var cuteLaughSoundEffect:AVAudioPlayer?
-    
     static var gearSpinningPath:String?
     static var gearSpinningURL:URL?
     static var gearSpinningSoundEffect:AVAudioPlayer?
@@ -59,24 +55,7 @@ class SoundController {
     static var chopinPreludeUrl:URL?
     static var chopinPreludeSoundEffect:AVAudioPlayer?
     
-    static var timeInterval:TimeInterval?
-    
-    static func cuteLaugh() {
-        cuteLaughSoundEffect!.play();
-    }
-    
-    static func setupCuteLaugh() {
-        cuteLaughPath = nil;
-        cuteLaughURL = nil;
-        cuteLaughSoundEffect = nil;
-        cuteLaughPath = Bundle.main.path(forResource: "cuteLaugh.mp3", ofType: nil);
-        cuteLaughURL = URL(fileURLWithPath: cuteLaughPath!);
-        do {
-            cuteLaughSoundEffect = try AVAudioPlayer(contentsOf: cuteLaughURL!);
-        } catch {
-            print("Unable to play cuteLaugh sound effect.");
-        }
-    }
+    static var timeInterval05:TimeInterval = TimeInterval(0.5);
     
     static func gearSpinning() {
         gearSpinningSoundEffect!.stop();
@@ -241,13 +220,18 @@ class SoundController {
                 mozartSonataSoundEffect!.stop();
                 setupMozartSonata();
                 mozartSonataSoundEffect!.play();
+                if (!UIVolume.musicOn) {
+                   mozartSonataSoundEffect!.volume = 0.0;
+                }
             } else {
-                timeInterval = TimeInterval(0.5);
-                mozartSonataSoundEffect!.setVolume(1.0, fadeDuration: timeInterval!);
+                if (!UIVolume.musicOn) {
+                    mozartSonataSoundEffect!.volume = 0.0;
+                } else {
+                    mozartSonataSoundEffect!.setVolume(1.0, fadeDuration: timeInterval05);
+                }
             }
         } else {
-            timeInterval = TimeInterval(0.5);
-            mozartSonataSoundEffect!.setVolume(0.0, fadeDuration: timeInterval!);
+            mozartSonataSoundEffect!.setVolume(0.0, fadeDuration: timeInterval05);
         }
     }
     
@@ -265,14 +249,40 @@ class SoundController {
         }
     }
     
+    static func setMusicVolumeTo0() {
+        if (chopinPreludeSoundEffect != nil && chopinPreludeSoundEffect!.isPlaying) {
+            chopinPreludeSoundEffect!.volume = 0.0;
+        }
+        if (mozartSonataSoundEffect != nil && mozartSonataSoundEffect!.isPlaying) {
+            mozartSonataSoundEffect!.volume = 0.0;
+        }
+    }
+    
+    static func setMusicVolumeTo100() {
+        if (chopinPreludeSoundEffect != nil && chopinPreludeSoundEffect!.isPlaying) {
+            chopinPreludeSoundEffect!.volume = 1.0;
+        }
+        if (mozartSonataSoundEffect != nil && mozartSonataSoundEffect!.isPlaying) {
+            if (chopinPreludeSoundEffect != nil && chopinPreludeSoundEffect!.isPlaying) {
+                mozartSonataSoundEffect!.volume = 0.0;
+            } else {
+                mozartSonataSoundEffect!.volume = 1.0;
+            }
+            
+        }
+    }
+    
     static func chopinPrelude(play:Bool) {
         if (play) {
             chopinPreludeSoundEffect!.stop();
             setupChopinPrelude();
             chopinPreludeSoundEffect!.play();
+            if (!UIVolume.musicOn) {
+                chopinPreludeSoundEffect!.volume = 0.0;
+            }
         } else {
-            timeInterval = TimeInterval(0.5);
-            chopinPreludeSoundEffect!.setVolume(0.0, fadeDuration: timeInterval!);
+            timeInterval05 = TimeInterval(0.5);
+            chopinPreludeSoundEffect!.setVolume(0.0, fadeDuration: timeInterval05);
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                 chopinPreludeSoundEffect!.stop();
                 setupChopinPrelude();

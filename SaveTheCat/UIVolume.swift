@@ -9,10 +9,11 @@
 import SwiftUI
 import MultipeerConnectivity
 
-class UIMultiplayer: UIButton {
+class UIVolume: UIButton {
 
     var originalFrame:CGRect?
     var reducedFrame:CGRect?
+    static var musicOn:Bool = true;
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -24,6 +25,7 @@ class UIMultiplayer: UIButton {
         backgroundColor = .clear;
         layer.cornerRadius = height / 2.0;
         parentView.addSubview(self);
+        self.addTarget(self, action: #selector(volumeTarget), for: .touchUpInside);
         setStyle();
     }
     
@@ -35,7 +37,30 @@ class UIMultiplayer: UIButton {
         self.imageView!.contentMode = UIView.ContentMode.scaleAspectFit;
     }
     
+    @objc func volumeTarget() {
+        if (UIVolume.musicOn) {
+            SoundController.setMusicVolumeTo0();
+            UIVolume.musicOn = false;
+        } else {
+            SoundController.setMusicVolumeTo100();
+            UIVolume.musicOn = true;
+        }
+        setStyle();
+    }
+    
     func setStyle() {
-        setIconImage(imageName: "multiPlayer.png");
+        if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1){
+            if (UIVolume.musicOn) {
+                setIconImage(imageName: "darkMusicOn.png");
+            } else {
+                setIconImage(imageName: "darkMusicOff.png");
+            }
+        } else {
+            if (UIVolume.musicOn) {
+                setIconImage(imageName: "lightMusicOn.png");
+            } else {
+                setIconImage(imageName: "lightMusicOff.png");
+            }
+        }
     }
 }

@@ -183,8 +183,8 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, GKMatchm
     let mellowYellow:UIColor = UIColor(red: 252.0/255.0, green: 212.0/255.0, blue: 64.0/255.0, alpha: 1.0);
     var successGradientView:UIView?
     
-    // Viruses
-    var viruses:UIViruses?
+    // Enemies
+    var enemies:UIEnemies?
     static var appInBackgroundBeforeFirstAttackImpulse:Bool = false;
     
     // Aspect ratio
@@ -274,7 +274,7 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, GKMatchm
     
     func interstitialWillPresentScreen(_ ad: GADInterstitial) {
         ViewController.interstitialWillPresentScreen = true;
-        viruses!.hide();
+        enemies!.hide();
     }
     
     func interstitialWillDismissScreen(_ ad: GADInterstitial) {
@@ -284,7 +284,7 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, GKMatchm
     }
     
     func interstitialDidDismissScreen(_ ad: GADInterstitial) {
-        viruses!.sway(immediately: true);
+        enemies!.sway(immediately: true);
     }
     
     static func presentInterstitial() {
@@ -420,7 +420,7 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, GKMatchm
         setupSounds();
         setupIntroCatAnimatio();
         setupSuccessGradientViewAndLayer();
-        setupViruses();
+        setupEnemies();
         setupAdvertisement();
         setupBoardGameView();
         // Save the mouse coins from icloud
@@ -435,8 +435,8 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, GKMatchm
         DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
             self.introCatAnimation!.fadeOut();
             DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-                self.viruses!.sway(immediately: false);
-                self.viruses!.fadeIn();
+                self.enemies!.sway(immediately: false);
+                self.enemies!.fadeIn();
                 self.boardGame!.fadeIn();
                 self.boardGame!.myLiveMeter!.fadeIn();
                 if (ViewController.aspectRatio! != .ar16by9) {
@@ -467,9 +467,9 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, GKMatchm
             self.settingsButton!.settingsMenu!.moreCats!.moreCatsVC!.hideCatButton();
         }
         if (self.boardGame!.opponent == nil) {
-            self.boardGame!.attackMeter!.pauseVirusMovement();
+            self.boardGame!.attackMeter!.pauseEnemyMovement();
         }
-        self.viruses!.hide();
+        self.enemies!.hide();
         self.boardGame!.cats.suspendCatAnimations();
         SoundController.chopinPrelude(play: false);
         SoundController.mozartSonata(play: false, startOver: false);
@@ -481,11 +481,11 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, GKMatchm
             self.settingsButton!.settingsMenu!.moreCats!.moreCatsVC!.presentCatButton();
         }
         if (self.gameCenterAuthentificationOver){
-            self.viruses!.sway(immediately: true);
+            self.enemies!.sway(immediately: true);
         }
         self.boardGame!.cats.resumeCatAnimations();
         if (!settingsButton!.isPressed) {
-            self.boardGame!.attackMeter!.unPauseVirusMovement();
+            self.boardGame!.attackMeter!.resumeEnemyMovement();
         }
         if (boardGame!.iLost) {
             SoundController.chopinPrelude(play: true);
@@ -542,9 +542,9 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, GKMatchm
         }
     }
     
-    func setupViruses() {
-        viruses = UIViruses(mainView: mainView, unitView: unitViewHeight);
-        viruses!.hide();
+    func setupEnemies() {
+        enemies = UIEnemies(mainView: mainView, unitView: unitViewHeight);
+        enemies!.hide();
     }
     
     func setupIntroCatAnimatio(){
@@ -586,7 +586,7 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, GKMatchm
         CenterController.center(childView: boardGame!, parentRect: mainView.frame, childRect: boardGame!.frame);
         boardGame!.successGradientLayer = successGradientLayer!;
         boardGame!.alpha = 0.0;
-        boardGame!.viruses = viruses!;
+        boardGame!.enemies = enemies!;
         boardGame!.attackMeter!.boardGame = boardGame;
         boardGame!.attackMeter!.comiledHide();
     }
@@ -625,7 +625,7 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, GKMatchm
     
     func setStyle() {
         gameMessage!.setStyle();
-        viruses!.setStyle();
+        enemies!.setStyle();
         introCatAnimation!.setCompiledStyle();
         setSuccessGradientLayerStyle();
         settingsButton!.setStyle();

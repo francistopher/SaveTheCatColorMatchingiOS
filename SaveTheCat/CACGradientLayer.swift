@@ -1,6 +1,6 @@
 //
 //  CACGradientLayer.swift
-//  CatVirus
+//  SaveTheCat
 //
 //  Created by Christopher Francisco on 2/19/20.
 //  Copyright © 2020 Christopher Francisco. All rights reserved.

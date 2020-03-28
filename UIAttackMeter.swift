@@ -9,7 +9,7 @@
 import Foundation
 import SwiftUI
 
-enum VirusPhase {
+enum EnemyPhase {
     case FirstRotation
     case SecondRotation
     case TranslationToCat
@@ -20,12 +20,12 @@ enum VirusPhase {
 
 class UIAttackMeter:UICView {
     
-    var virus:UIVirus?
+    var enemy:UIEnemy?
     var cat:UICatButton?
     
     var previousDisplacementDuration:Double = 3.5;
     var displacementDuration:Double = 3.5;
-    var virusToCatDistance:CGFloat = 0.0;
+    var enemyToCatDistance:CGFloat = 0.0;
     
     var firstRotationAnimation:UIViewPropertyAnimator?
     var secondRotationAnimation:UIViewPropertyAnimator?
@@ -35,18 +35,18 @@ class UIAttackMeter:UICView {
     var translationToStartAnimation:UIViewPropertyAnimator?
     
     var didNotInvokeAttackImpulse:Bool = true;
-    var holdVirusAtStart:Bool = false;
+    var holdEnemyAtStartAndHold:Bool = false;
     var attackStarted:Bool = false;
     var attack:Bool = false;
     
     var firstRotationDegreeCheckpoint:CGFloat = 0.0;
     var secondRotationDegreeCheckpoint:CGFloat = 0.0;
     
-    var virusXBeforeJump:CGFloat = 0.0;
-    var virusXBeforeUnJump:CGFloat = 0.0;
+    var enemyXBeforeJump:CGFloat = 0.0;
+    var enemyXBeforeUnJump:CGFloat = 0.0;
     
-    var currentVirusPhase:VirusPhase?
-    var followingVirusPhase:VirusPhase?
+    var currentEnemyPhase:EnemyPhase?
+    var followingEnemyPhase:EnemyPhase?
     
     var boardGame:UIBoardGame?
     var cats:UICatButtons?
@@ -63,12 +63,12 @@ class UIAttackMeter:UICView {
     }
     
     func startFirstRotation(afterDelay:Double) {
-        if (currentVirusPhase != nil || didNotInvokeAttackImpulse) {
+        if (currentEnemyPhase != nil || didNotInvokeAttackImpulse) {
             return;
         }
         setupFirstRotationAnimation();
         firstRotationAnimation!.startAnimation(afterDelay: afterDelay);
-        currentVirusPhase = .FirstRotation;
+        currentEnemyPhase = .FirstRotation;
     }
     
     func invokeAttackImpulse(delay:Double) {
@@ -89,7 +89,7 @@ class UIAttackMeter:UICView {
             self.firstRotationDegreeCheckpoint = 0.0;
         }
         self.firstRotationAnimation = UIViewPropertyAnimator(duration: firstDuration, curve: .easeIn, animations: {
-            self.virus!.transform = self.virus!.transform.rotated(by: firstRadian);
+            self.enemy!.transform = self.enemy!.transform.rotated(by: firstRadian);
         });
         self.firstRotationAnimation!.addCompletion({ _ in
             self.dismantleFirstRotation();
@@ -98,18 +98,18 @@ class UIAttackMeter:UICView {
     }
     
     func dismantleFirstRotation() {
-        self.currentVirusPhase = nil;
-        self.followingVirusPhase = .SecondRotation;
+        self.currentEnemyPhase = nil;
+        self.followingEnemyPhase = .SecondRotation;
         self.firstRotationAnimation = nil;
     }
     
     func startSecondRotation(afterDelay:Double) {
-        if (isVirusInAPhase()) {
+        if (isEnemyInAPhase()) {
             return;
         }
         self.setupSecondRotationAnimation();
         self.secondRotationAnimation!.startAnimation(afterDelay: afterDelay);
-        self.currentVirusPhase = .SecondRotation;
+        self.currentEnemyPhase = .SecondRotation;
     }
     
     func setupSecondRotationAnimation() {
@@ -122,7 +122,7 @@ class UIAttackMeter:UICView {
             self.secondRotationDegreeCheckpoint = 0.0;
         }
         self.secondRotationAnimation = UIViewPropertyAnimator(duration: secondDuration, curve: .easeOut, animations: {
-            self.virus!.transform = self.virus!.transform.rotated(by: secondRadian);
+            self.enemy!.transform = self.enemy!.transform.rotated(by: secondRadian);
         })
         self.secondRotationAnimation!.addCompletion({ _ in
             self.dismantleSecondRotation();
@@ -131,23 +131,23 @@ class UIAttackMeter:UICView {
     }
     
     func dismantleSecondRotation() {
-        self.currentVirusPhase = nil;
-        self.followingVirusPhase = .TranslationToCat;
+        self.currentEnemyPhase = nil;
+        self.followingEnemyPhase = .TranslationToCat;
         self.secondRotationAnimation = nil;
     }
     
     func startTranslationToCat(afterDelay:Double) {
-        if (isVirusInAPhase()) {
+        if (isEnemyInAPhase()) {
             return;
         }
         self.setupTranslationToCatAnimation();
         self.translationToCatAnimation!.startAnimation(afterDelay: 0.125);
-        self.currentVirusPhase = .TranslationToCat;
+        self.currentEnemyPhase = .TranslationToCat;
     }
     
     func setupTranslationToCatAnimation() {
-        self.translationToCatAnimation = UIViewPropertyAnimator(duration: getVirusToCatDuration(), curve: .easeIn, animations: {
-            self.virus!.transform = self.virus!.transform.translatedBy(x: self.getVirusToCatDistance(), y: 0.0);
+        self.translationToCatAnimation = UIViewPropertyAnimator(duration: getEnemyToCatDuration(), curve: .easeIn, animations: {
+            self.enemy!.transform = self.enemy!.transform.translatedBy(x: self.getEnemyToCatDistance(), y: 0.0);
         })
         self.translationToCatAnimation!.addCompletion({ _ in
             self.dismantleTranslationToCat();
@@ -156,33 +156,33 @@ class UIAttackMeter:UICView {
     }
     
     func dismantleTranslationToCat() {
-        self.currentVirusPhase = nil;
-        self.followingVirusPhase = .SizeExpansion;
+        self.currentEnemyPhase = nil;
+        self.followingEnemyPhase = .SizeExpansion;
         self.translationToCatAnimation = nil;
     }
     
     func startSizeExpansionAnimation(afterDelay:Double) {
-        if (isVirusInAPhase()) {
+        if (isEnemyInAPhase()) {
             return;
         }
         self.setupSizeExpansionAnimation();
         self.sizeExpansionAnimation!.startAnimation(afterDelay: afterDelay);
-        self.currentVirusPhase = .SizeExpansion;
+        self.currentEnemyPhase = .SizeExpansion;
     }
     
     func setupSizeExpansionAnimation() {
         var factor:CGFloat = 1.5;
         var duration:Double = 0.5;
         if (self.attackStarted) {
-            factor = (virus!.originalFrame!.height * 1.5) / (virus!.frame.height);
+            factor = (enemy!.originalFrame!.height * 1.5) / (enemy!.frame.height);
             duration *= 1.5 - Double(factor);
-            virusXBeforeJump = 0.0;
+            enemyXBeforeJump = 0.0;
         } else {
-            virusXBeforeJump = virus!.frame.minX;
+            enemyXBeforeJump = enemy!.frame.minX;
         }
         self.attackStarted = true;
         sizeExpansionAnimation = UIViewPropertyAnimator(duration: duration, curve: .linear, animations: {
-           self.virus!.transform = self.virus!.transform.scaledBy(x: factor, y: factor);
+           self.enemy!.transform = self.enemy!.transform.scaledBy(x: factor, y: factor);
         })
         sizeExpansionAnimation!.addCompletion({ _ in
             self.dismantleSizeExpansion();
@@ -196,33 +196,33 @@ class UIAttackMeter:UICView {
     }
     
     func dismantleSizeExpansion() {
-        self.currentVirusPhase = nil;
-        self.followingVirusPhase = .SizeReduction;
+        self.currentEnemyPhase = nil;
+        self.followingEnemyPhase = .SizeReduction;
         self.sizeExpansionAnimation = nil;
     }
     
     func startSizeReductionAnimation(afterDelay:Double) {
-        if (isVirusInAPhase()) {
+        if (isEnemyInAPhase()) {
             return;
         }
         self.setupSizeReductionAnimation();
         self.sizeReductionAnimation!.startAnimation(afterDelay: afterDelay);
-        self.currentVirusPhase = .SizeReduction;
+        self.currentEnemyPhase = .SizeReduction;
     }
     
     func setupSizeReductionAnimation() {
         var factor:CGFloat = 1.0 / 1.5;
         var duration:Double = 0.5;
         if (!self.attackStarted) {
-            factor = (virus!.originalFrame!.width) / (virus!.frame.width);
+            factor = (enemy!.originalFrame!.width) / (enemy!.frame.width);
             duration *= (1.0 / Double(factor));
-            virusXBeforeUnJump = 0.0;
+            enemyXBeforeUnJump = 0.0;
         } else {
-            virusXBeforeUnJump = virus!.frame.minX;
+            enemyXBeforeUnJump = enemy!.frame.minX;
         }
         self.attackStarted = false;
         sizeReductionAnimation = UIViewPropertyAnimator(duration: duration, curve: .linear, animations: {
-           self.virus!.transform = self.virus!.transform.scaledBy(x: factor, y: factor);
+           self.enemy!.transform = self.enemy!.transform.scaledBy(x: factor, y: factor);
         })
         sizeReductionAnimation!.addCompletion({ _ in
             self.attackRandomCatButton();
@@ -232,59 +232,59 @@ class UIAttackMeter:UICView {
     }
     
     func dismantleSizeReduction() {
-        self.currentVirusPhase = nil;
-        self.followingVirusPhase = .TranslationToStart;
+        self.currentEnemyPhase = nil;
+        self.followingEnemyPhase = .TranslationToStart;
         self.sizeReductionAnimation = nil;
     }
     
     func startTranslationToStartAnimation(afterDelay:Double) {
-        if (isVirusInAPhase()) {
+        if (isEnemyInAPhase()) {
             return;
         }
         self.setupTranslationToStartAnimation();
         self.translationToStartAnimation!.startAnimation(afterDelay: afterDelay);
-        self.currentVirusPhase = .TranslationToStart;
+        self.currentEnemyPhase = .TranslationToStart;
     }
     
     func setupTranslationToStartAnimation() {
-        translationToStartAnimation = UIViewPropertyAnimator(duration: getVirusToStartDuration() , curve: .linear, animations: {
-            self.virus!.transform = .identity;
-            self.virus!.frame = self.virus!.originalFrame!;
+        translationToStartAnimation = UIViewPropertyAnimator(duration: getEnemyToStartDuration() , curve: .linear, animations: {
+            self.enemy!.transform = .identity;
+            self.enemy!.frame = self.enemy!.originalFrame!;
         })
         translationToStartAnimation!.addCompletion({ _ in
             self.displacementDuration = self.previousDisplacementDuration;
             self.dismantleTranslationToStart();
-            if (!self.holdVirusAtStart) {
+            if (!self.holdEnemyAtStartAndHold) {
                 self.startFirstRotation(afterDelay: 0.125);
             }
         })
     }
     
     func dismantleTranslationToStart() {
-        self.currentVirusPhase = nil;
-        self.followingVirusPhase = .FirstRotation;
+        self.currentEnemyPhase = nil;
+        self.followingEnemyPhase = .FirstRotation;
         self.sizeReductionAnimation = nil;
     }
     
-    func getVirusToCatDistance() -> CGFloat {
-        return (cat!.originalFrame!.minX - virus!.frame.minX);
+    func getEnemyToCatDistance() -> CGFloat {
+        return (cat!.originalFrame!.minX - enemy!.frame.minX);
     }
-    func getVirusToStartDistance() -> CGFloat {
-        return (virus!.frame.minX - virus!.originalFrame!.minX);
-    }
-    
-    func getVirusToStartDuration() -> Double {
-        return displacementDuration * Double(getVirusToStartDistance()) / Double(virusToCatDistance);
+    func getEnemyToStartDistance() -> CGFloat {
+        return (enemy!.frame.minX - enemy!.originalFrame!.minX);
     }
     
-    func getVirusToCatDuration() -> Double {
-        return displacementDuration * Double(getVirusToCatDistance()) / Double(virusToCatDistance);
+    func getEnemyToStartDuration() -> Double {
+        return displacementDuration * Double(getEnemyToStartDistance()) / Double(enemyToCatDistance);
+    }
+    
+    func getEnemyToCatDuration() -> Double {
+        return displacementDuration * Double(getEnemyToCatDistance()) / Double(enemyToCatDistance);
     }
     
     func setupComponents() {
         setupCat();
-        setupVirus();
-        self.virusToCatDistance = cat!.originalFrame!.minX - virus!.originalFrame!.minX;
+        setupEnemy();
+        self.enemyToCatDistance = cat!.originalFrame!.minX - enemy!.originalFrame!.minX;
     }
     
     func updateDuration(change:Double) {
@@ -305,20 +305,20 @@ class UIAttackMeter:UICView {
         print(previousDisplacementDuration, "Previous Displacement duration")
     }
     
-    func pauseVirusMovement() {
-        switch currentVirusPhase {
+    func pauseEnemyMovement() {
+        switch currentEnemyPhase {
         case .TranslationToStart:
             translationToStartAnimation?.stopAnimation(true);
             print("Stopped translation to start animation");
         case .FirstRotation:
             firstRotationAnimation?.stopAnimation(true);
-            let radians:CGFloat = atan2(virus!.transform.b, virus!.transform.a)
+            let radians:CGFloat = atan2(enemy!.transform.b, enemy!.transform.a)
             let degrees:CGFloat = radians * 180 / .pi;
             self.firstRotationDegreeCheckpoint = degrees;
             print("Stopped first rotation animation ", firstRotationDegreeCheckpoint);
         case .SecondRotation:
             secondRotationAnimation?.stopAnimation(true);
-            let radians:CGFloat = atan2(virus!.transform.b, virus!.transform.a)
+            let radians:CGFloat = atan2(enemy!.transform.b, enemy!.transform.a)
             let degrees:CGFloat = radians * 180 / .pi;
             self.secondRotationDegreeCheckpoint = degrees;
             print("Stopped second rotation animation", secondRotationDegreeCheckpoint);
@@ -327,33 +327,33 @@ class UIAttackMeter:UICView {
             print("Stopped translation to cat animation");
         case .SizeExpansion:
             sizeExpansionAnimation?.stopAnimation(true);
-            let grownVirusX:CGFloat = virusXBeforeJump + (virus!.originalFrame!.width * 0.5) - (virus!.frame.width * 0.5);
-            virus!.frame = CGRect(x: grownVirusX, y: virus!.frame.minY, width: virus!.frame.width, height: virus!.frame.height);
+            let grownEnemyX:CGFloat = enemyXBeforeJump + (enemy!.originalFrame!.width * 0.5) - (enemy!.frame.width * 0.5);
+            enemy!.frame = CGRect(x: grownEnemyX, y: enemy!.frame.minY, width: enemy!.frame.width, height: enemy!.frame.height);
             print("Stopped size expansion animation")
         case .SizeReduction:
             sizeReductionAnimation?.stopAnimation(true);
-            let shrunkVirusX:CGFloat = virusXBeforeUnJump + (virus!.originalFrame!.width * 0.75) - (virus!.frame.width * 0.5);
-            virus!.frame = CGRect(x: shrunkVirusX, y: virus!.frame.minY, width: virus!.frame.width, height: virus!.frame.height)
+            let shrunkEnemyX:CGFloat = enemyXBeforeUnJump + (enemy!.originalFrame!.width * 0.75) - (enemy!.frame.width * 0.5);
+            enemy!.frame = CGRect(x: shrunkEnemyX, y: enemy!.frame.minY, width: enemy!.frame.width, height: enemy!.frame.height)
             print("Stopped size reduction animation")
         default:
             print("")
         }
     }
     
-    func unPauseVirusMovement() {
-        switch currentVirusPhase {
+    func resumeEnemyMovement() {
+        switch currentEnemyPhase {
         case .TranslationToStart:
-            let delay:Double = Double(0.5 * getVirusToCatDistance() / virusToCatDistance);
+            let delay:Double = Double(0.5 * getEnemyToCatDistance() / enemyToCatDistance);
             startTranslationToStartAnimation(afterDelay: delay);
         case .FirstRotation:
-            currentVirusPhase = nil;
+            currentEnemyPhase = nil;
             startFirstRotation(afterDelay: 0.25);
             print("Started first rotation again.")
         case .SecondRotation:
             startSecondRotation(afterDelay: 0.25);
             print("Started second rotation again.")
         case .TranslationToCat:
-            let delay:Double = Double(0.75 * getVirusToStartDistance() / virusToCatDistance);
+            let delay:Double = Double(0.75 * getEnemyToStartDistance() / enemyToCatDistance);
             startTranslationToCat(afterDelay: delay);
             print("Started translation to cat again.")
         case .SizeExpansion:
@@ -364,66 +364,64 @@ class UIAttackMeter:UICView {
             print("Started size reduction again.");
         default:
             print("Unpausing");
-            currentVirusPhase = .TranslationToStart;
-            unPauseVirusMovement();
+            currentEnemyPhase = .TranslationToStart;
+            resumeEnemyMovement();
         }
     }
     
-    func isVirusInAPhase() -> Bool {
-        let isVirusInAPhase:Bool = ((firstRotationAnimation != nil && firstRotationAnimation!.isRunning) || (secondRotationAnimation != nil && secondRotationAnimation!.isRunning) || (secondRotationAnimation != nil && secondRotationAnimation!.isRunning) || (translationToCatAnimation != nil && translationToCatAnimation!.isRunning) || (sizeExpansionAnimation != nil && sizeExpansionAnimation!.isRunning) || (sizeReductionAnimation != nil && sizeReductionAnimation!.isRunning) || (translationToStartAnimation != nil && translationToStartAnimation!.isRunning));
-        return isVirusInAPhase;
+    func isEnemyInAPhase() -> Bool {
+      return ((firstRotationAnimation != nil && firstRotationAnimation!.isRunning) || (secondRotationAnimation != nil && secondRotationAnimation!.isRunning) || (secondRotationAnimation != nil && secondRotationAnimation!.isRunning) || (translationToCatAnimation != nil && translationToCatAnimation!.isRunning) || (sizeExpansionAnimation != nil && sizeExpansionAnimation!.isRunning) || (sizeReductionAnimation != nil && sizeReductionAnimation!.isRunning) || (translationToStartAnimation != nil && translationToStartAnimation!.isRunning));
     }
     
     func disperseCatButton() {
         cat!.disperseRadially();
     }
     
-    func holdVirusOnceAtStart() {
-        holdVirusAtStart = true;
+    func holdEnemyOnceAtStart() {
+        holdEnemyAtStartAndHold = true;
         displacementDuration = 1.0;
         Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false, block: { _ in
            self.displacementDuration = self.previousDisplacementDuration;
         })
     }
     
-    func sendVirusToStartAndHold() {
-        holdVirusOnceAtStart();
-        pauseVirusMovement();
+    func sendEnemyToStartAndHold() {
+        holdEnemyOnceAtStart();
+        pauseEnemyMovement();
         self.firstRotationDegreeCheckpoint = 0.0;
         self.secondRotationDegreeCheckpoint = 0.0;
-        currentVirusPhase = .TranslationToStart;
-        unPauseVirusMovement();
+        currentEnemyPhase = .TranslationToStart;
+        resumeEnemyMovement();
     }
     
-    func sendVirusToStart() {
-        if (currentVirusPhase != nil && currentVirusPhase! != .TranslationToStart) {
+    func sendEnemyToStart() {
+        if (currentEnemyPhase != nil && currentEnemyPhase! != .TranslationToStart) {
             displacementDuration = 1.0;
             Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false, block: { _ in
                self.displacementDuration = self.previousDisplacementDuration;
             })
-            pauseVirusMovement();
+            pauseEnemyMovement();
             self.firstRotationDegreeCheckpoint = 0.0;
             self.secondRotationDegreeCheckpoint = 0.0;
-            currentVirusPhase = .TranslationToStart;
-            unPauseVirusMovement();
+            currentEnemyPhase = .TranslationToStart;
+            resumeEnemyMovement();
         }
     }
     
-    func setupVirus() {
-        virus = UIVirus(parentView: self, frame: CGRect(x: -self.layer.borderWidth * 0.8, y: 0.0, width: self.frame.height, height: self.frame.height));
-        let newVirusFrame:CGRect = CGRect(x: self.frame.minX + virus!.frame.minX, y: self.frame.minY + virus!.frame.minY, width: virus!.frame.width, height: virus!.frame.height);
-        virus!.frame = newVirusFrame;
-        virus!.originalFrame = virus!.frame;
-        self.superview!.addSubview(virus!);
+    func setupEnemy() {
+        enemy = UIEnemy(parentView: self, frame: CGRect(x: -self.layer.borderWidth * 0.8, y: 0.0, width: self.frame.height, height: self.frame.height));
+        enemy!.frame = CGRect(x: self.frame.minX + enemy!.frame.minX, y: self.frame.minY + enemy!.frame.minY, width: enemy!.frame.width, height: enemy!.frame.height);
+        enemy!.originalFrame = enemy!.frame;
+        self.superview!.addSubview(enemy!);
     }
     
     func resetCat() {
         setupCat();
         cat!.selectedCat = .standard;
         cat!.setCat(named: "SmilingCat", stage: 5);
-        virus!.superview!.bringSubviewToFront(virus!);
-        virus!.superview!.bringSubviewToFront(boardGame!.settingsButton!.settingsMenu!);
-        virus!.superview!.bringSubviewToFront(boardGame!.settingsButton!);
+        enemy!.superview!.bringSubviewToFront(enemy!);
+        enemy!.superview!.bringSubviewToFront(boardGame!.settingsButton!.settingsMenu!);
+        enemy!.superview!.bringSubviewToFront(boardGame!.settingsButton!);
     }
     
     func setupCat() {
@@ -440,7 +438,7 @@ class UIAttackMeter:UICView {
     func setCompiledStyle() {
         setStyle();
         self.layer.borderColor = UIColor.systemYellow.cgColor;
-        virus!.setupVirusImage();
+        enemy!.setupEnemyImage();
         if (cat!.imageContainerButton != nil) {
             cat!.setCat(named: "SmilingCat", stage: 5);
         }
@@ -449,13 +447,13 @@ class UIAttackMeter:UICView {
     
     func comiledHide() {
         self.alpha = 0.0;
-        self.virus!.alpha = 0.0;
+        self.enemy!.alpha = 0.0;
         self.cat!.alpha = 0.0;
     }
     
     func compiledShow() {
         self.fadeIn();
-        self.virus!.fadeIn();
+        self.enemy!.fadeIn();
         self.cat!.fadeIn();
     }
     

@@ -72,7 +72,7 @@ class UISettingsButton:UIButton {
                     settingsMenu!.mouseCoin!.mouseCoinView!.layer.borderColor = UIColor.systemYellow.cgColor;
                 }
                 boardGame!.cats.clearCatButtons();
-                boardGame!.attackMeter!.pauseVirusMovement();
+                boardGame!.attackMeter!.pauseEnemyMovement();
                 settingsMenuShow();
             } else {
                 // Settings button unpressed
@@ -80,7 +80,7 @@ class UISettingsButton:UIButton {
                 settingsMenu!.mouseCoin!.mouseCoinView!.backgroundColor = UIColor.clear;
                 settingsMenu!.mouseCoin!.mouseCoinView!.layer.borderColor = UIColor.clear.cgColor;
                 boardGame!.cats.unClearCatButtons();
-                boardGame!.attackMeter!.unPauseVirusMovement();
+                boardGame!.attackMeter!.resumeEnemyMovement();
                 settingsMenuHide();
             }
             SoundController.gearSpinning();

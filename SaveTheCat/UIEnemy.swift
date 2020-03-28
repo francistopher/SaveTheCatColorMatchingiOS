@@ -1,6 +1,6 @@
 //
-//  virus.swift
-//  podDatCat
+//  enemy.swift
+//  SaveTheCat
 //
 //  Created by Christopher Francisco on 2/11/20.
 //  Copyright © 2020 Christopher Francisco. All rights reserved.
@@ -9,14 +9,15 @@
 import SwiftUI
 
 
-enum Virus{
-    case standard
+enum Enemy{
+    case hairball
+    case virus
 }
 
-class UIVirus:UIButton {
+class UIEnemy:UIButton {
     
     var originalFrame:CGRect?
-    var selectedVirus:Virus = .standard;
+    var selectedEnemy:Enemy = .hairball;
         
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -26,7 +27,7 @@ class UIVirus:UIButton {
         super.init(frame: frame);
         self.backgroundColor = .clear;
         self.originalFrame = frame;
-        self.setupVirusImage();
+        self.setupEnemyImage();
         parentView.addSubview(self);
     }
     
@@ -36,22 +37,29 @@ class UIVirus:UIButton {
     }
     
     var iconImage:UIImage?
-    func setupVirusImage() {
+    func setupEnemyImage() {
         iconImage = nil;
-        iconImage = UIImage(named: getVirusFileName());
+        iconImage = UIImage(named: getEnemyFileName());
         self.setImage(iconImage, for: .normal);
         self.imageView!.contentMode = UIView.ContentMode.scaleAspectFit;
     }
     
-    func getVirusFileName() -> String {
-        switch (selectedVirus) {
-        case Virus.standard:
+    func getEnemyFileName() -> String {
+        switch (selectedEnemy) {
+        case .virus:
             if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1) {
                  return "lightVirus.png";
             } else {
                  return "darkVirus.png";
             }
+        case .hairball:
+            if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1) {
+                 return "lightHairBall.png";
+            } else {
+                 return "darkHairBall.png";
+            }
         }
+    
     }
     
     func sway(immediately:Bool){

@@ -1,6 +1,6 @@
 //
 //  UICScrollView.swift
-//  CatVirus
+//  SaveTheCat
 //
 //  Created by Christopher Francisco on 2/23/20.
 //  Copyright © 2020 Christopher Francisco. All rights reserved.

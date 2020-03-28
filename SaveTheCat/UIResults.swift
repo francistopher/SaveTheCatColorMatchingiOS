@@ -272,15 +272,11 @@ class UIResults: UICView {
         return true;
     }
     
-    func update() -> (UICButton, UIMouseCoin) {
+    func update() {
         catsLivedAmountLabel!.text = String(catsThatLived);
         catsDiedAmountLabel!.text = String(catsThatDied);
         // Adjust reward amount
         setAmountRate();
-        // Determine whether to show ad
-        watchAdButton!.frame = watchAdButton!.secondaryFrame!;
-        watchAdButton!.alpha = 1.0
-        return (watchAdButton!, mouseCoin!);
     }
     
     func setCompiledStyle() {
@@ -305,7 +301,7 @@ class UIResults: UICView {
             self.watchAdButton!.setTitleColor(UIColor.white, for: .normal);
             self.watchAdButton!.layer.borderColor = UIColor.white.cgColor;
         }
-        self.watchAdButton!.layer.borderColor = UIColor.red.cgColor;
+        self.watchAdButton!.layer.borderColor = UIColor.systemYellow.cgColor;
     }
     
 }

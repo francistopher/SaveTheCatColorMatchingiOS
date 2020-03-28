@@ -28,7 +28,7 @@ class UIBoardGame: UIView, GKMatchDelegate {
     var opponentLiveMeter:UILiveMeter?
     var results:UIResults?
     var attackMeter:UIAttackMeter?
-    var viruses:UIViruses?
+    var enemies:UIEnemies?
     var timer:Timer?
     
     var glovePointer:UIGlovedPointer?
@@ -73,7 +73,7 @@ class UIBoardGame: UIView, GKMatchDelegate {
     func setupCatsSavedLabel() {
         catsSavedLabel = UICLabel(parentView: self.superview!, x: self.frame.minX, y: self.frame.minY, width: self.superview!.frame.width, height: self.frame.height);
         CenterController.center(childView: catsSavedLabel!, parentRect: self.superview!.frame, childRect: catsSavedLabel!.frame);
-        catsSavedLabel!.font = UIFont.boldSystemFont(ofSize: catsSavedLabel!.frame.height * 0.4);
+        catsSavedLabel!.font = UIFont.boldSystemFont(ofSize: catsSavedLabel!.frame.height * 0.3);
         catsSavedLabel!.backgroundColor = UIColor.clear;
         catsSavedLabel!.layer.borderColor = UIColor.clear.cgColor;
         catsSavedLabel!.alpha = 0.0;
@@ -202,9 +202,9 @@ class UIBoardGame: UIView, GKMatchDelegate {
             // Show victory view
             self.victoryView!.fadeIn();
             self.victoryView!.showVictoryMessageAndGifWith(text: "YOU WIN! YOU ARE\nMY ULTIMATE CAT SAVER!");
-            // Stop virus from attacking
+            // Stop enemy from attacking
             self.attackMeter!.didNotInvokeAttackImpulse = true;
-            self.attackMeter!.sendVirusToStartAndHold();
+            self.attackMeter!.sendEnemyToStartAndHold();
             // Invalidate opponent resignation timer and reset value
             self.stopSearchingForOpponentEntirely();
             // Show single and two player
@@ -444,7 +444,7 @@ class UIBoardGame: UIView, GKMatchDelegate {
     
     func startGame() {
         colorOptions!.buildColorOptionButtons(setup: true);
-        attackMeter!.holdVirusAtStart = false;
+        attackMeter!.holdEnemyAtStartAndHold = false;
         // Set glove pointer
         if (currentRound == 1) {
             glovePointer!.setColorAndCatButtons(colorButtons: colorOptions!.selectionButtons!, catButtons: cats);
@@ -568,20 +568,18 @@ class UIBoardGame: UIView, GKMatchDelegate {
         // Flash cats saved count last time
         catsSavedCount = results!.catsThatLived - 1;
         flashCatsSavedCount();
-        
-        iLost = true;
+        results!.update();
         if (!settingsButton!.isPressed) {
             settingsButton!.sendActions(for: .touchUpInside);
         }
         self.attackMeter!.attack = false;
         self.attackMeter!.attackStarted = false;
-       
         SoundController.mozartSonata(play: false, startOver: false);
         SoundController.chopinPrelude(play: true);
         colorOptions!.removeBorderOfSelectionButtons();
         self.myLiveMeter!.removeAllHeartLives();
         self.attackMeter!.disperseCatButton();
-        self.attackMeter!.sendVirusToStartAndHold();
+        self.attackMeter!.sendEnemyToStartAndHold();
         self.attackMeter!.previousDisplacementDuration = 3.5;
         self.glovePointer!.stopAnimations();
         // Prepare glove pointer and
@@ -589,9 +587,8 @@ class UIBoardGame: UIView, GKMatchDelegate {
         self.glovePointer!.setCompiledStyle();
         // Show glove, watch ad button, and mouse coin
         if (iLostUpdateResult == nil) {
-            iLostUpdateResult = self.results!.update();
-            iLostWatchAdButton = iLostUpdateResult!.0;
-            iLostMouseCoinButton = iLostUpdateResult!.1;
+            iLostWatchAdButton = results!.watchAdButton!;
+            iLostMouseCoinButton = results!.mouseCoin!;
         }
         if (ViewController.staticSelf!.isInternetReachable) {
             iLostWatchAdButton!.isUserInteractionEnabled = true;
@@ -695,12 +692,13 @@ class UIBoardGame: UIView, GKMatchDelegate {
             setCatButtonAsDead(catButton: catButton, singleDeath:false);
             myLiveMeter!.decrementLivesLeftCount();
             if (cats.areAllCatsDead()) {
-                self.attackMeter!.sendVirusToStart();
+                self.attackMeter!.sendEnemyToStart();
                 maintain();
             } else {
                 verifyThatRemainingCatsArePodded(catButton:catButton);
             }
         } else {
+            iLost = true;
             setAllCatButtonsAsDead();
             gameOverTransition();
             if (currentMatch != nil) {
@@ -719,15 +717,14 @@ class UIBoardGame: UIView, GKMatchDelegate {
     }
     
     func setCatButtonAsDead(catButton:UICatButton, singleDeath:Bool) {
-        if (singleDeath) {
+        if (!iLost) {
             looseMouseCoin();
-            
         }
         results!.catsThatDied += 1;
         gridColorsCount[catButton.originalBackgroundColor.cgColor]? -= 1;
         colorOptions!.buildColorOptionButtons(setup: false);
         catButton.isDead()
-        self.viruses!.translateToCatAndBack(catButton:catButton);
+        self.enemies!.translateToCatAndBack(catButton:catButton);
         catButton.disperseRadially();
         displaceArea(ofCatButton: catButton);
         SoundController.kittenDie();
@@ -776,19 +773,19 @@ class UIBoardGame: UIView, GKMatchDelegate {
             if (cats.didAllSurvive()) {
                 myLiveMeter!.incrementLivesLeftCount(catButton: catButton, forOpponent: false);
                 self.attackMeter!.updateDuration(change: 0.1);
-                self.attackMeter!.sendVirusToStart();
+                self.attackMeter!.sendEnemyToStart();
                 self.glovePointer!.shrinked();
                 self.glovePointer!.stopAnimations();
                 promote();
                 return;
             } else {
-                self.attackMeter!.sendVirusToStart();
+                self.attackMeter!.sendEnemyToStart();
                 maintain();
                 return;
             }
         } else {
             self.attackMeter!.updateDuration(change: 0.05);
-            self.attackMeter!.sendVirusToStart();
+            self.attackMeter!.sendEnemyToStart();
             self.attackMeter!.startFirstRotation(afterDelay: 1.0);
         }
     }
@@ -857,7 +854,7 @@ class UIBoardGame: UIView, GKMatchDelegate {
     }
     
     func revertSelections() {
-        attackMeter!.sendVirusToStartAndHold();
+        attackMeter!.sendEnemyToStartAndHold();
         myLiveMeter!.resetLivesLeftCount();
         colorOptions!.selectedColor = UIColor.lightGray;
         cats.shrink();

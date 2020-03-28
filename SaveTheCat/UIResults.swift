@@ -40,9 +40,6 @@ class UIResults: UICView {
     
     // Reward amount
     static var rewardAmount:Int = 5;
-    var rewardAmountQuantity:[Int:Double] = [0:0, 5:1.0, 10:0.8, 15:00.6, 20:0.4, 25:0.2]
-    var rewardAmountRate:[Int:Double] = [0:0.0, 5:1.0, 10:0.0, 15:0.0, 20:0.0, 25:0.0]
-    var threshold:Double = 0.5;
     
     // Save the value of mouse coins
     var keyValueStore:NSUbiquitousKeyValueStore = NSUbiquitousKeyValueStore();
@@ -139,17 +136,12 @@ class UIResults: UICView {
         CenterController.center(childView: deadCatImageButton!, parentRect: catsDiedLabel!.frame, childRect: deadCatImageButton!.frame);
     }
     
-    @objc func adjustRewardAmount() {
-        if (!adIsShowing && watchAdButton!.alpha == 1.0) {
-            rewardAmountQuantity[0]! += 0.5;
-            threshold -= 0.1 * 25.0 / Double(UIResults.rewardAmount);
-        }
-        Timer.scheduledTimer(withTimeInterval: 2.0, repeats: false, block: { _ in
-            if (UIResults.rewardAmount < 25 && self.threshold < self.rewardAmountRate[UIResults.rewardAmount]!) {
-                UIResults.rewardAmount += 5;
-                self.threshold = 1.0;
+    func adjustRewardAmount() {
+        if (!adIsShowing) {
+            if (UIResults.rewardAmount > 5) {
+                UIResults.rewardAmount -= 1;
             }
-        })
+        }
         adIsShowing = false;
     }
     
@@ -183,8 +175,6 @@ class UIResults: UICView {
     @objc func showAd() {
         print("MESSAGE: IS THE AD ACTAULLY SHOWING")
         // Gathering user selection data
-        rewardAmountQuantity[UIResults.rewardAmount]! += 1.0;
-        threshold = 1.0;
         adIsShowing = true;
         // load the ad
         ViewController.presentInterstitial();
@@ -249,6 +239,9 @@ class UIResults: UICView {
                         self.keyValueStore.set(UIResults.mouseCoins + Int64(UIResults.rewardAmount), forKey: "mouseCoins");
                         self.keyValueStore.synchronize();
                         settingsButton.settingsMenu!.mouseCoin!.sendActions(for: .touchUpInside);
+                        if (UIResults.rewardAmount < 10) {
+                            UIResults.rewardAmount += 1;
+                        }
                     }
                 })
             })
@@ -262,12 +255,6 @@ class UIResults: UICView {
         watchAdButton!.sendActions(for: .touchUpInside);
     }
     
-    func setAmountRate() {
-        let total:Double = rewardAmountQuantity[0]! + rewardAmountQuantity[UIResults.rewardAmount]!;
-        rewardAmountRate[UIResults.rewardAmount] = rewardAmountQuantity[UIResults.rewardAmount]! / total;
-        rewardAmountRate[0] = rewardAmountQuantity[0]! / total;
-    }
-    
     func isAdButtonAdvertised() -> Bool {
         return true;
     }
@@ -275,8 +262,6 @@ class UIResults: UICView {
     func update() {
         catsLivedAmountLabel!.text = String(catsThatLived);
         catsDiedAmountLabel!.text = String(catsThatDied);
-        // Adjust reward amount
-        setAmountRate();
     }
     
     func setCompiledStyle() {

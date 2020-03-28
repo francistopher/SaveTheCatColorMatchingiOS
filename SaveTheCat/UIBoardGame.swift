@@ -141,6 +141,7 @@ class UIBoardGame: UIView, GKMatchDelegate {
     }
     
     func continueSelector() {
+        results!.adjustRewardAmount();
         iLost = false;
         if (settingsButton!.isPressed) {
             settingsButton!.sendActions(for: .touchUpInside);
@@ -339,7 +340,7 @@ class UIBoardGame: UIView, GKMatchDelegate {
         singlePlayerButton!.shrinked();
         singlePlayerButton!.alpha = 0.0;
         twoPlayerButton = UICButton(parentView: self.superview!, frame: CGRect(x: self.colorOptions!.frame.minX + self.colorOptions!.frame.width * 0.525, y: self.colorOptions!.frame.minY + self.colorOptions!.frame.height * 0.1, width: self.colorOptions!.frame.width * 0.425, height: self.colorOptions!.frame.height * 0.8), backgroundColor: UIColor.clear);
-        twoPlayerButton!.setTitle("Two Player", for: .normal);
+        twoPlayerButton!.setTitle("Multi Player", for: .normal);
         twoPlayerButton!.styleBackground = true;
         twoPlayerButton!.setStyle();
         twoPlayerButton!.layer.borderWidth = attackMeter!.layer.borderWidth;

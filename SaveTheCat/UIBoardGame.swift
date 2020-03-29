@@ -341,6 +341,7 @@ class UIBoardGame: UIView, GKMatchDelegate {
         singlePlayerButton!.addTarget(self, action: #selector(singlePlayerButtonSelector), for: .touchUpInside);
         singlePlayerButton!.shrinked();
         singlePlayerButton!.alpha = 0.0;
+        ViewController.updateFont(button: singlePlayerButton!);
         twoPlayerButton = UICButton(parentView: self.superview!, frame: CGRect(x: self.colorOptions!.frame.minX + self.colorOptions!.frame.width * 0.525, y: self.colorOptions!.frame.minY + self.colorOptions!.frame.height * 0.1, width: self.colorOptions!.frame.width * 0.425, height: self.colorOptions!.frame.height * 0.8), backgroundColor: UIColor.clear);
         twoPlayerButton!.setTitle("Multi Player", for: .normal);
         twoPlayerButton!.styleBackground = true;
@@ -350,6 +351,7 @@ class UIBoardGame: UIView, GKMatchDelegate {
         twoPlayerButton!.addTarget(self, action: #selector(twoPlayerButtonSelector), for: .touchUpInside);
         twoPlayerButton!.shrinked();
         twoPlayerButton!.alpha = 0.0;
+        ViewController.updateFont(button: twoPlayerButton!);
     }
     
     var colorOption:UICButton?

@@ -154,5 +154,6 @@ class UIMouseCoin: UICButton {
         self.amountLabel!.textColor = UIColor.systemYellow;
         self.amountLabel!.backgroundColor = UIColor.clear;
         self.amountLabel!.font = UIFont.boldSystemFont(ofSize: amountLabel!.frame.height * 0.5);
+        ViewController.updateFont(label: amountLabel!);
     }
 }

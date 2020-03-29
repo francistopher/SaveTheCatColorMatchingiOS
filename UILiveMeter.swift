@@ -48,11 +48,12 @@ class UILiveMeter:UICView {
     }
     
     func setupLivesCountLabel() {
-        livesCountLabel = UICLabel(parentView: self, x: 0.0, y: frame.height * 0.01, width: frame.width * 1.0, height: frame.height * 1.0);
+        livesCountLabel = UICLabel(parentView: self, x: 0.0, y: frame.height * 0.0625, width: frame.width * 1.0, height: frame.height * 1.0);
         livesCountLabel!.font = UIFont.boldSystemFont(ofSize: livesCountLabel!.frame.height * 0.3);
         livesCountLabel!.backgroundColor = UIColor.clear;
         self.livesCountLabel!.text = "\(self.livesLeft)";
         self.livesCountLabel!.textColor = UIColor.white;
+        ViewController.updateFont(label: livesCountLabel!);
     }
     
     func setupHeartInactiveButtons() {

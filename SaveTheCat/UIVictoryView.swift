@@ -97,6 +97,7 @@ class UIVictoryView:UICView {
         watchAdButton!.addTarget(self, action: #selector(watchAdButtonSelector), for: .touchUpInside);
         watchAdButton!.layer.borderColor = UIColor.systemYellow.cgColor;
         watchAdButton!.alpha = 0.0;
+        ViewController.updateFont(button: watchAdButton!);
         setupMouseCoin();
     }
     

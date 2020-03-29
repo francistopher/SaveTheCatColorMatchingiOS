@@ -220,11 +220,11 @@ class SoundController {
                 mozartSonataSoundEffect!.stop();
                 setupMozartSonata();
                 mozartSonataSoundEffect!.play();
-                if (!UIVolume.musicOn) {
+                if (UIVolume.musicOff) {
                    mozartSonataSoundEffect!.volume = 0.0;
                 }
             } else {
-                if (!UIVolume.musicOn) {
+                if (UIVolume.musicOff) {
                     mozartSonataSoundEffect!.volume = 0.0;
                 } else {
                     mozartSonataSoundEffect!.setVolume(1.0, fadeDuration: timeInterval05);
@@ -277,7 +277,7 @@ class SoundController {
             chopinPreludeSoundEffect!.stop();
             setupChopinPrelude();
             chopinPreludeSoundEffect!.play();
-            if (!UIVolume.musicOn) {
+            if (UIVolume.musicOff) {
                 chopinPreludeSoundEffect!.volume = 0.0;
             }
         } else {

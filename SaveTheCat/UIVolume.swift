@@ -13,7 +13,8 @@ class UIVolume: UIButton {
 
     var originalFrame:CGRect?
     var reducedFrame:CGRect?
-    static var musicOn:Bool = true;
+    static var musicOff:Bool = false;
+    let defaults = UserDefaults.standard;
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -26,7 +27,14 @@ class UIVolume: UIButton {
         layer.cornerRadius = height / 2.0;
         parentView.addSubview(self);
         self.addTarget(self, action: #selector(volumeTarget), for: .touchUpInside);
+        setMusicOn();
         setStyle();
+    }
+    
+    func setMusicOn() {
+        if (defaults.bool(forKey: "musicOff")) {
+            volumeTarget();
+        }
     }
     
     var iconImage:UIImage?
@@ -38,28 +46,33 @@ class UIVolume: UIButton {
     }
     
     @objc func volumeTarget() {
-        if (UIVolume.musicOn) {
-            SoundController.setMusicVolumeTo0();
-            UIVolume.musicOn = false;
-        } else {
+        if (UIVolume.musicOff) {
             SoundController.setMusicVolumeTo100();
-            UIVolume.musicOn = true;
+            UIVolume.musicOff = false;
+        } else {
+            SoundController.setMusicVolumeTo0();
+            UIVolume.musicOff = true;
         }
         setStyle();
+        saveVolumeState();
+    }
+    
+    func saveVolumeState() {
+        defaults.set(UIVolume.musicOff, forKey: "musicOff");
     }
     
     func setStyle() {
         if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1){
-            if (UIVolume.musicOn) {
-                setIconImage(imageName: "darkMusicOn.png");
-            } else {
+            if (UIVolume.musicOff) {
                 setIconImage(imageName: "darkMusicOff.png");
+            } else {
+                setIconImage(imageName: "darkMusicOn.png");
             }
         } else {
-            if (UIVolume.musicOn) {
-                setIconImage(imageName: "lightMusicOn.png");
-            } else {
+            if (UIVolume.musicOff) {
                 setIconImage(imageName: "lightMusicOff.png");
+            } else {
+                setIconImage(imageName: "lightMusicOn.png");
             }
         }
     }

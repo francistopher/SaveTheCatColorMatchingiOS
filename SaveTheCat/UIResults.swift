@@ -88,6 +88,7 @@ class UIResults: UICView {
         gameOverLabel!.setStyle();
         gameOverLabel!.text = "Game Over";
         CenterController.centerHorizontally(childView: gameOverLabel!, parentRect: self.frame, childRect: gameOverLabel!.frame);
+        ViewController.updateFont(label: gameOverLabel!);
     }
     
     func setupCheeringCatLabel() {
@@ -102,6 +103,7 @@ class UIResults: UICView {
         catsLivedAmountLabel!.font = UIFont.boldSystemFont(ofSize: catsLivedAmountLabel!.frame.height * 0.5);
         catsLivedAmountLabel!.backgroundColor = UIColor.clear;
         catsLivedAmountLabel!.textColor = UIColor.black;
+        ViewController.updateFont(label: catsLivedAmountLabel!);
     }
     
     var image:UIImage?
@@ -126,6 +128,7 @@ class UIResults: UICView {
         catsDiedAmountLabel!.font = UIFont.boldSystemFont(ofSize: catsDiedAmountLabel!.frame.height * 0.5);
         catsDiedAmountLabel!.backgroundColor = UIColor.clear;
         catsDiedAmountLabel!.textColor = UIColor.black;
+        ViewController.updateFont(label: catsDiedAmountLabel!);
     }
     
     func setupDeadCatImage() {
@@ -170,6 +173,7 @@ class UIResults: UICView {
         mouseCoin = UIMouseCoin(parentView: watchAdButton!, x: x, y: watchAdButton!.frame.height * 0.12, width: watchAdButton!.frame.height * 0.75, height: watchAdButton!.frame.height * 0.75);
         mouseCoin!.isSelectable = false;
         mouseCoin!.addTarget(self, action: #selector(mouseCoinSelector), for: .touchUpInside);
+        ViewController.updateFont(button: watchAdButton!);
     }
     
     @objc func showAd() {

@@ -13,6 +13,7 @@ class UICLabel:UILabel {
     
     var isInverted:Bool = false;
     var originalFrame:CGRect?
+    var reducedFrame:CGRect?
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")

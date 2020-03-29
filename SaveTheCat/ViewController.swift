@@ -654,4 +654,12 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, GKMatchm
         super.traitCollectionDidChange(previousTraitCollection)
         setStyle();
     }
+    
+    static func updateFont(button:UIButton) {
+        button.titleLabel!.font = UIFont(name: "SleepyFatCat", size: button.titleLabel!.font.pointSize);
+    }
+    
+    static func updateFont(label:UILabel) {
+        label.font = UIFont(name: "SleepyFatCat", size: label.font.pointSize);
+    }
 }

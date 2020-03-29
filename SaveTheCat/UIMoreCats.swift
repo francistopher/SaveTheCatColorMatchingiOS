@@ -172,6 +172,7 @@ class MoreCatsViewController:UIViewController {
         hideButton!.layer.borderWidth = contentView!.layer.borderWidth;
         hideButton!.titleLabel!.font = UIFont.boldSystemFont(ofSize: hideButton!.frame.height * 0.75)
         hideButton!.layer.maskedCorners = [ .layerMinXMaxYCorner]
+        ViewController.updateFont(button: hideButton!);
     }
     
     @objc func hideButtonSelector() {
@@ -190,6 +191,7 @@ class MoreCatsViewController:UIViewController {
         infoButton!.layer.borderWidth = contentView!.layer.borderWidth;
         infoButton!.titleLabel!.font = UIFont.boldSystemFont(ofSize: infoButton!.frame.height * 0.75)
         infoButton!.layer.maskedCorners = [.layerMaxXMaxYCorner]
+        ViewController.updateFont(button: infoButton!);
     }
     
     @objc func infoButtonSelector() {
@@ -204,6 +206,7 @@ class MoreCatsViewController:UIViewController {
         nextButton!.layer.borderWidth = contentView!.layer.borderWidth;
         nextButton!.titleLabel!.font = UIFont.boldSystemFont(ofSize: nextButton!.frame.height * 0.75)
         nextButton!.layer.maskedCorners = [.layerMinXMinYCorner]
+        ViewController.updateFont(button: nextButton!);
     }
     
     @objc func nextButtonSelector() {
@@ -307,6 +310,7 @@ class MoreCatsViewController:UIViewController {
         previousButton!.layer.borderWidth = contentView!.layer.borderWidth;
         previousButton!.titleLabel!.font = UIFont.boldSystemFont(ofSize: previousButton!.frame.height * 0.75)
         previousButton!.layer.maskedCorners = [.layerMaxXMinYCorner]
+        ViewController.updateFont(button: previousButton!);
     }
     
     @objc func previousButtonSelector() {
@@ -350,6 +354,7 @@ class MoreCatsViewController:UIViewController {
         catLabelName!.text = "Standard Cat";
         catLabelName!.clipsToBounds = true;
         catLabelName!.font = UIFont.boldSystemFont(ofSize: catLabelName!.frame.height * 0.6);
+        ViewController.updateFont(label: catLabelName!);
     }
     
     var mouseCoin:UIMouseCoin?
@@ -362,6 +367,7 @@ class MoreCatsViewController:UIViewController {
         selectionButton!.titleLabel!.font = UIFont.boldSystemFont(ofSize: selectionButton!.frame.height * 0.5);
         selectionButton!.addTarget(self, action: #selector(selectionButtonSelector), for: .touchUpInside);
         selectionButton!.setTitle("Unselect", for: .normal);
+        ViewController.updateFont(button: selectionButton!);
         setupMouseCoin();
     }
     

@@ -64,6 +64,9 @@ class UISettingsMenu:UICView {
         }
         leaderBoard!.originalFrame = leaderBoard!.frame;
         leaderBoard!.reducedFrame = CGRect(x: self.frame.height * 0.5, y: self.frame.height * 0.5, width: 0.1, height: 0.1);
+        leaderBoard!.label1!.reducedFrame = CGRect(x: 0.0, y: 0.0, width: 0.1, height: 0.1);
+        leaderBoard!.label2!.reducedFrame = CGRect(x: 0.0, y: 0.0, width: 0.1, height: 0.1);
+        leaderBoard!.label3!.reducedFrame = CGRect(x: 0.0, y: 0.0, width: 0.1, height: 0.1);
     }
 
     func setupMultiPlayerButton() {
@@ -103,6 +106,9 @@ class UISettingsMenu:UICView {
         self.frame = self.reducedFrame!;
         self.advertisement!.frame = self.advertisement!.reducedFrame!;
         self.leaderBoard!.frame = self.leaderBoard!.reducedFrame!;
+        self.leaderBoard!.label1!.frame = self.leaderBoard!.label1!.reducedFrame!;
+        self.leaderBoard!.label2!.frame = self.leaderBoard!.label2!.reducedFrame!;
+        self.leaderBoard!.label3!.frame = self.leaderBoard!.label3!.reducedFrame!;
         self.multiplayer!.frame = self.multiplayer!.reducedFrame!;
         self.moreCats!.frame = self.moreCats!.reducedFrame!;
         self.mouseCoin!.frame = self.mouseCoin!.reducedFrame!;
@@ -112,6 +118,9 @@ class UISettingsMenu:UICView {
         self.frame = self.originalFrame!;
         self.advertisement!.frame = self.advertisement!.originalFrame!;
         self.leaderBoard!.frame = self.leaderBoard!.originalFrame!;
+        self.leaderBoard!.label1!.frame = self.leaderBoard!.label1!.originalFrame!;
+        self.leaderBoard!.label2!.frame = self.leaderBoard!.label2!.originalFrame!;
+        self.leaderBoard!.label3!.frame = self.leaderBoard!.label3!.originalFrame!;
         self.multiplayer!.frame = self.multiplayer!.originalFrame!;
         self.moreCats!.frame = self.moreCats!.originalFrame!;
         self.mouseCoin!.frame = self.mouseCoin!.originalFrame!;

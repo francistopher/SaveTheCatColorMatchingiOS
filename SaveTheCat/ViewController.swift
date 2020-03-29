@@ -627,7 +627,7 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, GKMatchm
         introCatAnimation!.setCompiledStyle();
         setSuccessGradientLayerStyle();
         settingsButton!.setStyle();
-        settingsButton!.settingsMenu!.multiplayer!.setStyle();
+        settingsButton!.settingsMenu!.volume!.setStyle();
         settingsButton!.settingsMenu!.moreCats!.setCompiledStyle();
         if (settingsButton!.settingsMenu!.mouseCoin!.mouseCoinView!.backgroundColor!.cgColor != UIColor.clear.cgColor) {
             if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1){

@@ -12,6 +12,7 @@ class UIAds: UIButton {
     
     var originalFrame:CGRect?
     var reducedFrame:CGRect?
+    var adsText:UICLabel?
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -22,9 +23,21 @@ class UIAds: UIButton {
         self.originalFrame = CGRect(x: x, y: y, width: width, height: height);
         self.backgroundColor = .clear;
         self.layer.cornerRadius = height / 2.0;
-        setStyle();
+        setupAdsText();
+        setIconImage(imageName: "noSymbol.png");
+        self.bringSubviewToFront(imageView!);
         self.addTarget(self, action: #selector(noAdsSelector), for: .touchUpInside);
         parentView.addSubview(self);
+        setStyle();
+    }
+    
+    func setupAdsText() {
+        adsText = UICLabel(parentView: self, x: frame.height * 0.01, y: frame.height * 0.04, width: frame.width, height: frame.height);
+        adsText!.text = "ADS";
+        adsText!.backgroundColor = UIColor.clear;
+        adsText!.font = UIFont.boldSystemFont(ofSize: adsText!.frame.height * 0.4);
+        ViewController.updateFont(label: adsText!);
+        self.addSubview(adsText!);
     }
 
     @objc func noAdsSelector() {
@@ -42,9 +55,9 @@ class UIAds: UIButton {
     
     func setStyle() {
         if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1){
-            setIconImage(imageName: "lightNoAds.png");
+            adsText!.textColor = UIColor.black;
         } else {
-            setIconImage(imageName: "darkNoAds.png");
+            adsText!.textColor = UIColor.white;
         }
     }
     

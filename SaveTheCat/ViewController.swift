@@ -397,11 +397,11 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, GKMatchm
     static var leaderBoard:GKLeaderboard?
     static var leaderBoardScore:Int64?
     static func submitCatsSavedScore(catsSaved:Int) {
-        func submitScore(score:Int64) {
+        func submitScore(score:Int64, leaderboardID:String) {
             bestCatSaverScore = nil;
             leaderBoard = nil;
             leaderBoardScore = nil;
-            bestCatSaverScore = GKScore(leaderboardIdentifier: "topCatSavers");
+            bestCatSaverScore = GKScore(leaderboardIdentifier: leaderboardID);
             bestCatSaverScore!.value = score;
             GKScore.report([bestCatSaverScore!], withCompletionHandler: { (error) in
                 if error != nil {
@@ -412,16 +412,18 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, GKMatchm
             })
         }
         leaderBoard = GKLeaderboard();
-        leaderBoard!.identifier = "topCatSavers";
+        leaderBoard!.identifier = "topCatSaversAG";
         // UNEXPECTED ERROR
         leaderBoard!.loadScores(completionHandler: { scores, error in
             if error == nil {
                 if (leaderBoard!.localPlayerScore != nil) {
                     leaderBoardScore = Int64(catsSaved) + leaderBoard!.localPlayerScore!.value;
                     print("Now the score should be this", leaderBoardScore!);
-                    submitScore(score:leaderBoardScore!);
+                    submitScore(score:leaderBoardScore!, leaderboardID:self.leaderBoard!.identifier!);
+                    submitScore(score:Int64(catsSaved), leaderboardID: "topCatSaversSG");
                 } else {
-                    submitScore(score:Int64(catsSaved));
+                    submitScore(score:Int64(catsSaved), leaderboardID:self.leaderBoard!.identifier!);
+                    submitScore(score:Int64(catsSaved), leaderboardID: "topCatSaversSG");
                 }
             }
         })

@@ -45,6 +45,7 @@ class UIEnemies {
             for _ in 0..<4 {
                 y! += enemyHeightSpacing!;
                 enemy = UIEnemy(parentView: mainView!, frame:CGRect(x: x!, y: y!, width: enemySideLength!, height: enemySideLength!));
+                enemy!.isUserInteractionEnabled = false;
                 enemiesCollection!.append(enemy!);
                 y! += enemySideLength!;
             }

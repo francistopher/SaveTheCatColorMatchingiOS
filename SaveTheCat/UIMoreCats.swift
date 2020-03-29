@@ -46,7 +46,6 @@ class UIMoreCats: UIButton {
         UIView.animate(withDuration: 0.25, animations: {
             ViewController.staticSelf!.view.alpha = 0.5;
         })
-
     }
        
     var iconImage:UIImage?

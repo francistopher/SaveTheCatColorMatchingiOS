@@ -77,6 +77,7 @@ class UIBoardGame: UIView, GKMatchDelegate {
         catsSavedLabel!.backgroundColor = UIColor.clear;
         catsSavedLabel!.layer.borderColor = UIColor.clear.cgColor;
         catsSavedLabel!.alpha = 0.0;
+        ViewController.updateFont(label: catsSavedLabel!);
     }
     
     var catsSavedCountTimer:Timer?
@@ -303,6 +304,8 @@ class UIBoardGame: UIView, GKMatchDelegate {
                 matchMakerVC!.matchmakerDelegate = ViewController.staticSelf!;
             }
             ViewController.staticSelf!.present(matchMakerVC!, animated: true, completion: nil);
+        } else {
+            ViewController.staticSelf!.gameMessage!.addToMessageQueue(message: .noInternet);
         }
     }
     
@@ -595,27 +598,19 @@ class UIBoardGame: UIView, GKMatchDelegate {
             iLostWatchAdButton = results!.watchAdButton!;
             iLostMouseCoinButton = results!.mouseCoin!;
         }
-        if (ViewController.staticSelf!.isInternetReachable) {
-            iLostWatchAdButton!.isUserInteractionEnabled = true;
-            iLostWatchAdButton!.titleLabel!.alpha = 1.0;
-            iLostMouseCoinButton!.alpha = 1.0;
-            self.glovePointer!.adButton = iLostWatchAdButton!;
-            if (iLostButtonSuperView == nil) {
-                iLostButtonSuperView = iLostWatchAdButton!.superview!;
-                iLostButtonSuperView2 = iLostWatchAdButton!.superview!.superview!;
-                iLostX = iLostWatchAdButton!.frame.minX + iLostButtonSuperView!.frame.minX + iLostButtonSuperView2!.frame.minX - glovePointer!.originalFrame!.width * 0.35;
-                iLostY = iLostWatchAdButton!.frame.minY + iLostButtonSuperView!.frame.minY + iLostButtonSuperView2!.frame.minY - glovePointer!.originalFrame!.height * 0.175;
-            }
-            self.glovePointer!.translate(newOriginalFrame: CGRect(x: iLostX!, y: iLostY!, width: glovePointer!.originalFrame!.width * 0.9, height: glovePointer!.originalFrame!.width * 0.9));
-            self.glovePointer!.alpha = 1.0;
-            Timer.scheduledTimer(withTimeInterval: 1.25, repeats: false, block: { _ in
-                self.glovePointer!.sway();
-            })
-        } else {
-            iLostWatchAdButton!.isUserInteractionEnabled = false;
-            iLostWatchAdButton!.titleLabel!.alpha = 0.0;
-            iLostWatchAdButton!.alpha = 0.0;
+        self.glovePointer!.adButton = iLostWatchAdButton!;
+        if (iLostButtonSuperView == nil) {
+            iLostButtonSuperView = iLostWatchAdButton!.superview!;
+            iLostButtonSuperView2 = iLostWatchAdButton!.superview!.superview!;
+            iLostX = iLostWatchAdButton!.frame.minX + iLostButtonSuperView!.frame.minX + iLostButtonSuperView2!.frame.minX - glovePointer!.originalFrame!.width * 0.35;
+            iLostY = iLostWatchAdButton!.frame.minY + iLostButtonSuperView!.frame.minY + iLostButtonSuperView2!.frame.minY - glovePointer!.originalFrame!.height * 0.175;
         }
+        self.glovePointer!.translate(newOriginalFrame: CGRect(x: iLostX!, y: iLostY!, width: glovePointer!.originalFrame!.width * 0.9, height: glovePointer!.originalFrame!.width * 0.9));
+        self.glovePointer!.alpha = 1.0;
+        Timer.scheduledTimer(withTimeInterval: 1.25, repeats: false, block: { _ in
+            self.glovePointer!.sway();
+        })
+
         // Housekeeping
         self.reset(catsSurvived: false);
         self.colorOptions!.shrinkColorOptions();

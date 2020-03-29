@@ -44,6 +44,8 @@ class UIResults: UICView {
     // Save the value of mouse coins
     var keyValueStore:NSUbiquitousKeyValueStore = NSUbiquitousKeyValueStore();
     
+    var localIntersitialAdVC:LocalIntersitialAdVC?
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -67,10 +69,41 @@ class UIResults: UICView {
         setupCheeringCatLabel();
         setupDeadCatLabel();
         setupWatchAdForXMouseCoins();
+        setupLocalIntersitialAdVC();
         super.invertColor = true;
         self.setCompiledStyle();
         CenterController.centerHorizontally(childView: self, parentRect: superview!.frame, childRect: self.frame);
         self.alpha = 0.0;
+    }
+    
+    var localAdFirstTime:Bool = false;
+    func setupLocalIntersitialAdVC() {
+        localIntersitialAdVC = LocalIntersitialAdVC();
+        localIntersitialAdVC!.modalPresentationStyle = .overFullScreen;
+    }
+    
+    func presentLocalAd() {
+        SoundController.chopinPrelude(play: false);
+        ViewController.staticSelf!.present(localIntersitialAdVC!, animated: true, completion: {
+            self.localAdFirstTime = true;
+            if (self.localIntersitialAdVC!.closeButton != nil) {
+                self.localIntersitialAdVC!.closeButton!.addTarget(self, action: #selector(self.closeButtonSelector), for: .touchUpInside);
+            }
+        });
+        UIView.animate(withDuration: 0.25, animations: {
+            ViewController.staticSelf!.view.alpha = 0.5;
+        })
+    }
+    
+    @objc func closeButtonSelector() {
+        ViewController.staticSelf!.gameMessage!.addToMessageQueue(message: .noInternet);
+        localIntersitialAdVC!.dismiss(animated: true, completion: nil);
+        ViewController.staticSelf!.boardGame!.glovePointer!.reset();
+        ViewController.staticSelf!.mainView.alpha = 1.0;
+        watchAdButton!.isUserInteractionEnabled = false;
+        SoundController.chopinPrelude(play: true);
+        watchAdButton!.titleLabel!.alpha = 0.0;
+        mouseCoin!.alpha = 0.0;
     }
     
     func setupContentView() {
@@ -181,7 +214,12 @@ class UIResults: UICView {
         // Gathering user selection data
         UIResults.adIsShowing = true;
         // load the ad
-        ViewController.presentInterstitial();
+        if (ViewController.staticSelf!.isInternetReachable) {
+            ViewController.presentInterstitial();
+        } else {
+            // load local ad
+            presentLocalAd();
+        }
         // Wait to see if ad will load
         var timer:Timer?
         timer = Timer.scheduledTimer(withTimeInterval: 0.01, repeats: true, block: { _ in
@@ -290,7 +328,60 @@ class UIResults: UICView {
             self.watchAdButton!.setTitleColor(UIColor.white, for: .normal);
             self.watchAdButton!.layer.borderColor = UIColor.white.cgColor;
         }
+        if (localAdFirstTime) {
+            localIntersitialAdVC!.setStyle();
+        }
         self.watchAdButton!.layer.borderColor = UIColor.systemYellow.cgColor;
     }
+    
+}
+
+class LocalIntersitialAdVC:UIViewController {
+    
+    var imageView:UIImageView?
+    var darkImage:UIImage = UIImage(named: "darkNoInternetIntersitial.png")!;
+    var lightImage:UIImage = UIImage(named: "lightNoInternetIntersitial.png")!;
+    
+    var closeButton:UICButton?
+    
+    override func viewDidLoad() {
+        super.viewDidLoad();
+        setupImageView();
+        setupCloseButton();
+        setStyle();
+    }
+    
+    func setupCloseButton() {
+        closeButton = UICButton(parentView: view, frame: CGRect(x: view.frame.width * 0.85, y: (view.frame.width * 0.05) + imageView!.frame.minY, width: view.frame.width * 0.1, height: view.frame.width * 0.1), backgroundColor: UIColor.clear);
+        closeButton!.layer.borderWidth = closeButton!.layer.borderWidth * 2.0;
+        closeButton!.titleLabel!.font = UIFont.boldSystemFont(ofSize: closeButton!.frame.height * 0.75);
+        closeButton!.layer.cornerRadius = closeButton!.frame.height * 0.5;
+        ViewController.updateFont(button: closeButton!);
+        closeButton!.setTitle("x", for: .normal);
+    }
+    
+    
+    
+    func setupImageView() {
+        imageView = UIImageView(frame:  CGRect(x: ViewController.staticSelf!.mainView.frame.minX, y: ViewController.staticSelf!.mainView.frame.height * 0.02, width: ViewController.staticSelf!.mainView.frame.width, height: ViewController.staticSelf!.mainView.frame.height * 0.98));
+        imageView!.backgroundColor = UIColor.clear;
+        imageView!.contentMode = UIView.ContentMode.scaleAspectFill;
+        imageView!.clipsToBounds = true;
+        view.addSubview(imageView!);
+    }
+    
+    func setStyle() {
+        closeButton!.backgroundColor = UIColor.white;
+        closeButton!.layer.borderColor = UIColor.black.cgColor;
+        closeButton!.setTitleColor(UIColor.red, for: .normal);
+        if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1) {
+            imageView!.image = lightImage;
+            view.backgroundColor = UIColor.white;
+        } else {
+            imageView!.image = darkImage;
+            view.backgroundColor = UIColor.black;
+        }
+    }
+    
     
 }

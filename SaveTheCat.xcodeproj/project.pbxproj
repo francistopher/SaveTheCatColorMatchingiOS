@@ -21,6 +21,10 @@
 		B83A807E24300C33007B8700 /* SleepyFatCat.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B83A807C24300C32007B8700 /* SleepyFatCat.ttf */; };
 		B83A808024301918007B8700 /* leaderBoard.png in Resources */ = {isa = PBXBuildFile; fileRef = B83A807F24301918007B8700 /* leaderBoard.png */; };
 		B83A808224302ABA007B8700 /* noSymbol.png in Resources */ = {isa = PBXBuildFile; fileRef = B83A808124302AB9007B8700 /* noSymbol.png */; };
+		B83A80872430443A007B8700 /* darkNoInternetBanner.png in Resources */ = {isa = PBXBuildFile; fileRef = B83A80832430443A007B8700 /* darkNoInternetBanner.png */; };
+		B83A80882430443A007B8700 /* lightNoInternetBanner.png in Resources */ = {isa = PBXBuildFile; fileRef = B83A80842430443A007B8700 /* lightNoInternetBanner.png */; };
+		B83A80892430443A007B8700 /* lightNoInternetIntersitial.png in Resources */ = {isa = PBXBuildFile; fileRef = B83A80852430443A007B8700 /* lightNoInternetIntersitial.png */; };
+		B83A808A2430443A007B8700 /* darkNoInternetIntersitial.png in Resources */ = {isa = PBXBuildFile; fileRef = B83A80862430443A007B8700 /* darkNoInternetIntersitial.png */; };
 		B83B0331241153E900EC4BAD /* UIMouseCoin.swift in Sources */ = {isa = PBXBuildFile; fileRef = B83B032A241153E800EC4BAD /* UIMouseCoin.swift */; };
 		B83B0333241153E900EC4BAD /* UISettingsButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B83B032C241153E800EC4BAD /* UISettingsButton.swift */; };
 		B83B033C241154B500EC4BAD /* kittenMeow.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = B83B0336241154B500EC4BAD /* kittenMeow.mp3 */; };
@@ -174,6 +178,10 @@
 		B83A807C24300C32007B8700 /* SleepyFatCat.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = SleepyFatCat.ttf; path = SaveTheCat/SleepyFatCatFont/SleepyFatCat.ttf; sourceTree = "<group>"; };
 		B83A807F24301918007B8700 /* leaderBoard.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = leaderBoard.png; path = SaveTheCat/leaderBoard.png; sourceTree = "<group>"; };
 		B83A808124302AB9007B8700 /* noSymbol.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = noSymbol.png; path = SaveTheCat/noSymbol.png; sourceTree = "<group>"; };
+		B83A80832430443A007B8700 /* darkNoInternetBanner.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = darkNoInternetBanner.png; path = SaveTheCat/darkNoInternetBanner.png; sourceTree = "<group>"; };
+		B83A80842430443A007B8700 /* lightNoInternetBanner.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = lightNoInternetBanner.png; path = SaveTheCat/lightNoInternetBanner.png; sourceTree = "<group>"; };
+		B83A80852430443A007B8700 /* lightNoInternetIntersitial.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = lightNoInternetIntersitial.png; path = SaveTheCat/lightNoInternetIntersitial.png; sourceTree = "<group>"; };
+		B83A80862430443A007B8700 /* darkNoInternetIntersitial.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = darkNoInternetIntersitial.png; path = SaveTheCat/darkNoInternetIntersitial.png; sourceTree = "<group>"; };
 		B83B032A241153E800EC4BAD /* UIMouseCoin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UIMouseCoin.swift; path = SaveTheCat/UIMouseCoin.swift; sourceTree = "<group>"; };
 		B83B032C241153E800EC4BAD /* UISettingsButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UISettingsButton.swift; path = SaveTheCat/UISettingsButton.swift; sourceTree = "<group>"; };
 		B83B0336241154B500EC4BAD /* kittenMeow.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = kittenMeow.mp3; path = SaveTheCat/kittenMeow.mp3; sourceTree = "<group>"; };
@@ -396,6 +404,17 @@
 			name = "Music Off";
 			sourceTree = "<group>";
 		};
+		B83A808B24304443007B8700 /* Banner And Intersitial Ads */ = {
+			isa = PBXGroup;
+			children = (
+				B83A80832430443A007B8700 /* darkNoInternetBanner.png */,
+				B83A80862430443A007B8700 /* darkNoInternetIntersitial.png */,
+				B83A80842430443A007B8700 /* lightNoInternetBanner.png */,
+				B83A80852430443A007B8700 /* lightNoInternetIntersitial.png */,
+			);
+			name = "Banner And Intersitial Ads";
+			sourceTree = "<group>";
+		};
 		B83B03212411535700EC4BAD /* Settings View Controllers */ = {
 			isa = PBXGroup;
 			children = (
@@ -422,6 +441,7 @@
 		B83B0342241154C000EC4BAD /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				B83A808B24304443007B8700 /* Banner And Intersitial Ads */,
 				B841504124290A6300B24F84 /* Message */,
 				B841504024290A3300B24F84 /* Heart */,
 				B8F6C9B024214F8F00CD668C /* Cat Shape */,
@@ -875,6 +895,7 @@
 				B83EAA94242AFA460041CE31 /* lightCoolDeadCat.png in Resources */,
 				B83B03BC24115AA900EC4BAD /* LaunchScreen.storyboard in Resources */,
 				B83B03F92411877E00EC4BAD /* Icon-58@2x.png in Resources */,
+				B83A80892430443A007B8700 /* lightNoInternetIntersitial.png in Resources */,
 				B83EAA97242AFA460041CE31 /* darkCoolCheeringCat.png in Resources */,
 				B83B04022413221E00EC4BAD /* gameCenter.png in Resources */,
 				B83EAA7B242AA5FB0041CE31 /* darkSuperDeadCat.png in Resources */,
@@ -900,6 +921,7 @@
 				B83EAA71242A6B630041CE31 /* darkEgyptianDeadCat.png in Resources */,
 				B83B03D224115CDD00EC4BAD /* Default-568h@2x.png in Resources */,
 				B80C9A382427D82F00B4E229 /* lightMoreCats.png in Resources */,
+				B83A80882430443A007B8700 /* lightNoInternetBanner.png in Resources */,
 				B83EAA8B242AE97F0041CE31 /* lightChickenCheeringCat.png in Resources */,
 				B83EAA93242AFA460041CE31 /* lightCoolCheeringCat.png in Resources */,
 				B83B03802411551300EC4BAD /* heart.png in Resources */,
@@ -913,6 +935,7 @@
 				B83B033D241154B500EC4BAD /* chopinPrelude.mp3 in Resources */,
 				B83BC400241BD8EA0026D7F6 /* noInternet.png in Resources */,
 				B83B0340241154B500EC4BAD /* heaven.mp3 in Resources */,
+				B83A80872430443A007B8700 /* darkNoInternetBanner.png in Resources */,
 				B83EAA88242AE97F0041CE31 /* lightChickenDeadCat.png in Resources */,
 				B841505B242976E800B24F84 /* lightTacoSmilingCat.png in Resources */,
 				B83B03842411551300EC4BAD /* lightNinjaDeadCat.png in Resources */,
@@ -935,6 +958,7 @@
 				B83B03822411551300EC4BAD /* lightNinjaCheeringCat.png in Resources */,
 				B83BC3E42416B1C30026D7F6 /* lightGlovePointer.png in Resources */,
 				B83B03852411551300EC4BAD /* mouseCoin.png in Resources */,
+				B83A808A2430443A007B8700 /* darkNoInternetIntersitial.png in Resources */,
 				B83B0360241154EB00EC4BAD /* darkVirus.png in Resources */,
 				B83B03772411551300EC4BAD /* lightGear.png in Resources */,
 				B83B03FA2411877E00EC4BAD /* Icon-20@1x.png in Resources */,

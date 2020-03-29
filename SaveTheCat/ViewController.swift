@@ -45,6 +45,10 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, GKMatchm
             gameMessage!.displayInternetConnectionEstablishedMessage();
             // Stop autoloading ads
             bannerView.isAutoloadEnabled = true;
+            if (settingsButton!.alpha == 1.0) {
+                bannerView.alpha = 1.0;
+                noInternetBannerView!.alpha = 0.0;
+            }
             // Load Online Mouse Coins and cats
             loadMyCats(myCats: keyValueStore.string(forKey: "myCats"));
             settingsButton!.settingsMenu!.mouseCoin!.setMouseCoinValue(newValue: keyValueStore.longLong(forKey: "mouseCoins"));
@@ -54,6 +58,10 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, GKMatchm
             self.boardGame!.stopSearchingForOpponentEntirely();
             // Stop autoloading ads
             bannerView.isAutoloadEnabled = false;
+            if (settingsButton!.alpha == 1.0) {
+                bannerView.alpha = 0.0;
+                noInternetBannerView!.alpha = 1.0;
+            }
             // Display no Internet Message
             gameMessage!.displayNoInternetConsequencesMessage();
             // No internet mouse coinds
@@ -206,6 +214,10 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, GKMatchm
     static var interstitialWillPresentScreen:Bool = false;
     static var interstitialWillDismissScreen:Bool = false;
     
+    var noInternetBannerView:UIImageView?
+    var noInternetBannerLightImage:UIImage = UIImage(named: "lightNoInternetBanner")!;
+    var noInternetBannerDarkImage:UIImage = UIImage(named: "darkNoInternetBanner")!;
+    
     var keyValueStore:NSUbiquitousKeyValueStore = NSUbiquitousKeyValueStore();
     
     override func viewDidLoad() {
@@ -262,7 +274,24 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, GKMatchm
     func setupAdvertisement() {
         GADMobileAds.sharedInstance().requestConfiguration.testDeviceIdentifiers = ["2077ef9a63d2b398840261c8221a0c9b"];
         setupBannerView();
+        setupNoInternetBannerView();
         setupInterstitial();
+    }
+    
+    func setupNoInternetBannerView() {
+        noInternetBannerView = UIImageView(frame: bannerView!.frame);
+        noInternetBannerView!.contentMode = UIView.ContentMode.scaleAspectFill;
+        mainView.addSubview(noInternetBannerView!);
+        setupNoInternetBannerStyle();
+        noInternetBannerView!.alpha = 0.0;
+    }
+    
+    func setupNoInternetBannerStyle() {
+        if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1){
+            noInternetBannerView!.image = noInternetBannerLightImage;
+        } else {
+            noInternetBannerView!.image = noInternetBannerDarkImage;
+        }
     }
     
     // Interstisial
@@ -450,6 +479,11 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, GKMatchm
                 self.boardGame!.showSingleAndTwoPlayerButtons();
                 UIView.animate(withDuration: 1.0, delay: 0.125, options: .curveEaseOut, animations: {
                     self.bannerView.alpha = 1.0;
+                }, completion: { _ in
+                    if (!self.isInternetReachable) {
+                        self.bannerView.alpha = 0.0;
+                        self.noInternetBannerView!.alpha = 1.0;
+                    }
                 })
             }
         }
@@ -622,6 +656,7 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, GKMatchm
     }
     
     func setStyle() {
+        setupNoInternetBannerStyle();
         gameMessage!.setStyle();
         enemies!.setStyle();
         introCatAnimation!.setCompiledStyle();

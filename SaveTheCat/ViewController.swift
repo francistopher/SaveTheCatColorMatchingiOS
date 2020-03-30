@@ -591,7 +591,7 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, GKMatchm
     }
     
     func setupIntroCatAnimatio(){
-        let sideLength:CGFloat = unitViewWidth * 8.0;
+        let sideLength:CGFloat = unitViewWidth * 9.0;
         introCatAnimation = UIIntroCatAnimation(parentView: mainView, frame: CGRect(x: 0.0, y: 0.0, width: sideLength, height: sideLength));
         CenterController.center(childView: introCatAnimation!, parentRect: mainView.frame, childRect: introCatAnimation!.frame);
         introCatAnimation!.layer.borderWidth = 0.0;

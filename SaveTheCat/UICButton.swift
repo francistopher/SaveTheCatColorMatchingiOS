@@ -24,7 +24,7 @@ class UICButton:UIButton {
     
     var notSelectable:Bool = false;
     
-    var inverted:Bool = false;
+    var isStyleInverted:Bool = false;
     enum shrink {
         case left
         case mid
@@ -156,7 +156,7 @@ class UICButton:UIButton {
     }
     
     func setStyle() {
-        if (inverted) {
+        if (isStyleInverted) {
             if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1){
                 self.layer.borderColor = UIColor.white.cgColor;
                 self.setTitleColor(UIColor.white, for: .normal);

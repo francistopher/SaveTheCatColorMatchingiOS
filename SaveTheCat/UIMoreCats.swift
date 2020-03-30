@@ -80,10 +80,14 @@ class MoreCatsViewController:UIViewController {
     var catLabelName:UICLabel?
     
     var hideButton:UICButton?
+    
     var infoButton:UICButton?
+    var infoLabel:UICLabel?
+    
     var previousButton:UICButton?
     var nextButton:UICButton?
     var selectionButton:UICButton?
+    
     
     var purchaseAlert:UIAlertController?
     var keyValueStore:NSUbiquitousKeyValueStore = NSUbiquitousKeyValueStore();
@@ -95,16 +99,17 @@ class MoreCatsViewController:UIViewController {
         setupInfoButton()
         setupPresentationCat()
         setupCatViewHandler()
-        setupCatLabelName();
-        setupPreviousButton();
-        setupNextButton();
-        setupSelectionButton();
+        setupCatLabelName()
+        setupPreviousButton()
+        setupNextButton()
+        setupSelectionButton()
+        setupInfoLabel()
         if (displayedCatIndex == -1) {
-            setPresentationCat(cat: ViewController.getRandomCat());
+            setPresentationCat(cat: ViewController.getRandomCat())
         }
-        setupPresentLabelNameAnimation();
-        setupPurchaseAlert();
-        setCompiledStyle();
+        setupPresentLabelNameAnimation()
+        setupPurchaseAlert()
+        setCompiledStyle()
     }
     
     func setupPurchaseAlert() {
@@ -196,7 +201,13 @@ class MoreCatsViewController:UIViewController {
     }
     
     @objc func infoButtonSelector() {
-        print("Selecting info button")
+        if (infoButton!.titleLabel!.text == "i") {
+            infoButton!.setTitle("x", for: .normal);
+            infoLabel!.grow();
+        } else {
+            infoButton!.setTitle("i", for: .normal);
+            infoLabel!.shrink(removeFromSuperview: false);
+        }
     }
     
     func setupNextButton() {
@@ -344,6 +355,23 @@ class MoreCatsViewController:UIViewController {
         presentationCatButton!.clipsToBounds = true;
     }
     
+    func setupInfoLabel() {
+        infoLabel = UICLabel(parentView: contentView!, x: presentationCatButton!.imageContainerButton!.originalFrame!.minX, y: presentationCatButton!.imageContainerButton!.originalFrame!.minY, width: presentationCatButton!.imageContainerButton!.originalFrame!.width * 0.975, height: presentationCatButton!.imageContainerButton!.originalFrame!.height * 0.975)
+        CenterController.center(childView: infoLabel!, parentRect: contentView!.frame, childRect: infoLabel!.frame);
+        infoLabel!.setOriginalFrame();
+        infoLabel!.setShrunkFrame();
+        infoLabel!.font = UIFont.boldSystemFont(ofSize: infoLabel!.frame.height * 0.15);
+        infoLabel!.layer.cornerRadius = presentationCatButton!.layer.cornerRadius
+        infoLabel!.lineBreakMode = NSLineBreakMode.byWordWrapping
+        infoLabel!.text = "In Memory\nof Mittens\nthe Cat"
+        ViewController.updateFont(label: infoLabel!);
+        infoLabel!.backgroundColor = UIColor.systemBlue
+        infoLabel!.clipsToBounds = true
+        infoLabel!.isInverted = true
+        infoLabel!.numberOfLines = 3
+        infoLabel!.shrunk();
+    }
+    
     func setupCatViewHandler() {
         catViewHandler = UICView(parentView: contentView!, x: 0.0, y: presentationCatButton!.originalFrame!.minY + presentationCatButton!.originalFrame!.height * 0.25, width: presentationCatButton!.originalFrame!.width * 1.05, height: presentationCatButton!.originalFrame!.width * 0.5, backgroundColor: UIColor.clear);
         catViewHandler!.invertColor = true;
@@ -371,12 +399,13 @@ class MoreCatsViewController:UIViewController {
         selectionButton = UICButton(parentView: catViewHandler!, frame:CGRect(x: 0.0, y: catViewHandler!.frame.height - (presentationCatButton!.layer.borderWidth * 0.5) - self.catLabelName!.frame.height, width: catViewHandler!.frame.width * 0.75, height: self.hideButton!.frame.height * 1.025), backgroundColor: UIColor.systemRed);
         CenterController.centerHorizontally(childView: selectionButton!, parentRect: catViewHandler!.frame, childRect: selectionButton!.frame);
         selectionButton!.originalFrame = selectionButton!.frame;
-        selectionButton!.layer.cornerRadius =  catViewHandler!.layer.cornerRadius * 0.4;
+        selectionButton!.layer.cornerRadius = catViewHandler!.layer.cornerRadius * 0.4;
         selectionButton!.clipsToBounds = true;
         selectionButton!.titleLabel!.font = UIFont.boldSystemFont(ofSize: selectionButton!.frame.height * 0.5);
         selectionButton!.addTarget(self, action: #selector(selectionButtonSelector), for: .touchUpInside);
         selectionButton!.setTitle("Unselect", for: .normal);
         ViewController.updateFont(button: selectionButton!);
+        selectionButton!.isStyleInverted = true;
         setupMouseCoin();
     }
     
@@ -459,21 +488,15 @@ class MoreCatsViewController:UIViewController {
     }
     
     func setCompiledStyle() {
-        if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1) {
-            if (ViewController.aspectRatio! != .ar4by3) {
-                view.backgroundColor = UIColor.white;
-            }
-        } else {
-            if (ViewController.aspectRatio! == .ar16by9) {
-                view.backgroundColor = UIColor.black;
-            }
-        }
         presentationCatButton!.setStyle();
         presentationCatButton!.setCat(named: "SmilingCat", stage: 5);
+        selectionButton!.setStyle();
         if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1) {
+            selectionButton!.layer.borderColor = UIColor.black.cgColor;
             presentationCatButton!.setTitleColor(UIColor.black, for: .normal);
             presentationCatButton!.backgroundColor = UIColor.white;
         } else {
+            selectionButton!.layer.borderColor = UIColor.white.cgColor;
             presentationCatButton!.setTitleColor(UIColor.white, for: .normal);
             presentationCatButton!.backgroundColor = UIColor.black;
         }
@@ -484,7 +507,18 @@ class MoreCatsViewController:UIViewController {
         infoButton!.setStyle();
         previousButton!.setStyle();
         nextButton!.setStyle();
-        selectionButton!.setStyle();
+        
+        infoLabel!.setStyle();
+        infoLabel!.backgroundColor = UIColor.systemBlue;
+        if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1) {
+            if (ViewController.aspectRatio! != .ar4by3) {
+                view.backgroundColor = UIColor.white;
+            }
+        } else {
+            if (ViewController.aspectRatio! == .ar16by9) {
+                view.backgroundColor = UIColor.black;
+            }
+        }
     }
     
 }

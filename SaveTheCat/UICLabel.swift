@@ -15,6 +15,8 @@ class UICLabel:UILabel {
     var originalFrame:CGRect?
     var reducedFrame:CGRect?
     
+    var shrunkFrame:CGRect?
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -22,17 +24,38 @@ class UICLabel:UILabel {
     init(parentView:UIView, x:CGFloat, y:CGFloat, width:CGFloat, height:CGFloat){
         super.init(frame: CGRect(x: x, y: y, width: width, height: height))
         parentView.addSubview(self);
-        self.originalFrame = frame;
+        setOriginalFrame();
+        setShrunkFrame();
         self.textAlignment = NSTextAlignment.center;
         self.setStyle()
     }
     
-    func shrink() {
+    func setOriginalFrame() {
+        self.originalFrame = frame;
+    }
+    
+    func setShrunkFrame() {
+        self.shrunkFrame = CGRect(x: self.frame.midX, y: self.frame.midY, width: 1.0, height: 1.0);
+    }
+    
+    func shrink(removeFromSuperview:Bool) {
         UIView.animate(withDuration: 0.25, delay: 0.125, options: .curveEaseInOut, animations: {
-            self.frame = CGRect(x: self.frame.midX, y: self.frame.midY, width: 0.0, height: 0.0);
+            self.frame = self.shrunkFrame!;
         }, completion: { _ in
-            self.removeFromSuperview();
+            if (removeFromSuperview) {
+                self.removeFromSuperview()
+            }
         })
+    }
+    
+    func grow() {
+           UIView.animate(withDuration: 0.25, delay: 0.125, options: .curveEaseInOut, animations: {
+               self.frame = self.originalFrame!;
+           })
+       }
+    
+    func shrunk() {
+        self.frame = self.shrunkFrame!;
     }
     
     func fadeIn() {

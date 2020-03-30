@@ -542,6 +542,7 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, GKMatchm
     func setupSounds() {
         SoundController.setupGearSpinning();
         SoundController.setupHeaven();
+        SoundController.setupAnimeWow();
         SoundController.setupCoinEarned();
         SoundController.setupCoinEarned2();
         SoundController.setupCoinEarned3();

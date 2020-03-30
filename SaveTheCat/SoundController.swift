@@ -19,6 +19,10 @@ class SoundController {
     static var heavenUrl:URL?
     static var heavenSoundEffect:AVAudioPlayer?
     
+    static var animeWowPath:String?
+    static var animeWowURL:URL?
+    static var animeWowSoundEffect:AVAudioPlayer?
+    
     static var coinEarnedPath:String?
     static var coinEarnedUrl:URL?
     static var coinEarnedSoundEffect:AVAudioPlayer?
@@ -90,6 +94,25 @@ class SoundController {
             heavenSoundEffect = try AVAudioPlayer(contentsOf: heavenUrl!);
         } catch {
             print("Unable to play heaven");
+        }
+    }
+    
+    static func animeWow() {
+        animeWowSoundEffect!.stop();
+        animeWowSoundEffect!.play();
+    }
+    
+    static func setupAnimeWow() {
+        animeWowPath = nil;
+        animeWowURL = nil;
+        animeWowSoundEffect = nil;
+        animeWowPath = Bundle.main.path(forResource: "animeWow.mp3", ofType: nil);
+        animeWowURL = URL(fileURLWithPath: animeWowPath!);
+        do {
+            animeWowSoundEffect = try AVAudioPlayer(contentsOf: animeWowURL!);
+            animeWowSoundEffect!.volume = 0.6;
+        } catch {
+            print("Unable to play Anime Wow");
         }
     }
     

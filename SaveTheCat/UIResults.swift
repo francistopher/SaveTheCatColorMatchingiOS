@@ -43,8 +43,11 @@ class UIResults: UICView {
     
     // Save the value of mouse coins
     var keyValueStore:NSUbiquitousKeyValueStore = NSUbiquitousKeyValueStore();
-    
     var localIntersitialAdVC:LocalIntersitialAdVC?
+    
+    // High Score label
+    var highScoreLabel:UICLabel?
+    let defaults = UserDefaults.standard;
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -71,9 +74,18 @@ class UIResults: UICView {
         setupWatchAdForXMouseCoins();
         setupLocalIntersitialAdVC();
         super.invertColor = true;
+         setupHighScoreLabel();
         self.setCompiledStyle();
         CenterController.centerHorizontally(childView: self, parentRect: superview!.frame, childRect: self.frame);
         self.alpha = 0.0;
+    }
+    
+    func setupHighScoreLabel() {
+        highScoreLabel = UICLabel(parentView: contentView!, x: 0.0, y: -unitHeight!, width: frame.width, height: unitHeight!);
+        highScoreLabel!.font = UIFont.boldSystemFont(ofSize: highScoreLabel!.frame.height * 0.5);
+        ViewController.updateFont(label: highScoreLabel!);
+        highScoreLabel!.isInverted = true;
+        highScoreLabel!.setStyle();
     }
     
     var localAdFirstTime:Bool = false;
@@ -112,6 +124,7 @@ class UIResults: UICView {
         contentView!.transform = contentView!.transform.scaledBy(x: 0.96, y: 0.96);
         contentView!.layer.cornerRadius = contentView!.frame.width / 7.0;
         contentView!.roundCorners(radius: contentView!.frame.width * 0.5, [.topLeft, .topRight], lineWidth: 0.0)
+        contentView!.clipsToBounds = true;
     }
     
     func setupGameOverLabel() {
@@ -306,7 +319,25 @@ class UIResults: UICView {
         catsDiedAmountLabel!.text = String(catsThatDied);
     }
     
+    func showHighScore(new:Bool) {
+        if (new) {
+            highScoreLabel!.text = "WOW! NEW HIGH SCORE!";
+            highScoreLabel!.backgroundColor = UIColor.systemPink;
+            highScoreLabel!.textColor = UIColor.black;
+        } else {
+            highScoreLabel!.text = "High Score: \(defaults.integer(forKey: "catsSavedSingleGame"))";
+        }
+        UIView.animate(withDuration: 4.0, animations: {
+            self.highScoreLabel!.transform = self.highScoreLabel!.transform.translatedBy(x: 0.0, y: self.contentView!.frame.height + self.unitHeight! * 1.5);
+        }, completion: { _ in
+            self.highScoreLabel!.frame = self.highScoreLabel!.originalFrame!;
+        })
+    }
+    
     func setCompiledStyle() {
+        if (highScoreLabel!.backgroundColor!.cgColor != UIColor.systemPink.cgColor) {
+            highScoreLabel!.setStyle();
+        }
         if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1) {
             self.backgroundColor = UIColor.black;
             self.contentView!.backgroundColor = UIColor.white;
@@ -328,6 +359,7 @@ class UIResults: UICView {
             self.watchAdButton!.setTitleColor(UIColor.white, for: .normal);
             self.watchAdButton!.layer.borderColor = UIColor.white.cgColor;
         }
+        
         if (localAdFirstTime) {
             localIntersitialAdVC!.setStyle();
         }
@@ -359,8 +391,6 @@ class LocalIntersitialAdVC:UIViewController {
         ViewController.updateFont(button: closeButton!);
         closeButton!.setTitle("x", for: .normal);
     }
-    
-    
     
     func setupImageView() {
         imageView = UIImageView(frame:  CGRect(x: ViewController.staticSelf!.mainView.frame.minX, y: ViewController.staticSelf!.mainView.frame.height * 0.02, width: ViewController.staticSelf!.mainView.frame.width, height: ViewController.staticSelf!.mainView.frame.height * 0.98));

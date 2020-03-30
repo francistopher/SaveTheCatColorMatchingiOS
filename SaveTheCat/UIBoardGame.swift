@@ -49,6 +49,7 @@ class UIBoardGame: UIView, GKMatchDelegate {
     var iWon:Bool = false;
     var catsSavedLabel:UICLabel?
     var catsSavedCount:Int = 0;
+    let defaults = UserDefaults.standard;
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented");
@@ -540,7 +541,6 @@ class UIBoardGame: UIView, GKMatchDelegate {
     var gridButtonX:CGFloat?
     var gridButtonY:CGFloat?
     var gridCatButton:UICatButton?
-    
     func buildGridButtons(){
         gridButtonRowGap = self.frame.height * 0.1 / CGFloat(rowAndColumnNums[0] + 1);
         gridButtonColumnGap = self.frame.width * 0.1 / CGFloat(rowAndColumnNums[1] + 1);
@@ -574,6 +574,7 @@ class UIBoardGame: UIView, GKMatchDelegate {
     var iLostButtonSuperView2:UIView?
     var iLostX:CGFloat?
     var iLostY:CGFloat?
+    var newHighScore:Bool = false;
     func gameOverTransition() {
         // Flash cats saved count last time
         for _ in 0..<Int.random(in: 1...cats.count()){
@@ -627,8 +628,17 @@ class UIBoardGame: UIView, GKMatchDelegate {
         self.restart();
         ViewController.submitCatsSavedScore(catsSaved: self.results!.catsThatLived);
         Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false) { timer in
+            // Store the highest singular score
+            if (self.defaults.integer(forKey: "catsSavedSingleGame") < self.results!.catsThatLived) {
+                print("New Hight Score! \(self.results!.catsThatLived)")
+                self.defaults.set(self.results!.catsThatLived, forKey: "catsSavedSingleGame");
+                SoundController.animeWow();
+                self.newHighScore = true;
+            }
             // Submit memory capacity score
             self.results!.fadeIn();
+            self.results!.showHighScore(new: self.newHighScore);
+            self.newHighScore = false;
             // Save coins earned for the use
             if (ViewController.staticSelf!.isInternetReachable) {
                 self.keyValueStore.set(UIResults.mouseCoins, forKey: "mouseCoins");

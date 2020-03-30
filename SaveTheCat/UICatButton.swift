@@ -330,7 +330,9 @@ class UICatButton: UIButton {
                 self.imageContainerButton!.frame = CGRect(x: 0.0, y: 0.0, width: self.frame.height, height: self.frame.height);
             }
             self.backgroundColor = self.originalBackgroundColor;
-            self.layer.cornerRadius = self.frame.height * 0.5;
+            if (!(self.frame.width < self.frame.height)) {
+                self.layer.cornerRadius = self.frame.height * 0.5;
+            }
             self.imageContainerButton!.layer.borderWidth = 0.0;
             self.layer.borderWidth = (sqrt(self.frame.width * 0.01) * 10.0) * 0.35;
         })

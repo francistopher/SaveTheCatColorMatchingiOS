@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import GameKit
 
 class UIMoreCats: UIButton {
    
@@ -111,6 +112,7 @@ class MoreCatsViewController:UIViewController {
         purchaseAlert!.addAction(UIAlertAction(title: "Buy", style: .default, handler: { _ in
             self.currentSelectionValue = ViewController.staticSelf!.myCats[self.catTypes[self.displayedCatIndex]]!;
             if (self.currentSelectionValue == 0) {
+                ViewController.submitAchievement(achievement: "\(self.catTypes[self.displayedCatIndex])Unlocked");
                 // Send purchase only if the internet exists
                 if (ViewController.staticSelf!.isInternetReachable) {
                     // Set the value to hidden selected
@@ -225,17 +227,23 @@ class MoreCatsViewController:UIViewController {
     func setSelectionButtonText() {
         currentSelectionValue = ViewController.staticSelf!.myCats[catTypes[displayedCatIndex]]!;
         if (currentSelectionValue! > 0) {
+            presentationCatButton!.imageContainerButton!.alpha = 1.0;
             selectionButton!.setTitle("Selected", for: .normal);
             selectionButton!.backgroundColor = UIColor.systemPink;
+            presentationCatButton!.setTitle("", for: .normal);
             mouseCoin!.alpha = 0.0;
         } else if (currentSelectionValue! == 0) {
             selectionButton!.setTitle(repositionMouseCoinAndGetOffer(), for: .normal);
+            presentationCatButton!.imageContainerButton!.alpha = 0.0;
             selectionButton!.backgroundColor = UIColor.systemOrange;
+            presentationCatButton!.setTitle("?", for: .normal);
             mouseCoin!.alpha = 1.0;
             setPurchaseAlertMessage();
         } else {
+            presentationCatButton!.imageContainerButton!.alpha = 1.0;
             selectionButton!.setTitle("Select", for: .normal);
             selectionButton!.backgroundColor = UIColor.systemGreen;
+            presentationCatButton!.setTitle("", for: .normal);
             mouseCoin!.alpha = 0.0;
         }
     }
@@ -260,7 +268,7 @@ class MoreCatsViewController:UIViewController {
             translationCoefficient = 0.069;
         } else {
             offer = "Not enough "
-            translationCoefficient = 0.07;
+            translationCoefficient = 0.065;
         }
         for _ in 0..<3 {
             mouseCoin!.transform = mouseCoin!.transform.translatedBy(x: selectionButton!.frame.width * translationCoefficient, y: 0.0);
@@ -331,6 +339,8 @@ class MoreCatsViewController:UIViewController {
         presentationCatButtonY = (self.contentView!.frame.height - presentationCatButtonSideLength!) * 0.5;
         presentationCatButton = UICatButton(parentView: contentView!, x: presentationCatButtonX!, y: presentationCatButtonY!, width: presentationCatButtonSideLength!, height: presentationCatButtonSideLength!, backgroundColor: UIColor.clear);
         presentationCatButton!.imageContainerButton!.addTarget(self, action: #selector(presentationCatButtonSelector), for: .touchUpInside);
+        presentationCatButton!.titleLabel!.font = UIFont(name: "SleepyFatCat", size: presentationCatButton!.titleLabel!.font.pointSize * 7.5);
+        ViewController.updateFont(button: presentationCatButton!);
         presentationCatButton!.clipsToBounds = true;
     }
     
@@ -431,16 +441,16 @@ class MoreCatsViewController:UIViewController {
     func hideCatButton() {
         // Reset more cats view
         if (catLabelName != nil) {
-        catLabelName!.frame = catLabelName!.originalFrame!;
-        selectionButton!.frame = selectionButton!.originalFrame!;
-        catViewHandler!.frame = catViewHandler!.originalFrame!;
-        catViewHandler!.layer.cornerRadius = presentationCatButton!.layer.cornerRadius;
-        catLabelName!.layer.cornerRadius = catViewHandler!.layer.cornerRadius;
-        presentationCatButton!.imageContainerButton!.shrunked();
-        presentationCatButton!.shrunk();
-        presentationCatButton!.imageContainerButton!.imageView!.layer.removeAllAnimations();
-        presentationCatButton!.imageContainerButton!.imageView!.transform = .identity;
-        setupPresentLabelNameAnimation();
+            catLabelName!.frame = catLabelName!.originalFrame!;
+            selectionButton!.frame = selectionButton!.originalFrame!;
+            catViewHandler!.frame = catViewHandler!.originalFrame!;
+            catViewHandler!.layer.cornerRadius = presentationCatButton!.layer.cornerRadius;
+            catLabelName!.layer.cornerRadius = catViewHandler!.layer.cornerRadius;
+            presentationCatButton!.imageContainerButton!.shrunked();
+            presentationCatButton!.shrunk();
+            presentationCatButton!.imageContainerButton!.imageView!.layer.removeAllAnimations();
+            presentationCatButton!.imageContainerButton!.imageView!.transform = .identity;
+            setupPresentLabelNameAnimation();
         }
     }
     
@@ -461,8 +471,10 @@ class MoreCatsViewController:UIViewController {
         presentationCatButton!.setStyle();
         presentationCatButton!.setCat(named: "SmilingCat", stage: 5);
         if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1) {
+            presentationCatButton!.setTitleColor(UIColor.black, for: .normal);
             presentationCatButton!.backgroundColor = UIColor.white;
         } else {
+            presentationCatButton!.setTitleColor(UIColor.white, for: .normal);
             presentationCatButton!.backgroundColor = UIColor.black;
         }
         contentView!.setStyle();

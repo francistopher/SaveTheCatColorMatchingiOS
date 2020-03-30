@@ -392,6 +392,15 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, GKMatchm
         }
     }
     
+    // Game center achievemnt
+    static var achievement:GKAchievement?
+    static func submitAchievement(achievement:String) {
+        self.achievement = GKAchievement(identifier: achievement);
+        self.achievement!.percentComplete = 100.0;
+        self.achievement!.showsCompletionBanner = true;
+        GKAchievement.report([self.achievement!], withCompletionHandler: nil);
+    }
+    
     // Game center saved cats score
     static var bestCatSaverScore:GKScore?
     static var leaderBoard:GKLeaderboard?

@@ -165,6 +165,8 @@ class UIBoardGame: UIView, GKMatchDelegate {
         if (attackMeter!.cat!.frame != attackMeter!.cat!.originalFrame!) {
             attackMeter!.resetCat();
         }
+        results!.watchAdButton!.titleLabel!.alpha = 1.0;
+        results!.mouseCoin!.alpha = 1.0;
     }
     
     func fadeIn(){
@@ -574,6 +576,9 @@ class UIBoardGame: UIView, GKMatchDelegate {
     var iLostY:CGFloat?
     func gameOverTransition() {
         // Flash cats saved count last time
+        for _ in 0..<Int.random(in: 1...cats.count()){
+            looseMouseCoin();
+        }
         catsSavedCount = results!.catsThatLived - 1;
         flashCatsSavedCount();
         results!.update();
@@ -629,8 +634,7 @@ class UIBoardGame: UIView, GKMatchDelegate {
                 self.keyValueStore.set(UIResults.mouseCoins, forKey: "mouseCoins");
                 self.keyValueStore.synchronize();
             }
-            self.results!.catsThatLived = 0;
-            self.results!.catsThatDied = 0;
+            ViewController.settingsButton!.settingsMenu!.mouseCoin!.sendActions(for: .touchUpInside);
         }
         self.catsSavedCount = 0;
     }
@@ -734,18 +738,34 @@ class UIBoardGame: UIView, GKMatchDelegate {
     var mouseCoinLossY:CGFloat?
     var mouseCoinLossSideLength:CGFloat?
     var mouseCoinLoss:UIMouseCoin?
+     var mouseCoinLossTargetX:CGFloat?
     var mouseCoinLossTargetY:CGFloat?
-    
+    var mouseCoinXRange:[CGFloat] = [];
+    var mouseCoinYRange:[CGFloat] = [];
     func looseMouseCoin() {
         if (ViewController.staticSelf!.isInternetReachable && GKLocalPlayer.local.isAuthenticated && ViewController.staticSelf!.isiCloudReachable) {
             mouseCoinLossX = settingsButton!.settingsMenu!.frame.minX + settingsButton!.settingsMenu!.mouseCoin!.frame.minX;
             mouseCoinLossY = settingsButton!.settingsMenu!.frame.minY + settingsButton!.settingsMenu!.mouseCoin!.frame.minY;
             mouseCoinLossSideLength = settingsButton!.settingsMenu!.mouseCoin!.frame.width;
+            if (mouseCoinXRange.count < 3) {
+                mouseCoinXRange.append(settingsButton!.settingsMenu!.frame.minX + settingsButton!.settingsMenu!.mouseCoin!.frame.minX);
+                mouseCoinXRange.append(superview!.frame.width);
+            }
+            if (mouseCoinYRange.count < 3) {
+                mouseCoinYRange.append(superview!.frame.height * 0.25);
+                mouseCoinYRange.append(superview!.frame.height);
+            }
             mouseCoinLoss = UIMouseCoin(parentView: self.superview!, x: mouseCoinLossX!, y: mouseCoinLossY!, width: mouseCoinLossSideLength!, height: mouseCoinLossSideLength!);
             mouseCoinLoss!.isSelectable = false;
-            mouseCoinLossTargetY = CGFloat.random(in: self.superview!.frame.height...(self.superview!.frame.height + mouseCoinLossSideLength!));
+            if (Int.random(in: 0...2) > 0) {
+                mouseCoinLossTargetX = CGFloat.random(in: mouseCoinXRange[0]...mouseCoinXRange[1]);
+                mouseCoinLossTargetY = mouseCoinYRange[1];
+            } else {
+                mouseCoinLossTargetX = mouseCoinXRange[1];
+                mouseCoinLossTargetY = CGFloat.random(in: mouseCoinYRange[0]...mouseCoinYRange[1]);
+            }
             UIView.animate(withDuration: 2.0, delay: 0.125, options: .curveEaseInOut, animations: {
-                self.mouseCoinLoss!.frame = CGRect(x: self.mouseCoinLossX!, y: self.mouseCoinLossTargetY!, width: self.mouseCoinLossSideLength!, height: self.mouseCoinLossSideLength!);
+                self.mouseCoinLoss!.frame = CGRect(x: self.mouseCoinLossTargetX!, y: self.mouseCoinLossTargetY!, width: self.mouseCoinLossSideLength!, height: self.mouseCoinLossSideLength!);
             }, completion: { _ in
                 self.mouseCoinLoss!.removeFromSuperview();
             })

@@ -751,7 +751,6 @@ class UIBoardGame: UIView, GKMatchDelegate {
      var mouseCoinLossTargetX:CGFloat?
     var mouseCoinLossTargetY:CGFloat?
     var mouseCoinXRange:[CGFloat] = [];
-    var mouseCoinYRange:[CGFloat] = [];
     func looseMouseCoin() {
         if (ViewController.staticSelf!.isInternetReachable && GKLocalPlayer.local.isAuthenticated && ViewController.staticSelf!.isiCloudReachable) {
             mouseCoinLossX = settingsButton!.settingsMenu!.frame.minX + settingsButton!.settingsMenu!.mouseCoin!.frame.minX;
@@ -761,20 +760,16 @@ class UIBoardGame: UIView, GKMatchDelegate {
                 mouseCoinXRange.append(settingsButton!.settingsMenu!.frame.minX + settingsButton!.settingsMenu!.mouseCoin!.frame.minX);
                 mouseCoinXRange.append(superview!.frame.width);
             }
-            if (mouseCoinYRange.count < 3) {
-                mouseCoinYRange.append(superview!.frame.height * 0.25);
-                mouseCoinYRange.append(superview!.frame.height);
-            }
             mouseCoinLoss = UIMouseCoin(parentView: self.superview!, x: mouseCoinLossX!, y: mouseCoinLossY!, width: mouseCoinLossSideLength!, height: mouseCoinLossSideLength!);
             mouseCoinLoss!.isSelectable = false;
-            if (Int.random(in: 0...2) > 0) {
+            if (Int.random(in: 0...1) > 0) {
                 mouseCoinLossTargetX = CGFloat.random(in: mouseCoinXRange[0]...mouseCoinXRange[1]);
-                mouseCoinLossTargetY = mouseCoinYRange[1];
+                mouseCoinLossTargetY = superview!.frame.height
             } else {
-                mouseCoinLossTargetX = mouseCoinXRange[1];
-                mouseCoinLossTargetY = CGFloat.random(in: mouseCoinYRange[0]...mouseCoinYRange[1]);
+                mouseCoinLossTargetX = CGFloat.random(in: mouseCoinXRange[0]...(mouseCoinXRange[1] * 0.5));
+                mouseCoinLossTargetY = superview!.frame.height
             }
-            UIView.animate(withDuration: 2.0, delay: 0.125, options: .curveEaseInOut, animations: {
+            UIView.animate(withDuration: 2.0, delay: 0.125, options: .curveLinear, animations: {
                 self.mouseCoinLoss!.frame = CGRect(x: self.mouseCoinLossTargetX!, y: self.mouseCoinLossTargetY!, width: self.mouseCoinLossSideLength!, height: self.mouseCoinLossSideLength!);
             }, completion: { _ in
                 self.mouseCoinLoss!.removeFromSuperview();

@@ -436,7 +436,7 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, GKMatchm
                 if (leaderBoard!.localPlayerScore != nil) {
                     leaderBoardScore = Int64(catsSaved) + leaderBoard!.localPlayerScore!.value;
                     // User can hide ads
-                    if (leaderBoardScore! > 10) {
+                    if (leaderBoardScore! > 90000) {
                         UIAds.canHideAds = true;
                         settingsButton!.settingsMenu!.advertisement!.checkIfCanHideAds();
                     }
@@ -735,18 +735,18 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, GKMatchm
         traitCollectionChange()
     }
     
-    
-    
     func traitCollectionChange() {
         print(UIAds.stylePreference, "PREFERENCE")
         if (UIAds.stylePreference == -1) {
             ViewController.uiStyleRawValue = UIScreen.main.traitCollection.userInterfaceStyle.rawValue;
-            if (ViewController.uiStyleRawValue == 1) {
+            if (UIScreen.main.traitCollection.userInterfaceStyle == .light) {
                 mainView.backgroundColor = UIColor.white;
             } else {
                 mainView.backgroundColor = UIColor.black;
             }
+            statusBarView!.alpha = 0.0;
         } else if (UIAds.stylePreference == 0) {
+            statusBarView!.alpha = 1.0;
             if (UIScreen.main.traitCollection.userInterfaceStyle == .light) {
                 statusBarView!.backgroundColor = UIColor.white;
             } else {
@@ -755,6 +755,7 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, GKMatchm
             ViewController.uiStyleRawValue = 0;
             mainView.backgroundColor = UIColor.black;
         } else {
+            statusBarView!.alpha = 1.0;
             if (UIScreen.main.traitCollection.userInterfaceStyle == .dark) {
                 statusBarView!.backgroundColor = UIColor.black;
             } else {

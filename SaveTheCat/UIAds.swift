@@ -39,7 +39,7 @@ class UIAds: UIButton {
         self.bringSubviewToFront(imageView!);
         self.addTarget(self, action: #selector(noAdsSelector), for: .touchUpInside);
         parentView.addSubview(self);
-                setStyle();
+        setStyle();
     }
     
     var compiledStaticParameters:String?
@@ -60,7 +60,9 @@ class UIAds: UIButton {
                 setIconImage(imageName: "darkStyle");
             } else {
                 UIAds.stylePreference = -1;
-                setIconImage(imageName: "autoStyle");
+                if (UIAds.isAdHidden) {
+                    setIconImage(imageName: "autoStyle");
+                }
             }
         }
     }
@@ -99,7 +101,7 @@ class UIAds: UIButton {
     func checkIfCanHideAds() {
         if (UIAds.canHideAds) {
             setIconImage(imageName: "noGreenSymbol");
-            noAdsAlert!.message = "You've saved over 9000 cats!\nYou can now hide ads visible\nduring gameplay!"
+            noAdsAlert!.message = "You've saved over 90000 cats!\nYou can now hide ads visible\nduring gameplay!"
             noAdsAlert!.addAction(UIAlertAction(title: "Hide", style: .default, handler: { _ in
                 ViewController.staticSelf!.bannerView!.alpha = 0.0;
                 ViewController.staticSelf!.noInternetBannerView!.alpha = 0.0;
@@ -110,7 +112,7 @@ class UIAds: UIButton {
             }));
             self.saveStaticParameters();
         } else {
-            noAdsAlert!.message = "To hide ads during gameplay,\nyou must save over 9000 cats!"
+            noAdsAlert!.message = "To hide ads during gameplay,\nyou must save over 90000 cats!"
         }
     }
     

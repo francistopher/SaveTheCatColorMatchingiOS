@@ -93,7 +93,7 @@ class UICLabel:UILabel {
     
     func setStyle() {
         if (isInverted) {
-            if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1) {
+            if (ViewController.uiStyleRawValue == 1) {
                 self.textColor = UIColor.white;
                 self.backgroundColor = UIColor.black;
             } else {
@@ -101,7 +101,7 @@ class UICLabel:UILabel {
                 self.backgroundColor = UIColor.white;
             }
         } else {
-            if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1) {
+            if (ViewController.uiStyleRawValue == 1) {
                 self.textColor = UIColor.black;
                 self.backgroundColor = UIColor.white;
             } else {

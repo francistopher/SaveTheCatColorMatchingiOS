@@ -96,7 +96,7 @@ class UIGlovedPointer:UICButton {
     }
     
     func setCompiledStyle() {
-        if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1) {
+        if (ViewController.uiStyleRawValue == 1) {
             if (isTapping) {
                 self.setImage(lightTapImage!, for: .normal);
             } else {

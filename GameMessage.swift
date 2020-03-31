@@ -167,7 +167,7 @@ class UIGameMessage:UIView {
     }
     
     func setupBlurEffect() {
-        if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1) {
+        if (ViewController.uiStyleRawValue == 1) {
             blurEffect = UIBlurEffect(style: .systemThinMaterialDark);
         } else {
             blurEffect = UIBlurEffect(style: .systemThickMaterialDark);

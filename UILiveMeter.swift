@@ -182,7 +182,7 @@ class UILiveMeter:UICView {
     }
     
     func setCompiledStyle() {
-        if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1) {
+        if (ViewController.uiStyleRawValue == 1) {
             self.layer.borderColor = UIColor.black.cgColor;
             self.backgroundColor = UIColor.white;
             liveMeterView!.layer.borderColor = UIColor.black.cgColor;

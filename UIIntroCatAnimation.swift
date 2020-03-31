@@ -77,7 +77,7 @@ class UIIntroCatAnimation:UICButton {
     }
 
     func setCompiledStyle() {
-        if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1) {
+        if (ViewController.uiStyleRawValue == 1) {
             self.setImage(darkCatImage, for: .normal);
             introTextView!.image = darkIntroText;
         } else {

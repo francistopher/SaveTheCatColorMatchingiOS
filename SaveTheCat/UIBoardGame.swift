@@ -629,9 +629,8 @@ class UIBoardGame: UIView, GKMatchDelegate {
         ViewController.submitCatsSavedScore(catsSaved: self.results!.catsThatLived);
         Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false) { timer in
             // Store the highest singular score
-            if (self.defaults.integer(forKey: "catsSavedSingleGame") < self.results!.catsThatLived) {
+            if (ViewController.singleGameHighScore < Int64(self.results!.catsThatLived)) {
                 print("New Hight Score! \(self.results!.catsThatLived)")
-                self.defaults.set(self.results!.catsThatLived, forKey: "catsSavedSingleGame");
                 SoundController.animeWow();
                 self.newHighScore = true;
             }

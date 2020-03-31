@@ -157,7 +157,7 @@ class UICButton:UIButton {
     
     func setStyle() {
         if (isStyleInverted) {
-            if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1){
+            if (ViewController.uiStyleRawValue == 1){
                 self.layer.borderColor = UIColor.white.cgColor;
                 self.setTitleColor(UIColor.white, for: .normal);
                 if (styleBackground) {
@@ -171,7 +171,7 @@ class UICButton:UIButton {
                 }
             }
         } else {
-            if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1){
+            if (ViewController.uiStyleRawValue == 1){
                 self.layer.borderColor = UIColor.black.cgColor;
                 self.setTitleColor(UIColor.black, for: .normal);
                 if (styleBackground) {

@@ -10,10 +10,17 @@ import SwiftUI
 
 class UIAds: UIButton {
     
+    var keyValueStore:NSUbiquitousKeyValueStore = NSUbiquitousKeyValueStore();
+    
     var originalFrame:CGRect?
     var reducedFrame:CGRect?
     var adsText:UICLabel?
-
+    var noAdsAlert:UIAlertController?
+    
+    static var canHideAds:Bool = false;
+    static var isAdHidden:Bool = false;
+    static var stylePreference:Int = -1;
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -23,12 +30,88 @@ class UIAds: UIButton {
         self.originalFrame = CGRect(x: x, y: y, width: width, height: height);
         self.backgroundColor = .clear;
         self.layer.cornerRadius = height / 2.0;
+        setIconImage(imageName: "noRedSymbol.png");
         setupAdsText();
-        setIconImage(imageName: "noSymbol.png");
+        setupNoAdsAlert();
+        // Set static parameters
+        updateStaticParameters();
+        // Finish
         self.bringSubviewToFront(imageView!);
         self.addTarget(self, action: #selector(noAdsSelector), for: .touchUpInside);
         parentView.addSubview(self);
-        setStyle();
+                setStyle();
+    }
+    
+    var compiledStaticParameters:String?
+    func updateStaticParameters() {
+        compiledStaticParameters = keyValueStore.string(forKey: "aboutAdsStyle");
+        if (compiledStaticParameters != nil) {
+            if (Array(compiledStaticParameters!)[0] == "1") {
+                UIAds.canHideAds = true;
+            }
+            if (Array(compiledStaticParameters!)[1] == "1") {
+                UIAds.isAdHidden = true;
+            }
+            if (Array(compiledStaticParameters!)[2] == "1") {
+                UIAds.stylePreference = 1;
+                setIconImage(imageName: "lightStyle");
+            } else if (Array(compiledStaticParameters!)[2] == "0") {
+                UIAds.stylePreference = 0;
+                setIconImage(imageName: "darkStyle");
+            } else {
+                UIAds.stylePreference = -1;
+                setIconImage(imageName: "autoStyle");
+            }
+        }
+    }
+    
+    func saveStaticParameters() {
+        compiledStaticParameters = ""
+        if (UIAds.canHideAds) {
+            compiledStaticParameters! += "1"
+        } else {
+            compiledStaticParameters! += "0"
+        }
+        
+        if (UIAds.isAdHidden) {
+            compiledStaticParameters! += "1"
+        } else {
+            compiledStaticParameters! += "0"
+        }
+        
+        if (UIAds.stylePreference == 1) {
+            compiledStaticParameters! += "1"
+        } else if (UIAds.stylePreference == 0) {
+            compiledStaticParameters! += "0"
+        } else {
+            compiledStaticParameters! += "-"
+        }
+        keyValueStore.set(compiledStaticParameters!, forKey: "aboutAdsStyle");
+    }
+    
+    
+    func setupNoAdsAlert() {
+        noAdsAlert = UIAlertController(title: "No Ads", message: "", preferredStyle: .alert);
+        noAdsAlert!.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil));
+        checkIfCanHideAds();
+    }
+    
+    func checkIfCanHideAds() {
+        if (UIAds.canHideAds) {
+            setIconImage(imageName: "noGreenSymbol");
+            noAdsAlert!.message = "You've saved over 9000 cats!\nYou can now hide ads visible\nduring gameplay!"
+            noAdsAlert!.addAction(UIAlertAction(title: "Hide", style: .default, handler: { _ in
+                ViewController.staticSelf!.bannerView!.alpha = 0.0;
+                ViewController.staticSelf!.noInternetBannerView!.alpha = 0.0;
+                self.setIconImage(imageName: "autoStyle")
+                self.adsText!.alpha = 0.0;
+                UIAds.isAdHidden = true;
+                self.saveStaticParameters();
+            }));
+            self.saveStaticParameters();
+        } else {
+            noAdsAlert!.message = "To hide ads during gameplay,\nyou must save over 9000 cats!"
+        }
     }
     
     func setupAdsText() {
@@ -41,7 +124,22 @@ class UIAds: UIButton {
     }
 
     @objc func noAdsSelector() {
-        print("Testing: No Ads!");
+        if (UIAds.isAdHidden) {
+            if (UIAds.stylePreference == -1) {
+                UIAds.stylePreference = 0;
+                setIconImage(imageName: "darkStyle");
+            } else if (UIAds.stylePreference == 0) {
+                UIAds.stylePreference = 1
+                setIconImage(imageName: "lightStyle")
+            } else if (UIAds.stylePreference == 1) {
+                UIAds.stylePreference = -1
+                setIconImage(imageName: "autoStyle")
+            }
+            ViewController.staticSelf!.traitCollectionChange();
+            self.saveStaticParameters();
+        } else {
+           ViewController.staticSelf!.present(noAdsAlert!, animated: true, completion: nil);
+        }
     }
 
 
@@ -54,7 +152,7 @@ class UIAds: UIButton {
     }
     
     func setStyle() {
-        if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1){
+        if (ViewController.uiStyleRawValue == 1){
             adsText!.textColor = UIColor.black;
         } else {
             adsText!.textColor = UIColor.white;

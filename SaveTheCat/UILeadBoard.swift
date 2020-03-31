@@ -79,7 +79,7 @@ class UILeadBoard: UIButton {
     }
     
     func setStyle() {
-        if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1){
+        if (ViewController.uiStyleRawValue == 1){
             updateLabelNumsTitleColor(color: UIColor.black);
         } else {
             updateLabelNumsTitleColor(color: UIColor.white);

@@ -210,7 +210,7 @@ class UIVictoryView:UICView {
     func setCompiledStyle() {
         watchAdButton!.setStyle();
         watchAdButton!.layer.borderColor = UIColor.systemYellow.cgColor;
-        if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1) {
+        if (ViewController.uiStyleRawValue == 1) {
             self.backgroundColor = UIColor.white;
             self.layer.borderColor = UIColor.black.cgColor;
         } else {

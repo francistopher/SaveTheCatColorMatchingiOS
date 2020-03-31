@@ -37,6 +37,7 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, GKMatchm
     var firedITunesStatus:Bool = false;
     var isiCloudReachable:Bool = false;
     var isInternetReachable:Bool = false;
+    static var uiStyleRawValue = UIScreen.main.traitCollection.userInterfaceStyle.rawValue;
     func reachabilityChanged(_ isReachable: Bool) {
         print("INTERNET CONNECTIVITY CHECKED")
         if (isReachable) {
@@ -220,6 +221,8 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, GKMatchm
     
     var keyValueStore:NSUbiquitousKeyValueStore = NSUbiquitousKeyValueStore();
     
+    var statusBarView:UIView?
+    
     override func viewDidLoad() {
         super.viewDidLoad();
         setupReachability();
@@ -229,6 +232,7 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, GKMatchm
         setupMainViewDimensionProperties();
         setupSaveTheCat();
         setupGameCenterMessage();
+        traitCollectionChange()
         authenticateLocalPlayerForGamePlay();
     }
     
@@ -287,7 +291,7 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, GKMatchm
     }
     
     func setupNoInternetBannerStyle() {
-        if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1){
+        if (ViewController.uiStyleRawValue == 1){
             noInternetBannerView!.image = noInternetBannerLightImage;
         } else {
             noInternetBannerView!.image = noInternetBannerDarkImage;
@@ -405,6 +409,7 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, GKMatchm
     static var bestCatSaverScore:GKScore?
     static var leaderBoard:GKLeaderboard?
     static var leaderBoardScore:Int64?
+    static var singleGameHighScore:Int64 = 0;
     static func submitCatsSavedScore(catsSaved:Int) {
         func submitScore(score:Int64, leaderboardID:String) {
             bestCatSaverScore = nil;
@@ -416,6 +421,9 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, GKMatchm
                 if error != nil {
                     print(error!.localizedDescription)
                 } else {
+                    if (leaderboardID == "topCatSaversSG") {
+                        ViewController.getSingleGameplayScores();
+                    }
                     print("Cat saver score submitted to your Leaderboard!");
                 }
             })
@@ -427,12 +435,31 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, GKMatchm
             if error == nil {
                 if (leaderBoard!.localPlayerScore != nil) {
                     leaderBoardScore = Int64(catsSaved) + leaderBoard!.localPlayerScore!.value;
-                    print("Now the score should be this", leaderBoardScore!);
+                    // User can hide ads
+                    if (leaderBoardScore! > 10) {
+                        UIAds.canHideAds = true;
+                        settingsButton!.settingsMenu!.advertisement!.checkIfCanHideAds();
+                    }
                     submitScore(score:leaderBoardScore!, leaderboardID:self.leaderBoard!.identifier!);
                     submitScore(score:Int64(catsSaved), leaderboardID: "topCatSaversSG");
                 } else {
                     submitScore(score:Int64(catsSaved), leaderboardID:self.leaderBoard!.identifier!);
                     submitScore(score:Int64(catsSaved), leaderboardID: "topCatSaversSG");
+                }
+            }
+        })
+    }
+    
+    static func getSingleGameplayScores() {
+        leaderBoard = nil;
+        leaderBoard = GKLeaderboard();
+        leaderBoard!.identifier = "topCatSaversSG";
+        // UNEXPECTED ERROR
+        leaderBoard!.loadScores(completionHandler: { scores, error in
+            if error == nil {
+                if (leaderBoard!.localPlayerScore != nil) {
+                    ViewController.singleGameHighScore = leaderBoard!.localPlayerScore!.value;
+                    print(ViewController.singleGameHighScore, "My be a delusion")
                 }
             }
         })
@@ -468,6 +495,12 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, GKMatchm
         setupSettingsButton();
         self.setupNotificationCenter();
         SoundController.mozartSonata(play: true, startOver: true);
+        setupStatusBarView();
+    }
+    
+    func setupStatusBarView() {
+        statusBarView = UIView(frame: CGRect(x: 0.0, y: 0.0, width: mainView.frame.width, height: mainView.frame.height * 0.02));
+        mainView.addSubview(statusBarView!);
     }
     
     func presentSaveTheCat() {
@@ -617,7 +650,7 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, GKMatchm
     }
     
     func setSuccessGradientLayerStyle() {
-        if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1){
+        if (ViewController.uiStyleRawValue == 1){
             self.successGradientLayer!.colors = [self.mellowYellow.cgColor, UIColor.white.cgColor];
         } else {
             self.successGradientLayer!.colors =  [self.mellowYellow.cgColor, UIColor.black.cgColor];
@@ -677,7 +710,7 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, GKMatchm
         settingsButton!.settingsMenu!.volume!.setStyle();
         settingsButton!.settingsMenu!.moreCats!.setCompiledStyle();
         if (settingsButton!.settingsMenu!.mouseCoin!.mouseCoinView!.backgroundColor!.cgColor != UIColor.clear.cgColor) {
-            if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1){
+            if (ViewController.uiStyleRawValue == 1){
                 settingsButton!.settingsMenu!.mouseCoin!.mouseCoinView!.backgroundColor = UIColor.white;
             } else {
                 settingsButton!.settingsMenu!.mouseCoin!.mouseCoinView!.backgroundColor = UIColor.black;
@@ -699,6 +732,37 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, GKMatchm
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
+        traitCollectionChange()
+    }
+    
+    
+    
+    func traitCollectionChange() {
+        print(UIAds.stylePreference, "PREFERENCE")
+        if (UIAds.stylePreference == -1) {
+            ViewController.uiStyleRawValue = UIScreen.main.traitCollection.userInterfaceStyle.rawValue;
+            if (ViewController.uiStyleRawValue == 1) {
+                mainView.backgroundColor = UIColor.white;
+            } else {
+                mainView.backgroundColor = UIColor.black;
+            }
+        } else if (UIAds.stylePreference == 0) {
+            if (UIScreen.main.traitCollection.userInterfaceStyle == .light) {
+                statusBarView!.backgroundColor = UIColor.white;
+            } else {
+                statusBarView!.backgroundColor = UIColor.black;
+            }
+            ViewController.uiStyleRawValue = 0;
+            mainView.backgroundColor = UIColor.black;
+        } else {
+            if (UIScreen.main.traitCollection.userInterfaceStyle == .dark) {
+                statusBarView!.backgroundColor = UIColor.black;
+            } else {
+                statusBarView!.backgroundColor = UIColor.white;
+            }
+            ViewController.uiStyleRawValue = 1;
+            mainView.backgroundColor = UIColor.white;
+        }
         setStyle();
     }
     

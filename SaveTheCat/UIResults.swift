@@ -325,7 +325,7 @@ class UIResults: UICView {
             highScoreLabel!.backgroundColor = UIColor.systemPink;
             highScoreLabel!.textColor = UIColor.black;
         } else {
-            highScoreLabel!.text = "High Score: \(defaults.integer(forKey: "catsSavedSingleGame"))";
+            highScoreLabel!.text = "High Score: \(ViewController.singleGameHighScore)";
         }
         UIView.animate(withDuration: 4.0, animations: {
             self.highScoreLabel!.transform = self.highScoreLabel!.transform.translatedBy(x: 0.0, y: self.contentView!.frame.height + self.unitHeight! * 1.5);
@@ -338,7 +338,7 @@ class UIResults: UICView {
         if (highScoreLabel!.backgroundColor!.cgColor != UIColor.systemPink.cgColor) {
             highScoreLabel!.setStyle();
         }
-        if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1) {
+        if (ViewController.uiStyleRawValue == 1) {
             self.backgroundColor = UIColor.black;
             self.contentView!.backgroundColor = UIColor.white;
             self.gameOverLabel!.setStyle();
@@ -404,7 +404,7 @@ class LocalIntersitialAdVC:UIViewController {
         closeButton!.backgroundColor = UIColor.white;
         closeButton!.layer.borderColor = UIColor.black.cgColor;
         closeButton!.setTitleColor(UIColor.red, for: .normal);
-        if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1) {
+        if (ViewController.uiStyleRawValue == 1) {
             imageView!.image = lightImage;
             view.backgroundColor = UIColor.white;
         } else {

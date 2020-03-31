@@ -27,7 +27,7 @@ class CACGradientLayer:CAGradientLayer {
     
     func setStyle() {
         super.isHidden = false;
-        if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1){
+        if (ViewController.uiStyleRawValue == 1){
              super.colors = [self.mellowYellow.cgColor, UIColor.clear.cgColor];
          } else {
              super.colors =  [self.mellowYellow.cgColor, UIColor.clear.cgColor];

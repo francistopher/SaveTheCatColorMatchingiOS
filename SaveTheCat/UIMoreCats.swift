@@ -62,7 +62,7 @@ class UIMoreCats: UIButton {
         if (firstTime) {
             moreCatsVC!.setCompiledStyle();
         }
-        if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1){
+        if (ViewController.uiStyleRawValue == 1){
             setIconImage(named: "darkMoreCats.png");
         } else {
             setIconImage(named: "lightMoreCats.png");
@@ -491,7 +491,7 @@ class MoreCatsViewController:UIViewController {
         presentationCatButton!.setStyle();
         presentationCatButton!.setCat(named: "SmilingCat", stage: 5);
         selectionButton!.setStyle();
-        if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1) {
+        if (ViewController.uiStyleRawValue == 1) {
             selectionButton!.layer.borderColor = UIColor.black.cgColor;
             presentationCatButton!.setTitleColor(UIColor.black, for: .normal);
             presentationCatButton!.backgroundColor = UIColor.white;
@@ -510,7 +510,7 @@ class MoreCatsViewController:UIViewController {
         
         infoLabel!.setStyle();
         infoLabel!.backgroundColor = UIColor.systemBlue;
-        if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1) {
+        if (ViewController.uiStyleRawValue == 1) {
             if (ViewController.aspectRatio! != .ar4by3) {
                 view.backgroundColor = UIColor.white;
             }

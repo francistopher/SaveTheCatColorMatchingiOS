@@ -47,13 +47,13 @@ class UIEnemy:UIButton {
     func getEnemyFileName() -> String {
         switch (selectedEnemy) {
         case .virus:
-            if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1) {
+            if (ViewController.uiStyleRawValue == 1) {
                  return "lightVirus.png";
             } else {
                  return "darkVirus.png";
             }
         case .hairball:
-            if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1) {
+            if (ViewController.uiStyleRawValue == 1) {
                  return "lightHairBall.png";
             } else {
                  return "darkHairBall.png";

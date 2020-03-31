@@ -63,7 +63,7 @@ class UICatButton: UIButton {
         // Build cat directory string
         var namedCatImage:String = "";
         // Select current style
-        if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1){
+        if (ViewController.uiStyleRawValue == 1){
             namedCatImage += "light";
         } else{
             namedCatImage += "dark";
@@ -197,12 +197,20 @@ class UICatButton: UIButton {
             previousFileName = UICatButton.getCatFileName(named:named, selectedCat: selectedCat) + ".png";
         }
         if (named == "updateStyle") {
-            if (previousFileName.contains("light")) {
-                previousFileName = "dark" + String(previousFileName.suffix(previousFileName.count - 5));
-                self.layer.borderColor = UIColor.white.cgColor;
-            } else {
-                previousFileName = "light" + String(previousFileName.suffix(previousFileName.count - 4));
+            if (ViewController.uiStyleRawValue == 1) {
+                if (previousFileName.contains("light")) {
+                    previousFileName = "light" + String(previousFileName.suffix(previousFileName.count - 5));
+                } else {
+                    previousFileName = "light" + String(previousFileName.suffix(previousFileName.count - 4));
+                }
                 self.layer.borderColor = UIColor.black.cgColor;
+            } else {
+                if (previousFileName.contains("dark")) {
+                    previousFileName = "dark" + String(previousFileName.suffix(previousFileName.count - 4));
+                } else {
+                    previousFileName = "dark" + String(previousFileName.suffix(previousFileName.count - 5));
+                }
+                self.layer.borderColor = UIColor.white.cgColor;
             }
         }
         // Configure the image icon
@@ -409,7 +417,7 @@ class UICatButton: UIButton {
     }
     
     func setStyle() {
-        if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1){
+        if (ViewController.uiStyleRawValue == 1){
             self.layer.borderColor = UIColor.black.cgColor;
             self.imageContainerButton!.layer.borderColor = UIColor.black.cgColor;
         } else {

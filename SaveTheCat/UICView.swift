@@ -55,7 +55,7 @@ import UIKit
     
     func setStyle() {
         if (invertColor) {
-            if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1) {
+            if (ViewController.uiStyleRawValue == 1) {
                 self.layer.borderColor = UIColor.white.cgColor;
                 self.backgroundColor = UIColor.black;
             } else {
@@ -63,7 +63,7 @@ import UIKit
                 self.backgroundColor = UIColor.white;
             }
         } else {
-            if (UIScreen.main.traitCollection.userInterfaceStyle.rawValue == 1) {
+            if (ViewController.uiStyleRawValue == 1) {
                 self.layer.borderColor = UIColor.black.cgColor;
                 self.backgroundColor = UIColor.white;
             } else {

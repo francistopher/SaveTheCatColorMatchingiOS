@@ -363,7 +363,7 @@ class MoreCatsViewController:UIViewController {
         infoLabel!.font = UIFont.boldSystemFont(ofSize: infoLabel!.frame.height * 0.15);
         infoLabel!.layer.cornerRadius = presentationCatButton!.layer.cornerRadius
         infoLabel!.lineBreakMode = NSLineBreakMode.byWordWrapping
-        infoLabel!.text = "In Memory\nof Mittens\nthe Cat"
+        infoLabel!.text = "In Memory\nof Schrödinger\nthe Cat"
         ViewController.updateFont(label: infoLabel!);
         infoLabel!.backgroundColor = UIColor.systemBlue
         infoLabel!.clipsToBounds = true

@@ -14,7 +14,7 @@ class UICLabel:UILabel {
     var isInverted:Bool = false;
     var originalFrame:CGRect?
     var reducedFrame:CGRect?
-    
+     
     var shrunkFrame:CGRect?
     
     required init?(coder: NSCoder) {

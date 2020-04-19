@@ -208,7 +208,6 @@ class UIGameMessage:UIView {
     }
     
     func showMessage() {
-        
         UIView.animate(withDuration: 0.415, delay: 0.25, options: .curveLinear, animations: {
             if (self.stayALittleLonger) {
                 self.frame = self.shrunkTargetFrame!;

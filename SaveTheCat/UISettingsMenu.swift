@@ -32,7 +32,7 @@ class UISettingsMenu:UICView {
         setupAdsButton();
         setupMouseCoinButton();
         setupLeaderBoardButton();
-        setupMultiPlayerButton();
+        setupVolumeButton();
         setupMoreCatsButton();
         let unAvailableSpace:CGFloat = (self.frame.width - self.mouseCoin!.frame.minX) + (self.advertisement!.frame.width * 4.0) + (self.frame.height);
         let availableSpace:CGFloat = self.frame.width - unAvailableSpace;
@@ -70,7 +70,7 @@ class UISettingsMenu:UICView {
         leaderBoard!.label3!.reducedFrame = CGRect(x: -leaderBoard!.label3!.frame.width * 0.5, y: 0.0, width: 0.1, height: 0.1);
     }
 
-    func setupMultiPlayerButton() {
+    func setupVolumeButton() {
         volume = UIVolume(parentView: self, x: 0.0, y: 0.0, width: self.frame.height, height: self.frame.height);
         if (ViewController.aspectRatio! == .ar19point5by9) {
             volume!.transform = volume!.transform.scaledBy(x: 0.5, y: 0.5);

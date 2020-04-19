@@ -11,7 +11,6 @@ import SwiftUI
 
 enum Enemy{
     case hairball
-    case virus
 }
 
 class UIEnemy:UIButton {
@@ -46,12 +45,6 @@ class UIEnemy:UIButton {
     
     func getEnemyFileName() -> String {
         switch (selectedEnemy) {
-        case .virus:
-            if (ViewController.uiStyleRawValue == 1) {
-                 return "lightVirus.png";
-            } else {
-                 return "darkVirus.png";
-            }
         case .hairball:
             if (ViewController.uiStyleRawValue == 1) {
                  return "lightHairBall.png";
@@ -75,7 +68,6 @@ class UIEnemy:UIButton {
         if (immediately) {
             delay = 0.0;
         }
-        
         UIView.animate(withDuration: 1.75, delay: delay, options:[.curveEaseInOut, .repeat, .autoreverse], animations: {
             self.imageView!.transform = self.imageView!.transform.translatedBy(x: xTranslation, y: yTranslation);
         });

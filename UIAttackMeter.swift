@@ -46,7 +46,6 @@ class UIAttackMeter:UICView {
     var enemyXBeforeUnJump:CGFloat = 0.0;
     
     var currentEnemyPhase:EnemyPhase?
-    var followingEnemyPhase:EnemyPhase?
     
     var boardGame:UIBoardGame?
     var cats:UICatButtons?
@@ -99,7 +98,6 @@ class UIAttackMeter:UICView {
     
     func dismantleFirstRotation() {
         self.currentEnemyPhase = nil;
-        self.followingEnemyPhase = .SecondRotation;
         self.firstRotationAnimation = nil;
     }
     
@@ -132,7 +130,6 @@ class UIAttackMeter:UICView {
     
     func dismantleSecondRotation() {
         self.currentEnemyPhase = nil;
-        self.followingEnemyPhase = .TranslationToCat;
         self.secondRotationAnimation = nil;
     }
     
@@ -157,7 +154,6 @@ class UIAttackMeter:UICView {
     
     func dismantleTranslationToCat() {
         self.currentEnemyPhase = nil;
-        self.followingEnemyPhase = .SizeExpansion;
         self.translationToCatAnimation = nil;
     }
     
@@ -197,7 +193,6 @@ class UIAttackMeter:UICView {
     
     func dismantleSizeExpansion() {
         self.currentEnemyPhase = nil;
-        self.followingEnemyPhase = .SizeReduction;
         self.sizeExpansionAnimation = nil;
     }
     
@@ -233,7 +228,6 @@ class UIAttackMeter:UICView {
     
     func dismantleSizeReduction() {
         self.currentEnemyPhase = nil;
-        self.followingEnemyPhase = .TranslationToStart;
         self.sizeReductionAnimation = nil;
     }
     
@@ -262,7 +256,6 @@ class UIAttackMeter:UICView {
     
     func dismantleTranslationToStart() {
         self.currentEnemyPhase = nil;
-        self.followingEnemyPhase = .FirstRotation;
         self.sizeReductionAnimation = nil;
     }
     
@@ -305,7 +298,7 @@ class UIAttackMeter:UICView {
         print(previousDisplacementDuration, "Previous Displacement duration")
     }
     
-    func pauseEnemyMovement() {
+    func  pauseEnemyMovement() {
         switch currentEnemyPhase {
         case .TranslationToStart:
             translationToStartAnimation?.stopAnimation(true);

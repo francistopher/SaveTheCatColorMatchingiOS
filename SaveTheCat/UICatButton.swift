@@ -267,26 +267,10 @@ class UICatButton: UIButton {
     
     var randomAnimationSelection:Int?
     func setRandomCatAnimation() {
-        if (randomAnimationSelection! > 2){
-            self.imageContainerButton!.imageView!.transform = self.imageContainerButton!.imageView!.transform.rotated(by:-CGFloat.pi / 2.0);
-            UIView.animate(withDuration: 1.75, delay: 0.0, options:[.curveEaseInOut, .repeat, .autoreverse], animations: {
-                self.imageContainerButton!.imageView!.transform = self.imageContainerButton!.imageView!.transform.rotated(by:-CGFloat.pi);
-            });
-        } else if (randomAnimationSelection! > 1) {
-            self.imageContainerButton!.imageView!.transform = self.imageContainerButton!.imageView!.transform.rotated(by:CGFloat.pi / 2.0);
-            UIView.animate(withDuration: 1.75, delay: 0.0, options:[.curveEaseInOut, .repeat, .autoreverse], animations: {
-                self.imageContainerButton!.imageView!.transform = self.imageContainerButton!.imageView!.transform.rotated(by:-CGFloat.pi);
-            });
-        } else if (randomAnimationSelection! > 0) {
-            UIView.animate(withDuration: 1.75, delay: 0.0, options:[.curveEaseInOut, .repeat, .autoreverse], animations: {
-                self.imageContainerButton!.imageView!.transform = self.imageContainerButton!.imageView!.transform.rotated(by:-CGFloat.pi);
-            });
-        } else {
-            self.imageContainerButton!.imageView!.transform = self.imageContainerButton!.imageView!.transform.rotated(by:-CGFloat.pi / 2.0);
-            UIView.animate(withDuration: 1.75, delay: 0.0, options:[.curveEaseInOut, .repeat, .autoreverse], animations: {
-                self.imageContainerButton!.imageView!.transform = self.imageContainerButton!.imageView!.transform.rotated(by:CGFloat.pi);
-            });
-        }
+        self.imageContainerButton!.imageView!.transform = self.imageContainerButton!.imageView!.transform.rotated(by:-CGFloat.pi / 2.0);
+        UIView.animate(withDuration: 1.75, delay: 0.0, options:[.curveEaseInOut, .repeat, .autoreverse], animations: {
+            self.imageContainerButton!.imageView!.transform = self.imageContainerButton!.imageView!.transform.rotated(by:CGFloat.pi);
+        });
     }
     
     func displaceBoundsOntoMainView() {
@@ -368,7 +352,7 @@ class UICatButton: UIButton {
     var targetX:CGFloat?
     var targetY:CGFloat?
     
-    func getRadialXTargetPoint(parentFrame:CGRect, childFrame:CGRect) -> CGFloat {
+    func  getRadialXTargetPoint(parentFrame:CGRect, childFrame:CGRect) -> CGFloat {
         angleDegree = CGFloat.random(in: 0.0...45.0);
         angleRadian = cos((CGFloat.pi * angleDegree!) / 180.0);
         targetX = ((Int.random(in: 0...1) == 1) ? 1 : -1);

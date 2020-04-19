@@ -166,6 +166,7 @@ class UIBoardGame: UIView, GKMatchDelegate {
         if (attackMeter!.cat!.frame != attackMeter!.cat!.originalFrame!) {
             attackMeter!.resetCat();
         }
+        results!.watchAdButton!.isUserInteractionEnabled = true;
         results!.watchAdButton!.titleLabel!.alpha = 1.0;
         results!.mouseCoin!.alpha = 1.0;
     }
@@ -308,7 +309,12 @@ class UIBoardGame: UIView, GKMatchDelegate {
             }
             ViewController.staticSelf!.present(matchMakerVC!, animated: true, completion: nil);
         } else {
-            ViewController.staticSelf!.gameMessage!.addToMessageQueue(message: .noInternet);
+            if (!GKLocalPlayer.local.isAuthenticated) {
+                ViewController.staticSelf!.gameMessage!.addToMessageQueue(message: .noGameCenter);
+            }
+            if (!ViewController.staticSelf!.isInternetReachable) {
+                ViewController.staticSelf!.gameMessage!.addToMessageQueue(message: .noInternet);
+            }
         }
     }
     
@@ -630,9 +636,11 @@ class UIBoardGame: UIView, GKMatchDelegate {
         Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false) { timer in
             // Store the highest singular score
             if (ViewController.singleGameHighScore < Int64(self.results!.catsThatLived)) {
-                print("New Hight Score! \(self.results!.catsThatLived)")
-                SoundController.animeWow();
-                self.newHighScore = true;
+                if (ViewController.staticSelf!.isInternetReachable) {
+                    print("New Hight Score! \(self.results!.catsThatLived)")
+                    SoundController.animeWow();
+                    self.newHighScore = true;
+                }
             }
             // Submit memory capacity score
             self.results!.fadeIn();
@@ -796,7 +804,7 @@ class UIBoardGame: UIView, GKMatchDelegate {
             // Add data of survived cats
             if (cats.didAllSurvive()) {
                 myLiveMeter!.incrementLivesLeftCount(catButton: catButton, forOpponent: false);
-                self.attackMeter!.updateDuration(change: 0.1);
+                self.attackMeter!.updateDuration(change: 0.075);
                 self.attackMeter!.sendEnemyToStart();
                 self.glovePointer!.shrinked();
                 self.glovePointer!.stopAnimations();
@@ -808,7 +816,7 @@ class UIBoardGame: UIView, GKMatchDelegate {
                 return;
             }
         } else {
-            self.attackMeter!.updateDuration(change: 0.05);
+            self.attackMeter!.updateDuration(change: 0.025);
             self.attackMeter!.sendEnemyToStart();
             self.attackMeter!.startFirstRotation(afterDelay: 1.0);
         }
@@ -864,7 +872,7 @@ class UIBoardGame: UIView, GKMatchDelegate {
             y += buttonHeight;
         }
         
-        if (!(countOfMaxCatButtonsInARow > countOfRowsLeft)) {
+        if ((countOfMaxCatButtonsInARow <= countOfRowsLeft)) {
             for rowIndexOf in Array(indexesOfRowsWithAliveCatsCount.keys).sorted(by:<) {
                 resetCatButtonsPosition(rowIndexOf: rowIndexOf);
             }

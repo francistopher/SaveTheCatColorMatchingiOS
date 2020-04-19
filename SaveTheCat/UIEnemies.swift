@@ -37,7 +37,7 @@ class UIEnemies {
         enemyWidthSpacing = totalWidthSpacing! / 2.625;
         enemyHeightSpacing = totalHeightSpacing! / 4.0;
         // Initial starting coordinates
-        x = -enemyWidthSpacing! * 0.70125;
+        x = -enemyWidthSpacing! * 0.665;
         y = -enemyHeightSpacing! * 0.45;
         // Plot and build enemies
         for _ in 0..<3 {

@@ -46,7 +46,11 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, GKMatchm
             gameMessage!.displayInternetConnectionEstablishedMessage();
             // Stop autoloading ads
             bannerView.isAutoloadEnabled = true;
-            if (settingsButton!.alpha == 1.0) {
+            if  (UIAds.isAdHidden) {
+                bannerView.alpha = 0.0;
+                noInternetBannerView!.alpha = 0.0;
+            }
+            else if (settingsButton!.alpha == 1.0) {
                 bannerView.alpha = 1.0;
                 noInternetBannerView!.alpha = 0.0;
             }
@@ -59,7 +63,11 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, GKMatchm
             self.boardGame!.stopSearchingForOpponentEntirely();
             // Stop autoloading ads
             bannerView.isAutoloadEnabled = false;
-            if (settingsButton!.alpha == 1.0) {
+            if (UIAds.isAdHidden) {
+                bannerView.alpha = 0.0;
+                noInternetBannerView!.alpha = 0.0;
+            }
+            else if (settingsButton!.alpha == 1.0) {
                 bannerView.alpha = 0.0;
                 noInternetBannerView!.alpha = 1.0;
             }
@@ -276,7 +284,7 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, GKMatchm
     
     // Ads
     func setupAdvertisement() {
-        GADMobileAds.sharedInstance().requestConfiguration.testDeviceIdentifiers = ["2077ef9a63d2b398840261c8221a0c9b"];
+//        GADMobileAds.sharedInstance().requestConfiguration.testDeviceIdentifiers = [ "5f4cd4d4f8a1e23f18a00a6dd02cc65a" ];
         setupBannerView();
         setupNoInternetBannerView();
         setupInterstitial();
@@ -300,7 +308,9 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, GKMatchm
     
     // Interstisial
     func setupInterstitial() {
-        ViewController.interstitial = GADInterstitial(adUnitID: "ca-app-pub-3940256099942544/5135589807");
+        // testing ca-app-pub-3940256099942544/4411468910
+        // legit ca-app-pub-9972661202816089/1775860068
+        ViewController.interstitial = GADInterstitial(adUnitID: "ca-app-pub-9972661202816089/1775860068");
         ViewController.interstitial.delegate = self;
         ViewController.interstitial.load(GADRequest());
     }
@@ -345,8 +355,9 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, GKMatchm
         bannerView.frame = CGRect(x: 0.0, y: mainView.frame.height - bannerView.frame.height, width: bannerView.frame.width + 1, height: bannerView.frame.height + 1);
         CenterController.centerHorizontally(childView: bannerView, parentRect: mainView.frame, childRect: bannerView.frame);
         // Configure for ad to display
-        // myBannerID
-        bannerView.adUnitID = "ca-app-pub-3940256099942544/2934735716";
+        // testing ca-app-pub-3940256099942544/2934735716
+        // legit ca-app-pub-9972661202816089/5404113881
+        bannerView.adUnitID = "ca-app-pub-9972661202816089/5404113881";
         bannerView.rootViewController = self;
         bannerView.load(GADRequest());
         // Save first banner view as temp
@@ -484,7 +495,7 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, GKMatchm
     
     func setupSaveTheCat() {
         setupSounds();
-        setupIntroCatAnimatio();
+        setupIntroCatAnimation();
         setupSuccessGradientViewAndLayer();
         setupEnemies();
         setupAdvertisement();
@@ -524,7 +535,11 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, GKMatchm
                 UIView.animate(withDuration: 1.0, delay: 0.125, options: .curveEaseOut, animations: {
                     self.bannerView.alpha = 1.0;
                 }, completion: { _ in
-                    if (!self.isInternetReachable) {
+                    if (UIAds.isAdHidden) {
+                        self.bannerView.alpha = 0.0;
+                        self.noInternetBannerView!.alpha = 0.0;
+                    }
+                    else if (!self.isInternetReachable) {
                         self.bannerView.alpha = 0.0;
                         self.noInternetBannerView!.alpha = 1.0;
                     }
@@ -624,7 +639,7 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, GKMatchm
         enemies!.hide();
     }
     
-    func setupIntroCatAnimatio(){
+    func setupIntroCatAnimation(){
         let sideLength:CGFloat = unitViewWidth * 9.0;
         introCatAnimation = UIIntroCatAnimation(parentView: mainView, frame: CGRect(x: 0.0, y: 0.0, width: sideLength, height: sideLength));
         CenterController.center(childView: introCatAnimation!, parentRect: mainView.frame, childRect: introCatAnimation!.frame);

@@ -48,8 +48,7 @@ class UIColorOptions: UIView {
     func selectSelectionColors(){
         selectionColors =  [UIColor.systemGreen, UIColor.systemYellow, UIColor.systemOrange, UIColor.systemRed, UIColor.systemPurple, UIColor.systemBlue];
         repeat {
-            let index:Int = Int.random(in: 0..<selectionColors!.count);
-            selectionColors!.remove(at: index);
+            selectionColors!.remove(at: Int.random(in: 0..<selectionColors!.count));
             if (selectionColors!.count == boardGameView!.rowAndColumnNums[0] || selectionColors!.count == 6) {
                 break;
             }
@@ -62,16 +61,25 @@ class UIColorOptions: UIView {
         }
     }
     
+    var numOfUniqueGridColors:Int = 0
+    var columnGap:CGFloat = 0.0
+    var rowGap:CGFloat = 0.0
+    var buttonWidth:CGFloat = 0.0
+    var buttonHeight:CGFloat = 0.0
+    var button:UICButton? = nil
+    var columnDisplacement:CGFloat = 0.0
+    var index:Int = 0
+    var count:Int = 0
     func buildColorOptionButtons(setup:Bool){
-        let numOfUniqueGridColors:Int = boardGameView!.nonZeroGridColorsCount();
-        let columnGap = (self.frame.width * 0.1) / CGFloat(numOfUniqueGridColors + 1);
-        let rowGap = self.frame.height * 0.1;
-        let buttonWidth = (self.frame.width - (columnGap * CGFloat(numOfUniqueGridColors + 1))) / CGFloat(numOfUniqueGridColors);
-        let buttonHeight = (self.frame.height - (rowGap * 2.0));
-        var button:UICButton? = nil;
-        var columnDisplacement:CGFloat = 0.0;
-        var index:Int = 0;
-        var count:Int = 0;
+        numOfUniqueGridColors = boardGameView!.nonZeroGridColorsCount();
+        columnGap = (self.frame.width * 0.1) / CGFloat(numOfUniqueGridColors + 1);
+        rowGap = self.frame.height * 0.1;
+        buttonWidth = (self.frame.width - (columnGap * CGFloat(numOfUniqueGridColors + 1))) / CGFloat(numOfUniqueGridColors);
+        buttonHeight = (self.frame.height - (rowGap * 2.0));
+        button = nil
+        columnDisplacement = 0.0;
+        index = 0;
+        count = 0;
         for (selectionColor, colorCount) in boardGameView!.gridColorsCount {
             if (setup) {
                 columnDisplacement += columnGap;
@@ -116,7 +124,7 @@ class UIColorOptions: UIView {
                     } else {
                         if (count > index) {
                             revisitedButton.shrinkType = .left;
-                        } else if (index == numOfUniqueGridColors) {
+                        } else if (index <= numOfUniqueGridColors - 1) {
                             revisitedButton.shrinkType = .right;
                         } else {
                             revisitedButton.shrinkType = .mid;
@@ -149,8 +157,6 @@ class UIColorOptions: UIView {
     func loadSelectionButtonsToSelectedButtons(){
         for selectionButtons in selectionButtons!{
             selectedButtons!.append(selectionButtons);
-            selectionButtons.shrinkType = .mid;
-            selectionButtons.shrink(colorOptionButton: true);
         }
         selectionButtons = nil;
         selectionButtons = [UICButton]();
@@ -160,8 +166,7 @@ class UIColorOptions: UIView {
         for selectedButtons in selectedButtons!{
             selectedButtons.removeFromSuperview();
         }
-        selectedButtons = nil;
-        selectedButtons = [UICButton]();
+        selectedButtons!.removeAll()
     }
     
     func setStyle() {

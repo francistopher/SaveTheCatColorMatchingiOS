@@ -138,7 +138,8 @@ class UIResults: UICView {
     }
     
     func setupCheeringCatLabel() {
-        self.catsLivedLabel = UICLabel(parentView: contentView!, x: self.frame.width * 0.02875, y: gameOverLabel!.frame.maxY * 0.9, width: contentView!.frame.width * 0.5, height: contentView!.frame.width * 0.5);
+        self.catsLivedLabel = UICLabel(parentView: contentView!, x: self.frame.width * 0.02875, y: gameOverLabel!.frame.maxY * 0.9, width: contentView!.frame.width * 0.5,
+            height: contentView!.frame.width * 0.5);
         catsLivedLabel!.backgroundColor = UIColor.clear;
         setupLivedCatImage();
         setupCatsLivedAmount();
@@ -327,7 +328,7 @@ class UIResults: UICView {
         } else {
             highScoreLabel!.text = "High Score: \(ViewController.singleGameHighScore)";
         }
-        UIView.animate(withDuration: 4.0, animations: {
+        UIView.animate(withDuration: 4.25, animations: {
             self.highScoreLabel!.transform = self.highScoreLabel!.transform.translatedBy(x: 0.0, y: self.contentView!.frame.height + self.unitHeight! * 1.5);
         }, completion: { _ in
             self.highScoreLabel!.frame = self.highScoreLabel!.originalFrame!;

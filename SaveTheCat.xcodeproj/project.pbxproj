@@ -154,6 +154,8 @@
 		B896C8D2242EBC88009F63BF /* darkHairBall.png in Resources */ = {isa = PBXBuildFile; fileRef = B896C8D0242EBC88009F63BF /* darkHairBall.png */; };
 		B896C8D3242EBC88009F63BF /* lightHairBall.png in Resources */ = {isa = PBXBuildFile; fileRef = B896C8D1242EBC88009F63BF /* lightHairBall.png */; };
 		B896C8D7242EBDB6009F63BF /* UIEnemies.swift in Sources */ = {isa = PBXBuildFile; fileRef = B896C8D6242EBDB6009F63BF /* UIEnemies.swift */; };
+		B897C98224563F9300161BA9 /* darkIntroText.png in Resources */ = {isa = PBXBuildFile; fileRef = B897C98024563F9300161BA9 /* darkIntroText.png */; };
+		B897C98324563F9300161BA9 /* lightIntroText.png in Resources */ = {isa = PBXBuildFile; fileRef = B897C98124563F9300161BA9 /* lightIntroText.png */; };
 		B8B01A412425487800155D9B /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B8B01A402425487800155D9B /* WebKit.framework */; };
 		B8B9E5642432C904008E9752 /* noGreenSymbol.png in Resources */ = {isa = PBXBuildFile; fileRef = B8B9E5622432C904008E9752 /* noGreenSymbol.png */; };
 		B8B9E5652432C904008E9752 /* noRedSymbol.png in Resources */ = {isa = PBXBuildFile; fileRef = B8B9E5632432C904008E9752 /* noRedSymbol.png */; };
@@ -162,11 +164,8 @@
 		B8B9E56C2432D138008E9752 /* darkStyle.png in Resources */ = {isa = PBXBuildFile; fileRef = B8B9E5692432D138008E9752 /* darkStyle.png */; };
 		B8CDA7FF2431C7380083DF7F /* lightCat.png in Resources */ = {isa = PBXBuildFile; fileRef = B8CDA7FB2431C7370083DF7F /* lightCat.png */; };
 		B8CDA8002431C7380083DF7F /* darkCat.png in Resources */ = {isa = PBXBuildFile; fileRef = B8CDA7FC2431C7380083DF7F /* darkCat.png */; };
-		B8CDA8012431C7380083DF7F /* darkIntroText.png in Resources */ = {isa = PBXBuildFile; fileRef = B8CDA7FD2431C7380083DF7F /* darkIntroText.png */; };
-		B8CDA8022431C7380083DF7F /* lightIntroText.png in Resources */ = {isa = PBXBuildFile; fileRef = B8CDA7FE2431C7380083DF7F /* lightIntroText.png */; };
 		B8F6C9BA242168C300CD668C /* UIIntroCatAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8F6C9B9242168C300CD668C /* UIIntroCatAnimation.swift */; };
 		B8F6C9BC24230FAA00CD668C /* gifRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8F6C9BB24230FAA00CD668C /* gifRenderer.swift */; };
-		B8F6C9C1242314B300CD668C /* whiteBorderGal.gif in Resources */ = {isa = PBXBuildFile; fileRef = B8F6C9BF242314B300CD668C /* whiteBorderGal.gif */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -321,6 +320,8 @@
 		B896C8D0242EBC88009F63BF /* darkHairBall.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = darkHairBall.png; path = SaveTheCat/darkHairBall.png; sourceTree = "<group>"; };
 		B896C8D1242EBC88009F63BF /* lightHairBall.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = lightHairBall.png; path = SaveTheCat/lightHairBall.png; sourceTree = "<group>"; };
 		B896C8D6242EBDB6009F63BF /* UIEnemies.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UIEnemies.swift; path = SaveTheCat/UIEnemies.swift; sourceTree = "<group>"; };
+		B897C98024563F9300161BA9 /* darkIntroText.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = darkIntroText.png; path = SaveTheCat/darkIntroText.png; sourceTree = "<group>"; };
+		B897C98124563F9300161BA9 /* lightIntroText.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = lightIntroText.png; path = SaveTheCat/lightIntroText.png; sourceTree = "<group>"; };
 		B8B01A402425487800155D9B /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		B8B9E5622432C904008E9752 /* noGreenSymbol.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = noGreenSymbol.png; path = SaveTheCat/noGreenSymbol.png; sourceTree = "<group>"; };
 		B8B9E5632432C904008E9752 /* noRedSymbol.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = noRedSymbol.png; path = SaveTheCat/noRedSymbol.png; sourceTree = "<group>"; };
@@ -329,11 +330,8 @@
 		B8B9E5692432D138008E9752 /* darkStyle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = darkStyle.png; path = SaveTheCat/darkStyle.png; sourceTree = "<group>"; };
 		B8CDA7FB2431C7370083DF7F /* lightCat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = lightCat.png; path = SaveTheCat/lightCat.png; sourceTree = "<group>"; };
 		B8CDA7FC2431C7380083DF7F /* darkCat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = darkCat.png; path = SaveTheCat/darkCat.png; sourceTree = "<group>"; };
-		B8CDA7FD2431C7380083DF7F /* darkIntroText.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = darkIntroText.png; path = SaveTheCat/darkIntroText.png; sourceTree = "<group>"; };
-		B8CDA7FE2431C7380083DF7F /* lightIntroText.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = lightIntroText.png; path = SaveTheCat/lightIntroText.png; sourceTree = "<group>"; };
 		B8F6C9B9242168C300CD668C /* UIIntroCatAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIIntroCatAnimation.swift; sourceTree = "<group>"; };
 		B8F6C9BB24230FAA00CD668C /* gifRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = gifRenderer.swift; sourceTree = "<group>"; };
-		B8F6C9BF242314B300CD668C /* whiteBorderGal.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; name = whiteBorderGal.gif; path = SaveTheCat/whiteBorderGal.gif; sourceTree = "<group>"; };
 		BFFD34E3F63138C9ED73D8DE /* Pods-SaveTheCat.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SaveTheCat.debug.xcconfig"; path = "Target Support Files/Pods-SaveTheCat/Pods-SaveTheCat.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -465,7 +463,6 @@
 				B83B038F241156A100EC4BAD /* Settings Menu */,
 				B83B038B241155AF00EC4BAD /* Cats */,
 				B83B03D124115CDD00EC4BAD /* Default-568h@2x.png */,
-				B8F6C9BF242314B300CD668C /* whiteBorderGal.gif */,
 			);
 			name = Images;
 			sourceTree = "<group>";
@@ -827,10 +824,10 @@
 		B8F6C9B024214F8F00CD668C /* Intro */ = {
 			isa = PBXGroup;
 			children = (
+				B897C98024563F9300161BA9 /* darkIntroText.png */,
+				B897C98124563F9300161BA9 /* lightIntroText.png */,
 				B8CDA7FC2431C7380083DF7F /* darkCat.png */,
-				B8CDA7FD2431C7380083DF7F /* darkIntroText.png */,
 				B8CDA7FB2431C7370083DF7F /* lightCat.png */,
-				B8CDA7FE2431C7380083DF7F /* lightIntroText.png */,
 			);
 			name = Intro;
 			sourceTree = "<group>";
@@ -900,7 +897,6 @@
 				B83EAA6D242A6B630041CE31 /* lightEgyptianCheeringCat.png in Resources */,
 				B83A8078242FE555007B8700 /* darkMusicOff.png in Resources */,
 				B83EAAB2242BF4DD0041CE31 /* lightFatSmilingCat.png in Resources */,
-				B8CDA8012431C7380083DF7F /* darkIntroText.png in Resources */,
 				B83BC401241BD8EA0026D7F6 /* yesInternet.png in Resources */,
 				B83B03F42411877E00EC4BAD /* Icon-80@2x.png in Resources */,
 				B83B03962411577200EC4BAD /* mozartSonata.mp3 in Resources */,
@@ -947,13 +943,13 @@
 				B83B03BB24115AA900EC4BAD /* Main.storyboard in Resources */,
 				B8B9E56B2432D138008E9752 /* autoStyle.png in Resources */,
 				B83A807D24300C33007B8700 /* SleepyFatCat.otf in Resources */,
-				B8CDA8022431C7380083DF7F /* lightIntroText.png in Resources */,
 				B83BC411241D9DD00026D7F6 /* opponentHeart.png in Resources */,
 				B896C8D2242EBC88009F63BF /* darkHairBall.png in Resources */,
 				B83EAA70242A6B630041CE31 /* darkEgyptianSmilingCat.png in Resources */,
 				B83B034A241154D700EC4BAD /* darkDeadCat.png in Resources */,
 				B841504E242924C400B24F84 /* darkBreadingDeadCat.png in Resources */,
 				B83B03F72411877E00EC4BAD /* Icon-40@2x.png in Resources */,
+				B897C98224563F9300161BA9 /* darkIntroText.png in Resources */,
 				B83EAAB1242BF4DD0041CE31 /* lightFatCheeringCat.png in Resources */,
 				B8415058242976E800B24F84 /* darkTacoSmilingCat.png in Resources */,
 				B83B03FD2411877E00EC4BAD /* Icon-1024@1x.png in Resources */,
@@ -987,6 +983,7 @@
 				B83B03F52411877E00EC4BAD /* Icon-120@3x.png in Resources */,
 				B83B0361241154EB00EC4BAD /* darkNinjaCheeringCat.png in Resources */,
 				B83EAA87242AE97F0041CE31 /* darkChickenSmilingCat.png in Resources */,
+				B897C98324563F9300161BA9 /* lightIntroText.png in Resources */,
 				B8415059242976E800B24F84 /* darkTacoCheeringCat.png in Resources */,
 				B83B03D024115C9500EC4BAD /* Assets.xcassets in Resources */,
 				B83A8074242FE546007B8700 /* lightMusicOn.png in Resources */,
@@ -1004,7 +1001,6 @@
 				B83B0360241154EB00EC4BAD /* darkVirus.png in Resources */,
 				B83B03772411551300EC4BAD /* lightGear.png in Resources */,
 				B83B03FA2411877E00EC4BAD /* Icon-20@1x.png in Resources */,
-				B8F6C9C1242314B300CD668C /* whiteBorderGal.gif in Resources */,
 				B83BC404241BEAC30026D7F6 /* noiCloud.png in Resources */,
 				B83EAA6C242A6B630041CE31 /* darkEgyptianCheeringCat.png in Resources */,
 				B83B034D241154D700EC4BAD /* darkGear.png in Resources */,

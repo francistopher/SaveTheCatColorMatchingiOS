@@ -63,7 +63,7 @@ class UIMouseCoin: UICButton {
         self.imageView!.contentMode = UIView.ContentMode.scaleAspectFit;
     }
     
-    func setMouseCoinValue(newValue:Int64) {
+    func  setMouseCoinValue(newValue:Int64) {
         var timeCounter:Double = 0.0;
         var timeRate:Double = 0.0;
         
@@ -80,10 +80,12 @@ class UIMouseCoin: UICButton {
             }
         }
         if (getDifference() == 1) {
-            if (isDifferencePositive() && UIResults.mouseCoins > 0) {
+            if (isDifferencePositive()) {
                 UIResults.mouseCoins += 1
             } else {
-                UIResults.mouseCoins -= 1;
+                if (UIResults.mouseCoins > 0) {
+                    UIResults.mouseCoins -= 1;
+                }
             }
             
             self.amountLabel!.text = "\(UIResults.mouseCoins)";

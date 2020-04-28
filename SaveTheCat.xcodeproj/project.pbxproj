@@ -363,6 +363,8 @@
 			isa = PBXGroup;
 			children = (
 				B83BC3F5241ACDEE0026D7F6 /* Save The Cat!.entitlements */,
+				B83B03B324115A0C00EC4BAD /* CharacterViews */,
+				B897C9842458D02200161BA9 /* HeaderViews */,
 				B83B03352411541D00EC4BAD /* Audio */,
 				B83B0342241154C000EC4BAD /* Images */,
 				B83B03C424115B4F00EC4BAD /* Delegates */,
@@ -432,8 +434,6 @@
 			children = (
 				B83A8079242FE665007B8700 /* UIVolume.swift */,
 				B80C9A342427D69800B4E229 /* UIMoreCats.swift */,
-				B83B032C241153E800EC4BAD /* UISettingsButton.swift */,
-				B84032372414150D0020D9EA /* UISettingsMenu.swift */,
 				B840323D241438780020D9EA /* UILeadBoard.swift */,
 				B840323B241437C30020D9EA /* UIAds.swift */,
 				B83B032A241153E800EC4BAD /* UIMouseCoin.swift */,
@@ -579,22 +579,19 @@
 		B83B03A2241159AB00EC4BAD /* Particular View Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				B83B03B324115A0C00EC4BAD /* Character */,
 				B80C9A2E2425A61100B4E229 /* UIVictoryView.swift */,
 				B83B03AA241159F900EC4BAD /* UIBoardGame.swift */,
 				B83BC3ED241948E40026D7F6 /* UIGlovedPointer.swift */,
 				B83B03A5241159F900EC4BAD /* UIColorOptions.swift */,
 				B83B03A8241159F900EC4BAD /* UIResults.swift */,
 				B83B03A9241159F900EC4BAD /* CACGradientLayer.swift */,
-				B83BC3D624169FD60026D7F6 /* UIAttackMeter.swift */,
-				B83BC3D82416A0100026D7F6 /* UILiveMeter.swift */,
 				B83BC406241BF9930026D7F6 /* GameMessage.swift */,
 				B8F6C9B9242168C300CD668C /* UIIntroCatAnimation.swift */,
 			);
 			name = "Particular View Controllers";
 			sourceTree = "<group>";
 		};
-		B83B03B324115A0C00EC4BAD /* Character */ = {
+		B83B03B324115A0C00EC4BAD /* CharacterViews */ = {
 			isa = PBXGroup;
 			children = (
 				B896C8D6242EBDB6009F63BF /* UIEnemies.swift */,
@@ -602,7 +599,7 @@
 				B83B03A6241159F900EC4BAD /* UICatButtons.swift */,
 				B83B03A3241159CB00EC4BAD /* UIEnemy.swift */,
 			);
-			name = Character;
+			name = CharacterViews;
 			sourceTree = "<group>";
 		};
 		B83B03B424115A7800EC4BAD /* Supporting Files */ = {
@@ -800,6 +797,17 @@
 				B896C8D1242EBC88009F63BF /* lightHairBall.png */,
 			);
 			name = Hairball;
+			sourceTree = "<group>";
+		};
+		B897C9842458D02200161BA9 /* HeaderViews */ = {
+			isa = PBXGroup;
+			children = (
+				B83BC3D624169FD60026D7F6 /* UIAttackMeter.swift */,
+				B83BC3D82416A0100026D7F6 /* UILiveMeter.swift */,
+				B83B032C241153E800EC4BAD /* UISettingsButton.swift */,
+				B84032372414150D0020D9EA /* UISettingsMenu.swift */,
+			);
+			name = HeaderViews;
 			sourceTree = "<group>";
 		};
 		B8B9E5612432C8EA008E9752 /* No Symbols */ = {

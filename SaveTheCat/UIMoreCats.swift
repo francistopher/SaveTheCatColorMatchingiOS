@@ -79,15 +79,14 @@ class MoreCatsViewController:UIViewController {
     var catViewHandler:UICView?
     var catLabelName:UICLabel?
     
-    var hideButton:UICButton?
+    var closeButton:UICButton?
     
     var infoButton:UICButton?
-    var infoLabel:UICLabel?
+    var memoriamLabel:UICLabel?
     
     var previousButton:UICButton?
     var nextButton:UICButton?
     var selectionButton:UICButton?
-    
     
     var purchaseAlert:UIAlertController?
     var keyValueStore:NSUbiquitousKeyValueStore = NSUbiquitousKeyValueStore();
@@ -171,14 +170,14 @@ class MoreCatsViewController:UIViewController {
     }
     
     func setupHideButton() {
-        hideButton = UICButton(parentView: contentView!, frame: CGRect(x: contentView!.frame.width * 0.8, y: 0.0, width: contentView!.frame.width * 0.2, height: contentView!.frame.width * 0.12), backgroundColor: UIColor.red);
-        hideButton!.addTarget(self, action: #selector(hideButtonSelector), for: .touchUpInside);
-        hideButton!.setTitle("x", for: .normal);
-        hideButton!.layer.cornerRadius = hideButton!.frame.height * 0.5;
-        hideButton!.layer.borderWidth = contentView!.layer.borderWidth;
-        hideButton!.titleLabel!.font = UIFont.boldSystemFont(ofSize: hideButton!.frame.height * 0.75)
-        hideButton!.layer.maskedCorners = [ .layerMinXMaxYCorner]
-        ViewController.updateFont(button: hideButton!);
+        closeButton = UICButton(parentView: contentView!, frame: CGRect(x: contentView!.frame.width * 0.8, y: 0.0, width: contentView!.frame.width * 0.2, height: contentView!.frame.width * 0.12), backgroundColor: UIColor.red);
+        closeButton!.addTarget(self, action: #selector(hideButtonSelector), for: .touchUpInside);
+        closeButton!.setTitle("x", for: .normal);
+        closeButton!.layer.cornerRadius = closeButton!.frame.height * 0.5;
+        closeButton!.layer.borderWidth = contentView!.layer.borderWidth;
+        closeButton!.titleLabel!.font = UIFont.boldSystemFont(ofSize: closeButton!.frame.height * 0.75)
+        closeButton!.layer.maskedCorners = [ .layerMinXMaxYCorner]
+        ViewController.updateFont(button: closeButton!);
     }
     
     @objc func hideButtonSelector() {
@@ -186,6 +185,9 @@ class MoreCatsViewController:UIViewController {
         self.hideCatButton();
         UIView.animate(withDuration: 0.25, animations: {
             ViewController.staticSelf!.view.alpha = 1.0;
+            self.memoriamLabel!.frame = self.memoriamLabel!.shrunkFrame!
+            self.infoButton!.setTitle("i", for: .normal)
+            
         })
     }
     
@@ -203,10 +205,10 @@ class MoreCatsViewController:UIViewController {
     @objc func infoButtonSelector() {
         if (infoButton!.titleLabel!.text == "i") {
             infoButton!.setTitle("x", for: .normal);
-            infoLabel!.grow();
+            memoriamLabel!.grow();
         } else {
             infoButton!.setTitle("i", for: .normal);
-            infoLabel!.shrink(removeFromSuperview: false);
+            memoriamLabel!.shrink(removeFromSuperview: false);
         }
     }
     
@@ -356,20 +358,20 @@ class MoreCatsViewController:UIViewController {
     }
     
     func setupInfoLabel() {
-        infoLabel = UICLabel(parentView: contentView!, x: presentationCatButton!.imageContainerButton!.originalFrame!.minX, y: presentationCatButton!.imageContainerButton!.originalFrame!.minY, width: presentationCatButton!.imageContainerButton!.originalFrame!.width * 0.975, height: presentationCatButton!.imageContainerButton!.originalFrame!.height * 0.975)
-        CenterController.center(childView: infoLabel!, parentRect: contentView!.frame, childRect: infoLabel!.frame);
-        infoLabel!.setOriginalFrame();
-        infoLabel!.setShrunkFrame();
-        infoLabel!.font = UIFont.boldSystemFont(ofSize: infoLabel!.frame.height * 0.15);
-        infoLabel!.layer.cornerRadius = presentationCatButton!.layer.cornerRadius
-        infoLabel!.lineBreakMode = NSLineBreakMode.byWordWrapping
-        infoLabel!.text = "In Memory of\nSchrödinger\nthe Cat"
-        ViewController.updateFont(label: infoLabel!);
-        infoLabel!.backgroundColor = UIColor.systemBlue
-        infoLabel!.clipsToBounds = true
-        infoLabel!.isInverted = true
-        infoLabel!.numberOfLines = 3
-        infoLabel!.shrunk();
+        memoriamLabel = UICLabel(parentView: contentView!, x: presentationCatButton!.imageContainerButton!.originalFrame!.minX, y: presentationCatButton!.imageContainerButton!.originalFrame!.minY, width: presentationCatButton!.imageContainerButton!.originalFrame!.width * 0.975, height: presentationCatButton!.imageContainerButton!.originalFrame!.height * 0.975)
+        CenterController.center(childView: memoriamLabel!, parentRect: contentView!.frame, childRect: memoriamLabel!.frame);
+        memoriamLabel!.setOriginalFrame();
+        memoriamLabel!.setShrunkFrame();
+        memoriamLabel!.font = UIFont.boldSystemFont(ofSize: memoriamLabel!.frame.height * 0.15);
+        memoriamLabel!.layer.cornerRadius = presentationCatButton!.layer.cornerRadius
+        memoriamLabel!.lineBreakMode = NSLineBreakMode.byWordWrapping
+        memoriamLabel!.text = "In Memory of\nSchrödinger\nthe Cat"
+        ViewController.updateFont(label: memoriamLabel!);
+        memoriamLabel!.backgroundColor = UIColor.systemBlue
+        memoriamLabel!.clipsToBounds = true
+        memoriamLabel!.isInverted = true
+        memoriamLabel!.numberOfLines = 3
+        memoriamLabel!.shrunk();
     }
     
     func setupCatViewHandler() {
@@ -383,7 +385,7 @@ class MoreCatsViewController:UIViewController {
     }
     
     func setupCatLabelName() {
-        catLabelName = UICLabel(parentView: catViewHandler!, x: 0.0, y: presentationCatButton!.layer.borderWidth * 0.75, width: catViewHandler!.frame.width, height: (self.hideButton!.frame.height));
+        catLabelName = UICLabel(parentView: catViewHandler!, x: 0.0, y: presentationCatButton!.layer.borderWidth * 0.75, width: catViewHandler!.frame.width, height: (self.closeButton!.frame.height));
         catLabelName!.isInverted = true;
         catLabelName!.setStyle();
         CenterController.centerHorizontally(childView: catLabelName!, parentRect: catViewHandler!.frame, childRect: catLabelName!.frame);
@@ -396,7 +398,7 @@ class MoreCatsViewController:UIViewController {
     
     var mouseCoin:UIMouseCoin?
     func setupSelectionButton() {
-        selectionButton = UICButton(parentView: catViewHandler!, frame:CGRect(x: 0.0, y: catViewHandler!.frame.height - (presentationCatButton!.layer.borderWidth * 0.5) - self.catLabelName!.frame.height, width: catViewHandler!.frame.width * 0.75, height: self.hideButton!.frame.height * 1.025), backgroundColor: UIColor.systemRed);
+        selectionButton = UICButton(parentView: catViewHandler!, frame:CGRect(x: 0.0, y: catViewHandler!.frame.height - (presentationCatButton!.layer.borderWidth * 0.5) - self.catLabelName!.frame.height, width: catViewHandler!.frame.width * 0.75, height: self.closeButton!.frame.height * 1.025), backgroundColor: UIColor.systemRed);
         CenterController.centerHorizontally(childView: selectionButton!, parentRect: catViewHandler!.frame, childRect: selectionButton!.frame);
         selectionButton!.originalFrame = selectionButton!.frame;
         selectionButton!.layer.cornerRadius = catViewHandler!.layer.cornerRadius * 0.4;
@@ -438,9 +440,9 @@ class MoreCatsViewController:UIViewController {
     var presentLabelNameAnimation:UIViewPropertyAnimator?
     func setupPresentLabelNameAnimation () {
         self.presentLabelNameAnimation = UIViewPropertyAnimator.init(duration: 1.125, curve: .easeInOut, animations: {
-            self.catViewHandler!.frame = CGRect(x: self.catViewHandler!.frame.minX, y: self.presentationCatButton!.frame.minY - (self.hideButton!.frame.height), width: self.presentationCatButton!.frame.width * 1.05, height: self.presentationCatButton!.frame.height + (self.hideButton!.frame.height) * 2.0);
+            self.catViewHandler!.frame = CGRect(x: self.catViewHandler!.frame.minX, y: self.presentationCatButton!.frame.minY - (self.closeButton!.frame.height), width: self.presentationCatButton!.frame.width * 1.05, height: self.presentationCatButton!.frame.height + (self.closeButton!.frame.height) * 2.0);
             // Control button
-            self.selectionButton!.frame = CGRect(x: self.selectionButton!.frame.minX, y: self.catViewHandler!.frame.height - (self.presentationCatButton!.layer.borderWidth * 0.5) - self.catLabelName!.frame.height + self.catViewHandler!.layer.borderWidth, width: self.catViewHandler!.frame.width * 0.75, height: self.hideButton!.frame.height * 1.025);
+            self.selectionButton!.frame = CGRect(x: self.selectionButton!.frame.minX, y: self.catViewHandler!.frame.height - (self.presentationCatButton!.layer.borderWidth * 0.5) - self.catLabelName!.frame.height + self.catViewHandler!.layer.borderWidth, width: self.catViewHandler!.frame.width * 0.75, height: self.closeButton!.frame.height * 1.025);
         })
     }
     
@@ -503,13 +505,13 @@ class MoreCatsViewController:UIViewController {
         contentView!.setStyle();
         catViewHandler!.setStyle();
         catLabelName!.setStyle();
-        hideButton!.setStyle();
+        closeButton!.setStyle();
         infoButton!.setStyle();
         previousButton!.setStyle();
         nextButton!.setStyle();
         
-        infoLabel!.setStyle();
-        infoLabel!.backgroundColor = UIColor.systemBlue;
+        memoriamLabel!.setStyle();
+        memoriamLabel!.backgroundColor = UIColor.systemBlue;
         if (ViewController.uiStyleRawValue == 1) {
             if (ViewController.aspectRatio! != .ar4by3) {
                 view.backgroundColor = UIColor.white;

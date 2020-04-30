@@ -179,6 +179,10 @@ class UIBoardGame: UIView, GKMatchDelegate {
     
     var value:UInt16?
     func match(_ match: GKMatch, didReceive data: Data, fromRemotePlayer player: GKPlayer) {
+        if (UIGameMessage.opponent == "") {
+            UIGameMessage.opponent = player.displayName
+            ViewController.staticSelf!.gameMessage!.displayOpponent()
+        }
         value = data.withUnsafeBytes {
             $0.load(as: UInt16.self);
         }
@@ -190,7 +194,6 @@ class UIBoardGame: UIView, GKMatchDelegate {
             return;
         }
         if (value! != opponentLiveMeter!.livesLeft) {
-            print("NEW VALUE: \(value!) OLD VALUE:\(opponentLiveMeter!.livesLeft)")
             if (value! > opponentLiveMeter!.livesLeft) {
                 opponentLiveMeter!.incrementLivesLeftCount(catButton: attackMeter!.cat!, forOpponent: true);
             }
@@ -202,6 +205,7 @@ class UIBoardGame: UIView, GKMatchDelegate {
     
     func gameWon() {
         if (!iLost) {
+            ViewController.staticSelf!.gameMessage!.displayIWonAgainstOpponent()
             // Disappear cats and selection colors
             self.victoryView!.awardAmount = abs(results!.catsThatLived - results!.catsThatDied);
             self.clearBoardGameToDisplayVictoryAnimation();
@@ -583,7 +587,7 @@ class UIBoardGame: UIView, GKMatchDelegate {
     var newHighScore:Bool = false;
     func gameOverTransition() {
         // Flash cats saved count last time
-        for _ in 0..<Int.random(in: 1...cats.count()){
+        for _ in 0...cats.count() {
             looseMouseCoin();
         }
         catsSavedCount = results!.catsThatLived - 1;
@@ -719,11 +723,8 @@ class UIBoardGame: UIView, GKMatchDelegate {
                 verifyThatRemainingCatsArePodded(catButton:catButton);
             }
         } else {
-            iLost = true;
-            setAllCatButtonsAsDead();
-            gameOverTransition();
             if (currentMatch != nil) {
-                print("MESSAGE: I LOST :(")
+                ViewController.staticSelf!.gameMessage!.displayILostAgainstOpponent()
                 var livesInt:UInt16 = UInt16(65535);
                 data = Data(bytes: &livesInt, count: MemoryLayout.size(ofValue: livesInt));
                 do {
@@ -733,6 +734,9 @@ class UIBoardGame: UIView, GKMatchDelegate {
                 }
                 stopSearchingForOpponentEntirely();
             }
+            iLost = true;
+            setAllCatButtonsAsDead();
+            gameOverTransition();
         }
         
     }

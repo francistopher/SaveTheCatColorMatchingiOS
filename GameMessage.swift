@@ -17,6 +17,9 @@ class UIGameMessage:UIView {
         case noGameCenter
         case noInternet
         case yesInternet
+        case iLost
+        case iWon
+        case iPlaying
     }
     
     var messageQueue:[Message] = [];
@@ -36,6 +39,8 @@ class UIGameMessage:UIView {
     
     var opponentImage:UIImage?
     var opponentAlias:String?
+    
+    static var opponent:String = ""
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -64,7 +69,7 @@ class UIGameMessage:UIView {
                 if (self.count == 0.0) {
                     self.displayFirstMessage();
                 }
-                if (self.count == 3.0) {
+                if (self.count == 3.75) {
                     if (self.messageQueue.count - 1 != 0) {
                         self.messageLabel!.fadeOutAndIn();
                         self.imageButton!.fadeOutAndIn();
@@ -72,7 +77,7 @@ class UIGameMessage:UIView {
                     self.count = 0.0;
                     self.messageQueue.remove(at: 0);
                 } else {
-                    if (!self.stayALittleLonger || littleLongerCount > 3.0) {
+                    if (!self.stayALittleLonger || littleLongerCount > 3.75) {
                         self.count += 0.125;
                         self.stayALittleLonger = false;
                     } else {
@@ -102,23 +107,17 @@ class UIGameMessage:UIView {
         case .yesInternet:
             setupImage(named:"yesInternet.png");
             messageLabel!.text = "Connected to the Internet! Game experience is renewable!";
-        }
-    }
-    
-    func displayOpponentImageAndAlias() {
-        messageLabel!.text = "Your opponent is\n\(opponentAlias!)";
-        if (opponentImage == nil) {
-            imageButton!.backgroundColor = UIColor.gray;
-            imageButton!.frame = CGRect(x: imageButton!.frame.minX, y: imageButton!.frame.minY, width: imageButton!.frame.width, height: imageButton!.frame.width);
-            CenterController.centerVertically(childView: imageButton!, parentRect: self.frame, childRect: imageButton!.frame)
-            imageButton!.layer.cornerRadius = imageButton!.frame.width * 0.5;
-            imageButton!.titleLabel!.font = UIFont.boldSystemFont(ofSize: imageButton!.frame.height * 0.5);
-            imageButton!.setTitleColor(UIColor.white, for: .normal);
-            imageButton!.setTitle(String(opponentAlias!.prefix(1)), for: .normal);
-            imageButton!.setImage(nil, for: .normal);
-        } else {
-            imageButton!.setImage(opponentImage!, for: .normal);
-            imageButton!.imageView!.contentMode = UIView.ContentMode.scaleAspectFit;
+        case .iWon:
+            setupImage(named: "gameCenter.png");
+            messageLabel!.text = "You have defeated\n\(UIGameMessage.opponent)"
+            UIGameMessage.opponent = ""
+        case .iLost:
+            setupImage(named: "gameCenter.png");
+            messageLabel!.text = "You have lost against\n\(UIGameMessage.opponent)"
+            UIGameMessage.opponent = ""
+        case .iPlaying:
+            setupImage(named: "gameCenter.png");
+            messageLabel!.text = "You are playing against\n\(UIGameMessage.opponent)"
         }
     }
     
@@ -141,28 +140,35 @@ class UIGameMessage:UIView {
         messageQueue.append(message);
     }
     
+    func displayOpponent() {
+        addToMessageQueue(message: .iPlaying)
+    }
+    
+    func displayIWonAgainstOpponent() {
+        addToMessageQueue(message: .iWon)
+    }
+    
+    func displayILostAgainstOpponent() {
+        addToMessageQueue(message: .iLost)
+    }
+    
     func displayNotLoggedIntoiCloudMessage() {
-        print("MESSAGE: Not logged into iCloud message")
         addToMessageQueue(message: .noiCloud);
     }
     
     func displayLoggedIntoiCloudMessage() {
-        print("MESSAGE: Logged into iCloud message")
         addToMessageQueue(message: .yesiCloud);
     }
     
     func displayGameCenterDirectionsMessage() {
-        print("MESSAGE: Game center directions message")
         addToMessageQueue(message: .noGameCenter);
     }
     
     func displayNoInternetConsequencesMessage() {
-        print("MESSAGE: No internet connection");
         addToMessageQueue(message: .noInternet);
     }
     
     func displayInternetConnectionEstablishedMessage() {
-        print("MESSAGE: Internet connection established")
         addToMessageQueue(message: .yesInternet);
     }
     

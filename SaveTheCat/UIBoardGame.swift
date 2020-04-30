@@ -204,8 +204,8 @@ class UIBoardGame: UIView, GKMatchDelegate {
     }
     
     func gameWon() {
+        ViewController.staticSelf!.gameMessage!.displayIWonAgainstOpponent()
         if (!iLost) {
-            ViewController.staticSelf!.gameMessage!.displayIWonAgainstOpponent()
             // Disappear cats and selection colors
             self.victoryView!.awardAmount = abs(results!.catsThatLived - results!.catsThatDied);
             self.clearBoardGameToDisplayVictoryAnimation();

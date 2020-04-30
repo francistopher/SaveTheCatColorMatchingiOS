@@ -55,6 +55,7 @@ class UIVictoryView:UICView {
         label = UICLabel(parentView: self, x: 0.0, y: unitHeight * 0.25, width: frame.width, height: unitHeight * 2.0);
         label!.font = UIFont.boldSystemFont(ofSize: label!.frame.height * 0.375);
         label!.text = "You Won!";
+        ViewController.updateFont(label: label!)
     }
     
     func setupCheeringCat() {

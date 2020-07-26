@@ -58,6 +58,10 @@ class UISettingsButton:UIButton {
         settingsMenu!.reduceSettingsMenuAndContents();
     }
     
+    /*
+        When the settings button is selected
+        it either opens or closes the setttings menu
+     */
     @objc func settingsMenuSelector(){
         if (isPressable) {
             isPressable = false;
@@ -87,6 +91,10 @@ class UISettingsButton:UIButton {
         }
     }
     
+    /*
+        Setup animation that handles the
+        settings menu opening
+     */
     func setupShowContentAnimation() {
         showContentAnimation = UIViewPropertyAnimator.init(duration: 1.0, curve: .easeInOut, animations: {
             self.imageView!.transform = self.imageView!.transform.rotated(by: CGFloat.pi);
@@ -97,6 +105,9 @@ class UISettingsButton:UIButton {
         })
     }
     
+    /*
+        Opens the settings menu
+     */
     @objc func settingsMenuShow(){
         isPressed = true;
         UISettingsButton.staticIsPressed = true;
@@ -107,6 +118,10 @@ class UISettingsButton:UIButton {
         showContentAnimation!.startAnimation();
     }
     
+    /*
+        Setup animation that closes
+        the settings menu
+     */
     func setupHideContentAnimation() {
         hideContentAnimation = UIViewPropertyAnimator.init(duration: 1.0, curve: .easeInOut, animations: {
             self.imageView!.transform = self.imageView!.transform.rotated(by: CGFloat.pi);
@@ -119,6 +134,9 @@ class UISettingsButton:UIButton {
         })
     }
     
+    /*
+        Hide the settings menu
+     */
     @objc func settingsMenuHide(){
         print("Unselected");
         isPressed = false;
@@ -127,6 +145,10 @@ class UISettingsButton:UIButton {
         hideContentAnimation!.startAnimation();
     }
     
+    /*
+        Updates the appearance of the settings button
+        based on the theme of the operating system
+     */
     func setStyle(){
         if (ViewController.uiStyleRawValue == 1){
             self.layer.borderColor = UIColor.black.cgColor;
@@ -141,6 +163,10 @@ class UISettingsButton:UIButton {
         }
     }
     
+    /*
+        Clears the colors of the board game
+        whenever the settings menu is opened
+     */
     func setBoardGameAndColorOptionsView(boardGameView:UIBoardGame, colorOptionsView:UIColorOptions) {
         self.boardGame = boardGameView;
         self.colorOptionsView = colorOptionsView;
@@ -149,6 +175,10 @@ class UISettingsButton:UIButton {
         self.settingsMenu!.mouseCoin!.mouseCoinView!.reducedFrame = boardGame!.attackMeter!.frame;
     }
     
+    /*
+        Makes the settings button opaque
+        over a period of time
+     */
     func fadeIn(){
         UIView.animate(withDuration: 1.0, delay: 0.125, options: .curveEaseIn, animations: {
             self.alpha = 1.0;

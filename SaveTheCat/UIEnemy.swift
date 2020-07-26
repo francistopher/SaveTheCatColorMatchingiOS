@@ -35,6 +35,9 @@ class UIEnemy:UIButton {
         alpha = 0.0;
     }
     
+    /*
+        Set the hairball image
+     */
     var iconImage:UIImage?
     func setupEnemyImage() {
         iconImage = nil;
@@ -55,6 +58,10 @@ class UIEnemy:UIButton {
     
     }
     
+    /*
+        Sway the hairball back and forth
+        close to its spawn point
+     */
     func sway(immediately:Bool){
         var xTranslation:CGFloat = self.originalFrame!.width / 7.5;
         var yTranslation:CGFloat = self.originalFrame!.height / 7.5;
@@ -76,18 +83,27 @@ class UIEnemy:UIButton {
         }
     }
 
+    /*
+        Make the hairball opaque over time
+     */
     func fadeIn() {
         UIView.animate(withDuration: 0.5, delay: 0.125, options: .curveEaseIn, animations: {
             self.alpha = 1.0;
         });
     }
     
+    /*
+        Make the hairball transparent over time
+     */
     func fadeOut() {
         UIView.animate(withDuration: 0.5, delay: 0.125, options: .curveEaseIn, animations: {
             self.alpha = 0.0;
         });
     }
     
+    /*
+        Translate the hairball to and back to its spawn point
+     */
     func translateToAndBackAt(xTarget:CGFloat, yTarget:CGFloat) {
         UIView.animate(withDuration: 0.25, delay:0.0, options: [.curveEaseInOut], animations: {
             self.transform = self.transform.translatedBy(x: xTarget - self.frame.midX, y: yTarget - self.frame.midY);

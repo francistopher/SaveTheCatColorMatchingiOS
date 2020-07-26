@@ -19,6 +19,10 @@ enum AspectRatio {
 
 class ViewController: UIViewController, GKGameCenterControllerDelegate, GKMatchmakerViewControllerDelegate, ReachabilityObserverDelegate, GADInterstitialDelegate, GADBannerViewDelegate {
     
+    /*
+        Creates functions for multiplayer
+        matchmaking
+     */
     func matchmakerViewControllerWasCancelled(_ viewController: GKMatchmakerViewController) {
         viewController.dismiss(animated: true, completion: nil);
     }
@@ -33,6 +37,10 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, GKMatchm
         print("A match was found????")
     }
     
+    /*
+        Create function to react to
+        the internet connection changing
+     */
     var myCats:[Cat:Int8] = [.standard:1, .breading:0, .taco:0, .egyptian:0, .supeR:0, .chicken:0, .cool:0, .ninja:0, .fat:0];
     var firedITunesStatus:Bool = false;
     var isiCloudReachable:Bool = false;
@@ -81,6 +89,10 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, GKMatchm
         }
     }
     
+    /*
+        Saves the cat data
+        as a string
+     */
     var myCatsString:String = "";
     var myCatsStringSection:String = "";
     func saveMyCatsDictAsString(catTypes:[Cat]) {
@@ -103,6 +115,10 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, GKMatchm
         myCatsString = ""
     }
     
+    /*
+        Extracts the string cat data
+        into a dictionary
+     */
     var myCatsTempString:String = "";
     var myCatsTempStringSection:String = "";
     var myCatsTempDict:[Cat:Int8]?
@@ -144,6 +160,9 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, GKMatchm
         self.boardGame!.cats.updateCatType();
     }
     
+    /*
+        Updates the user's cat value
+     */
     func updateCatValue(cat:Cat, stringValue:String) {
         if (stringValue == "00") {
             self.myCats[cat] = 0;
@@ -222,7 +241,7 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, GKMatchm
     private static var interstitial:GADInterstitial!
     static var interstitialWillPresentScreen:Bool = false;
     static var interstitialWillDismissScreen:Bool = false;
-    
+    // Internet connection
     var noInternetBannerView:UIImageView?
     var noInternetBannerLightImage:UIImage = UIImage(named: "lightNoInternetBanner")!;
     var noInternetBannerDarkImage:UIImage = UIImage(named: "darkNoInternetBanner")!;
@@ -244,6 +263,10 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, GKMatchm
         authenticateLocalPlayerForGamePlay();
     }
     
+    /*
+        Setup function that fires notification
+        about the internet connection
+     */
     func setupReachability() {
         try? addReachabilityObserver();
         func isICloudContainerAvailable() -> Bool {
@@ -381,7 +404,6 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, GKMatchm
                     self.boardGame!.stopSearchingForOpponentEntirely();
                 }
                 self.gameCenterAuthentificationOver = true;
-                print("DISABLE MULTIPLAYER")
                 self.presentSaveTheCat();
                 return;
             }
@@ -390,7 +412,7 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, GKMatchm
                     return;
                 }
                 self.present(vc, animated: true, completion: {
-                    print("Game center view was presented for sign in");
+                    // User already signed in
                 })
             } else {
                 if (player.isAuthenticated) {
@@ -399,8 +421,7 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, GKMatchm
                     }
                     self.gameCenterAuthentificationOver = true;
                     self.gameMessage!.stayALittleLonger = true;
-                    print("ENABLE MULTIPLAYER")
-                    print("PLAYER AUTHENTICATED!")
+                    // Multiplayer access exists, start game
                     self.presentSaveTheCat();
                 }
             }
@@ -416,7 +437,10 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, GKMatchm
         GKAchievement.report([self.achievement!], withCompletionHandler: nil);
     }
     
-    // Game center saved cats score
+    /*
+        Updates/Saves the users score
+        for each leaderboard
+     */
     static var bestCatSaverScore:GKScore?
     static var leaderBoard:GKLeaderboard?
     static var leaderBoardScore:Int64?
@@ -441,7 +465,6 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, GKMatchm
         }
         leaderBoard = GKLeaderboard();
         leaderBoard!.identifier = "topCatSaversAG";
-        // UNEXPECTED ERROR
         leaderBoard!.loadScores(completionHandler: { scores, error in
             if error == nil {
                 if (leaderBoard!.localPlayerScore != nil) {
@@ -465,7 +488,6 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, GKMatchm
         leaderBoard = nil;
         leaderBoard = GKLeaderboard();
         leaderBoard!.identifier = "topCatSaversSG";
-        // UNEXPECTED ERROR
         leaderBoard!.loadScores(completionHandler: { scores, error in
             if error == nil {
                 if (leaderBoard!.localPlayerScore != nil) {
@@ -493,6 +515,10 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, GKMatchm
         CenterController.centerHorizontally(childView: gameMessage!, parentRect: mainView.frame, childRect: gameMessage!.frame);
     }
     
+    /*
+        Setup all the components
+        of the game
+     */
     func setupSaveTheCat() {
         setupSounds();
         setupIntroCatAnimation();
@@ -514,6 +540,9 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, GKMatchm
         mainView.addSubview(statusBarView!);
     }
     
+    /*
+        Present the intro of the game
+     */
     func presentSaveTheCat() {
         DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
             self.introCatAnimation!.fadeOut();
@@ -554,6 +583,11 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, GKMatchm
         notificationCenter.addObserver(self, selector: #selector(self.appMovedToBackground), name: UIApplication.didEnterBackgroundNotification, object: nil);
     }
     
+    /*
+        Shuts music off,
+        pauses the gameplay in single player mode,
+        when the app is backgrounded
+     */
     @objc func appMovedToBackground() {
         if (self.settingsButton!.settingsMenu!.moreCats!.moreCatsVC!.isViewLoaded) {
             self.settingsButton!.settingsMenu!.moreCats!.moreCatsVC!.hideCatButton();
@@ -565,9 +599,13 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, GKMatchm
         self.boardGame!.cats.suspendCatAnimations();
         SoundController.chopinPrelude(play: false);
         SoundController.mozartSonata(play: false, startOver: false);
-        print("App backgrounded");
     }
     
+    /*
+        Starts playing music,
+        resumes single player gameplay,
+        when the app is foregrounded
+     */
     @objc func appMovedToForeground() {
         if (self.settingsButton!.settingsMenu!.moreCats!.moreCatsVC!.isViewLoaded) {
             self.settingsButton!.settingsMenu!.moreCats!.moreCatsVC!.presentCatButton();
@@ -584,7 +622,6 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, GKMatchm
         } else {
             SoundController.mozartSonata(play: true, startOver: false);
         }
-        print("App foregrounded");
     }
     
     func setupSounds() {
@@ -602,6 +639,10 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, GKMatchm
         SoundController.setupChopinPrelude();
     }
     
+    /*
+        Sets up the game components sizes
+        based on the aspect ratio of the screen
+     */
     func setupMainViewDimensionProperties() {
         var mainViewHeight:CGFloat = mainView.frame.height;
         var mainViewWidth:CGFloat =  mainView.frame.width;
@@ -715,6 +756,10 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, GKMatchm
         self.boardGame!.victoryView!.settingsMouseCoinFrame = settingsButton!.settingsMenu!.mouseCoin!.frame;
     }
     
+    /*
+        Updates the appearance to
+        correspond to the theme of the OS
+     */
     func setStyle() {
         setupNoInternetBannerStyle();
         gameMessage!.setStyle();
@@ -750,8 +795,11 @@ class ViewController: UIViewController, GKGameCenterControllerDelegate, GKMatchm
         traitCollectionChange()
     }
     
+    /*
+        Updates the main view background color
+        based on the theme of the operating system
+     */
     func traitCollectionChange() {
-        print(UIAds.stylePreference, "PREFERENCE")
         if (UIAds.stylePreference == -1) {
             ViewController.uiStyleRawValue = UIScreen.main.traitCollection.userInterfaceStyle.rawValue;
             if (UIScreen.main.traitCollection.userInterfaceStyle == .light) {

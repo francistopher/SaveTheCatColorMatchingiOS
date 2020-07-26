@@ -61,6 +61,9 @@ class UIAttackMeter:UICView {
         self.cats = cats;
     }
     
+    /*
+        Starts the first 180 degree rotation of the hairball
+     */
     func startFirstRotation(afterDelay:Double) {
         if (currentEnemyPhase != nil || didNotInvokeAttackImpulse) {
             return;
@@ -78,6 +81,9 @@ class UIAttackMeter:UICView {
         })
     }
     
+    /*
+        Setup the animation for the hair ball to rotate 180 degrees
+     */
     func setupFirstRotationAnimation() {
         var firstDuration:Double = 0.5;
         var firstRadian:CGFloat = -CGFloat.pi;
@@ -101,6 +107,9 @@ class UIAttackMeter:UICView {
         self.firstRotationAnimation = nil;
     }
     
+    /*
+        Starts the last 180 degree rotation of the hairball
+     */
     func startSecondRotation(afterDelay:Double) {
         if (isEnemyInAPhase()) {
             return;
@@ -110,6 +119,9 @@ class UIAttackMeter:UICView {
         self.currentEnemyPhase = .SecondRotation;
     }
     
+    /*
+        Setup the animation for the hair ball to rotate for the last 180 degrees
+     */
     func setupSecondRotationAnimation() {
         var secondDuration:Double = 0.5;
         var secondRadian:CGFloat = -CGFloat.pi;
@@ -133,6 +145,9 @@ class UIAttackMeter:UICView {
         self.secondRotationAnimation = nil;
     }
     
+    /*
+        Starts the animation that translates the hairball to the cat
+     */
     func startTranslationToCat(afterDelay:Double) {
         if (isEnemyInAPhase()) {
             return;
@@ -142,6 +157,9 @@ class UIAttackMeter:UICView {
         self.currentEnemyPhase = .TranslationToCat;
     }
     
+    /*
+        Setup the animation that translates the hairball to the cat
+     */
     func setupTranslationToCatAnimation() {
         self.translationToCatAnimation = UIViewPropertyAnimator(duration: getEnemyToCatDuration(), curve: .easeIn, animations: {
             self.enemy!.transform = self.enemy!.transform.translatedBy(x: self.getEnemyToCatDistance(), y: 0.0);
@@ -157,6 +175,9 @@ class UIAttackMeter:UICView {
         self.translationToCatAnimation = nil;
     }
     
+    /*
+        Starts the animation of the hairball jumping on the cat
+     */
     func startSizeExpansionAnimation(afterDelay:Double) {
         if (isEnemyInAPhase()) {
             return;
@@ -166,6 +187,9 @@ class UIAttackMeter:UICView {
         self.currentEnemyPhase = .SizeExpansion;
     }
     
+    /*
+        Setup the animation of the hairball jumping on the cat
+     */
     func setupSizeExpansionAnimation() {
         var factor:CGFloat = 1.5;
         var duration:Double = 0.5;
@@ -196,6 +220,9 @@ class UIAttackMeter:UICView {
         self.sizeExpansionAnimation = nil;
     }
     
+    /*
+        Starts the animation of the hairball getting off the cat
+     */
     func startSizeReductionAnimation(afterDelay:Double) {
         if (isEnemyInAPhase()) {
             return;
@@ -205,6 +232,9 @@ class UIAttackMeter:UICView {
         self.currentEnemyPhase = .SizeReduction;
     }
     
+    /*
+        Setup the animation of the hairball getting off the cat
+     */
     func setupSizeReductionAnimation() {
         var factor:CGFloat = 1.0 / 1.5;
         var duration:Double = 0.5;
@@ -231,6 +261,9 @@ class UIAttackMeter:UICView {
         self.sizeReductionAnimation = nil;
     }
     
+    /*
+        Starts the animation of the hariball translating to its spawn point
+     */
     func startTranslationToStartAnimation(afterDelay:Double) {
         if (isEnemyInAPhase()) {
             return;
@@ -240,6 +273,9 @@ class UIAttackMeter:UICView {
         self.currentEnemyPhase = .TranslationToStart;
     }
     
+    /*
+        Setup the animation of the hairball translating to its spawn point
+     */
     func setupTranslationToStartAnimation() {
         translationToStartAnimation = UIViewPropertyAnimator(duration: getEnemyToStartDuration() , curve: .linear, animations: {
             self.enemy!.transform = .identity;
@@ -280,6 +316,9 @@ class UIAttackMeter:UICView {
         self.enemyToCatDistance = cat!.originalFrame!.minX - enemy!.originalFrame!.minX;
     }
     
+    /*
+        Updates the duration of the hairball translating to the cat
+     */
     func updateDuration(change:Double) {
         if (change > 0.0) {
             displacementDuration += change;
@@ -294,45 +333,43 @@ class UIAttackMeter:UICView {
                 previousDisplacementDuration = 1.5;
             }
         }
-        print(displacementDuration, "Displacement duration")
-        print(previousDisplacementDuration, "Previous Displacement duration")
     }
     
-    func  pauseEnemyMovement() {
+    /*
+        Stops the current hairball animation
+     */
+    func pauseEnemyMovement() {
         switch currentEnemyPhase {
         case .TranslationToStart:
             translationToStartAnimation?.stopAnimation(true);
-            print("Stopped translation to start animation");
         case .FirstRotation:
             firstRotationAnimation?.stopAnimation(true);
             let radians:CGFloat = atan2(enemy!.transform.b, enemy!.transform.a)
             let degrees:CGFloat = radians * 180 / .pi;
             self.firstRotationDegreeCheckpoint = degrees;
-            print("Stopped first rotation animation ", firstRotationDegreeCheckpoint);
         case .SecondRotation:
             secondRotationAnimation?.stopAnimation(true);
             let radians:CGFloat = atan2(enemy!.transform.b, enemy!.transform.a)
             let degrees:CGFloat = radians * 180 / .pi;
             self.secondRotationDegreeCheckpoint = degrees;
-            print("Stopped second rotation animation", secondRotationDegreeCheckpoint);
         case .TranslationToCat:
             translationToCatAnimation?.stopAnimation(true);
-            print("Stopped translation to cat animation");
         case .SizeExpansion:
             sizeExpansionAnimation?.stopAnimation(true);
             let grownEnemyX:CGFloat = enemyXBeforeJump + (enemy!.originalFrame!.width * 0.5) - (enemy!.frame.width * 0.5);
             enemy!.frame = CGRect(x: grownEnemyX, y: enemy!.frame.minY, width: enemy!.frame.width, height: enemy!.frame.height);
-            print("Stopped size expansion animation")
         case .SizeReduction:
             sizeReductionAnimation?.stopAnimation(true);
             let shrunkEnemyX:CGFloat = enemyXBeforeUnJump + (enemy!.originalFrame!.width * 0.75) - (enemy!.frame.width * 0.5);
             enemy!.frame = CGRect(x: shrunkEnemyX, y: enemy!.frame.minY, width: enemy!.frame.width, height: enemy!.frame.height)
-            print("Stopped size reduction animation")
         default:
             print("")
         }
     }
     
+    /*
+        Start resuming animations for the hairball
+     */
     func resumeEnemyMovement() {
         switch currentEnemyPhase {
         case .TranslationToStart:
@@ -362,6 +399,10 @@ class UIAttackMeter:UICView {
         }
     }
     
+    /*
+        Returns a boolean indicating whether or not
+        the hairball is currently in being animated
+     */
     func isEnemyInAPhase() -> Bool {
       return ((firstRotationAnimation != nil && firstRotationAnimation!.isRunning) || (secondRotationAnimation != nil && secondRotationAnimation!.isRunning) || (secondRotationAnimation != nil && secondRotationAnimation!.isRunning) || (translationToCatAnimation != nil && translationToCatAnimation!.isRunning) || (sizeExpansionAnimation != nil && sizeExpansionAnimation!.isRunning) || (sizeReductionAnimation != nil && sizeReductionAnimation!.isRunning) || (translationToStartAnimation != nil && translationToStartAnimation!.isRunning));
     }
@@ -370,6 +411,9 @@ class UIAttackMeter:UICView {
         cat!.disperseRadially();
     }
     
+    /*
+        Holds the hairball at its spawn point
+     */
     func holdEnemyOnceAtStart() {
         holdEnemyAtStartAndHold = true;
         displacementDuration = 1.0;
@@ -378,6 +422,10 @@ class UIAttackMeter:UICView {
         })
     }
     
+    /*
+        Sends the hairball to the start
+        and holds it on its spawn point
+     */
     func sendEnemyToStartAndHold() {
         holdEnemyOnceAtStart();
         pauseEnemyMovement();
@@ -387,6 +435,9 @@ class UIAttackMeter:UICView {
         resumeEnemyMovement();
     }
     
+    /*
+        Sends the hair ball to its spawn point
+     */
     func sendEnemyToStart() {
         if (currentEnemyPhase != nil && currentEnemyPhase! != .TranslationToStart) {
             displacementDuration = 1.0;
@@ -408,6 +459,9 @@ class UIAttackMeter:UICView {
         self.superview!.addSubview(enemy!);
     }
     
+    /*
+        Creates a cat on the meter
+     */
     func resetCat() {
         setupCat();
         cat!.selectedCat = .standard;
@@ -428,6 +482,10 @@ class UIAttackMeter:UICView {
         cat!.setCat(named: "SmilingCat", stage:0);
     }
     
+    /*
+        Updates the colors of the attack meter based
+        on the theme of the operating systems
+     */
     func setCompiledStyle() {
         setStyle();
         self.layer.borderColor = UIColor.systemYellow.cgColor;

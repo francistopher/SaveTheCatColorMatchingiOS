@@ -11,6 +11,10 @@ import AVFoundation
 
 class SoundController {
     
+    /*
+        Initialize variables to save
+        the sounds before playing them
+     */
     static var gearSpinningPath:String?
     static var gearSpinningURL:URL?
     static var gearSpinningSoundEffect:AVAudioPlayer?

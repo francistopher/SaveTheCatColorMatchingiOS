@@ -59,6 +59,10 @@ class UICatButton: UIButton {
         self.setStyle();
     }
     
+    /*
+        Returns a file name based on the cat state and
+        the selected cat
+     */
     static func getCatFileName(named:String, selectedCat:Cat) -> String {
         // Build cat directory string
         var namedCatImage:String = "";
@@ -91,7 +95,10 @@ class UICatButton: UIButton {
         }
     }
     
-
+    /*
+        Spawns a mouse coin from the center of the
+        cat button and gives it to the user
+     */
     var mouseCoin:UIMouseCoin?
     var settingsButton:UISettingsButton?
     var settingsMenuFrame:CGRect?
@@ -139,15 +146,20 @@ class UICatButton: UIButton {
         imageContainerButton!.shrinked();
     }
     
+    /*
+        Updates the size of the cat button
+        based on the size based by the user
+     */
     func transformTo(frame:CGRect) {
         UIView.animate(withDuration: 0.5, delay: 0.125, options: .curveEaseIn, animations: {
             self.frame = frame;
+            // Update the size based on the side lengths
             if (self.frame.height > self.frame.width) {
                  self.imageContainerButton!.frame = CGRect(x: self.imageContainerButton!.frame.minX, y: self.imageContainerButton!.frame.minY, width: frame.width, height: frame.width);
             } else {
                 self.imageContainerButton!.frame = CGRect(x: self.imageContainerButton!.frame.minX, y: self.imageContainerButton!.frame.minY, width: frame.height, height: frame.height);
             }
-           
+            // Update the corner radius based on wether or not it has been matched
             CenterController.center(childView: self.imageContainerButton!, parentRect: frame, childRect: self.imageContainerButton!.frame);
             if (!self.isPodded) {
                 if (self.frame.height > self.frame.width) {
@@ -167,6 +179,9 @@ class UICatButton: UIButton {
         })
     }
     
+    /*
+        Shrinks the button toward its center over time
+     */
     func shrink(){
         UIView.animate(withDuration: 0.5, delay: 0.125, options: .curveEaseIn, animations: {
             self.frame = CGRect(x: self.frame.midX, y: self.frame.midY, width: 1.0, height: 1.0);
@@ -174,22 +189,35 @@ class UICatButton: UIButton {
         })
     }
     
+    /*
+       Shrinks the button toward its center in an instant
+    */
     func shrunk() {
         self.frame = CGRect(x: self.frame.midX, y: self.frame.midY, width: 1.0, height: 1.0);
         self.imageContainerButton!.frame = CGRect(x: 0.0, y: 0.0, width: 1.0, height: 1.0)
     }
     
+    /*
+       Grows the button from its center over time
+    */
     func grow(){
         UIView.animate(withDuration: 1.0, delay: 0.125, options: .curveEaseInOut, animations: {
             self.frame = self.originalFrame!;
         });
     }
     
+    /*
+       Shrinks the button toward its center immediatelty
+    */
     func grown() {
         self.frame = self.originalFrame!;
         self.imageContainerButton!.frame = self.imageContainerButton!.originalFrame!;
     }
     
+    /*
+        Updates the cat on the button
+        based on the OS theme
+    */
     var iconImage:UIImage?
     func setCat(named:String, stage:Int){
         // Save non empty strings only
@@ -257,6 +285,9 @@ class UICatButton: UIButton {
         }
     }
     
+    /*
+        Make the cat button opaque over time
+     */
     func fadeBackgroundIn(){
         UIView.animate(withDuration: 0.5, delay: 0.25, options: .curveEaseIn, animations: {
             self.backgroundColor = self.originalBackgroundColor;
@@ -265,6 +296,9 @@ class UICatButton: UIButton {
         });
     }
     
+    /*
+        Swing the cat button back and forth
+     */
     var randomAnimationSelection:Int?
     func setRandomCatAnimation() {
         self.imageContainerButton!.imageView!.transform = self.imageContainerButton!.imageView!.transform.rotated(by:-CGFloat.pi / 2.0);
@@ -289,17 +323,27 @@ class UICatButton: UIButton {
         displaceBoundsOntoMainView();
     }
     
+    /*
+        Translates the cat button while spinning
+        out of the screen and removed past the edge
+     */
     func disperseRadially() {
         ViewController.staticMainView!.insertSubview(self, at: 1);
+        // Rotate
         UIView.animate(withDuration: 3.0, delay: 0.0, options: .curveEaseInOut, animations: {
             self.imageContainerButton!.transform =  self.imageContainerButton!.transform.rotated(by: CGFloat.pi);
              self.frame = CGRect(x: self.getRadialXTargetPoint(parentFrame: self.superview!.frame, childFrame: self.frame), y: self.getRadialYTargetPoint(parentFrame: self.superview!.frame, childFrame: self.frame), width: 1.0, height: 1.0);
         }, completion: { _ in
+            // Remove from screen
             self.imageContainerButton = nil;
             self.removeFromSuperview();
         });
     }
 
+    /*
+        Translates the cat button vertically up,
+        remove the button from the screen after the edge
+     */
     var angle:CGFloat?
     func disperseVertically() {
         displaceBoundsOntoMainView();
@@ -313,6 +357,9 @@ class UICatButton: UIButton {
         });
     }
     
+    /*
+        Update the state of the cat button to selected
+     */
     func pod() {
         SoundController.kittenMeow();
         UIView.animate(withDuration: 0.5, delay: 0.125, options: [.curveEaseInOut], animations: {
@@ -322,6 +369,7 @@ class UICatButton: UIButton {
                 self.imageContainerButton!.frame = CGRect(x: 0.0, y: 0.0, width: self.frame.height, height: self.frame.height);
             }
             self.backgroundColor = self.originalBackgroundColor;
+            // Update corner radius to be ciruclar
             if (!(self.frame.width < self.frame.height)) {
                 self.layer.cornerRadius = self.frame.height * 0.5;
             }
@@ -330,6 +378,9 @@ class UICatButton: UIButton {
         })
     }
     
+    /*
+        Returns the target x coordinate for a positive vertical translation
+     */
     func generateElevatedTargetX(parentFrame:CGRect, childFrame:CGRect, angle:CGFloat) -> CGFloat{
         var targetX:CGFloat = parentFrame.width * 0.5;
         if (angle < 15.0) {
@@ -341,17 +392,22 @@ class UICatButton: UIButton {
         return targetX;
     }
     
+    /*
+        Returns the target y coordinate for a positive vertical translation
+     */
     func generateElevatedTargetY(parentFrame:CGRect, childFrame:CGRect, angle:CGFloat) -> CGFloat{
         var targetY:CGFloat = -parentFrame.height;
         targetY += CGFloat(Int.random(in: 0..<Int(parentFrame.height / 2.0)));
         return targetY;
     }
     
+    /*
+        Returns the target x coordinate for a rotational horizontal translation
+     */
     var angleDegree:CGFloat?
     var angleRadian:CGFloat?
     var targetX:CGFloat?
     var targetY:CGFloat?
-    
     func  getRadialXTargetPoint(parentFrame:CGRect, childFrame:CGRect) -> CGFloat {
         angleDegree = CGFloat.random(in: 0.0...45.0);
         angleRadian = cos((CGFloat.pi * angleDegree!) / 180.0);
@@ -365,6 +421,9 @@ class UICatButton: UIButton {
         return targetX!;
     }
     
+    /*
+       Returns the target y coordinate for a rotational vertical translation
+    */
     func getRadialYTargetPoint(parentFrame:CGRect, childFrame:CGRect) -> CGFloat {
         angleDegree = CGFloat.random(in: 45.0...90.0);
         angleRadian = sin((CGFloat.pi * angleDegree!) / 180.0);
@@ -386,6 +445,9 @@ class UICatButton: UIButton {
         }
     }
     
+    /*
+        Update the style of the cat based on the operating system theme
+     */
     func updateUIStyle() {
         self.setCat(named:"updateStyle", stage: 5);
     }
@@ -394,12 +456,19 @@ class UICatButton: UIButton {
         self.imageContainerButton!.imageView!.alpha = 0.0;
     }
     
+    /*
+        Make the cat button appear over time by making it opaque over time
+     */
     func fadeIn() {
         UIView.animate(withDuration: 0.25, delay: 0.125, options: .curveEaseIn, animations: {
             self.alpha = 1.0;
         });
     }
     
+    /*
+        Update the border color based on the
+        theme of the operating system
+     */
     func setStyle() {
         if (ViewController.uiStyleRawValue == 1){
             self.layer.borderColor = UIColor.black.cgColor;
@@ -410,6 +479,10 @@ class UICatButton: UIButton {
         }
     }
     
+    /*
+        Make the background color transparent
+        over time
+     */
     func fadeBackgroundOut() {
         UIView.animate(withDuration: 0.5, delay: 0.25, options: .curveEaseIn, animations: {
             self.backgroundColor = UIColor.clear;
@@ -418,6 +491,10 @@ class UICatButton: UIButton {
         });
     }
     
+    /*
+        Make the background color opaque
+        over time
+     */
     func fadeBackgroundIn(color:UIColor, duration:Double, delay:Double){
         UIView.animate(withDuration: duration, delay: delay, options: .curveEaseIn, animations: {
             self.backgroundColor = color;

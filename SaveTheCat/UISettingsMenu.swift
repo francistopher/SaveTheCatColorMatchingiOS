@@ -24,11 +24,13 @@ class UISettingsMenu:UICView {
     }
     
     init(parentView:UIView, frame:CGRect) {
+        // Set the corner radius and border width of the settings menu
         super.init(parentView: parentView, x: frame.minX, y: frame.minY, width: frame.width, height: frame.height, backgroundColor: UIColor.clear);
         self.layer.cornerRadius = self.frame.height / 2.0;
         self.layer.borderWidth = self.frame.height / 12.0;
         super.originalFrame = frame;
         self.reducedFrame = CGRect(x: self.frame.minX, y: self.frame.minY, width: (self.frame.height * 2.0) - self.layer.borderWidth, height: self.frame.height);
+        // Setup the butons of the settings menu
         setupAdsButton();
         setupMouseCoinButton();
         setupLeaderBoardButton();
@@ -42,6 +44,7 @@ class UISettingsMenu:UICView {
     
     func setupAdsButton() {
         advertisement = UIAds(parentView: self, x: 0.0, y: 0.0, width: self.frame.height, height: self.frame.height);
+        // Setup ads button size based on the aspect ratio of the screen
         if (ViewController.aspectRatio! == .ar19point5by9) {
             advertisement!.transform = advertisement!.transform.scaledBy(x: 0.5, y: 0.5);
         } else if (ViewController.aspectRatio! == .ar16by9) {
@@ -56,6 +59,7 @@ class UISettingsMenu:UICView {
     
     func setupLeaderBoardButton() {
         leaderBoard = UILeadBoard(parentView: self, x: 0.0, y: 0.0, width: self.frame.height, height: self.frame.height);
+        // Setup leaderboard button size based on the aspect ratio of the screen
         if (ViewController.aspectRatio! == .ar19point5by9) {
             leaderBoard!.transform = leaderBoard!.transform.scaledBy(x: 0.5, y: 0.5);
         } else if (ViewController.aspectRatio! == .ar16by9) {
@@ -72,6 +76,7 @@ class UISettingsMenu:UICView {
 
     func setupVolumeButton() {
         volume = UIVolume(parentView: self, x: 0.0, y: 0.0, width: self.frame.height, height: self.frame.height);
+        // Setup volume button size based on the aspect ratio of the screen
         if (ViewController.aspectRatio! == .ar19point5by9) {
             volume!.transform = volume!.transform.scaledBy(x: 0.5, y: 0.5);
         } else if (ViewController.aspectRatio! == .ar16by9) {
@@ -85,6 +90,7 @@ class UISettingsMenu:UICView {
 
     func setupMoreCatsButton() {
         moreCats = UIMoreCats(parentView: self, x: 0.0, y: 0.0, width: self.frame.height, height: self.frame.height);
+        // Setup more cats button size based on the aspect ratio of the screen
         if (ViewController.aspectRatio! == .ar19point5by9) {
             moreCats!.transform = moreCats!.transform.scaledBy(x: 0.5, y: 0.5);
         } else if (ViewController.aspectRatio! == .ar16by9) {

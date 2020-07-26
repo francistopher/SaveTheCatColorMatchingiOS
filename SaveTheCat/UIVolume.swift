@@ -31,12 +31,18 @@ class UIVolume: UIButton {
         setStyle();
     }
     
+    /*
+        Start playing the music
+     */
     func setMusicOn() {
         if (defaults.bool(forKey: "musicOff")) {
             volumeTarget();
         }
     }
     
+    /*
+        Set the image for the volume button
+     */
     var iconImage:UIImage?
     func setIconImage(imageName: String) {
         iconImage = nil;
@@ -45,6 +51,9 @@ class UIVolume: UIButton {
         self.imageView!.contentMode = UIView.ContentMode.scaleAspectFit;
     }
     
+    /*
+        Update the volume and the image
+     */
     @objc func volumeTarget() {
         if (UIVolume.musicOff) {
             SoundController.setMusicVolumeTo100();
@@ -61,6 +70,10 @@ class UIVolume: UIButton {
         defaults.set(UIVolume.musicOff, forKey: "musicOff");
     }
     
+    /*
+        Set the volume icon image
+        based on the OS theme
+     */
     func setStyle() {
         if (ViewController.uiStyleRawValue == 1){
             if (UIVolume.musicOff) {

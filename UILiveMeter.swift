@@ -25,6 +25,7 @@ class UILiveMeter:UICView {
     
     init(parentView: UIView, frame:CGRect, isOpponent:Bool) {
         super.init(parentView: parentView, x: frame.minX, y: frame.minY, width: frame.width, height: frame.height, backgroundColor: UIColor.clear);
+        // Set the heart color image
         if (isOpponent) {
           heartImage = UIImage(named: "opponentHeart.png")!
         } else {
@@ -56,6 +57,9 @@ class UILiveMeter:UICView {
         ViewController.updateFont(label: livesCountLabel!);
     }
     
+    /*
+        Creates the hearts, embedded on a button
+     */
     func setupHeartInactiveButtons() {
         for _ in (heartInactiveButtons.count + 1)...livesLeft {
             if (heartInactiveButtons.count == 0) {
@@ -70,6 +74,9 @@ class UILiveMeter:UICView {
         }
     }
     
+    /*
+        Creates a heart
+     */
     func buildHeartButton(x:CGFloat) {
         currentHeartButton = UICButton(parentView: self, frame: CGRect(x: x, y: 0.0, width: self.frame.height, height: self.frame.height), backgroundColor: UIColor.clear);
         CenterController.center(childView: currentHeartButton!, parentRect: self.frame, childRect: currentHeartButton!.frame);
@@ -81,6 +88,10 @@ class UILiveMeter:UICView {
         currentHeartButton!.show();
     }
     
+    /*
+        When a heart is touched it grows
+        and shrinks to its original size
+     */
     @objc func heartButtonSelector(sender:UIButton) {
         UIView.animate(withDuration: 0.5, delay: 0.125, options: [.curveEaseInOut], animations: {
             sender.transform = sender.transform.scaledBy(x: 1.25, y: 1.25);
@@ -91,6 +102,10 @@ class UILiveMeter:UICView {
         })
     }
     
+    /*
+        Subtracts the lives left count by 1
+        and strips away a heart
+     */
     func decrementLivesLeftCount() {
         if (livesLeft > 0) {
             livesLeft -= 1;
@@ -114,11 +129,16 @@ class UILiveMeter:UICView {
         }
     }
     
+    /*
+        Increases the lives left count by 1
+        and adds a heart visually
+     */
     func incrementLivesLeftCount(catButton:UICatButton, forOpponent:Bool) {
         livesLeft += 1;
         // Get spawn frame
         var x:CGFloat = catButton.frame.midX * 0.5 + catButton.superview!.frame.minX;
         var y:CGFloat = catButton.frame.midY * 0.5 + catButton.superview!.frame.minY;
+        // Set heart target based on screen aspect ratio
         if (forOpponent) {
             x = self.frame.minX - (self.frame.height * 1.5);
             if (ViewController.aspectRatio! == .ar19point5by9) {
@@ -158,6 +178,10 @@ class UILiveMeter:UICView {
         }
     }
     
+    /*
+        Resets the lives left count
+        back to one
+     */
     func resetLivesLeftCount() {
         if (heartInactiveButtons.count > 1) {
             for _ in 1..<heartInactiveButtons.count {
@@ -173,6 +197,9 @@ class UILiveMeter:UICView {
         })
     }
     
+    /*
+        Makes the lives meter opaque after an amount of time
+     */
     override func fadeIn() {
         UIView.animate(withDuration: 1.0, delay: 0.125, options: .curveEaseInOut, animations: {
             self.alpha = 1.0;
@@ -181,6 +208,10 @@ class UILiveMeter:UICView {
         })
     }
     
+    /*
+        Updates the style of the lives meter
+        based on the theme of the operating system
+     */
     func setCompiledStyle() {
         if (ViewController.uiStyleRawValue == 1) {
             self.layer.borderColor = UIColor.black.cgColor;

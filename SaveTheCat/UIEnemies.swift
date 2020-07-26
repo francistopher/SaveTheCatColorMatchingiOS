@@ -19,6 +19,10 @@ class UIEnemies {
         buildEnemies(unitView: unitView);
     }
     
+    /*
+        Plot each hairball equidistant from each other
+        horizontally and vertically
+     */
     var enemySideLength:CGFloat?
     var totalWidthSpacing:CGFloat?
     var totalHeightSpacing:CGFloat?
@@ -53,13 +57,19 @@ class UIEnemies {
             y! = -enemyHeightSpacing! * 0.45;
         }
     }
-    
+    /*
+        Updates the hairball's colors based on the
+        theme of the operating system
+     */
     func setStyle() {
         for enemy in enemiesCollection! {
             enemy.setupEnemyImage();
         }
     }
     
+    /*
+        Makes the hairballs appear from nothing
+     */
     func fadeIn(){
         // Fade each enemy in
         for enemy in self.enemiesCollection! {
@@ -67,6 +77,10 @@ class UIEnemies {
         }
     }
     
+    /*
+        Translate the hairballs to the cat button
+        and back to it's location of origin
+     */
     func translateToCatAndBack(catButton:UICatButton){
         // Translate each enemy to the center of the grid of cats
         for enemy in self.enemiesCollection! {
@@ -74,6 +88,10 @@ class UIEnemies {
         }
     }
     
+    /*
+        Swings the hairballs back and forth near
+        their position of origin
+     */
     func sway(immediately:Bool){
         // Animate each enemy
         for enemy in self.enemiesCollection! {
@@ -81,6 +99,10 @@ class UIEnemies {
         }
     }
     
+    /*
+        Hides the hairballs by making them
+        fully transparent
+     */
     func hide() {
         // Hide each enemy
         for enemy in self.enemiesCollection! {

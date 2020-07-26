@@ -165,7 +165,6 @@
 		B8CDA7FF2431C7380083DF7F /* lightCat.png in Resources */ = {isa = PBXBuildFile; fileRef = B8CDA7FB2431C7370083DF7F /* lightCat.png */; };
 		B8CDA8002431C7380083DF7F /* darkCat.png in Resources */ = {isa = PBXBuildFile; fileRef = B8CDA7FC2431C7380083DF7F /* darkCat.png */; };
 		B8F6C9BA242168C300CD668C /* UIIntroCatAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8F6C9B9242168C300CD668C /* UIIntroCatAnimation.swift */; };
-		B8F6C9BC24230FAA00CD668C /* gifRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8F6C9BB24230FAA00CD668C /* gifRenderer.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -331,7 +330,6 @@
 		B8CDA7FB2431C7370083DF7F /* lightCat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = lightCat.png; path = SaveTheCat/lightCat.png; sourceTree = "<group>"; };
 		B8CDA7FC2431C7380083DF7F /* darkCat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = darkCat.png; path = SaveTheCat/darkCat.png; sourceTree = "<group>"; };
 		B8F6C9B9242168C300CD668C /* UIIntroCatAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIIntroCatAnimation.swift; sourceTree = "<group>"; };
-		B8F6C9BB24230FAA00CD668C /* gifRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = gifRenderer.swift; sourceTree = "<group>"; };
 		BFFD34E3F63138C9ED73D8DE /* Pods-SaveTheCat.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SaveTheCat.debug.xcconfig"; path = "Target Support Files/Pods-SaveTheCat/Pods-SaveTheCat.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -609,7 +607,6 @@
 				B83A807C24300C32007B8700 /* SleepyFatCat.ttf */,
 				B83B03B824115AA900EC4BAD /* LaunchScreen.storyboard */,
 				B83B03B624115AA900EC4BAD /* Main.storyboard */,
-				B8F6C9BB24230FAA00CD668C /* gifRenderer.swift */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -1102,7 +1099,6 @@
 				B83B03B1241159F900EC4BAD /* UIBoardGame.swift in Sources */,
 				B83B03A0241158FC00EC4BAD /* UICLabel.swift in Sources */,
 				B83B039D241158FC00EC4BAD /* UICScrollView.swift in Sources */,
-				B8F6C9BC24230FAA00CD668C /* gifRenderer.swift in Sources */,
 				B83A807A242FE665007B8700 /* UIVolume.swift in Sources */,
 				B83BC407241BF9930026D7F6 /* GameMessage.swift in Sources */,
 				B83B03C324115B3200EC4BAD /* ViewController.swift in Sources */,

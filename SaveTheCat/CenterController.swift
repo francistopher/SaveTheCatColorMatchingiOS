@@ -14,23 +14,38 @@ class CenterController {
     static var centeredX:CGFloat?
     static var centeredY:CGFloat?
     
+    /*
+        Centers a view onto its parent view
+     */
     static func center(childView:UIView, parentRect:CGRect, childRect:CGRect){
         centeredX = CenterController.getCenteredX(parentRect: parentRect, childRect: childRect);
         centeredY = CenterController.getCenteredY(parentRect: parentRect, childRect: childRect);
         childView.frame = CGRect(x: centeredX!, y:centeredY!, width: childRect.width, height: childRect.height);
     }
     
+    /*
+        Vertically centers a view onto its parent
+        view with the additional offset
+     */
     static func centerWithVerticalDisplacement(childView:UIView, parentRect:CGRect, childRect:CGRect, verticalDisplacement:CGFloat){
         centeredX = CenterController.getCenteredX(parentRect: parentRect, childRect: childRect);
         centeredY = CenterController.getCenteredY(parentRect: parentRect, childRect: childRect) + verticalDisplacement;
         childView.frame = CGRect(x: centeredX!, y: centeredY!, width: childRect.width, height: childRect.height);
     }
     
+    /*
+        Centers a view horizontally
+        onto its parent
+     */
     static func centerHorizontally(childView:UIView, parentRect:CGRect, childRect:CGRect){
         centeredX = CenterController.getCenteredX(parentRect: parentRect, childRect: childRect);
         childView.frame = CGRect(x: centeredX!, y: childRect.minY, width: childRect.width, height: childRect.height);
     }
     
+    /*
+        Centers a view vertically
+        onto its parent
+     */
     static func centerVertically(childView:UIView, parentRect:CGRect, childRect:CGRect){
         centeredY = CenterController.getCenteredY(parentRect: parentRect, childRect: childRect);
         childView.frame = CGRect(x: childRect.minX, y: centeredY!, width: childRect.width, height: childRect.height);

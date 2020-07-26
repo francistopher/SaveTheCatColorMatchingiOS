@@ -18,6 +18,10 @@ class UICatButtons {
         previousCollection = [UICatButton]();
     }
     
+    /*
+        Builds the cat button based on the
+        frame and a background color
+     */
     var catButton:UICatButton?
     func buildCatButton(parent:UIView, frame:CGRect, backgroundColor:UIColor) -> UICatButton {
         catButton = UICatButton(parentView: parent, x: frame.minX, y: frame.minY, width: frame.width, height: frame.height, backgroundColor: backgroundColor);
@@ -33,6 +37,10 @@ class UICatButtons {
         return catButton!;
     }
     
+    /*
+        Returns whether or not a cat is still
+        available to become podded
+     */
     func oneIsNeitherPoddedOrDead() -> Bool {
         for catButton in presentCollection! {
             if (!catButton.isPodded && catButton.isAlive) {
@@ -42,6 +50,10 @@ class UICatButtons {
         return false;
     }
     
+    /*
+        Returns whether or not
+        there is a single cat alive
+     */
     func onlyOneIsAlive() -> Bool {
         var aliveCount:Int = 0;
         for catButton in presentCollection! {
@@ -56,6 +68,10 @@ class UICatButtons {
         }
     }
     
+    /*
+        Returns whether or not
+        a single cat is still alive
+     */
     func atLeastOneIsAlive() -> Bool {
         for catButton in presentCollection! {
             if (catButton.isAlive) {
@@ -65,6 +81,10 @@ class UICatButtons {
         return false;
     }
     
+    /*
+        Returns whether or not the
+        cats all survived
+     */
     func didAllSurvive() -> Bool {
         for catButton in presentCollection! {
             if (!catButton.isAlive) {
@@ -74,6 +94,10 @@ class UICatButtons {
         return true;
     }
     
+    /*
+        Saves remaining cats and reward
+        the user based on the count
+     */
     func podAliveOnesAndGiveMouseCoin() {
         for catButton in presentCollection! {
             if (catButton.isAlive) {
@@ -83,6 +107,9 @@ class UICatButtons {
         }
     }
     
+    /*
+        Returns the number of cats alive
+     */
     func countOfAliveCatButtons() -> Int {
         var count:Int = 0;
         for catButton in presentCollection! {
@@ -93,6 +120,9 @@ class UICatButtons {
         return count;
     }
     
+    /*
+        Returns a cat button with a color
+     */
     func getCatButtonWith(backgroundColor:UIColor) -> UICatButton {
         for catButton in presentCollection!.reversed() {
             if (catButton.backgroundCGColor! == backgroundColor.cgColor) {
@@ -116,6 +146,10 @@ class UICatButtons {
         }
     }
 
+    /*
+        Returns a boolan indicating whether
+        or not the cats are alive
+     */
     func areAllCatsDead() -> Bool {
         for catButton in presentCollection! {
             if (catButton.isAlive) {
@@ -125,6 +159,10 @@ class UICatButtons {
         return true;
     }
     
+    /*
+        Returns whether or not all
+        the alive cats are podded
+     */
     func aliveCatsArePodded() -> Bool{
         for catButton in presentCollection! {
             if (catButton.isAlive){
@@ -137,12 +175,18 @@ class UICatButtons {
         return true;
     }
     
+    /*
+        Shrinks all the cat buttons to their own center
+     */
     func shrink() {
         for catButton in presentCollection! {
             catButton.shrink();
         }
     }
     
+    /*
+        Translate all the cats past the top of the screen
+     */
     func disperseVertically() {
         for catButton in presentCollection! {
             if (catButton.isAlive) {
@@ -151,6 +195,10 @@ class UICatButtons {
         }
     }
     
+    /*
+        Returns all the cat buttons that
+        are still alive in a given row
+     */
     func getRowOfAliveCats(rowIndex:Int) -> [UICatButton] {
         var rowOfAliveCats:[UICatButton] = [];
         for catButton in presentCollection! {
@@ -161,6 +209,9 @@ class UICatButtons {
         return rowOfAliveCats;
     }
     
+    /*
+        Updates all the states of the cats
+     */
     var previousFileName:String = "";
     func updateCatType() {
         for catButton in presentCollection! {
@@ -176,6 +227,10 @@ class UICatButtons {
         }
     }
     
+    /*
+        Returns a list of indexes with the
+        number of cat buttons alive in each row
+     */
     func getIndexesOfRowsWithAliveCatsCount() -> [Int:Int] {
         var indexesOfRowsWithAliveCatsCount:[Int:Int] = [:];
         for catButton in presentCollection! {
@@ -190,6 +245,10 @@ class UICatButtons {
         return indexesOfRowsWithAliveCatsCount;
     }
     
+    /*
+        Disperses all the cat buttons
+        from the center of the screen
+     */
     func disperseRadially() {
         for catButton in presentCollection! {
             if (catButton.isAlive) {
@@ -198,12 +257,19 @@ class UICatButtons {
         }
     }
     
+    /*
+        Start cats swinging back and forth
+     */
     func resumeCatAnimations() {
         for catButton in presentCollection! {
             catButton.animate(AgainWithoutDelay: true);
         }
     }
     
+    /*
+        Updates all the cat buttons colors
+        based on the operating system theme
+     */
     func activateCatsForUIStyle() {
         for catIndex in 0..<presentCollection!.count {
             if (presentCollection!.count == 0) {
@@ -222,12 +288,20 @@ class UICatButtons {
         }
     }
     
+    /*
+        Cancels the back and forth animation
+        of all the cat buttons
+     */
     func suspendCatAnimations() {
         for catButton in presentCollection! {
             catButton.hideCat();
         }
     }
     
+    /*
+        Updates all the cat button's background
+        color to be transparent
+     */
     func transitionCatButtonBackgroundToClear() {
         for catButton in presentCollection! {
             catButton.fadeBackgroundIn(color: UIColor.clear, duration: 0.5, delay: 0.125);
@@ -239,6 +313,9 @@ class UICatButtons {
         }
     }
     
+    /*
+        Returns a cat button that hasn't perished
+     */
     var randomCatButton:UICatButton?
     func getRandomCatThatIsAlive() -> UICatButton {
         while (true) {
@@ -260,6 +337,10 @@ class UICatButtons {
         }
     }
     
+    /*
+        Recolor all the cat buttons with their
+        original background color
+     */
     func unClearCatButtons() {
         for catButton in presentCollection! {
             if (!catButton.isPodded && !catButton.clearedOutToSolve) {

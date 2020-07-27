@@ -35,6 +35,9 @@ class UIMoreCats: UIButton {
         moreCatsVC!.modalPresentationStyle = .overFullScreen;
     }
 
+    /*
+        Displays the more cats view
+     */
     @objc func moreCatsSelector() {
         if (!ViewController.staticSelf!.isInternetReachable) {
             ViewController.staticSelf!.gameMessage!.addToMessageQueue(message: .noInternet);
@@ -49,6 +52,9 @@ class UIMoreCats: UIButton {
         })
     }
        
+    /*
+        Sets the image of the button
+     */
     var iconImage:UIImage?
     func setIconImage(named:String) {
         iconImage = nil;
@@ -111,6 +117,10 @@ class MoreCatsViewController:UIViewController {
         setCompiledStyle()
     }
     
+    /*
+        Displays an alert regarding
+        the selected cat purchase
+     */
     func setupPurchaseAlert() {
         purchaseAlert = UIAlertController(title: "Cat Purchase", message: "", preferredStyle: .alert);
         purchaseAlert!.addAction(UIAlertAction(title: "Buy", style: .default, handler: { _ in
@@ -135,6 +145,9 @@ class MoreCatsViewController:UIViewController {
         purchaseAlert!.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil));
     }
     
+    /*
+        Saves current cat data as a string
+     */
     func saveMyCatsDictAsString() {
         if (ViewController.staticSelf!.isInternetReachable) {
             // Save my cats string
@@ -142,6 +155,9 @@ class MoreCatsViewController:UIViewController {
         }
     }
     
+    /*
+     
+     */
     var contentViewFrame:CGRect?
     var contentViewBorderWidth:CGFloat?
     var contentViewCornerRadius:CGFloat?
@@ -169,6 +185,9 @@ class MoreCatsViewController:UIViewController {
         contentView!.clipsToBounds = true;
     }
     
+    /*
+        Create the button that closes the menu
+     */
     func setupHideButton() {
         closeButton = UICButton(parentView: contentView!, frame: CGRect(x: contentView!.frame.width * 0.8, y: 0.0, width: contentView!.frame.width * 0.2, height: contentView!.frame.width * 0.12), backgroundColor: UIColor.red);
         closeButton!.addTarget(self, action: #selector(hideButtonSelector), for: .touchUpInside);
@@ -180,6 +199,9 @@ class MoreCatsViewController:UIViewController {
         ViewController.updateFont(button: closeButton!);
     }
     
+    /*
+        Closes the more cats menu
+     */
     @objc func hideButtonSelector() {
         self.dismiss(animated: true, completion: nil);
         self.hideCatButton();
@@ -191,6 +213,9 @@ class MoreCatsViewController:UIViewController {
         })
     }
     
+    /*
+        Setup the button that display the memoriam message
+     */
     func setupInfoButton() {
         infoButton = UICButton(parentView: contentView!, frame: CGRect(x: 0.0, y: 0.0, width: contentView!.frame.width * 0.2, height: contentView!.frame.width * 0.12), backgroundColor: UIColor.systemBlue);
         infoButton!.addTarget(self, action: #selector(infoButtonSelector), for: .touchUpInside);
@@ -202,6 +227,9 @@ class MoreCatsViewController:UIViewController {
         ViewController.updateFont(button: infoButton!);
     }
     
+    /*
+        Displays or closes the memoriam message
+     */
     @objc func infoButtonSelector() {
         if (infoButton!.titleLabel!.text == "i") {
             infoButton!.setTitle("x", for: .normal);
@@ -212,6 +240,9 @@ class MoreCatsViewController:UIViewController {
         }
     }
     
+    /*
+        Button that moves on to the next cat
+     */
     func setupNextButton() {
         nextButton = UICButton(parentView: contentView!, frame: CGRect(x:contentView!.frame.width * 0.8, y: contentView!.frame.height - contentView!.frame.width * 0.12, width: contentView!.frame.width * 0.2, height: contentView!.frame.width * 0.12), backgroundColor: UIColor.systemYellow);
         nextButton!.addTarget(self, action: #selector(nextButtonSelector), for: .touchUpInside);
@@ -223,6 +254,9 @@ class MoreCatsViewController:UIViewController {
         ViewController.updateFont(button: nextButton!);
     }
     
+    /*
+        Moves to the next cat
+     */
     @objc func nextButtonSelector() {
         if (displayedCatIndex == 8) {
             displayedCatIndex = 0;
@@ -236,6 +270,10 @@ class MoreCatsViewController:UIViewController {
         setPresentationCat(cat: catTypes[displayedCatIndex]);
     }
     
+    /*
+        Updates the text on the selection button
+        based on its current purchase state
+     */
     var currentSelectionValue:Int8?
     func setSelectionButtonText() {
         currentSelectionValue = ViewController.staticSelf!.myCats[catTypes[displayedCatIndex]]!;
@@ -261,6 +299,9 @@ class MoreCatsViewController:UIViewController {
         }
     }
     
+    /*
+        Display the purchase alert message
+     */
     var purchaseAlertMessage:String?
     func setPurchaseAlertMessage() {
         purchaseAlertMessage = "Do you want to buy ";
@@ -269,6 +310,10 @@ class MoreCatsViewController:UIViewController {
         purchaseAlert!.message = purchaseAlertMessage!;
     }
     
+    /*
+        Update the position of the mouse coin
+        on the purchase button
+     */
     var offer:String?
     var price:String?
     var translationCoefficient:CGFloat = 0.0;
@@ -290,6 +335,9 @@ class MoreCatsViewController:UIViewController {
         return offer!;
     }
     
+    /*
+        Updates data to represent that the cat has been unselected
+     */
     func unselectCat() {
         if (ViewController.getSelectedCatsCount() == 1) {
             
@@ -303,6 +351,9 @@ class MoreCatsViewController:UIViewController {
         saveMyCatsDictAsString();
     }
     
+    /*
+        Updates data to represent that a cat has been selected
+     */
     func selectCat() {
         for cat in catTypes {
             currentSelectionValue = ViewController.staticSelf!.myCats[cat]!;
@@ -322,6 +373,9 @@ class MoreCatsViewController:UIViewController {
         saveMyCatsDictAsString();
     }
     
+    /*
+        Creates button that switches to the previous cat
+     */
     func setupPreviousButton() {
         previousButton = UICButton(parentView: contentView!, frame: CGRect(x: 0.0, y: contentView!.frame.height - contentView!.frame.width * 0.12, width: contentView!.frame.width * 0.2, height:  contentView!.frame.width * 0.12), backgroundColor: UIColor.systemYellow);
         previousButton!.addTarget(self, action: #selector(previousButtonSelector), for: .touchUpInside);
@@ -333,6 +387,9 @@ class MoreCatsViewController:UIViewController {
         ViewController.updateFont(button: previousButton!);
     }
     
+    /*
+        Switches to previous cat
+     */
     @objc func previousButtonSelector() {
         if (displayedCatIndex == 0) {
             displayedCatIndex = 8;
@@ -342,6 +399,10 @@ class MoreCatsViewController:UIViewController {
         updateCatImageNameAndStatus();
     }
 
+    /*
+        Creates cat button which presents the
+        currently selected cat
+     */
     var presentationCatButton:UICatButton?
     var presentationCatButtonX:CGFloat?
     var presentationCatButtonY:CGFloat?
@@ -357,6 +418,9 @@ class MoreCatsViewController:UIViewController {
         presentationCatButton!.clipsToBounds = true;
     }
     
+    /*
+        Creates memoriam label
+     */
     func setupInfoLabel() {
         memoriamLabel = UICLabel(parentView: contentView!, x: presentationCatButton!.imageContainerButton!.originalFrame!.minX, y: presentationCatButton!.imageContainerButton!.originalFrame!.minY, width: presentationCatButton!.imageContainerButton!.originalFrame!.width * 0.975, height: presentationCatButton!.imageContainerButton!.originalFrame!.height * 0.975)
         CenterController.center(childView: memoriamLabel!, parentRect: contentView!.frame, childRect: memoriamLabel!.frame);
@@ -374,6 +438,10 @@ class MoreCatsViewController:UIViewController {
         memoriamLabel!.shrunk();
     }
     
+    /*
+        Create view that contains the cat,
+        the selection button and the cat name label
+     */
     func setupCatViewHandler() {
         catViewHandler = UICView(parentView: contentView!, x: 0.0, y: presentationCatButton!.originalFrame!.minY + presentationCatButton!.originalFrame!.height * 0.25, width: presentationCatButton!.originalFrame!.width * 1.05, height: presentationCatButton!.originalFrame!.width * 0.5, backgroundColor: UIColor.clear);
         catViewHandler!.invertColor = true;
@@ -384,6 +452,9 @@ class MoreCatsViewController:UIViewController {
         contentView!.bringSubviewToFront(presentationCatButton!);
     }
     
+    /*
+        Creates the label that contains the name of the cat
+     */
     func setupCatLabelName() {
         catLabelName = UICLabel(parentView: catViewHandler!, x: 0.0, y: presentationCatButton!.layer.borderWidth * 0.75, width: catViewHandler!.frame.width, height: (self.closeButton!.frame.height));
         catLabelName!.isInverted = true;
@@ -396,6 +467,10 @@ class MoreCatsViewController:UIViewController {
         ViewController.updateFont(label: catLabelName!);
     }
     
+    /*
+        Creates the selection button
+        that enables the purchasing and selection
+     */
     var mouseCoin:UIMouseCoin?
     func setupSelectionButton() {
         selectionButton = UICButton(parentView: catViewHandler!, frame:CGRect(x: 0.0, y: catViewHandler!.frame.height - (presentationCatButton!.layer.borderWidth * 0.5) - self.catLabelName!.frame.height, width: catViewHandler!.frame.width * 0.75, height: self.closeButton!.frame.height * 1.025), backgroundColor: UIColor.systemRed);
@@ -411,6 +486,10 @@ class MoreCatsViewController:UIViewController {
         setupMouseCoin();
     }
     
+    /*
+        Creates the mouse coin on the
+        selection button when a cat hasn't been purchased
+     */
     func setupMouseCoin() {
         mouseCoin = UIMouseCoin(parentView: selectionButton!, x: selectionButton!.frame.width * 0.51, y: 0.0, width: selectionButton!.frame.height * 0.7, height: selectionButton!.frame.height * 0.7);
         CenterController.centerVertically(childView: mouseCoin!, parentRect: selectionButton!.frame, childRect: mouseCoin!.frame);
@@ -424,6 +503,10 @@ class MoreCatsViewController:UIViewController {
         SoundController.coinEarned();
     }
     
+    /*
+        Updates data to mark the
+        displayed cat as selected
+     */
     @objc func selectionButtonSelector() {
         if (selectionButton!.titleLabel!.text == "Select") {
             selectCat();
@@ -436,6 +519,9 @@ class MoreCatsViewController:UIViewController {
         }
     }
     
+    /*
+        Animation that slides open the label name
+     */
     var presentLabelNameTimer:Timer?
     var presentLabelNameAnimation:UIViewPropertyAnimator?
     func setupPresentLabelNameAnimation () {
@@ -452,6 +538,10 @@ class MoreCatsViewController:UIViewController {
         })
     }
     
+    /*
+        Updates the cat that is
+        currently being displayed
+     */
     func setPresentationCat(cat:Cat) {
         presentationCatButton!.selectedCat = cat;
         displayedCatIndex = catTypes.firstIndex(of: cat)!;
@@ -461,6 +551,9 @@ class MoreCatsViewController:UIViewController {
         setSelectionButtonText();
     }
     
+    /*
+        Shows the cat button
+     */
     func presentCatButton() {
         presentationCatButton!.randomAnimationSelection = 0;
         presentationCatButton!.setRandomCatAnimation();
@@ -469,6 +562,10 @@ class MoreCatsViewController:UIViewController {
         setupPresentLabelNameTimer();
     }
     
+    /*
+        Shrinks the cat button
+        making it disappear
+     */
     func hideCatButton() {
         // Reset more cats view
         if (catLabelName != nil) {
@@ -489,6 +586,11 @@ class MoreCatsViewController:UIViewController {
        SoundController.kittenMeow();
     }
     
+    /*
+        Update the appearance of the more
+        cats view based on the appearance
+        of the OS
+     */
     func setCompiledStyle() {
         presentationCatButton!.setStyle();
         presentationCatButton!.setCat(named: "SmilingCat", stage: 5);

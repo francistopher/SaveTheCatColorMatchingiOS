@@ -38,6 +38,10 @@ class UICLabel:UILabel {
         self.shrunkFrame = CGRect(x: self.frame.midX, y: self.frame.midY, width: 1.0, height: 1.0);
     }
     
+    /*
+        Reduces the size of both width and height
+        of the button to its center
+     */
     func shrink(removeFromSuperview:Bool) {
         UIView.animate(withDuration: 0.25, delay: 0.125, options: .curveEaseInOut, animations: {
             self.frame = self.shrunkFrame!;
@@ -48,6 +52,10 @@ class UICLabel:UILabel {
         })
     }
     
+    /*
+        Grows the size of both the width and the height
+        of the button from its center
+     */
     func grow() {
            UIView.animate(withDuration: 0.25, delay: 0.125, options: .curveEaseInOut, animations: {
                self.frame = self.originalFrame!;
@@ -58,18 +66,27 @@ class UICLabel:UILabel {
         self.frame = self.shrunkFrame!;
     }
     
+    /*
+        Make the label opaque over time
+     */
     func fadeIn() {
         UIView.animate(withDuration: 1, delay: 0.125, options: .curveEaseIn, animations: {
             super.alpha = 1.0;
         })
     }
     
+    /*
+        Make the label transparent over time
+     */
     func fadeOut() {
         UIView.animate(withDuration: 1, delay: 0.125, options: .curveEaseIn, animations: {
             super.alpha = 0.0;
         })
     }
     
+    /*
+        Make the label opaque and then transparent over time
+     */
     func fadeInAndOut(){
         UIView.animate(withDuration: 2, delay: 0.125, options: .curveEaseIn, animations: {
             super.alpha = 1.0;
@@ -81,6 +98,9 @@ class UICLabel:UILabel {
         }
     }
     
+    /*
+        Make the label transparent and then opaque over time
+     */
     func fadeOutAndIn() {
         UIView.animate(withDuration: 0.125, delay: 0.0, options: .curveEaseIn, animations: {
             super.alpha = 0.0;
@@ -91,6 +111,10 @@ class UICLabel:UILabel {
         })
     }
     
+    /*
+        Update the colors of the label
+        based on the theme of the OS
+     */
     func setStyle() {
         if (isInverted) {
             if (ViewController.uiStyleRawValue == 1) {

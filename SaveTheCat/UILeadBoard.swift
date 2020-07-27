@@ -34,6 +34,9 @@ class UILeadBoard: UIButton {
         parentView.addSubview(self);
     }
 
+    /*
+        Creates the number 1 text label
+     */
     func setupLabel1() {
         label1 = UICLabel(parentView: self, x: 0.0, y: frame.height * 0.575, width: frame.width / 3.0, height: frame.width / 3.0);
         label1!.backgroundColor = UIColor.clear;
@@ -43,6 +46,9 @@ class UILeadBoard: UIButton {
         self.addSubview(label1!);
     }
     
+    /*
+        Creates the number 2 text label
+     */
     func setupLabel2() {
         label2 = UICLabel(parentView: self, x: frame.width / 3.0, y: frame.height * 0.4, width: frame.width / 3.0, height: frame.width / 3.0);
         label2!.backgroundColor = UIColor.clear;
@@ -52,6 +58,9 @@ class UILeadBoard: UIButton {
         self.addSubview(label2!);
     }
     
+    /*
+        Creates the number 3 text label
+     */
     func setupLabel3() {
         label3 = UICLabel(parentView: self,x: 2.0 * frame.width / 3.0, y: frame.height * 0.675, width: frame.width / 3.0, height: frame.width / 3.0);
         label3!.backgroundColor = UIColor.clear;
@@ -64,6 +73,10 @@ class UILeadBoard: UIButton {
     @objc func statsSelector() {
         ViewController.staticSelf!.checkMemoryCapacityLeaderBoard();
     }
+    
+    /*
+        Creates the pedestals image of the leaderboard
+     */
     var iconImage:UIImage?
     func setIconImage(imageName:String) {
         iconImage = nil;
@@ -78,6 +91,10 @@ class UILeadBoard: UIButton {
         }
     }
     
+    /*
+        Update the colors of the number labels
+        based on the theme of the operating system
+     */
     func setStyle() {
         if (ViewController.uiStyleRawValue == 1){
             updateLabelNumsTitleColor(color: UIColor.black);

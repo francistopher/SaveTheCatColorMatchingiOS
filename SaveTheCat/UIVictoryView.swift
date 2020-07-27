@@ -51,6 +51,9 @@ class UIVictoryView:UICView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    /*
+        Creates the success title label
+     */
     func setupLabel() {
         label = UICLabel(parentView: self, x: 0.0, y: unitHeight * 0.25, width: frame.width, height: unitHeight * 2.0);
         label!.font = UIFont.boldSystemFont(ofSize: label!.frame.height * 0.375);
@@ -58,6 +61,9 @@ class UIVictoryView:UICView {
         ViewController.updateFont(label: label!)
     }
     
+    /*
+        Creates the image of the cheering cat
+     */
     func setupCheeringCat() {
         cheeringCat = UIImageView(frame: CGRect(x: frame.width * 0.04, y: unitHeight * 1.75, width: frame.width * 0.5, height: unitHeight * 4.5));
         cheeringCat!.image = UIImage(named: UICatButton.getCatFileName(named: "SmilingCat", selectedCat: .standard));
@@ -67,12 +73,18 @@ class UIVictoryView:UICView {
         setupCatsLivedLabel();
     }
     
+    /*
+        Creates the label with the count of saved cats
+     */
     func setupCatsLivedLabel() {
         catsSavedCountLabel = UICLabel(parentView: self, x: cheeringCat!.frame.minX, y: cheeringCat!.frame.maxY - unitHeight * 0.6, width: cheeringCat!.frame.width, height: unitHeight);
         catsSavedCountLabel!.font = UIFont.boldSystemFont(ofSize: catsSavedCountLabel!.frame.height * 0.6);
         catsSavedCountLabel!.text = "0";
     }
     
+    /*
+        Create the dead cat image
+     */
     func setupDeadCat() {
         deadCat = UIImageView(frame: CGRect(x: frame.width * 0.46, y: unitHeight * 1.75, width: frame.width * 0.5, height: unitHeight * 4.5));
         deadCat!.image =  UIImage(named: UICatButton.getCatFileName(named: "DeadCat", selectedCat: .standard));
@@ -82,6 +94,9 @@ class UIVictoryView:UICView {
         setupCatsDeadLabel();
     }
     
+    /*
+        Create the label that keeps count of dead cats
+     */
     func setupCatsDeadLabel() {
         catsDeadCountLabel = UICLabel(parentView: self, x: deadCat!.frame.minX, y: deadCat!.frame.maxY - unitHeight * 0.6, width: deadCat!.frame.width, height: unitHeight);
         catsDeadCountLabel!.font = UIFont.boldSystemFont(ofSize: catsDeadCountLabel!.frame.height * 0.6);
@@ -102,10 +117,15 @@ class UIVictoryView:UICView {
         setupMouseCoin();
     }
     
+    /*
+        Creates the mouse coin button on
+        the watch ad button
+     */
     func setupMouseCoin() {
         var x:CGFloat?
         var y:CGFloat?
         var sideLength:CGFloat?
+        // Position and size based on the aspect ratio of the screen
         if (ViewController.aspectRatio! == .ar4by3) {
             sideLength = watchAdButton!.frame.height * 0.65;
             x = watchAdButton!.frame.width * 0.77;
@@ -124,6 +144,9 @@ class UIVictoryView:UICView {
         mouseCoin!.alpha = 0.0;
     }
     
+    /*
+        Plays the ad after the button is selected
+     */
     @objc func watchAdButtonSelector() {
         UIResults.adIsShowing = true;
         ViewController.presentInterstitial();
@@ -154,6 +177,9 @@ class UIVictoryView:UICView {
         })
     }
     
+    /*
+        Gives mouse coins to the user
+     */
     var giveMouseCoinsTimer:Timer?
     func showVictoryMessageAndGiveMouseCoins(catsSaved:Int, catsDied:Int) {
         catsSavedCountLabel!.text = "\(catsSaved)";
@@ -166,11 +192,14 @@ class UIVictoryView:UICView {
                 self.mouseCoin!.alpha = 1.0;
                 self.watchAdButton!.alpha = 1.0;
                 self.giveMouseCoinsTimer!.invalidate();
-                print("YESS")
             }
         })
     }
     
+    /*
+        Plots the mouse coins radially from the center
+        of the screen
+     */
     var angleIncrements:CGFloat?
     var currentAngle:CGFloat?
     var mouseCoinX:CGFloat?
@@ -207,7 +236,10 @@ class UIVictoryView:UICView {
         }
     }
     
-    
+    /*
+        Update the style of the victory view based on
+        the theme of the operating system
+     */
     func setCompiledStyle() {
         watchAdButton!.setStyle();
         watchAdButton!.layer.borderColor = UIColor.systemYellow.cgColor;

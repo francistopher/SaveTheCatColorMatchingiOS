@@ -34,6 +34,10 @@ class UIMouseCoin: UICButton {
         setupMouseCoinView();
     }
     
+    /*
+        Plays coin sound and displays
+        the player's mouse coins value
+     */
     @objc func mouseCoinSelector() {
         if (isSelectable) {
             SoundController.coinEarned();
@@ -63,6 +67,10 @@ class UIMouseCoin: UICButton {
         self.imageView!.contentMode = UIView.ContentMode.scaleAspectFit;
     }
     
+    /*
+        Updates the value of mouse coins
+        the user has attained
+     */
     func  setMouseCoinValue(newValue:Int64) {
         var timeCounter:Double = 0.0;
         var timeRate:Double = 0.0;
@@ -87,10 +95,10 @@ class UIMouseCoin: UICButton {
                     UIResults.mouseCoins -= 1;
                 }
             }
-            
             self.amountLabel!.text = "\(UIResults.mouseCoins)";
             return;
         }
+        // Updates value like a casino slot machine
         func setupUpdateMouseCoinValueAnimation() {
             updateMouseCoinValueTimer?.invalidate();
             updateMouseCoinValueTimer = nil;
@@ -129,9 +137,12 @@ class UIMouseCoin: UICButton {
         }
         timeCounter = timeRate;
         setupUpdateMouseCoinValueAnimation();
-        print("MESSAGE: REAL VALUE \(newValue)");
     }
     
+    /*
+        Creates the view that displays
+        the number of coins the user has attained
+     */
     func setupMouseCoinView() {
         if (ViewController.staticMainView!.isEqual(self.superview!)) {
             self.isSelectable = false;
@@ -151,6 +162,10 @@ class UIMouseCoin: UICButton {
         mouseCoinView!.alpha = 0.0;
     }
     
+    /*
+        Creates the label that features the user's
+        mouse coins count
+     */
     func setupAmountLabel() {
         self.amountLabel = UICLabel(parentView: mouseCoinView!, x: 0.0, y: 0.0, width: self.mouseCoinView!.frame.width, height: self.mouseCoinView!.frame.width * 0.25);
         self.amountLabel!.textColor = UIColor.systemYellow;

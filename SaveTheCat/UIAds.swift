@@ -42,6 +42,10 @@ class UIAds: UIButton {
         setStyle();
     }
     
+    /*
+        Updates the value that determines
+        the alert messahe to display
+     */
     var compiledStaticParameters:String?
     func updateStaticParameters() {
         compiledStaticParameters = keyValueStore.string(forKey: "aboutAdsStyle");
@@ -67,6 +71,10 @@ class UIAds: UIButton {
         }
     }
     
+    /*
+        Saves value that represents the
+        alert message that is displayed
+     */
     func saveStaticParameters() {
         compiledStaticParameters = ""
         if (UIAds.canHideAds) {
@@ -98,6 +106,10 @@ class UIAds: UIButton {
         checkIfCanHideAds();
     }
     
+    /*
+        Update the text of the
+        alert message
+     */
     func checkIfCanHideAds() {
         if (UIAds.canHideAds) {
             setIconImage(imageName: "noGreenSymbol");
@@ -116,6 +128,10 @@ class UIAds: UIButton {
         }
     }
     
+    /*
+        Create the label of the
+        alert message
+     */
     func setupAdsText() {
         adsText = UICLabel(parentView: self, x: frame.height * 0.01, y: frame.height * 0.04, width: frame.width, height: frame.height);
         adsText!.text = "ADS";
@@ -125,6 +141,10 @@ class UIAds: UIButton {
         self.addSubview(adsText!);
     }
 
+    /*
+        Triggers the alert message to
+        be displayed to the player
+     */
     @objc func noAdsSelector() {
         if (UIAds.isAdHidden) {
             if (UIAds.stylePreference == -1) {
@@ -144,7 +164,10 @@ class UIAds: UIButton {
         }
     }
 
-
+    /*
+        Sets the button image based
+        on the theme of the operating system
+     */
     var iconImage:UIImage?
     func setIconImage(imageName:String) {
         iconImage = nil;

@@ -11,6 +11,7 @@ import UIKit
 
 class UICButton:UIButton {
     
+    // Sizes and positions
     var originalFrame:CGRect?
     var secondaryFrame:CGRect?
     var shrunkFrame:CGRect?
@@ -19,6 +20,7 @@ class UICButton:UIButton {
     
     var shrinkType:shrink = .mid;
     
+    // Nature properties
     var willBeShrunk:Bool = false;
     var styleBackground:Bool = false;
     
@@ -52,6 +54,9 @@ class UICButton:UIButton {
         self.frame = self.shrunkFrame!;
     }
     
+    /*
+        Translates the button to the desired position
+     */
     func translate(newOriginalFrame:CGRect) {
         UIView.animate(withDuration: 1.0, delay: 0.125, options: .curveEaseInOut, animations: {
             self.frame = newOriginalFrame;
@@ -64,18 +69,30 @@ class UICButton:UIButton {
         shrunkFrame = CGRect(x: originalFrame!.midX, y: originalFrame!.minY, width: 0.0, height: originalFrame!.height);
     }
     
+    /*
+        Increases both the width and the height
+        to its original size
+     */
     func grow(){
         UIView.animate(withDuration: 1.0, delay: 0.125, options: .curveEaseInOut, animations: {
             self.frame = self.originalFrame!;
         });
     }
     
+    /*
+        Makes the background color of
+        the button opaque
+     */
     func fadeBackgroundIn(color:UIColor, duration:Double){
         UIView.animate(withDuration: duration, delay: 0.25, options: .curveEaseIn, animations: {
             self.backgroundColor = color;
         });
     }
     
+    /*
+        Shrinks both the length and the
+        width of the button at one side
+     */
     func shrink(colorOptionButton:Bool) {
         willBeShrunk = true;
         var x:CGFloat = 0.0;
@@ -104,24 +121,38 @@ class UICButton:UIButton {
         });
     }
     
+    /*
+        Makes the button transparent over time
+     */
     func hide(){
         UIView.animate(withDuration: 1.0, delay: 0.125, options: .curveEaseIn, animations: {
             self.alpha = 0.0;
         });
     }
     
+    /*
+        Makes the button opaque over time
+     */
     func show() {
         UIView.animate(withDuration: 1.0, delay: 0.125, options: .curveEaseIn, animations: {
             self.alpha = 1.0;
         });
     }
     
+    /*
+        Increase the opacity of the background color
+        over time
+     */
     func fadeBackgroundIn(){
         UIView.animate(withDuration: 0.25, delay: 125, options: .curveEaseIn, animations: {
             self.backgroundColor = self.originalBackgroundColor!;
         });
     }
     
+    /*
+        Make the button transparent and
+        then opque over time
+     */
     func fadeOutAndIn() {
         UIView.animate(withDuration: 0.125, delay: 0.0, options: .curveEaseInOut, animations: {
             super.alpha = 0.0;
@@ -136,6 +167,10 @@ class UICButton:UIButton {
         self.frame = CGRect(x: self.frame.midX, y: self.frame.midY, width: 1.0, height: 1.0);
     }
     
+    /*
+        Update the shape of the button
+        to be selected
+     */
     func select(){
         if (!self.isSelected) {
             self.superview!.bringSubviewToFront(self);
@@ -146,6 +181,10 @@ class UICButton:UIButton {
         }
     }
     
+    /*
+        Reset the shape of the button
+        to be unselected
+     */
     func unSelect(){
         if (self.isSelected) {
             UIView.animate(withDuration: 0.5, delay: 0.125, options:[.curveEaseInOut], animations: {
@@ -155,6 +194,10 @@ class UICButton:UIButton {
         }
     }
     
+    /*
+        Update the appearance of the button
+        based on the theme of the operating system
+     */
     func setStyle() {
         if (isStyleInverted) {
             if (ViewController.uiStyleRawValue == 1){

@@ -31,12 +31,18 @@ import UIKit
         parentView.addSubview(self);
     }
     
+    /*
+        Transform the size and position of the view
+     */
     func transform(frame:CGRect) {
         UIView.animate(withDuration: 0.5, delay: 0.0, options: .curveEaseInOut, animations: {
             self.frame = frame;
         })
     }
     
+    /*
+        Make the view opaque over time
+     */
     func fadeIn() {
         UIView.animate(withDuration: 0.5, delay: 0.125, options: .curveEaseInOut, animations: {
             self.alpha = 1.0;
@@ -45,6 +51,9 @@ import UIKit
         })
     }
     
+    /*
+        Make the view transparent over time
+     */
     func fadeOut() {
         UIView.animate(withDuration: 1.0, delay: 0.125, options: .curveEaseInOut, animations: {
             self.alpha = 0.0;
@@ -53,6 +62,10 @@ import UIKit
         })
     }
     
+    /*
+        Update the appearance of the view
+        based on the theme of the operating system
+     */
     func setStyle() {
         if (invertColor) {
             if (ViewController.uiStyleRawValue == 1) {
@@ -73,6 +86,9 @@ import UIKit
         }
     }
     
+    /*
+        Sets round corners for the view
+     */
     func roundCorners(radius: CGFloat, _ corners:UIRectCorner, lineWidth:CGFloat) {
         let path = UIBezierPath(roundedRect: self.bounds, byRoundingCorners: corners, cornerRadii: CGSize(width: radius, height: radius));
         let mask = CAShapeLayer();

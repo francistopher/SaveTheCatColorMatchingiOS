@@ -48,6 +48,9 @@ class UIGlovedPointer:UICButton {
         fatalError("init(coder:) has not been implemented")
     }
     
+    /*
+        Selects the cat button for us
+     */
     func setColorAndCatButtons(colorButtons:[UICButton], catButtons:UICatButtons) {
         self.colorButton = colorButtons[0];
         self.catButton = catButtons.getCatButtonWith(backgroundColor: colorButton!.originalBackgroundColor!);
@@ -55,6 +58,10 @@ class UIGlovedPointer:UICButton {
         resetPositionToFrontOfColorButton();
     }
     
+    /*
+        Translates position of glove pointer
+        to be infront of a color option button
+     */
     func resetPositionToFrontOfColorButton() {
         self.transitionedToCatButton = false;
         let x:CGFloat = self.colorButton!.superview!.frame.minX - (self.frame.width * 0.1);
@@ -67,6 +74,10 @@ class UIGlovedPointer:UICButton {
         }
     }
     
+    /*
+        Translates position of glove pointer
+        to be infront of a cat button
+     */
     @objc func translateGloveToCatButtonCenter() {
         self.transitionedToCatButton = true;
         let newFrame:CGRect = CGRect(x: self.catButton!.superview!.frame.minX + self.catButton!.frame.midX - (self.frame.width * 0.75), y: self.catButton!.superview!.frame.minY + self.catButton!.frame.midY - (self.frame.height * 0.25), width: self.frame.width, height: self.frame.height)
@@ -80,6 +91,10 @@ class UIGlovedPointer:UICButton {
         
     }
     
+    /*
+        Selects the cat button/ad button/
+        color button virtually
+     */
     @objc func selfSelector() {
         if (adButton != nil) {
             adButton?.sendActions(for: .touchUpInside);
@@ -95,6 +110,10 @@ class UIGlovedPointer:UICButton {
         }
     }
     
+    /*
+        Update glove pointer style based
+        on the theme of the operating system
+     */
     func setCompiledStyle() {
         if (ViewController.uiStyleRawValue == 1) {
             if (isTapping) {
@@ -113,6 +132,10 @@ class UIGlovedPointer:UICButton {
         }
     }
     
+    /*
+        Makes glove pointer stop moving
+        and disappear
+     */
     func reset() {
         stopAnimations();
         self.frame = self.originalFrame!;
@@ -120,6 +143,9 @@ class UIGlovedPointer:UICButton {
         self.alpha = 0.0;
     }
     
+    /*
+        Freezes the glove pointer
+     */
     func stopAnimations() {
         translateToTapAnimation?.stopAnimation(true);
         translateFromTapAnimation?.stopAnimation(true);
@@ -127,6 +153,10 @@ class UIGlovedPointer:UICButton {
         self.transform = .identity;
     }
     
+    /*
+        Reduces the width and height of
+        the glove pointer toward its center
+     */
     func shrink() {
         self.superview!.bringSubviewToFront(self);
         self.stopAnimations();
@@ -135,6 +165,10 @@ class UIGlovedPointer:UICButton {
         })
     }
     
+    /*
+        Increases the width and the height
+        of the glove pointer from its center
+     */
     override func grow() {
         self.alpha = 1.0;
         self.superview!.bringSubviewToFront(self);
@@ -147,6 +181,9 @@ class UIGlovedPointer:UICButton {
         });
     }
     
+    /*
+        Move the gloved pointer slightly to the south west
+     */
     func setupTranslateFromTapAnimation() {
         translateFromTapAnimation = UIViewPropertyAnimator(duration: 0.5, curve: .easeInOut, animations: {
             self.frame = CGRect(x: self.frame.minX - self.xTranslation, y: self.frame.minY - self.yTranslation, width: self.frame.width, height: self.frame.height);
@@ -157,6 +194,9 @@ class UIGlovedPointer:UICButton {
         })
     }
     
+    /*
+        Move the gloved pointer slightly to the north east
+     */
     func setupTranslateToTapAnimation() {
         translateToTapAnimation = UIViewPropertyAnimator(duration: 0.5, curve: .easeInOut, animations: {
             self.frame = CGRect(x: self.frame.minX + self.xTranslation, y: self.frame.minY + self.yTranslation, width: self.frame.width, height: self.frame.height);
@@ -168,6 +208,10 @@ class UIGlovedPointer:UICButton {
         })
     }
     
+    /*
+        Swing the glove pointer to emulate
+        a tap on the screen
+     */
     func sway() {
         Timer.scheduledTimer(withTimeInterval: 0.25, repeats: false, block: { _ in
             self.isTapping = false;
@@ -177,6 +221,9 @@ class UIGlovedPointer:UICButton {
         translateFromTapAnimation!.startAnimation(afterDelay: 0.125);
     }
     
+    /*
+        Translates the glove pointer
+     */
     override func translate(newOriginalFrame:CGRect) {
         setCompiledStyle();
         transitionedToCatButton = true;

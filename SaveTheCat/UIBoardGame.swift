@@ -71,6 +71,10 @@ class UIBoardGame: UIView, GKMatchDelegate {
         setupCatsSavedLabel();
     }
     
+    /*
+        Creates the cats saved label
+        that flashes after a cat is saved
+     */
     func setupCatsSavedLabel() {
         catsSavedLabel = UICLabel(parentView: self.superview!, x: self.frame.minX, y: self.frame.minY, width: self.superview!.frame.width, height: self.frame.height);
         CenterController.center(childView: catsSavedLabel!, parentRect: self.superview!.frame, childRect: catsSavedLabel!.frame);
@@ -81,6 +85,10 @@ class UIBoardGame: UIView, GKMatchDelegate {
         ViewController.updateFont(label: catsSavedLabel!);
     }
     
+    /*
+        Flashes the number of cats
+        saved in the current round
+     */
     var catsSavedCountTimer:Timer?
     func flashCatsSavedCount() {
         catsSavedLabel!.alpha = 1.0;
@@ -94,6 +102,10 @@ class UIBoardGame: UIView, GKMatchDelegate {
         })
     }
     
+    /*
+        Creates the victory vieew based
+        on the aspect ratio of the screen
+     */
     func setupVictoryView() {
         var y:CGFloat?
         if (ViewController.aspectRatio! == .ar19point5by9) {
@@ -107,6 +119,10 @@ class UIBoardGame: UIView, GKMatchDelegate {
         victoryView!.alpha = 0.0;
     }
     
+    /*
+        Creates the hairball attack meter
+        based on the operating system of the screen
+     */
     func setupAttackMeter() {
         let height:CGFloat = ViewController.staticMainView!.frame.height * ((1.0/300.0) + 0.08);
         var width:CGFloat = ViewController.staticUnitViewWidth * 6.5;
@@ -129,6 +145,10 @@ class UIBoardGame: UIView, GKMatchDelegate {
         attackMeter!.setCompiledStyle();
     }
     
+    /*
+        Creates the opponent lives meter under
+        the players lives meter
+     */
     func setupOpponentLiveMeter() {
         let height:CGFloat = ViewController.staticMainView!.frame.height * ((1.0/300.0) + 0.08);
         let x:CGFloat = ViewController.staticMainView!.frame.width - height - ViewController.staticUnitViewWidth;
@@ -136,12 +156,20 @@ class UIBoardGame: UIView, GKMatchDelegate {
         opponentLiveMeter!.alpha = 0.0;
     }
 
+    /*
+        Creates the players live meter
+     */
     func setupLivesMeter() {
         myLiveMeter = UILiveMeter(parentView: self.superview!, frame:  CGRect(x: opponentLiveMeter!.frame.minX, y: opponentLiveMeter!.frame.minY, width: opponentLiveMeter!.frame.width, height: opponentLiveMeter!.frame.height), isOpponent: false);
         self.superview!.addSubview(opponentLiveMeter!);
         self.superview!.addSubview(myLiveMeter!);
     }
     
+    /*
+        Resets the number the number of cats saved
+        Closes the settings menu, and
+        resets attack meter, and resets glove pointer
+     */
     func continueSelector() {
         victoryView!.mouseCoin!.alpha = 0.0;
         victoryView!.watchAdButton!.alpha = 0.0;
@@ -150,15 +178,18 @@ class UIBoardGame: UIView, GKMatchDelegate {
         if (settingsButton!.isPressed) {
             settingsButton!.sendActions(for: .touchUpInside);
         }
+        // Reset the glove pointer
         glovePointer!.shrink();
         glovePointer!.adButton = nil;
         glovePointer!.isTapping = false;
         glovePointer!.setCompiledStyle();
         glovePointer!.doShrink = false;
+        // Reset cats saved results
         myLiveMeter!.resetLivesLeftCount();
         self.results!.fadeOut();
         results!.catsThatLived = 0;
         results!.catsThatDied = 0;
+        // Update song playing
         SoundController.chopinPrelude(play: false);
         if (!(SoundController.mozartSonataSoundEffect!.volume > 0.0)) {
             SoundController.mozartSonata(play: true, startOver: true);
@@ -171,21 +202,30 @@ class UIBoardGame: UIView, GKMatchDelegate {
         results!.mouseCoin!.alpha = 1.0;
     }
     
+    /*
+        Make the board game opaque over time
+     */
     func fadeIn(){
         UIView.animate(withDuration: 1.0, delay: 0.125, options: .curveEaseIn, animations: {
             super.alpha = 1.0;
         })
     }
     
+    /*
+        Receives values about the current multiplayer match
+     */
     var value:UInt16?
     func match(_ match: GKMatch, didReceive data: Data, fromRemotePlayer player: GKPlayer) {
+        // Display the oponent's name
         if (UIGameMessage.opponent == "") {
             UIGameMessage.opponent = player.displayName
             ViewController.staticSelf!.gameMessage!.displayOpponent()
         }
+        // Unpack value
         value = data.withUnsafeBytes {
             $0.load(as: UInt16.self);
         }
+        // Win game
         if (value == 65535) {
             gameWon();
         }
@@ -193,6 +233,7 @@ class UIBoardGame: UIView, GKMatchDelegate {
         if (opponent == nil || opponent != player) {
             return;
         }
+        // Increase/Decrease player/opponent lives meter
         if (value! != opponentLiveMeter!.livesLeft) {
             if (value! > opponentLiveMeter!.livesLeft) {
                 opponentLiveMeter!.incrementLivesLeftCount(catButton: attackMeter!.cat!, forOpponent: true);
@@ -203,6 +244,9 @@ class UIBoardGame: UIView, GKMatchDelegate {
         }
     }
     
+    /*
+        Display the victory view and success label
+     */
     func gameWon() {
         ViewController.staticSelf!.gameMessage!.displayIWonAgainstOpponent()
         if (!iLost) {
@@ -235,6 +279,9 @@ class UIBoardGame: UIView, GKMatchDelegate {
         }
     }
     
+    /*
+        Slides the opponent live meter beneath the players
+     */
     func hideOpponentLiveMeter() {
         UIView.animate(withDuration: 1.0, delay: 0.0, options: .curveEaseIn, animations: {
             self.opponentLiveMeter!.frame = self.opponentLiveMeter!.originalFrame!;
@@ -243,6 +290,9 @@ class UIBoardGame: UIView, GKMatchDelegate {
         })
     }
     
+    /*
+        Slides open the opponent live meter from the players
+     */
     func displayOpponentLiveMeter() {
         var x:CGFloat = 0.0;
         var y:CGFloat = 0.0;
@@ -258,12 +308,18 @@ class UIBoardGame: UIView, GKMatchDelegate {
         })
     }
     
+    /*
+        Creates the match
+     */
     func setupMatch(match:GKMatch) {
         self.currentMatch = match;
         match.delegate = self;
         setupOpponent(opponent: match.players[0]);
    }
     
+    /*
+        Saves the opponent and starts the game
+     */
     func setupOpponent(opponent:GKPlayer) {
         self.opponent = opponent;
         self.displayOpponentLiveMeter();
@@ -272,10 +328,13 @@ class UIBoardGame: UIView, GKMatchDelegate {
         self.twoPlayerButtonSelector(noMatchMaking: true);
     }
     
+    /*
+        Timer that listens to the opponent
+        and idetifies when they close the game
+     */
     var data:Data?
     func setupOpponentResignationTimer() {
         self.opponentResignationTimer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true, block: { _ in
-            print("MESSAGE: Sending value counter")
             self.myValueCounterPerSecond += 0.1;
             var livesInt:UInt16 = UInt16(self.myLiveMeter!.livesLeft);
             self.data = nil;
@@ -297,22 +356,29 @@ class UIBoardGame: UIView, GKMatchDelegate {
         })
     }
 
+    /*
+        Starts the matchmaking process
+        Displays the matchmaking view controller
+     */
     var matchRequest:GKMatchRequest?
     func startMatchmaking() {
+        // If Game Center's remote services are accessible, display matchmaking view controller
         if (GKLocalPlayer.local.isAuthenticated && ViewController.staticSelf!.isInternetReachable) {
-            // Build match maker
+            // Request match
             if (matchRequest == nil) {
                 matchRequest = GKMatchRequest();
                 matchRequest!.defaultNumberOfPlayers = 2;
                 matchRequest!.minPlayers = 2;
                 matchRequest!.maxPlayers = 2;
             }
+            // Display the matchmaking view controller
             if (matchMakerVC == nil) {
                 matchMakerVC = GKMatchmakerViewController(matchRequest: matchRequest!);
                 matchMakerVC!.matchmakerDelegate = ViewController.staticSelf!;
             }
             ViewController.staticSelf!.present(matchMakerVC!, animated: true, completion: nil);
         } else {
+            // Display message of internet/game center authentication mishap
             if (!GKLocalPlayer.local.isAuthenticated) {
                 ViewController.staticSelf!.gameMessage!.addToMessageQueue(message: .noGameCenter);
             }
@@ -322,6 +388,9 @@ class UIBoardGame: UIView, GKMatchDelegate {
         }
     }
     
+    /*
+        Cancel match maker view, and reset opponent
+     */
     func stopSearchingForOpponentEntirely() {
         ViewController.staticSelf!.dismiss(animated: true, completion: nil);
         currentMatch?.disconnect();
@@ -334,6 +403,9 @@ class UIBoardGame: UIView, GKMatchDelegate {
         opponent = nil;
     }
     
+    /*
+        Build the components of the board game
+     */
     func buildGame() {
         if (self.subviews.count == 0) {
             results!.catsThatLived += cats.countOfAliveCatButtons();
@@ -347,6 +419,9 @@ class UIBoardGame: UIView, GKMatchDelegate {
         }
     }
     
+    /*
+        Creates the single and two player buttons
+     */
     func setupSingleAndTwoPlayerButtons() {
         singlePlayerButton = UICButton(parentView: self.superview!, frame: CGRect(x: self.colorOptions!.frame.minX + self.colorOptions!.frame.width * 0.05, y: self.colorOptions!.frame.minY + self.colorOptions!.frame.height * 0.1, width: self.frame.width * 0.425, height: self.colorOptions!.frame.height * 0.8), backgroundColor: UIColor.clear);
         singlePlayerButton!.setTitle("Single Player", for: .normal);
@@ -370,14 +445,21 @@ class UIBoardGame: UIView, GKMatchDelegate {
         ViewController.updateFont(button: twoPlayerButton!);
     }
     
+    /*
+        Starts the single player game
+     */
     var colorOption:UICButton?
     @objc func singlePlayerButtonSelector() {
         if (singlePlayerButton!.notSelectable) {
             return;
         }
+        // Closes the settings menu
         if (settingsButton!.isPressed) {
             settingsButton!.sendActions(for: .touchUpInside);
         }
+        /*
+            Hides the victory view/ game over view
+         */
         singlePlayerButton!.notSelectable = true;
         if (self.victoryView!.alpha > 0.0) {
             self.cats.resumeCatAnimations();
@@ -392,6 +474,7 @@ class UIBoardGame: UIView, GKMatchDelegate {
             self.fadeIn();
         }
         startGame();
+        // Hide the single and multiplayer button
         twoPlayerButton!.shrink(colorOptionButton: false);
         UIView.animate(withDuration: 1.0, delay: 0.125, options: .curveEaseOut, animations: {
             self.colorOption = self.colorOptions!.selectionButtons![0];
@@ -412,6 +495,10 @@ class UIBoardGame: UIView, GKMatchDelegate {
         })
     }
     
+    /*
+        Start the matchmaking client for the
+        multiplayer match
+     */
     @objc func twoPlayerButtonSelector(noMatchMaking:Bool) {
         if (noMatchMaking) {
             if (twoPlayerButton!.notSelectable) {
@@ -420,6 +507,7 @@ class UIBoardGame: UIView, GKMatchDelegate {
             if (settingsButton!.isPressed) {
                 settingsButton!.sendActions(for: .touchUpInside);
             }
+            // Hides the game won/ game lost view
             twoPlayerButton!.notSelectable = true;
             if (self.results!.alpha >= 0.0) {
                 continueSelector();
@@ -431,6 +519,7 @@ class UIBoardGame: UIView, GKMatchDelegate {
                 self.myLiveMeter!.resetLivesLeftCount();
                 self.fadeIn();
             }
+            // Hide both the single player and multiplayer button
             twoPlayerButton!.notSelectable = true;
             singlePlayerButton!.shrink(colorOptionButton: false);
             self.attackMeter!.invokeAttackImpulse(delay: 0.75);
@@ -479,19 +568,26 @@ class UIBoardGame: UIView, GKMatchDelegate {
     var previousGridColumnColor:UIColor?
     var previousGridRowColor:UIColor?
     
+    /*
+        Builds the grid colors of the current round
+     */
     func buildGridColors(){
         gridColors = Array(repeating: Array(repeating: UIColor.lightGray, count: rowAndColumnNums[1]), count: rowAndColumnNums[0]);
         gridColorRowIndex = 0;
+        // Iterates through each row
         while (gridColorRowIndex! < gridColors!.count) {
             gridColorColumnIndex = 0;
+            // Iterates through each column
             while (gridColorColumnIndex! < gridColors![0].count) {
                 gridRandomColor = colorOptions!.selectionColors!.randomElement()!;
+                // If the previous row, same column has the same color, repeat the random selection
                 if (gridColorRowIndex! > 0) {
                     previousGridColumnColor = gridColors![gridColorRowIndex! - 1][gridColorColumnIndex!];
                     if (previousGridColumnColor!.cgColor == gridRandomColor!.cgColor) {
                         gridColorRowIndex! -= 1;
                     }
                 }
+                // If the previous column, same row has the same color, repeat the random seleciton, randomly
                 if (gridColorColumnIndex! > 0) {
                     previousGridRowColor = gridColors![gridColorRowIndex!][gridColorColumnIndex! - 1];
                     if (previousGridRowColor!.cgColor == gridRandomColor!.cgColor && Int.random(in: 0...2) > 1){
@@ -505,6 +601,9 @@ class UIBoardGame: UIView, GKMatchDelegate {
         }
     }
     
+    /*
+        Returns the count of colors that haven't been clearned
+     */
     func nonZeroGridColorsCount() -> Int {
         var nonZeroCount:Int = 0;
         for (_, count) in gridColorsCount {
@@ -515,6 +614,10 @@ class UIBoardGame: UIView, GKMatchDelegate {
         return nonZeroCount;
     }
     
+    /*
+        Saves a record of the grid colors used
+        in the game
+     */
     var recordedColor:CGColor?
     func recordGridColorsUsed(){
         gridColorsCount = [:];
@@ -528,6 +631,10 @@ class UIBoardGame: UIView, GKMatchDelegate {
         }
     }
     
+    /*
+        Returns the rows and columns
+        given the current stage of the game
+     */
     func getRowsAndColumns(currentStage:Int) -> [Int] {
         var initialStage:Int = 2;
         var rows:Int = 1;
@@ -544,6 +651,9 @@ class UIBoardGame: UIView, GKMatchDelegate {
         return [rows, columns];
     }
     
+    /*
+        Plots the buttons in a grid
+     */
     var gridButtonRowGap:CGFloat?
     var gridButtonColumnGap:CGFloat?
     var gridButtonHeight:CGFloat?
@@ -560,9 +670,11 @@ class UIBoardGame: UIView, GKMatchDelegate {
         // Points
         gridButtonX = 0.0;
         gridButtonY = 0.0;
+        // Iterate through the rows
         for rowIndex in 0..<rowAndColumnNums[0] {
             gridButtonY! += gridButtonRowGap!;
             gridButtonX = 0.0;
+            // Iterate through the columns
             for columnIndex in 0..<rowAndColumnNums[1] {
                 gridButtonX! += gridButtonColumnGap!;
                 gridCatButton = cats.buildCatButton(parent: self, frame: CGRect(x: gridButtonX!, y: gridButtonY!, width: gridButtonWidth!, height: gridButtonHeight!), backgroundColor: gridColors![rowIndex][columnIndex]);
@@ -577,6 +689,10 @@ class UIBoardGame: UIView, GKMatchDelegate {
         }
     }
     
+    /*
+        Displays the game over view
+        and shows, up-to-date stats
+     */
     var iLostUpdateResult:(UICButton, UIMouseCoin)?
     var iLostWatchAdButton:UICButton?
     var iLostMouseCoinButton:UIMouseCoin?
@@ -682,6 +798,7 @@ class UIBoardGame: UIView, GKMatchDelegate {
             // Correct matching grid button color and selection color
             if (catButton.backgroundCGColor! == colorOptions!.selectedColor.cgColor){
                 if (!catButton.isPodded) {
+                    // Save the cat and record cat
                     gridColorsCount[catButton.backgroundCGColor!]! -= 1;
                     colorOptions!.buildColorOptionButtons(setup: false);
                     catButton.pod();
@@ -691,6 +808,7 @@ class UIBoardGame: UIView, GKMatchDelegate {
                     self.flashCatsSavedCount();
                 }
             } else {
+                // Kill cat
                 if (!catButton.isPodded) {
                     attackCatButton(catButton: catButton);
                 } else {
@@ -711,8 +829,14 @@ class UIBoardGame: UIView, GKMatchDelegate {
         
     }
     
+    /*
+        Kills the cat button, and sends death count
+        to the multiplayer channel if player is
+        in a match
+     */
     func attackCatButton(catButton:UICatButton) {
         self.attackMeter!.updateDuration(change: -0.75);
+        // Updates the lives left meter of the player
         if (myLiveMeter!.livesLeft - 1 > 0) {
             setCatButtonAsDead(catButton: catButton, singleDeath:false);
             myLiveMeter!.decrementLivesLeftCount();
@@ -723,6 +847,7 @@ class UIBoardGame: UIView, GKMatchDelegate {
                 verifyThatRemainingCatsArePodded(catButton:catButton);
             }
         } else {
+            // Sends a signal to the multiplayer channel that they have lost
             if (currentMatch != nil) {
                 ViewController.staticSelf!.gameMessage!.displayILostAgainstOpponent()
                 var livesInt:UInt16 = UInt16(65535);
@@ -741,6 +866,11 @@ class UIBoardGame: UIView, GKMatchDelegate {
         
     }
     
+    /*
+        Kill the cat button, record data,
+        update colors count, and disperse
+        the cat button radially
+     */
     func setCatButtonAsDead(catButton:UICatButton, singleDeath:Bool) {
         if (!iLost) {
             looseMouseCoin();
@@ -755,6 +885,9 @@ class UIBoardGame: UIView, GKMatchDelegate {
         SoundController.kittenDie();
     }
     
+    /*
+        Strips a mouse coin from the player
+     */
     var mouseCoinLossX:CGFloat?
     var mouseCoinLossY:CGFloat?
     var mouseCoinLossSideLength:CGFloat?
@@ -763,16 +896,19 @@ class UIBoardGame: UIView, GKMatchDelegate {
     var mouseCoinLossTargetY:CGFloat?
     var mouseCoinXRange:[CGFloat] = [];
     func looseMouseCoin() {
+        // If the there is an internet connection
         if (ViewController.staticSelf!.isInternetReachable && GKLocalPlayer.local.isAuthenticated && ViewController.staticSelf!.isiCloudReachable) {
             mouseCoinLossX = settingsButton!.settingsMenu!.frame.minX + settingsButton!.settingsMenu!.mouseCoin!.frame.minX;
             mouseCoinLossY = settingsButton!.settingsMenu!.frame.minY + settingsButton!.settingsMenu!.mouseCoin!.frame.minY;
             mouseCoinLossSideLength = settingsButton!.settingsMenu!.mouseCoin!.frame.width;
+            // Determines how many mouse coins were lost
             if (mouseCoinXRange.count < 3) {
                 mouseCoinXRange.append(settingsButton!.settingsMenu!.frame.minX + settingsButton!.settingsMenu!.mouseCoin!.frame.minX);
                 mouseCoinXRange.append(superview!.frame.width);
             }
             mouseCoinLoss = UIMouseCoin(parentView: self.superview!, x: mouseCoinLossX!, y: mouseCoinLossY!, width: mouseCoinLossSideLength!, height: mouseCoinLossSideLength!);
             mouseCoinLoss!.isSelectable = false;
+            // Sets mouse coin translation target
             if (Int.random(in: 0...1) > 0) {
                 mouseCoinLossTargetX = CGFloat.random(in: mouseCoinXRange[0]...mouseCoinXRange[1]);
                 mouseCoinLossTargetY = superview!.frame.height
@@ -780,11 +916,13 @@ class UIBoardGame: UIView, GKMatchDelegate {
                 mouseCoinLossTargetX = CGFloat.random(in: mouseCoinXRange[0]...(mouseCoinXRange[1] * 0.5));
                 mouseCoinLossTargetY = superview!.frame.height
             }
+            // Translates the mouse coins to their target
             UIView.animate(withDuration: 2.0, delay: 0.125, options: .curveLinear, animations: {
                 self.mouseCoinLoss!.frame = CGRect(x: self.mouseCoinLossTargetX!, y: self.mouseCoinLossTargetY!, width: self.mouseCoinLossSideLength!, height: self.mouseCoinLossSideLength!);
             }, completion: { _ in
                 self.mouseCoinLoss!.removeFromSuperview();
             })
+            // Update mouse coin count
             if (UIResults.mouseCoins != 0) {
                 ViewController.staticSelf!.settingsButton!.settingsMenu!.mouseCoin!.setMouseCoinValue(newValue: UIResults.mouseCoins - 1);
             }
@@ -798,6 +936,9 @@ class UIBoardGame: UIView, GKMatchDelegate {
         }
     }
     
+    /*
+        Verifies that the remaining cats are saved, or not, or dead
+     */
     func verifyThatRemainingCatsArePodded(catButton:UICatButton) {
         // Check if all the cats have been podded
         if (cats.aliveCatsArePodded()) {
@@ -807,6 +948,7 @@ class UIBoardGame: UIView, GKMatchDelegate {
             colorOptions!.isTransitioned = false;
             // Add data of survived cats
             if (cats.didAllSurvive()) {
+                // All cats were saved
                 myLiveMeter!.incrementLivesLeftCount(catButton: catButton, forOpponent: false);
                 self.attackMeter!.updateDuration(change: 0.075);
                 self.attackMeter!.sendEnemyToStart();
@@ -815,17 +957,23 @@ class UIBoardGame: UIView, GKMatchDelegate {
                 promote();
                 return;
             } else {
+                // Some were saved
                 self.attackMeter!.sendEnemyToStart();
                 maintain();
                 return;
             }
         } else {
+            // None was saved
             self.attackMeter!.updateDuration(change: 0.025);
             self.attackMeter!.sendEnemyToStart();
             self.attackMeter!.startFirstRotation(afterDelay: 1.0);
         }
     }
     
+    /*
+        Fills in the gaps produced by cat buttons
+        that have perished
+     */
     var rowOfAliveCats:[UICatButton]?
     func displaceArea(ofCatButton:UICatButton) {
         rowOfAliveCats = cats.getRowOfAliveCats(rowIndex: ofCatButton.rowIndex);
@@ -838,6 +986,10 @@ class UIBoardGame: UIView, GKMatchDelegate {
         }
     }
     
+    /*
+        Fills in the gaps for each row where
+        cat buttons have perished
+     */
     func disperseRow(aliveCats:[UICatButton]) {
         // Establish shared y, column gap
         var x:CGFloat = 0.0;
@@ -852,6 +1004,10 @@ class UIBoardGame: UIView, GKMatchDelegate {
         }
     }
     
+    /*
+        Fills in the gaps for each column where
+        cat buttons have perished
+     */
     func disperseColumns() {
         // Get the dictionary with row index and corresponding count
         var indexesOfRowsWithAliveCatsCount:[Int:Int] = cats.getIndexesOfRowsWithAliveCatsCount();
@@ -876,11 +1032,12 @@ class UIBoardGame: UIView, GKMatchDelegate {
             y += buttonHeight;
         }
         
+        // Don't update sizes and positions unless there is more space to do so
         if ((countOfMaxCatButtonsInARow <= countOfRowsLeft)) {
             for rowIndexOf in Array(indexesOfRowsWithAliveCatsCount.keys).sorted(by:<) {
                 resetCatButtonsPosition(rowIndexOf: rowIndexOf);
             }
-        } else {
+        } else { // Do it
             rowGap = self.frame.height * 0.1 / CGFloat(countOfRowsLeft + 1);
             buttonHeight = self.frame.width * 0.90 / CGFloat(countOfRowsLeft);
             for rowIndexOf in Array(indexesOfRowsWithAliveCatsCount.keys).sorted(by:<) {
@@ -898,6 +1055,10 @@ class UIBoardGame: UIView, GKMatchDelegate {
         configureComponentsAfterBoardGameReset();
     }
     
+    /*
+        Disperse all the dead cats, and
+        empty all the colors arrays
+     */
     func reset(catsSurvived:Bool){
         if (catsSurvived) {
             cats.disperseVertically()
@@ -906,6 +1067,9 @@ class UIBoardGame: UIView, GKMatchDelegate {
         colorOptions!.selectionColors!.removeAll();
     }
     
+    /*
+        Restart the game to round 1, rebuild the whole game
+     */
     func restart(){
         currentRound = 1;
         colorOptions!.loadSelectionButtonsToSelectedButtons();
@@ -917,9 +1081,15 @@ class UIBoardGame: UIView, GKMatchDelegate {
         configureComponentsAfterBoardGameReset();
     }
     
+    /*
+        Keep the player at an obtainable round
+        , save the cats that survived, update the components
+        to satisfy the requirements for the round
+     */
     func maintain() {
         let countOfAliveCatButtons:Int = cats.countOfAliveCatButtons();
         var newRound:Int = 1;
+        // Select obtainable round
         while (true) {
             let newRoundRowsAndColumns:[Int] = getRowsAndColumns(currentStage: newRound);
             let product:Int = newRoundRowsAndColumns[0] * newRoundRowsAndColumns[1];
@@ -951,7 +1121,7 @@ class UIBoardGame: UIView, GKMatchDelegate {
     }
     
     func clearBoardGameToDisplayVictoryAnimation() {
-        // Pod alive cats and shrink color options
+        // Save alive cats and shrink color options
         self.iWon = true;
         SoundController.kittenMeow();
         self.cats.podAliveOnesAndGiveMouseCoin();
@@ -966,10 +1136,14 @@ class UIBoardGame: UIView, GKMatchDelegate {
         }
     }
     
+    /*
+        Promote the player to the next round
+     */
     func promote(){
         reset(catsSurvived: true);
         colorOptions!.shrinkColorOptions();
         colorOptions!.loadSelectionButtonsToSelectedButtons();
+        // Reset the attack meter when the user won
         if (self.iWon) {
             self.alpha = 0.0;
             self.attackMeter!.attack = false;
@@ -983,6 +1157,7 @@ class UIBoardGame: UIView, GKMatchDelegate {
         }
         // Build board game
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.75) {
+            // Reset the attack meter when the user won
             if (self.iWon) {
                 self.alpha = 0.0;
                 self.attackMeter!.attack = false;

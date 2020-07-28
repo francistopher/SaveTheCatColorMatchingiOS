@@ -32,12 +32,19 @@ class UIIntroCatAnimation:UICButton {
         setupIntroTextRotationTimer();
     }
     
+    /*
+        Create timer to rotate
+        the text continouslly
+     */
     func setupIntroTextRotationTimer() {
         introTextRotationTimer = Timer.scheduledTimer(withTimeInterval: 0.01, repeats: true, block: { _ in
             self.introTextView!.transform = self.introTextView!.transform.rotated(by: CGFloat.pi * 0.005);
         })
     }
     
+    /*
+        Creates the radial text
+     */
     func setIntroTextImage() {
         introTextView = UIImageView(frame: frame);
         introTextView!.transform = introTextView!.transform.translatedBy(x: 0.0, y: introTextView!.frame.height * 0.015);
@@ -50,12 +57,20 @@ class UIIntroCatAnimation:UICButton {
         fatalError("init(coder:) has not been implemented")
     }
 
+    /*
+        Makes the intro cat animation
+        opaque over time
+     */
     func setupFadeInAnimation() {
         fadeInAnimation = UIViewPropertyAnimator(duration: 2.0, curve: .easeIn, animations: {
             self.alpha = 1.0;
         })
     }
 
+    /*
+        Timer that fades and plays
+        the meow sound
+     */
     func setupWaitForFadeInTimer() {
         waitForFadeInTimer = Timer.scheduledTimer(withTimeInterval: 0.01, repeats: true, block: { _ in
             if (self.alpha == 1.0) {
@@ -67,6 +82,10 @@ class UIIntroCatAnimation:UICButton {
         })
     }
 
+    /*
+        Animation that makes the intro cat
+        animation transparent
+     */
     func setupFadeOutAnimation() {
         fadeOutAnimation = UIViewPropertyAnimator(duration: 2.0, curve: .easeOut, animations: {
             self.alpha = 0.0;
@@ -76,6 +95,10 @@ class UIIntroCatAnimation:UICButton {
         })
     }
 
+    /*
+        Updates the appearance of the intro cat
+        animation based on the theme of the OS
+     */
     func setCompiledStyle() {
         if (ViewController.uiStyleRawValue == 1) {
             self.setImage(darkCatImage, for: .normal);

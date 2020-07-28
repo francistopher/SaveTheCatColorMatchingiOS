@@ -8,6 +8,9 @@
 
 import SwiftUI
 
+/*
+    Creates a gradient colored layer for heaven
+*/
 class CACGradientLayer:CAGradientLayer {
     
     let mellowYellow:UIColor = UIColor(red: 252.0/255.0, green: 212.0/255.0, blue: 64.0/255.0, alpha: 1.0);

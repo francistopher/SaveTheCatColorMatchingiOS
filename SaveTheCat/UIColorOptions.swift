@@ -32,12 +32,20 @@ class UIColorOptions: UIView {
         setStyle();
     }
 
+    /*
+        Make the color option view
+        transparent over time
+     */
     func fadeIn(){
         UIView.animate(withDuration: 1.0, delay: 0.5, options: .curveEaseIn, animations: {
           super.alpha = 1.0;
       })
     }
     
+    /*
+        Shrinks each color option button
+        to its center
+     */
     func shrinkColorOptions() {
         for selectionButton in selectionButtons! {
             selectionButton.shrinkType = .mid;
@@ -45,6 +53,10 @@ class UIColorOptions: UIView {
         }
     }
     
+    /*
+        Randomly selects the selection colors
+        that are displayed on the board game
+     */
     func selectSelectionColors(){
         selectionColors =  [UIColor.systemGreen, UIColor.systemYellow, UIColor.systemOrange, UIColor.systemRed, UIColor.systemPurple, UIColor.systemBlue];
         repeat {
@@ -61,6 +73,10 @@ class UIColorOptions: UIView {
         }
     }
     
+    /*
+        Creates the color option buttons
+        and updates the position
+     */
     var numOfUniqueGridColors:Int = 0
     var columnGap:CGFloat = 0.0
     var rowGap:CGFloat = 0.0
@@ -80,7 +96,9 @@ class UIColorOptions: UIView {
         columnDisplacement = 0.0;
         index = 0;
         count = 0;
+        // Iterates through the single row
         for (selectionColor, colorCount) in boardGameView!.gridColorsCount {
+            // Plots the color option button
             if (setup) {
                 columnDisplacement += columnGap;
                 button = UICButton(parentView: self,  frame:CGRect(x: columnDisplacement, y: rowGap, width: buttonWidth, height: buttonHeight), backgroundColor: UIColor(cgColor: selectionColor));
@@ -112,6 +130,7 @@ class UIColorOptions: UIView {
                             }
                         }
                     }
+                    // Selects where the button will shrink
                     count += 1;
                     if (numOfUniqueGridColors + 1 == 1) {
                         revisitedButton.shrinkType = .mid;
@@ -137,6 +156,10 @@ class UIColorOptions: UIView {
         }
     }
     
+    /*
+        Update the selected color option
+        to be selected
+     */
     @objc func selectColorOption(colorOption:UICButton!){
         if (colorOption.backgroundColor!.cgColor == selectedColor.cgColor){
             return;
@@ -169,6 +192,10 @@ class UIColorOptions: UIView {
         selectedButtons!.removeAll()
     }
     
+    /*
+        Update appearance of the color
+        options view based on the theme of the OS
+     */
     func setStyle() {
         for selectionButton in selectionButtons! {
             selectionButton.setStyle();

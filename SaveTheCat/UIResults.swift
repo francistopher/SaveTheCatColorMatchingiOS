@@ -80,6 +80,9 @@ class UIResults: UICView {
         self.alpha = 0.0;
     }
     
+    /*
+        Creates the high score label
+     */
     func setupHighScoreLabel() {
         highScoreLabel = UICLabel(parentView: contentView!, x: 0.0, y: -unitHeight!, width: frame.width, height: unitHeight!);
         highScoreLabel!.font = UIFont.boldSystemFont(ofSize: highScoreLabel!.frame.height * 0.5);
@@ -88,12 +91,18 @@ class UIResults: UICView {
         highScoreLabel!.setStyle();
     }
     
+    /*
+        Creates the ad
+     */
     var localAdFirstTime:Bool = false;
     func setupLocalIntersitialAdVC() {
         localIntersitialAdVC = LocalIntersitialAdVC();
         localIntersitialAdVC!.modalPresentationStyle = .overFullScreen;
     }
     
+    /*
+        Shows the ad
+     */
     func presentLocalAd() {
         SoundController.chopinPrelude(play: false);
         ViewController.staticSelf!.present(localIntersitialAdVC!, animated: true, completion: {
@@ -107,6 +116,9 @@ class UIResults: UICView {
         })
     }
     
+    /*
+        Closes the ad view
+     */
     @objc func closeButtonSelector() {
         ViewController.staticSelf!.gameMessage!.addToMessageQueue(message: .noInternet);
         localIntersitialAdVC!.dismiss(animated: true, completion: nil);
@@ -118,6 +130,10 @@ class UIResults: UICView {
         mouseCoin!.alpha = 0.0;
     }
     
+    /*
+        Creates the content view
+        of the results
+     */
     func setupContentView() {
         self.contentView = UICView(parentView: self, x: 0.0, y: 0.0, width: self.frame.width, height: self.frame.height, backgroundColor: UIColor.white);
         contentView!.layer.borderWidth = 0.0;
@@ -127,6 +143,9 @@ class UIResults: UICView {
         contentView!.clipsToBounds = true;
     }
     
+    /*
+        Create the game over label
+     */
     func setupGameOverLabel() {
         self.gameOverLabel = UICLabel(parentView: contentView!, x: 0.0, y: unitHeight! * 0.25, width: contentView!.frame.width + (self.frame.width / 4.0), height: unitHeight! * 2.0);
         gameOverLabel!.font = UIFont.boldSystemFont(ofSize: gameOverLabel!.frame.height * 0.375);
@@ -137,6 +156,9 @@ class UIResults: UICView {
         ViewController.updateFont(label: gameOverLabel!);
     }
     
+    /*
+        Creates the cheering cat image label
+     */
     func setupCheeringCatLabel() {
         self.catsLivedLabel = UICLabel(parentView: contentView!, x: self.frame.width * 0.02875, y: gameOverLabel!.frame.maxY * 0.9, width: contentView!.frame.width * 0.5,
             height: contentView!.frame.width * 0.5);
@@ -145,6 +167,9 @@ class UIResults: UICView {
         setupCatsLivedAmount();
     }
     
+    /*
+        Creates the label with the count of cats saved
+     */
     func setupCatsLivedAmount() {
         self.catsLivedAmountLabel = UICLabel(parentView: contentView!, x: self.frame.width * 0.02875, y: catsLivedLabel!.frame.maxY, width: contentView!.frame.width * 0.5, height: unitHeight!);
         catsLivedAmountLabel!.font = UIFont.boldSystemFont(ofSize: catsLivedAmountLabel!.frame.height * 0.5);
@@ -153,6 +178,9 @@ class UIResults: UICView {
         ViewController.updateFont(label: catsLivedAmountLabel!);
     }
     
+    /*
+        Create the image view of the cheering cat
+     */
     var image:UIImage?
     func setupLivedCatImage() {
         self.livedCatImageButton = UICButton(parentView: catsLivedLabel!, frame:CGRect( x: 0.0, y: 0.0, width: catsLivedLabel!.frame.width, height: catsLivedLabel!.frame.height * 1.30), backgroundColor: UIColor.clear);
@@ -163,6 +191,9 @@ class UIResults: UICView {
         CenterController.center(childView: livedCatImageButton!, parentRect: catsLivedLabel!.frame, childRect: livedCatImageButton!.frame);
     }
     
+    /*
+        Creates the dead cat label
+     */
     func setupDeadCatLabel() {
         self.catsDiedLabel = UICLabel(parentView: contentView!, x: contentView!.frame.width * 0.5, y: gameOverLabel!.frame.maxY * 0.9, width: contentView!.frame.width * 0.5, height: contentView!.frame.width * 0.5);
         catsDiedLabel!.backgroundColor = UIColor.clear;
@@ -170,6 +201,9 @@ class UIResults: UICView {
         setupCatsDiedAmount();
     }
     
+    /*
+        Creates the label with the count of cats that died
+     */
     func setupCatsDiedAmount() {
         self.catsDiedAmountLabel = UICLabel(parentView: contentView!, x: contentView!.frame.width * 0.5, y: catsDiedLabel!.frame.maxY, width: contentView!.frame.width * 0.5, height: unitHeight!);
         catsDiedAmountLabel!.font = UIFont.boldSystemFont(ofSize: catsDiedAmountLabel!.frame.height * 0.5);
@@ -178,6 +212,9 @@ class UIResults: UICView {
         ViewController.updateFont(label: catsDiedAmountLabel!);
     }
     
+    /*
+        Creates the dead cat image button
+     */
     func setupDeadCatImage() {
         self.deadCatImageButton = UICButton(parentView: catsDiedLabel!, frame:CGRect( x: 0.0, y: 0.0, width: catsDiedLabel!.frame.width, height: catsDiedLabel!.frame.height * 1.30), backgroundColor: UIColor.clear);
         deadCatImageButton!.layer.borderWidth = 0.0;
@@ -186,6 +223,10 @@ class UIResults: UICView {
         CenterController.center(childView: deadCatImageButton!, parentRect: catsDiedLabel!.frame, childRect: deadCatImageButton!.frame);
     }
     
+    /*
+        Updates the reward amount for
+        viewing an ad
+     */
     func adjustRewardAmount() {
         if (!UIResults.adIsShowing) {
             if (UIResults.rewardAmount > 5) {
@@ -195,6 +236,10 @@ class UIResults: UICView {
         UIResults.adIsShowing = false;
     }
     
+    /*
+        Creates the watch ad button
+        that displays the ad
+     */
     var mouseCoin:UIMouseCoin?
     func setupWatchAdForXMouseCoins() {
         self.watchAdButton = UICButton(parentView: contentView!, frame: CGRect(x: 0.0, y: self.frame.height - (unitHeight! * 1.3125), width: contentView!.frame.width * 0.35, height: unitHeight! * 1.25), backgroundColor: .clear);
@@ -205,7 +250,7 @@ class UIResults: UICView {
         self.watchAdButton!.setTitle("Watch Short Ad to Win + ····· s!", for: .normal);
         self.watchAdButton!.addTarget(self, action: #selector(showAd), for: .touchUpInside);
         self.watchAdButton!.secondaryFrame = self.watchAdButton!.frame;
-        // Setup mouse coin
+        // Setup mouse coin based on the screen's aspect ratio
         var x:CGFloat = 0.0;
         if (ViewController.aspectRatio! == .ar4by3) {
             watchAdButton!.titleLabel!.font = UIFont.boldSystemFont(ofSize:watchAdButton!.frame.height * 0.4);
@@ -217,14 +262,15 @@ class UIResults: UICView {
             watchAdButton!.titleLabel!.font = UIFont.boldSystemFont(ofSize:watchAdButton!.frame.height * 0.38);
             x = watchAdButton!.frame.width * 0.771;
         }
+        // Create mouse coin
         mouseCoin = UIMouseCoin(parentView: watchAdButton!, x: x, y: watchAdButton!.frame.height * 0.12, width: watchAdButton!.frame.height * 0.75, height: watchAdButton!.frame.height * 0.75);
         mouseCoin!.isSelectable = false;
         mouseCoin!.addTarget(self, action: #selector(mouseCoinSelector), for: .touchUpInside);
         ViewController.updateFont(button: watchAdButton!);
     }
     
+    // Shows the ad
     @objc func showAd() {
-        print("MESSAGE: IS THE AD ACTAULLY SHOWING")
         // Gathering user selection data
         UIResults.adIsShowing = true;
         // load the ad
@@ -258,6 +304,10 @@ class UIResults: UICView {
         })
     }
     
+    /*
+        Rewards the user with mouse coins that are first plotted
+        radially qeuidistant from the center of the screen
+     */
     func giveMouseCoins() {
         let mainView:UIView = ViewController.staticMainView!;
         // Set angles
@@ -281,6 +331,7 @@ class UIResults: UICView {
             let mouseCoin:UIMouseCoin = UIMouseCoin(parentView: mainView, x: mouseCoinX, y: mouseCoinY, width: settingsMouseCoinFrame.width, height: settingsMouseCoinFrame.height);
             mouseCoin.alpha = 0.0;
             ViewController.staticMainView!.bringSubviewToFront(mouseCoin);
+            // Transition mouse coin to settings menu mouse coin
             UIView.animate(withDuration: 1.0, delay: 0.0, options: .curveEaseIn, animations: {
                 mouseCoin.alpha = 1.0;
             }, completion: { _ in
@@ -320,6 +371,9 @@ class UIResults: UICView {
         catsDiedAmountLabel!.text = String(catsThatDied);
     }
     
+    /*
+        Displays the user's high score
+     */
     func showHighScore(new:Bool) {
         if (new) {
             highScoreLabel!.text = "WOW! NEW HIGH SCORE!";
@@ -335,6 +389,10 @@ class UIResults: UICView {
         })
     }
     
+    /*
+        Updates the appearance of the game results
+        based on the theme of the operating system
+     */
     func setCompiledStyle() {
         if (highScoreLabel!.backgroundColor!.cgColor != UIColor.systemPink.cgColor) {
             highScoreLabel!.setStyle();
@@ -369,6 +427,9 @@ class UIResults: UICView {
     
 }
 
+/*
+    A mock ad whenever there isn't an internet connection
+ */
 class LocalIntersitialAdVC:UIViewController {
     
     var imageView:UIImageView?
@@ -401,6 +462,10 @@ class LocalIntersitialAdVC:UIViewController {
         view.addSubview(imageView!);
     }
     
+    /*
+        Update the appearance of the mock ad
+        based on the theme of the OS
+     */
     func setStyle() {
         closeButton!.backgroundColor = UIColor.white;
         closeButton!.layer.borderColor = UIColor.black.cgColor;

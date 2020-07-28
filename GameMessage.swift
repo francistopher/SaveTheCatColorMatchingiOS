@@ -60,15 +60,19 @@ class UIGameMessage:UIView {
         setupLabel();
         parentView.addSubview(self);
         var littleLongerCount:Double = 0.0;
+        // Creates timer that listens for requests by the user
         Timer.scheduledTimer(withTimeInterval: 0.125, repeats: true, block: { _ in
             parentView.bringSubviewToFront(self);
+            // Show a message
             if (self.frame == self.defaultFrame && self.messageQueue.count > 0) {
                 self.showMessage();
             }
+            // Update the messages
             if (self.messageQueue.count > 0 && self.isShowing) {
                 if (self.count == 0.0) {
                     self.displayFirstMessage();
                 }
+                // Remove message
                 if (self.count == 3.75) {
                     if (self.messageQueue.count - 1 != 0) {
                         self.messageLabel!.fadeOutAndIn();
@@ -90,6 +94,9 @@ class UIGameMessage:UIView {
         })
     }
     
+    /*
+        Displayes the messages on the in game notification message label
+     */
     func displayFirstMessage() {
         switch messageQueue[0] {
         case .noGameCenter:
@@ -121,12 +128,16 @@ class UIGameMessage:UIView {
         }
     }
     
-    
+    /*
+        Adds non repeating/ current
+        notification messages to be displayed
+     */
     func addToMessageQueue(message:Message) {
         if (messageQueue.count > 0) {
             var index:Int = 0;
             var remove:Bool = false;
             while (index < messageQueue.count) {
+                // Removes outdated our repeating messages
                 remove = (message == .noiCloud && (messageQueue[index] == .noInternet || messageQueue[index] == .yesInternet))
                 remove = (message == messageQueue[index]) || remove;
                 if (remove) {
@@ -186,18 +197,29 @@ class UIGameMessage:UIView {
         self.addSubview(blurView!);
     }
     
+    /*
+        Creates the image button that
+        corresponds to the message
+     */
     func setupImageButton() {
         imageButton = UICButton(parentView: self, frame: CGRect(x: self.frame.width * 0.0839, y: 0.0, width: self.frame.height * 0.65, height: self.frame.height), backgroundColor: UIColor.clear);
         imageButton!.layer.borderWidth = 0.0;
         self.addSubview(imageButton!);
     }
     
+    /*
+        Create image
+     */
     func setupImage(named:String) {
         let image:UIImage = UIImage(named: named)!;
         imageButton!.setImage(image, for: .normal);
         imageButton!.imageView!.contentMode = UIView.ContentMode.scaleAspectFit;
     }
     
+    /*
+        Create the message label with
+        the message
+     */
     func setupLabel() {
         let messageLabelWidth:CGFloat = self.imageButton!.frame.minX + self.imageButton!.frame.width * 1.05;
         messageLabel = UICLabel(parentView: self, x:  messageLabelWidth, y: 0.0, width: self.frame.width * 0.75, height: self.frame.height);
@@ -213,6 +235,10 @@ class UIGameMessage:UIView {
         blurView!.effect = blurEffect;
     }
     
+    /*
+        Translates the in game message
+        label to show the player
+     */
     func showMessage() {
         UIView.animate(withDuration: 0.415, delay: 0.25, options: .curveLinear, animations: {
             if (self.stayALittleLonger) {
@@ -228,6 +254,10 @@ class UIGameMessage:UIView {
         })
     }
     
+    /*
+        Translates the message label
+        hidden from the user's view
+     */
     func hideMessage() {
         UIView.animate(withDuration: 0.415, delay: 0.25, options: .curveLinear, animations: {
             self.frame = self.defaultFrame!;

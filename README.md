@@ -1,4 +1,6 @@
-# Save The Cat: Color Matching!
-## I believe I have 8/9 lives left after having an epileptic seizure on March 2019
+# Save The Cat Color Matching iOS
 
-## The code looks unorganized on Github but load it in XCode and the files will be organized in groups
+* Created after dropping out of my first semester of Computer Science
+* My first ever iOS app published on the App Store
+
+https://apps.apple.com/us/app/save-the-cat-color-matching/id1501727048

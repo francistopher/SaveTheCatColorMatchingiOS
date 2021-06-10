@@ -1,4 +1,4 @@
-# Save The Cat Color Matching iOS!
+# Save The Cat! Color Matching - iOS
 
 A repository of the source code of my first [iOS](https://developer.apple.com/ios/) App posted on the [App Store](https://www.apple.com/app-store/) written in vanila [Swift](https://www.apple.com/swift/) which I had to teach myself and learn from scratch.
 

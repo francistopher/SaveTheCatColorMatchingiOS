@@ -14,4 +14,4 @@ I should've used Folders instead of Groups to organize my code. Don't want to or
 
 ## Download
 
-Save The Cat! Color Matching has been removed from the App Store after I realized I would have to pay 100 bucks every year. The web is more flexible. The ipa file has been saved on [this website](https://steprimo.com/iphone/cn/app/1501727048/Save-The-Cat-Color-Matching/). Download it and play for yourself. I don't think game center works since I took it off the App Store.
+Took it off the App Store a while ago. 
